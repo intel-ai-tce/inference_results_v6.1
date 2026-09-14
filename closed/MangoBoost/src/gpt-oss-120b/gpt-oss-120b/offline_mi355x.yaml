@@ -1,0 +1,81 @@
+# benchmark details
+benchmark_name: gpt-oss-120b
+scenario: offline
+test_mode: performance
+engine_version: sync
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "ERROR"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  VLLM_USE_V1: 1
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: 1
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_MHA: 0
+  VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: 0
+  AITER_LOG_LEVEL: "ERROR"
+  AMDGCN_USE_BUFFER_OPS: 0
+  VLLM_MIN_REQUEST_DECODE_STEP: 256
+  VLLM_SUBSEQUENT_DECODE_STEPS: 5
+  GPU_MAX_HW_QUEUES: 3
+  HSA_KERNARG_POOL_SIZE: 4000000
+
+vllm_engine_config:
+  model: /model/gpt-oss-120b/fp4_quantized
+  tensor_parallel_size: 1
+  quantization: quark
+  max_model_len: 32768
+  gpu_memory_utilization: 0.96
+  compilation_config:
+    cudagraph_mode: FULL_AND_PIECEWISE
+    compile_sizes: [1,2,4,6,8,16,32,48,64,80,96,112,128,256,512,1024,2048,4096,8192]
+    cudagraph_capture_sizes: [1,2,4,6,8,16,32,48,64,80,96,112,128,256,512,1280,1536,1792,2048,2304,2560,2816,3072,3328,3584,3840,4096,4352,4608,4864,5120,5376,5632,5888,6144,6400,6656,6912,7168,7424,7680,7936,8192,10240,12288,14336,16384,18432,20480,22528,24576,26624,28672,30720,32768,36864,40960,45056,49152,53248,57344,61440,65536]
+  enforce_eager: False
+  max_num_batched_tokens: 65536
+  max_num_seqs: 1792
+  enable_chunked_prefill: True
+  block_size: 64
+  enable_prefix_caching: False
+  disable_log_stats: True
+  dtype: auto
+  async_scheduling: True
+
+# configuration related to the sampling params
+vllm_sampling_config:
+  temperature: 1
+  min_tokens: 1
+  max_tokens: 10240
+  top_p: 1
+  top_k: -1
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/gpt-oss-120b/perf_eval_ref.parquet
+  accuracy_dataset_path: /data/gpt-oss-120b/acc_eval_ref.parquet
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/gpt-oss-120b/user_mi355x.conf
+  target_qps: -1
+  total_sample_count: 6396
+  accuracy_sample_count: 4395
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  enable_warmup: True
+  device_count: 8
+  sorting:
+    strategy: ignore
+    buckets: [
+      12.45692710500971,
+      12.542803033483215,
+      12.540764079874208,
+      12.533327896123708,
+      12.486551901564114,
+      12.481994240555746,
+      12.472878918539005,
+      12.484752824850286,
+    ]
+

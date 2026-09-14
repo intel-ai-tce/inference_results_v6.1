@@ -1,0 +1,7 @@
+{
+  "starting_weights_filename": "Qwen3.6-27B-Q4_K_M.gguf",
+  "weight_data_types": "int4",
+  "input_data_types": "int32 (token IDs), int64 (sequence length)",
+  "retraining": "no",
+  "weight_transformations": "quantization (Q4_K_M format - 4-bit with K-quant method)"
+}

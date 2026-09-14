@@ -1,0 +1,63 @@
+# inference-endpoint config — G894 B300x8 Q3VL Offline.
+
+name: "offline-qwen3-vl-235b-a22b-shopify-benchmark-g894_b300x8"
+version: "1.0"
+type: "offline"
+timeout: 14400
+
+submission_ref:
+  model: "qwen3-vl-235b-a22b"
+  ruleset: "mlperf-inference-v6.1"
+
+model_params:
+  name: "${MODEL_NAME}"
+  max_new_tokens: 150
+
+datasets:
+  - name: shopify_product_catalogue::q3vl
+    type: "performance"
+  - name: shopify_product_catalogue::q3vl
+    type: "accuracy"
+    accuracy_config:
+      eval_method: "shopify_category_f1"
+      ground_truth: "ground_truth_category"
+      extractor: "identity_extractor"
+      num_repeats: 1
+
+settings:
+  # 3200 = TOTAL_GPUS (8) × per-instance (400).
+  warmup:
+    enabled: true
+    n_requests: 3200
+    drain: true
+
+  runtime:
+    min_duration_ms: 600000
+    scheduler_random_seed: 42
+    dataloader_random_seed: 42
+
+  load_pattern:
+    type: "max_throughput"
+
+  client:
+    num_workers: 16
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+    max_connections: 2000
+    worker_initialization_timeout: 120
+
+  # Requires endpoint image 9c91dfb2; null = drain in-flight requests indefinitely.
+  drain:
+    warmup_timeout_s: 240.0
+    performance_timeout_s: null
+    accuracy_timeout_s: null
+
+
+endpoint_config:
+  endpoints:
+    - "${FRONTEND_URL:-http://localhost:8000}"
+  api_key: null
+
+report_dir: results/qwen3_vl_235b_a22b_shopify_benchmark_offline_g894_b300x8/

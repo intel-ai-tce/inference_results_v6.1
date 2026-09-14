@@ -1,0 +1,22 @@
+================================================================================
+TEST09: Verify Output Token Length in Performance Mode
+================================================================================
+
+Output Token Length Statistics
+----------------------------------------
+Total samples: 6396
+Mean output tokens: 1344.65
+Min output tokens: 568
+Max output tokens: 3555
+Std deviation: 283.18
+
+================================================================================
+Verification Results
+================================================================================
+Mean output tokens: 1344.65
+Min threshold: 1150.38
+Max threshold: 1406.02
+Min check pass: True
+Max check pass: True
+
+TEST PASS

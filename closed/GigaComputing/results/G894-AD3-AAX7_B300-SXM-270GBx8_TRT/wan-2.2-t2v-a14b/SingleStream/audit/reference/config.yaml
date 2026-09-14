@@ -1,0 +1,70 @@
+name: wan22-a14b-singlestream-audit-test04
+version: '1.0'
+type: online
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  min_new_tokens: 1
+  skip_special_tokens: true
+  streaming: 'off'
+datasets:
+- name: wan22_perf
+  type: performance
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 50
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 0
+    n_samples_to_issue: 50
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: concurrency
+    target_concurrency: 1
+  client:
+    num_workers: 1
+    log_level: INFO
+    warmup_connections: 0
+    auto_warmup_budget_fraction: 0.25
+    max_concurrent_warmup_connects: 128
+    max_connections: -1
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+      io_threads: 4
+      worker_io_threads: 1
+      high_water_mark: 0
+      linger: -1
+      immediate: 1
+    stream_all_chunks: false
+    worker_initialization_timeout: 300.0
+    worker_graceful_shutdown_wait: 0.5
+    worker_force_kill_timeout: 0.5
+    insecure: false
+    max_idle_time: 4.0
+    min_required_connections: -1
+    worker_gc_mode: relaxed
+  drain:
+    warmup_timeout_s: 3600.0
+    performance_timeout_s: 3600.0
+    metrics_drain_timeout_s: 0.0
+    metrics_tokenizer_workers: 2
+  warmup:
+    enabled: true
+    n_requests: 10
+    salt: true
+    drain: true
+    warmup_random_seed: 42
+  profiling: {}
+  early_stopping:
+    enabled: true
+  service_ready_timeout_s: 30.0
+endpoint_config:
+  endpoints:
+  - http://127.0.1.1:9522
+  api_type: videogen
+report_dir: /data/Inference_6.1/v6.1.3-partner-drop-update-wan22/closed/GigaComputing/sflow_output/1522-wan22_videogen_test04-20260731-134027-2e4886/endpoint_benchmark/audit/reference
+verbose: false
+enable_cpu_affinity: true

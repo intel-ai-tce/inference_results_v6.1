@@ -1,0 +1,29 @@
+diff --git a/aiter/fused_moe.py b/aiter/fused_moe.py
+--- a/aiter/fused_moe.py
++++ b/aiter/fused_moe.py
+@@ -1396,6 +1396,25 @@ def get_2stage_cfgs(
+         enable_bias = (
+             _needs_swiglu_bias_support(dtype, q_type) and q_dtype_w == dtypes.fp4x2
+         )
++        # Q3VL fusion #5: env-gated inter-stage fuse_quant. The tuned CSV leaves several shapes
++        # (notably the large-M prefill stage-1, e.g. ..._t64x128x256_w3_bnt0) on the non-fused
++        # flydsl stage-1; the _fp4 variant folds the stage1->stage2 per-group quant into the
++        # stage-1 epilogue, removing the standalone dynamic_per_group_scaled_quant kernel.
++        # Opt-in via VLLM_Q3VL_FUSE_MOE_PREFILL_QUANT=1; upgrades only when the _fp4 variant
++        # exists (else no-op) and kernelName1 is not already fused.
++        if (
++            is_flydsl1
++            and os.environ.get("VLLM_Q3VL_FUSE_MOE_PREFILL_QUANT", "0") == "1"
++            and "_fp4" not in kernelName1.split("_t")[-1]
++        ):
++            try:
++                from aiter.ops.flydsl.moe_kernels import get_flydsl_kernel_params as _q3vl_gfkp
++                _q3vl_kn1_fp4 = f"{kernelName1}_fp4"
++                if _q3vl_gfkp(_q3vl_kn1_fp4) is not None:
++                    logger.warning("[fused_moe] Q3VL #5 fuse_quant upgrade: %s -> %s", kernelName1, _q3vl_kn1_fp4)
++                    kernelName1 = _q3vl_kn1_fp4
++            except Exception as _q3vl_e:
++                logger.warning("[fused_moe] Q3VL #5 fuse_quant upgrade skipped: %s", _q3vl_e)
+         _s1_fp4q = is_flydsl1 and "_fp4" in kernelName1.split("_t")[-1]
+         if is_flydsl1:
+             stage1_func = functools.partial(

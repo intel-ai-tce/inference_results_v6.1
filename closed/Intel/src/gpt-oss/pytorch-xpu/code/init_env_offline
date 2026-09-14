@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Validate and set Tensor parallel and Instances
+
+if (( XPU_COUNT > 0 )); then
+    # XPU
+    export VLLM_XPU_ENABLE_XPU_GRAPH=0
+    export ENFORCE_EAGER=1
+    export VLLM_USE_TRITON_XPU_ATTN=1
+
+    export TP=$XPU_COUNT
+    export NUM_INSTS=$((XPU_COUNT / (TP*PP)))
+    if (( XPU_DEVICE_ID == 57891 )); then
+        # B70
+        if [[ "$MODE" == "Performance" || "$MODE" == "Compliance" ]]; then
+            export MAX_NUM_BATCHED_TOKENS=2048
+            export BATCH_SIZE=512
+            export GPU_MEMORY_UTILIZATION=0.87
+        else
+            export MAX_NUM_BATCHED_TOKENS=3072
+            export BATCH_SIZE=128
+            export GPU_MEMORY_UTILIZATION=0.85
+        fi
+    elif (( XPU_DEVICE_ID == 57873 )); then
+        # B60
+        if [[ "$MODE" == "Performance" || "$MODE" == "Compliance" ]]; then
+            if (( XPU_COUNT > 4 )); then
+                export MAX_NUM_BATCHED_TOKENS=3072
+                export GPU_MEMORY_UTILIZATION=0.75
+                export BATCH_SIZE=768
+            else
+                export MAX_NUM_BATCHED_TOKENS=1024
+                export BATCH_SIZE=256
+                export GPU_MEMORY_UTILIZATION=0.90
+            fi
+        else
+            export MAX_NUM_BATCHED_TOKENS=3072
+            export BATCH_SIZE=128
+            export GPU_MEMORY_UTILIZATION=0.85
+        fi
+    else
+        echo "Error: XPU device ID $XPU_DEVICE_ID is not in allowed set (${XPU_SUPPORTED_DEVICE_IDS[*]})."
+        return 1
+    fi
+
+else
+    # CPU
+    echo "Error: No XPU found. CPU is not enabled for this scenario"
+fi

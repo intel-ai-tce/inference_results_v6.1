@@ -1,0 +1,7 @@
+2026-07-24 06:04:44,609 - root - INFO - [Worker-0/PID-243926] - Worker 0 (PID: 243926) logging initialized
+2026-07-24 06:04:44,610 - root - INFO - [Worker-0/PID-243926] - Worker 0 starting (PID: 243926)
+2026-07-24 06:04:44,775 - root - INFO - [Worker-0/PID-243926] - Loaded tokenizer from local path: /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4
+2026-07-24 06:04:44,775 - root - INFO - [Worker-0/PID-243926] - Worker 0 initialized successfully
+2026-07-24 06:45:51,736 - root - INFO - [Worker-0/PID-243926] - Worker 0 received shutdown signal
+2026-07-24 06:45:51,736 - root - INFO - [Worker-0/PID-243926] - Worker 0 processed 18100 queries
+2026-07-24 06:45:51,737 - root - INFO - [Worker-0/PID-243926] - Worker 0 shutdown complete

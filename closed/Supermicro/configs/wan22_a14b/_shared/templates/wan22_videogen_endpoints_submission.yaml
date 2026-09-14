@@ -1,0 +1,114 @@
+version: "0.1"
+
+# Wan 2.2 T2V (wan22-a14b) VBench ACCURACY recipe (GPU-sharing).
+#
+# Same topology as wan22_videogen_endpoints_no_vbench.yaml. The endpoint_benchmark
+# task declares NO resources.gpus: sflow leaves CUDA_VISIBLE_DEVICES unset for it,
+# so the client container sees all node-local GPUs and the VBench scorer (per-dim
+# CLIP/DINO/RAFT/... models) time-shares a server GPU that is idle after video
+# generation completes (weights resident, ~15 GB of 288 GB). This is why it works
+# even on the full rack (x72) where all 72 GPUs are servers and no extra GPU can
+# be reserved (a static ENDPOINT_GPUS=1 reservation would fail sflow's planner,
+# 72+1 > 72).
+#
+# Offline VBench weights: the endpoints `-vbench` image ships the VBench venv but
+# NONE of the 6 dim weights. The cache lives under the host build/vbench_cache,
+# reachable in-container at /work/build/vbench_cache (WORK_DIR is mounted at /work,
+# so no extra bind-mount is needed): VBENCH_CACHE_DIR + TORCH_HOME (below) and HOME
+# (endpoint_env_vbench) point there. Populate it with
+# src/nv_mlpinf/benchmarks/wan22_a14b/scripts/prepare_vbench_cache.sh so all 6 dims score offline. Drain
+# timeouts are set natively in the endpoint config (settings.drain); no
+# endpoint_patches are needed.
+
+# Shared server task — keep in sync with wan22_videogen_endpoints_no_vbench.yaml.
+x-server-task: &server_task
+  replicas:
+    count: ${{ variables.NUM_SERVERS }}
+    policy: parallel
+  resources:
+    gpus:
+      count: ${{ variables.GPUS_PER_SERVER }}
+  operator:
+    name: test_container
+    # Launch ONE MPI task per GPU. The VisualGen launcher requires
+    # world_size == n_workers (cfg_size x ulysses_size x attn2d) — one rank per
+    # GPU in the replica — and aborts otherwise ("Launcher world_size (N) does
+    # not match n_workers (M). Launch exactly n_workers tasks."). So:
+    #   ntasks          = GPUS_PER_SERVER (= n_workers)
+    #   ntasks_per_node = min(GPUS_PER_SERVER, GPUS_PER_NODE)
+    ntasks: ${{ variables.GPUS_PER_SERVER }}
+    ntasks_per_node: ${{ [variables.GPUS_PER_SERVER, variables.GPUS_PER_NODE] | min }}
+  script:
+    - export PYTHONNOUSERSITE=1
+    # Register this replica's URL (plain ip:port, one per line).
+    - if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut -d',' -f1):$(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} ))" >> ${{ artifacts.SERVER_URLS.path }}; fi
+    # Load worker env (fixed latent, media storage, HF cache).
+    - eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py ${{ variables.WORKER_ENV_YAML }} | tee /dev/stderr)"
+    # Each replica on the same node needs a unique MASTER_PORT for torch distributed
+    # init_process_group (TCPStore rendezvous).
+    - export MASTER_PORT=$(( ${{ variables.MASTER_PORT_BASE }} + ${SFLOW_REPLICA_INDEX} ))
+    # Pin each task to a distinct node-local GPU.
+    # GPU index = (replica_index * gpus_per_server + node-local task id) % gpus_per_node.
+    - export CUDA_VISIBLE_DEVICES=$(( (${SFLOW_REPLICA_INDEX:-0} * ${{ variables.GPUS_PER_SERVER }} + ${SLURM_LOCALID:-0}) % ${{ variables.GPUS_PER_NODE }} ))
+    - echo "GPU-PLACEMENT replica=${SFLOW_REPLICA_INDEX:-0} node=$(hostname) localid=${SLURM_LOCALID:-0} CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
+    - >
+      python -m tensorrt_llm.commands.serve ${{ variables.MODEL_PATH }}
+      --host 0.0.0.0
+      --port $(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} ))
+      --visual_gen_args ${{ variables.VISUAL_GEN_YAML }}
+      2>&1 | tee ${SFLOW_TASK_OUTPUT_DIR}/videogen_rank${SLURM_PROCID}.log
+  probes:
+    readiness:
+      log_watch:
+        regex_pattern: "Application startup complete"
+      timeout: 1800
+      interval: 10
+
+artifacts:
+  - name: SERVER_URLS
+    uri: file://server_urls.txt
+    content: ""
+
+workflow:
+  name: wan22_videogen_accuracy
+  tasks:
+    - name: videogen_server
+      <<: *server_task
+
+    # Generates videos, then scores them with the endpoints `vbench` scorer.
+    # NO resources.gpus: shares node-local GPUs with idle server ranks (see header).
+    - name: endpoint_benchmark
+      operator:
+        name: endpoint_sqsh
+        ntasks: 1
+        ntasks_per_node: 1
+      resources:
+        nodes:
+          count: 1
+      script:
+        - set -euo pipefail
+        - export PYTHONNOUSERSITE=1
+        - |
+          _n=$(grep -vc '^[[:space:]]*$' ${{ artifacts.SERVER_URLS.path }})
+          [ "$_n" -eq "${{ variables.NUM_SERVERS }}" ] || { echo "ERROR: only $_n/${{ variables.NUM_SERVERS }} servers registered in SERVER_URLS; aborting"; exit 1; }
+        - SERVER_URLS_LIST=$(grep -v '^[[:space:]]*$' ${{ artifacts.SERVER_URLS.path }} | paste -sd ',')
+        - 'echo "SERVER_URLS_LIST=${SERVER_URLS_LIST}"'
+        - RESOLVED_ENDPOINT_YAML=${SFLOW_TASK_OUTPUT_DIR}/endpoint_resolved.yaml
+        - >
+          python3 /work/scaleout/sflow/tools/generate_endpoint_yaml.py
+          --input "${{ variables.ENDPOINT_CONFIG }}"
+          --frontend-urls "${SERVER_URLS_LIST}"
+          --output "${RESOLVED_ENDPOINT_YAML}"
+        # The endpoint-client container ships PyYAML in /opt/venv (not the default
+        # python3), so run run_with_env.py with that interpreter.
+        - eval "$(/opt/venv/bin/python /work/scaleout/sflow/tools/run_with_env.py ${{ variables.ENDPOINT_ENV_YAML }} | tee /dev/stderr)"
+        # VBench scorer weights live under the host build/vbench_cache, reachable
+        # in-container at /work/build/vbench_cache (WORK_DIR is mounted at /work, so
+        # no extra bind-mount is needed -- perf-only / audit runs that never stage
+        # the cache are unaffected). The image ships none of the weights; populate
+        # it once with src/nv_mlpinf/benchmarks/wan22_a14b/scripts/prepare_vbench_cache.sh.
+        - export VBENCH_CACHE_DIR=/work/build/vbench_cache
+        - export TORCH_HOME=/work/build/vbench_cache/torch_home
+        - 'inference-endpoint benchmark from-config -c "${RESOLVED_ENDPOINT_YAML}"'
+      depends_on:
+        - videogen_server

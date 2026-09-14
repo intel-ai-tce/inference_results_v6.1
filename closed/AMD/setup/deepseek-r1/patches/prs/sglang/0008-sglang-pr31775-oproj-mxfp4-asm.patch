@@ -1,0 +1,187 @@
+diff --git a/python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py b/python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py
+index 1b7146584c..dc9a76b2f8 100644
+--- a/python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py
++++ b/python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py
+@@ -19,6 +19,8 @@ from sglang.srt.utils import is_hip
+ from sglang.srt.utils.common import direct_register_custom_op, mxfp_supported
+ 
+ _is_hip = is_hip()
++_HAS_ASM_A4W4 = False
++_HAS_HIP_MXFP4_QUANT = False
+ if _is_hip:
+     from aiter.ops.triton.gemm.fused.fused_gemm_afp4wfp4_split_cat import (
+         fused_gemm_afp4wfp4_split_cat as _fused_gemm_afp4wfp4_split_cat_orig,
+@@ -28,6 +30,33 @@ if _is_hip:
+         gemm_afp4wfp4_pre_quant as _gemm_afp4wfp4_pre_quant_orig,
+     )
+     from aiter.ops.triton.quant import dynamic_mxfp4_quant as _dynamic_mxfp4_quant_orig
++    # aiter ASM a4w4 MXFP4 gemm (opt-in for DSR o_proj via
++    # SGLANG_DSR_OPROJ_MXFP4_ASM=1); fall back to triton if unavailable.
++    try:
++        from aiter.ops.gemm_op_a4w4 import gemm_a4w4 as _asm_gemm_a4w4
++        from aiter.ops.shuffle import shuffle_weight as _asm_shuffle_weight
++        from aiter.utility.fp4_utils import (
++            dynamic_mxfp4_quant as _asm_dynamic_mxfp4_quant,
++            e8m0_shuffle as _asm_e8m0_shuffle,
++        )
++
++        _HAS_ASM_A4W4 = True
++    except Exception:  # pragma: no cover - depends on aiter build
++        _HAS_ASM_A4W4 = False
++
++    # Hardware MXFP4 activation quant (gfx950 `cvt_scalef32_pk_fp4`). Produces
++    # byte-identical fp4/e8m0 output to the triton `_asm_dynamic_mxfp4_quant`
++    # in Even round mode (verified end-to-end: gemm_a4w4 output bit-exact), but
++    # ~1.2-1.8x faster since the FP4 conversion runs on the HW cvt instruction
++    # instead of the ~20-op software bit-manipulation. Opt-in fast path for the
++    # DSR o_proj ASM a4w4 gemm; falls back to triton if unavailable.
++    try:
++        from aiter.ops.quant import quant_mxfp4_hip as _hip_quant_mxfp4
++        from aiter.utility.mx_types import MxScaleRoundModeInt as _MxScaleRoundModeInt
++
++        _HAS_HIP_MXFP4_QUANT = True
++    except Exception:  # pragma: no cover - depends on aiter build
++        _HAS_HIP_MXFP4_QUANT = False
+ 
+     def _aiter_gemm_afp4wfp4(
+         x: torch.Tensor,
+@@ -178,6 +207,7 @@ class QuarkW4A4MXFP4(QuarkLinearScheme):
+         self.input_quant_spec = input_quant_spec
+         self.is_checkpoint_mxfp4_serialized = is_checkpoint_mxfp4_serialized
+         self.dequantization_config = dequantization_config
++        self.use_asm = False
+ 
+         if not self.is_checkpoint_mxfp4_serialized:
+             if not mxfp_supported():
+@@ -193,11 +223,44 @@ class QuarkW4A4MXFP4(QuarkLinearScheme):
+     def get_min_capability(cls) -> int:
+         return 70
+ 
++    def enable_asm(self) -> None:
++        """Route this layer's MXFP4 gemm through the aiter ASM a4w4 kernel.
++
++        Requires a gfx95x device with the prebuilt module_gemm_a4w4_asm and
++        the fp4 shuffle helpers; otherwise keeps the default triton kernel.
++        """
++        if not (_is_hip and _HAS_ASM_A4W4):
++            logger.warning_once(
++                "SGLANG_DSR_OPROJ_MXFP4_ASM was requested but the aiter ASM "
++                "a4w4 MXFP4 gemm is unavailable; using the triton kernel."
++            )
++            return
++        self.use_asm = True
++
+     def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
+         if not self.is_checkpoint_mxfp4_serialized:
+             assert layer.weight.dtype == torch.uint8
+             assert layer.weight_scale.dtype == torch.uint8
+ 
++        if self.use_asm:
++            # The serialized checkpoint stores the weight/scale in the plain
++            # (triton) MXFP4 layout. The ASM a4w4 kernel expects the weight
++            # bytes preshuffled and the e8m0 block-scale in the matching
++            # padded/shuffled layout, so convert both once at load time.
++            weight = layer.weight.data.view(torch.uint8)
++            weight_scale = layer.weight_scale.data.view(torch.uint8)
++            weight = _asm_shuffle_weight(weight, layout=(16, 16))
++            weight_scale = _asm_e8m0_shuffle(weight_scale)
++            layer.weight = torch.nn.Parameter(
++                weight.contiguous(), requires_grad=False
++            )
++            layer.weight_scale = torch.nn.Parameter(
++                weight_scale.contiguous(), requires_grad=False
++            )
++            # Tell the fused-decode MLA path to skip its triton pre-quant for
++            # this layer (see deepseek_common/.../forward_mla.py).
++            layer.mxfp4_use_asm = True
++
+     def create_weights(
+         self,
+         layer: torch.nn.Module,
+@@ -458,6 +521,32 @@ class QuarkW4A4MXFP4(QuarkLinearScheme):
+         bias: Optional[torch.Tensor] = None,
+     ) -> torch.Tensor:
+         # Bias will be added after the GEMM if provided
++        if self.use_asm and not isinstance(x, tuple):
++            out_features = layer.weight.shape[0]
++            if x.dim() == 3:
++                out_shape = (*x.shape[:-1], out_features)
++                x = x.view(-1, x.shape[-1])
++            else:
++                out_shape = (x.shape[0], out_features)
++            if _HAS_HIP_MXFP4_QUANT:
++                # HW cvt_scalef32_pk_fp4 (gfx950): bit-exact with the triton
++                # kernel in Even round mode, ~1.2-1.8x faster.
++                x_q, x_s = _hip_quant_mxfp4(
++                    x, e8m0_shuffle=True, round_mode=_MxScaleRoundModeInt.Even
++                )
++            else:
++                x_q, x_s = _asm_dynamic_mxfp4_quant(x, shuffle=True)
++            y = _asm_gemm_a4w4(
++                x_q,
++                layer.weight,
++                x_s,
++                layer.weight_scale,
++                bpreshuffle=True,
++            )
++            if bias is not None:
++                y = y + bias
++            return y.view(*out_shape)
++
+         three_d = False
+         fused_gemm_split_cat = False
+         x_s = None
+diff --git a/python/sglang/srt/layers/quantization/quark/quark.py b/python/sglang/srt/layers/quantization/quark/quark.py
+index 69a7177f0d..94a9fa34ea 100644
+--- a/python/sglang/srt/layers/quantization/quark/quark.py
++++ b/python/sglang/srt/layers/quantization/quark/quark.py
+@@ -2,6 +2,7 @@
+ 
+ import fnmatch
+ import logging
++import os
+ from typing import TYPE_CHECKING, Any, List, Optional, cast
+ 
+ import torch
+@@ -553,6 +554,16 @@ class QuarkConfig(QuantizationConfig):
+         # Find the quant_scheme
+         scheme = self._get_scheme_from_config(layer_quant_config)
+ 
++        # Optionally route the DeepSeek attention output projection through the
++        # aiter ASM a4w4 MXFP4 gemm (opt-in). Only the standard MXFP4 linear
++        # scheme on the o_proj layer is affected.
++        if (
++            isinstance(scheme, QuarkW4A4MXFP4)
++            and layer_name.endswith("o_proj")
++            and os.environ.get("SGLANG_DSR_OPROJ_MXFP4_ASM", "0") == "1"
++        ):
++            scheme.enable_asm()
++
+         # Raise error if device does not support the scheme
+         # (e.g. fp8 needs ada lovelace)
+         self._check_scheme_supported(scheme.get_min_capability())
+diff --git a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+index b2e4ad5d11..5285d1fe2f 100644
+--- a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
++++ b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -897,9 +897,10 @@ class DeepseekMLAForwardMixin:
+                         self.w_vc.to(torch.bfloat16) * self.w_scale,
+                     )
+ 
++            _oproj_asm = getattr(self.o_proj, "mxfp4_use_asm", False)
+             if _bmm_buf is not None:
+                 # _bmm_buf is already (batch, heads, dim) contiguous
+-                if self.o_proj.weight.dtype == torch.uint8:
++                if self.o_proj.weight.dtype == torch.uint8 and not _oproj_asm:
+                     attn_bmm_output = fused_flatten_mxfp4_quant(_bmm_buf)
+                 elif self.o_proj.weight.dtype == torch.float8_e4m3fn:
+                     attn_bmm_output = fused_flatten_fp8_group_quant(
+@@ -914,7 +915,7 @@ class DeepseekMLAForwardMixin:
+                         )
+                 else:
+                     attn_bmm_output = _bmm_buf.flatten(1, 2)
+-            elif self.o_proj.weight.dtype == torch.uint8:
++            elif self.o_proj.weight.dtype == torch.uint8 and not _oproj_asm:
+                 attn_bmm_output = attn_bmm_output.transpose(0, 1)
+                 attn_bmm_output = fused_flatten_mxfp4_quant(attn_bmm_output)
+             elif self.o_proj.weight.dtype == torch.float8_e4m3fn:

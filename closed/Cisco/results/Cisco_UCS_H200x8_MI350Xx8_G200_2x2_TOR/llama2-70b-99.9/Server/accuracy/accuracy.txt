@@ -1,0 +1,9 @@
+Loaded 24576 predictions, 6995987 total tokens
+Computing ROUGE with 256 workers...
+
+Results
+
+{'rouge1': 44.6044, 'rouge2': 22.1926, 'rougeL': 28.9466, 'rougeLsum': 42.1643, 'gen_num': 24576, 'gen_tok_len': 6995987, 'tokens_per_sample': 284.7}
+hash=568f17ab3f2703f6d89d0da10c7bc2844376c713fc6a2ee2ca1dbc4deffda1ff
+
+hash=568f17ab3f2703f6d89d0da10c7bc2844376c713fc6a2ee2ca1dbc4deffda1ff

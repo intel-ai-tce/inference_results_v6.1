@@ -1,0 +1,3 @@
+{
+  "app-mlperf-inference,d775cac873ee4231:reference,resnet50,onnxruntime,cuda,valid,r5.1-dev_default,singlestream": []
+}

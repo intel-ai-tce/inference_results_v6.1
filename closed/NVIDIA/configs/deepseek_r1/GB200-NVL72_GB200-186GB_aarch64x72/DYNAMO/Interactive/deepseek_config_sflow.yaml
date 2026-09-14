@@ -1,0 +1,78 @@
+variables:
+  # Dynamo disagg, validated GB200 x72 topology (Kris Hung's DSR1 patch
+  # 55ec1d11 / REPRODUCE.md, "WIDEEP DS-R1 best config: 2ctxDEP4_4genDEP16_mbs64"):
+  # 2 CTX x DEP4 + 4 GEN x DEP16 (mbs64) + 4 KV-router frontends (w=1.0) = 72 GPUs / 18 nodes.
+  # Target qps 64; REPRODUCE.md runs min_query_count=144000 (~37 min).
+  # alternative, qps ~39 — kept for reference, not the submission config.)
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 2
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 4
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 4
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 16
+  # Seconds to delay each extra CTX replica sharing a node, so co-located
+  # replicas do not materialise weights simultaneously. 0 = not needed here
+  # (one CTX replica per node, or a checkpoint small next to host RAM).
+  # Must be declared in every config: the template merges LAST, so a default
+  # there would override this. See prefill_worker in dynamo_disagg_loadgen.yaml.
+  CTX_LOAD_STAGGER_S:
+    type: integer
+    value: 0
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 4
+  # Stacked frontends (validated DSR1 behavior): all ranks on one node.
+  NUM_FRONTEND_NODES:
+    type: integer
+    value: 1
+  FRONTENDS_PER_NODE:
+    type: integer
+    value: 4
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  FRONTEND_PORT:
+    value: 8000
+
+  # Model resolution for the dynamo.trtllm workers. Passed straight to
+  # --model-path / --served-model-name (no nv_mlpinf config lookup).
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4
+  SERVED_MODEL_NAME:
+    value: deepseek-ai/deepseek-r1
+
+  TRTLLM_YAML_CTX:
+    value: /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-ctx-dep4.yaml
+  TRTLLM_ENV_YAML_CTX:
+    value: /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-ctx-dep4-env.yaml
+  TRTLLM_YAML_GEN:
+    value: /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-gen-dep16.yaml
+  TRTLLM_ENV_YAML_GEN:
+    value: /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-gen-dep16-env.yaml
+
+  FRONTEND_ROUTER_ARGS:
+    description: "KV-router flags passed verbatim to python3 -m dynamo.frontend."
+    value: "--router-mode kv --kv-overlap-score-weight 1.0 --router-replica-sync"
+
+  BENCHMARK:
+    value: deepseek-r1
+  SCENARIO:
+    value: Interactive
+  SYSTEM_NAME:
+    value: GB200-NVL72_GB200-186GB_aarch64x72
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_USE_DYNAMO:
+    description: "MLPINF_USE_DYNAMO value for the harness. 0=DSR1 (long completions; flag off avoids stream-drain latency). 1=GPT-OSS (short completions need the FirstTokenComplete-on-1-token-final WAR)."
+    value: "0"
+  HARNESS_EXTRA_ARGS:
+    description: "Empty on purpose — harness.py drives loadgen (trtllm-serve pattern): server_target_qps=64, min_query_count=144000 (~37 min, MLPerf-compliant). Traffic policy is the Interactive scenario AUTO-DEFAULT = round_robin (config.py:214-219; GB200 harness.py does NOT set isl_load_balancing), which is what the validated 240k GB200 run used."
+    value: ""

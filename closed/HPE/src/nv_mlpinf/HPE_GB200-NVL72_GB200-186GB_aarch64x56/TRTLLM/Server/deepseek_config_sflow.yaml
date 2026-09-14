@@ -1,0 +1,28 @@
+variables:
+  DP_MULTIPLICITY:
+    type: integer
+    value: 7
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 8
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+  BASE_PORT:
+    value: 8336
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4
+  TRTLLM_YAML:
+    value: /work/configs/deepseek_r1/HPE_CRUSOE_GB200-NVL72_GB200-186GB_aarch64x56/TRTLLM/Server/trtllm-serve-ifb-dep8.yaml
+  TRTLLM_ENV_YAML:
+    value: /work/configs/deepseek_r1/HPE_CRUSOE_GB200-NVL72_GB200-186GB_aarch64x56/TRTLLM/Server/trtllm-serve-ifb-dep8-env.yaml
+  BENCHMARK:
+    value: deepseek-r1
+  SCENARIO:
+    value: Server
+  SYSTEM_NAME:
+    value: HPE_CRUSOE_GB200-NVL72_GB200-186GB_aarch64x56
+  TEST_MODE:
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    value: ""

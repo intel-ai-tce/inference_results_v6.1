@@ -1,0 +1,108 @@
+benchmark_name: deepseek-r1
+scenario: offline
+test_mode: performance
+
+
+sglang_env_config:
+  AITER_CONFIG_GEMM_BF16: /lab-mlperf-inference/code/deepseek-r1/bf16_tuned_gemm_withhip.csv
+  HIPBLASLT_TUNING_OVERRIDE_FILE: /lab-mlperf-inference/code/deepseek-r1/hipblaslt.txt
+
+  SGLANG_AITER_MOE: 1
+  TORCH_NCCL_BLOCKING_WAIT: 1
+  TRITON_ENABLE_PRELOAD_KERNELS: 0
+  SGLANG_USE_ROCM700A: 1
+  SGLANG_ROCM_FUSED_DECODE_MLA: 1
+  SGLANG_AITER_AR: 1
+  ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 512
+  SGLANG_AITER_MLA_PERSIST: 1
+  SGLANG_USE_AITER: 1
+  TORCH_BLAS_PREFER_HIPBLASLT: 1
+  PYTORCH_ALLOC_CONF: expandable_segments:True
+
+  # --- gemm-fusion / concat-cache ---
+  SGLANG_AITER_FUSED_MLA_CONCAT_CACHE: 1
+  SGLANG_AITER_FUSED_KVB_SPLIT_CAT: 1
+
+  # --- MoRI-EP env ---
+  MORI_SHMEM_MODE: ISOLATION
+  SGLANG_MORI_LEC_IN_GRAPH: 0
+  MORI_SHMEM_HEAP_SIZE: 16G
+  SGLANG_MORI_DISPATCH_DTYPE: auto
+  SGLANG_MORI_COMBINE_DTYPE: fp8
+  SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK: 3072
+  SGLANG_MORI_NO_PAD_MASK: 1
+  SGLANG_MLA_ABSORB_BF16: 1
+  #FUSED_CK_MOE_STAGE1_MAX_BATCH: 1024
+  #ENABLE_FUSED_CK_MOE_STAGE1: 1
+
+  # --- MXFP4 ASM o_proj + q_b_proj (HW per-1x32 quant) ---
+  SGLANG_DSR_OPROJ_MXFP4_ASM: 1
+  #ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ: 1
+  #ENABLE_Q_B_PROJ_MXFP4: 1
+
+sglang_engine_config:
+  model_path: /model/S3_sq_a05_v2
+  tp_size: 8
+  port: 32000
+
+  # --- MoRI-EP launch flags ---
+  moe_a2a_backend: mori
+  ep_size: 8
+  deepep_mode: normal
+  moe_dense_tp_size: 1
+  enable_dp_attention: True
+  dp_size: 8
+  enable_dp_lm_head: true
+  enable_two_batch_overlap: false
+  enable_dp_attention_local_control_broadcast: true
+
+  # --- shared-experts fusion ---
+  enforce_shared_experts_fusion: true
+  disable_shared_experts_fusion: false
+
+  # --- memory budget ---
+  mem_fraction_static: 1.07                        # winner from mem-frac sweep (+1.15% vs 0.99)
+
+  # ---- prefill / concurrency operating point ----
+  max_prefill_tokens: 200000
+  chunked_prefill_size: 24576                    # /dp8 -> 3072/rank (was 2048 via default 16384)
+  max_running_requests: 24000
+  cuda_graph_max_bs_decode: 3000
+  cuda_graph_bs_decode: [1, 2, 4, 8, 16, 32, 64, 128, 256, 320, 384, 448, 512, 576, 704, 768, 848, 896, 960, 1024, 1152, 1280, 1408, 1536, 1664, 1792, 2048, 2304, 2560, 2816, 3000]   # sparse 768/848/896 (31 buckets, Run B baseline)
+  schedule_conservativeness: 1.5                  # -> ~0.99 effective after DP-attention x0.3
+  decode_graph_preserve_max_defer: 8
+  enable_decode_graph_preserving: True
+  scheduler_recv_interval: 50
+  trust_remote_code: True
+  triton_attention_num_kv_splits: 2
+  skip_tokenizer_init: True
+  disable_chunked_prefix_cache: True
+  disable_cuda_graph: False
+  disable_radix_cache: True
+  kv_cache_dtype: fp8_e4m3
+  watchdog_timeout: 6000
+  preferred_sampling_params:
+     temperature: 0.0
+     top_p: 1.0
+     top_k: 1.0
+     sampling_seed: 42
+     max_new_tokens: 20000
+
+sglang_sampling_config:
+  max_new_tokens: 20000
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 1.0
+  sampling_seed: 42
+
+harness_config:
+  dataset_path: /data/deepseek-r1/mlperf_deepseek_r1_dataset_4388_fp8_eval.pkl
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/deepseek-r1/user_mi355x.conf
+  target_qps: -1
+  total_sample_count: 140416
+  output_log_dir: /lab-mlperf-inference/code/results/deepseek_offline_32loop
+  enable_log_trace: False
+  enable_warmup: False
+  device_count: 8

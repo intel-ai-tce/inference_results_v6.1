@@ -1,0 +1,3 @@
+Word Error Rate: 2.103906959714551%, accuracy=97.89609304028545%
+
+hash=6365d0bb6fd5feead9ff9bb7cb8d0adb94d22e8bf5e3b7573dff6a67ec787f25

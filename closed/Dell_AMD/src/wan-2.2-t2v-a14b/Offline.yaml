@@ -1,0 +1,88 @@
+# Wan 2.2 T2V-A14B – Offline backend config.
+#
+# Target: maximum throughput on 8 GPUs.
+#   - 8 independent ranks, each with its own model copy (no SP within rank).
+#   - Our AsyncDPDispatcher (NOT xfuser's DP) hands the next pending
+#     prompt to whichever rank just returned a result, using a
+#     dedicated Gloo subgroup for control + result transfer; the world
+#     PG (NCCL) is left untouched. This eliminates the wave-style
+#     straggler tax (`wave_latency = max(per-rank latency)`) that the
+#     legacy WaveDispatcher pays when per-rank latency varies
+#     wave-to-wave (e.g. prompt-dependent attention reorder costs).
+#   - The legacy WaveDispatcher is still selectable via
+#     `parallelism.dispatch: wave` for A/B comparison.
+#   - No parallel VAE: each rank decodes its own latent in-process.
+#
+# The harness wraps `wan-harness run --backend wan22 --scenario Offline`
+# in `torchrun --nproc-per-node=8`. Rank 0 owns LoadGen and drives the
+# async dispatch loop; ranks 1..7 sit in the async worker loop, each
+# pulling one WorkUnit at a time off the ctrl PG and shipping its
+# Result back as soon as `backend.run_unit` returns.
+
+model:
+  path: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+  revision: 5be7df9619b54f4e2667b2755bc6a756675b5cd7
+  transformer_dtype: bfloat16
+
+parallelism:
+  mode: data_parallel        # picks the data-parallel dispatcher family
+  data_parallel_workers: 8   # must equal torchrun --nproc-per-node
+  # Sub-mode of data_parallel:
+  #   async (default) – AsyncDPDispatcher: pull-style schedule on a Gloo
+  #                     subgroup. Hands the next prompt to whichever
+  #                     rank just returned a result, so a single slow
+  #                     rank no longer gates the next wave. This is
+  #                     the default for Offline because per-rank
+  #                     latency varies wave-to-wave (prompt-dependent
+  #                     attention reorder costs) and the wave
+  #                     dispatcher's straggler tax dominates
+  #                     throughput.
+  #   wave            – WaveDispatcher: lockstep waves on the world PG.
+  #                     Wave latency = max(per-rank latency). Kept for
+  #                     A/B comparison and as a fallback if the async
+  #                     control PG misbehaves.
+  dispatch: async
+  # Bulk Result data plane for DP dispatchers (async + wave):
+  #   shm  (default) – POSIX shared memory on single-node runs; Gloo
+  #                    carries metadata + slot handoff only.
+  #   gloo           – legacy raw uint8 tensor send/recv over Gloo.
+  result_transport: shm
+  # Per-rank parallelism is all 1 – each worker is a self-contained model.
+  ulysses_degree: 1
+  ring_degree: 1
+  tensor_parallel_degree: 1
+  pipefusion_parallel_degree: 1
+  data_parallel_degree: 1
+  use_cfg_parallel: false
+
+vae:
+  use_parallel: false
+  parallel_size: 0
+  enable_tiling: false
+  enable_slicing: false
+
+generation:
+  use_fixed_latent: true
+  # Checkpoint scheduler default; matches MLPerf reference from_pretrained.
+  flow_shift: 3.0
+
+compile:
+  use_torch_compile: true    # graphs are compiled during the warmup pass below
+
+# Warmup runs BEFORE LoadGen.StartTest so torch.compile + AITER + CUDA-graph
+# first-call costs don't pollute the measured throughput. num_prompts is
+# per-rank; the DP dispatcher fans out world_size * num_prompts units so
+# every worker compiles before the test begins.
+warmup:
+  enabled: true
+  num_prompts: 1
+
+# See ``SingleStream.yaml``. Same recipe applies to Offline: every DP rank
+# runs its own Wan model with hybrid attention (FP8 high / mxfp4 low) +
+# MXFP4 GEMMs pinned below.
+xfuser_extra:
+  cross_attention_backend: aiter
+  use_fp4_gemms: true
+  use_hybrid_attn_schedule: true
+  num_hybrid_attn_high_precision_steps: 0
+  hybrid_attn_schedule: "AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8"

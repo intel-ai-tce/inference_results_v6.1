@@ -1,0 +1,15 @@
+{
+  "accuracy_scores": [
+    {
+      "dataset_name": "shopify_product_catalogue::q3vl",
+      "extractor": "IdentityExtractor",
+      "ground_truth_column": "ground_truth_category",
+      "score": 0.7878950642363143,
+      "unit_samples": 48289,
+      "num_repeats": 1,
+      "total_samples": 48289,
+      "complete": true,
+      "dataset_type": "accuracy"
+    }
+  ]
+}

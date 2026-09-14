@@ -1,0 +1,18 @@
+# Wan 2.2 T2V VisualGenArgs — GB200 SingleStream (4 GPUs, one replica).
+#
+# Mirrors the v6.0 reference GB200 SingleStream (ulysses_size=2, cfg_size=2 -> 4
+# GPUs, sequence + CFG parallel for lowest single-video latency). Mapping:
+#   v6_0 attn_type='te-fp8'              -> attention_config.backend: TE
+#   v6_0 linear_type='te-fp8-per-tensor' -> linear FP8 from the checkpoint.
+#
+# quant_config intentionally OMITTED (see Offline visual_gen.yaml rationale).
+#
+# Determinism: fixed_latent_path via TLLM_VISUAL_GEN_FIXED_LATENT_PATH (worker_env.yaml).
+attention_config:
+  backend: TE
+parallel_config:
+  cfg_size: 2
+  ulysses_size: 2
+  parallel_vae_size: 4
+cuda_graph_config:
+  enable: false

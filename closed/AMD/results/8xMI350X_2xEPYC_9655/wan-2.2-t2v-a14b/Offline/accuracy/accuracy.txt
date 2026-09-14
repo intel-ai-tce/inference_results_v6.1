@@ -1,0 +1,23 @@
+============================================================
+VBench Evaluation Results
+============================================================
+
+Dimension Scores:
+------------------------------------------------------------
+  appearance_style              : 0.2045
+  background_consistency        : 0.9293
+  dynamic_degree                : 0.9306
+  motion_smoothness             : 0.9387
+  scene                         : 0.2769
+  subject_consistency           : 0.9274
+'vbench_score': 70.1221
+------------------------------------------------------------
+  Overall Average               : 0.7012 (70.12%)
+
+Threshold: 69.7752%
+Pass: Yes
+============================================================
+Detailed results: runs/wan22/2026-07-08T05-50-07Z_g50bc212__fp8comms_hybridattn/Offline/accuracy/vbench/results_2026-07-08-08:56:03_eval_results.json
+============================================================
+
+hash=2bd51c33975a445bfbb251abb403e3d54618103cd8c668528b9a6c2dfd5648b2

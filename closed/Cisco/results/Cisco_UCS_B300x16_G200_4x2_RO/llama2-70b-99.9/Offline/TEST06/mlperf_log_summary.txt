@@ -1,0 +1,55 @@
+================================================
+MLPerf Results Summary
+================================================
+SUT name : PySUT
+Scenario : Offline
+Mode     : PerformanceOnly
+Samples per second: 8.87198
+Tokens per second: 2315.77
+Result is : VALID
+  Min duration satisfied : Yes
+  Min queries satisfied : Yes
+  Early stopping satisfied: Yes
+
+================================================
+Additional Stats
+================================================
+Min latency (ns)                : 126717404
+Max latency (ns)                : 11271435859
+Mean latency (ns)               : 2954687264
+50.00 percentile latency (ns)   : 2539914272
+90.00 percentile latency (ns)   : 5760531582
+95.00 percentile latency (ns)   : 6840402883
+97.00 percentile latency (ns)   : 7553068677
+99.00 percentile latency (ns)   : 11271435859
+99.90 percentile latency (ns)   : 11271435859
+
+
+================================================
+Test Parameters Used
+================================================
+samples_per_query : 100
+target_qps : 900
+ttft_latency (ns): 2000000000
+tpot_latency (ns): 200000000
+max_async_queries : 1
+min_duration (ms): 0
+max_duration (ms): 0
+min_query_count : 1
+max_query_count : 0
+qsl_rng_seed : 2085463073848966840
+sample_index_rng_seed : 2747215439041700203
+schedule_rng_seed : 16159082839903944936
+accuracy_log_rng_seed : 720381539243781796
+accuracy_log_probability : 0
+accuracy_log_sampling_target : 100
+print_timestamps : 0
+performance_issue_unique : 0
+performance_issue_same : 0
+performance_issue_same_index : 0
+performance_sample_count : 24576
+accuracy_sample_count : 24576
+
+1 warning encountered. See detailed log.
+
+No errors encountered during test.

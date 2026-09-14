@@ -1,0 +1,19 @@
+[score] parsing /home/amd/6.1_dlrm/closed/AMD/setup/dlrm-v3/artifacts/gold_mi350p_int8_server_accuracy_20260731T174738/mlperf_log_accuracy.json
+[score] processed 50000 entries
+[score] processed 100000 entries
+[score] processed 150000 entries
+[score] processed 200000 entries
+[score] processed 250000 entries
+[score] processed 300000 entries
+[score] total entries: 349823
+==== ACCURACY METRICS ====
+metric/lifetime_ne/rating: 0.8677277210685596
+metric/window_ne/rating: 0.7284045994665435
+metric/lifetime_accuracy/rating: 0.6964198708391458
+metric/window_accuracy/rating: 0.75146484375
+metric/lifetime_gauc/rating: 0.7862873761281074
+metric/window_gauc/rating: 0.8287458413224889
+metric/lifetime_gauc_num_samples/rating: 349823.0
+metric/window_gauc_num_samples/rating: 1.0
+
+hash=ff83765890509904371613391b857ab01d17ff3afdf03155ef4da9b0dc024297

@@ -1,0 +1,47 @@
+# Wan 2.2 A14B — G894-ZD3-AAX7_B300-SXM-270GBx8 SingleStream (low-latency).
+# 1 replica spanning 8 GPUs (cfg=2 x ulysses=4). Mirrors the v6.0 reference B300
+# SingleStream.
+#
+# Note: B300 is x86_64. Pass the pre-built x86_64 TRT-LLM VisualGen image via
+#   --set CONTAINER_IMAGE=docker://registry.gitlab.com/nvidia/mlperf-inference-partner/nv-mlpinf-partner/wan22-trtllm-server:v6.1-jul24-wan22-trtllm-x86_64
+#   (or a local .sqsh path), paired with the x86_64 client:
+#   --set ENDPOINT_CONTAINER_IMAGE=docker://ghcr.io/mlcommons/endpoints:598dbfde68ebfa42256762ebb60fd4da227b813c-vbench
+# Validated: G894 B300x8 SingleStream confirmed working with the above images.
+
+variables:
+  NUM_SERVERS:
+    type: integer
+    value: 1
+  GPUS_PER_SERVER:
+    description: "GPUs per replica = cfg_size * ulysses_size in visual_gen.yaml (8 for SingleStream)."
+    type: integer
+    value: 8
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_SERVERS * variables.GPUS_PER_SERVER }}
+  BASE_PORT:
+    type: integer
+    value: 8000
+  GPUS_PER_NODE:
+    description: "B300-SXM nodes have 8 GPUs. Overrides slurm_env.yaml default of 4."
+    type: integer
+    value: 8
+
+  MODEL_PATH:
+    description: "Local pre-quantized ModelOpt FP8 diffusers checkpoint (under the scratch mount)."
+    value: /home/mlperf_inference_storage/models/wan22-a14b/Wan2.2-T2V-A14B-Diffusers-FP8
+  VISUAL_GEN_YAML:
+    value: /work/configs/wan22_a14b/G894-ZD3-AAX7_B300-SXM-270GBx8/visual_gen/SingleStream/visual_gen.yaml
+  WORKER_ENV_YAML:
+    value: /work/configs/wan22_a14b/_shared/worker_env.yaml
+  ENDPOINT_CONFIG:
+    value: /work/configs/wan22_a14b/G894-ZD3-AAX7_B300-SXM-270GBx8/visual_gen/SingleStream/endpoint_submission.yaml
+  ENDPOINT_ENV_YAML:
+    value: /work/configs/wan22_a14b/G894-ZD3-AAX7_B300-SXM-270GBx8/visual_gen/SingleStream/endpoint_env_vbench.yaml
+
+  BENCHMARK:
+    value: wan22-a14b
+  SCENARIO:
+    value: SingleStream
+  SYSTEM_NAME:
+    value: G894-ZD3-AAX7_B300-SXM-270GBx8

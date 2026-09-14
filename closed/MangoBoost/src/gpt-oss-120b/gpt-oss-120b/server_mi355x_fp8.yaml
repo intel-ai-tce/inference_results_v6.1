@@ -1,0 +1,58 @@
+# fp8 SERVER variant for MI325X (gfx942) on STOCK vLLM 0.24.0.
+# Derived from server_mi355x.yaml, de-risked like offline_mi355x_fp8.yaml:
+# AITER off (stock image lacks the swiglu fp8 MoE CK kernel), explicit bfloat16.
+# KEEPS: async engine + cudagraphs (enforce_eager False) — both help the
+# latency-bound Server scenario meet TTFT(3000ms)/TPOT(80ms). NOT perf-tuned.
+benchmark_name: gpt-oss-120b
+scenario: server
+test_mode: performance
+engine_version: async
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO"
+  HARNESS_GC_LIMIT: 100000
+  VLLM_USE_V1: 1
+  VLLM_ROCM_USE_AITER: 0
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_MIN_REQUEST_DECODE_STEP: 128
+  VLLM_SUBSEQUENT_DECODE_STEPS: 10
+  GPU_MAX_HW_QUEUES: 3
+
+vllm_engine_config:
+  model: /model/gpt-oss-120b/fp4_quantized
+  tensor_parallel_size: 1
+  quantization: quark
+  max_model_len: 32768
+  gpu_memory_utilization: 0.90
+  enforce_eager: False
+  max_num_batched_tokens: 65536
+  max_num_seqs: 1024
+  enable_chunked_prefill: True
+  block_size: 64
+  enable_prefix_caching: False
+  disable_log_stats: True
+  dtype: bfloat16
+  async_scheduling: True
+
+vllm_sampling_config:
+  temperature: 1
+  min_tokens: 1
+  max_tokens: 10240
+  top_p: 1
+  top_k: -1
+  ignore_eos: False
+  detokenize: False
+
+harness_config:
+  dataset_path: /data/gpt-oss-120b/perf_eval_ref.parquet
+  accuracy_dataset_path: /data/gpt-oss-120b/acc_eval_ref.parquet
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/gpt-oss-120b/user_mi355x.conf
+  target_qps: -1
+  total_sample_count: 6396
+  accuracy_sample_count: 4395
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  enable_warmup: True
+  device_count: 8

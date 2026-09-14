@@ -1,0 +1,19 @@
+[score] parsing /home/nehmathe/AMD_closed_dlrm-v3_q12200_bundle/extracted/closed/AMD/setup/dlrm-v3/artifacts/gold_submission_acc_offline_20260727T223849/mlperf_log_accuracy.json
+[score] processed 50000 entries
+[score] processed 100000 entries
+[score] processed 150000 entries
+[score] processed 200000 entries
+[score] processed 250000 entries
+[score] processed 300000 entries
+[score] total entries: 349823
+==== ACCURACY METRICS ====
+metric/lifetime_ne/rating: 0.8677294228203597
+metric/window_ne/rating: 0.7117679268189007
+metric/lifetime_accuracy/rating: 0.6964170290002015
+metric/window_accuracy/rating: 0.7666015625
+metric/lifetime_gauc/rating: 0.7862871466027813
+metric/window_gauc/rating: 0.8370068066532569
+metric/lifetime_gauc_num_samples/rating: 349823.0
+metric/window_gauc_num_samples/rating: 1.0
+
+hash=ba7235fbd907c70291cca244b89ec247d2f9fb14ca0ec8f1e630f51fe33c8d93

@@ -1,0 +1,69 @@
+# --- server (was configs/server/tp1_mxfp4.yaml) ---
+server:
+  tensor_parallel_size: 1
+  max_model_len: 32768
+  max_number_of_batched_tokens: 32768
+  max_num_seqs: 2048
+  enable_expert_parallel: false
+  mm_encoder_tp_mode: "data"
+  async_scheduling: true
+  enable_chunked_prefill: true
+  enable_prefix_caching: false
+  gpu_memory_utilization: 0.90
+  compilation_config: '{"mode": 3, "cudagraph_mode": "FULL_AND_PIECEWISE", "custom_ops": ["+rms_norm", "+quant_fp8"]}'
+  kv_cache_dtype: fp8_e4m3
+  quantization: quark
+  attention_backend: ROCM_AITER_UNIFIED_ATTN
+  generation_config: auto
+  seed: 42
+  env:
+    AITER_ONLINE_TUNE: "0"
+    VLLM_ROCM_USE_AITER: "1"
+    VLLM_ROCM_USE_AITER_MOE: "1"
+    VLLM_ROCM_USE_AITER_LINEAR: "1"
+    VLLM_ROCM_USE_AITER_RMSNORM: "1"
+    VLLM_ROCM_USE_AITER_MHA: "1"
+    HIP_FORCE_DEV_KERNARG: "1"
+    AITER_USE_CK_MOE_SORTING: "1"
+    VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: "1"
+    VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+
+# --- orchestrator ---
+orchestrator:
+  name: haproxy
+  amd:
+    balance: leastconn
+    status_interval: 15
+    client:
+      max_connections: 4096
+      num_workers: 16
+
+scenario: offline_qwen3_vl_235b_a22b_shopify
+
+model: amd/Qwen3-VL-235B-A22B-Instruct-MXFP4-mlperf6.1-closed
+
+# download/convert the dataset into the shared HF cache for reuse across runs (shared, not
+# per-run-dir). benchmark_mlperf6pt1.py symlinks BOTH client caches into the HF cache: <run_dir>/datasets ->
+# this path, and <run_dir>/dataset_cache -> <parent>/endpoints_dataset_cache (the ~6 GB raw HF
+# parquet -- the historical disk hog). Set null to disable (caches revert to per-run copies).
+endpoints_datasets_dir: /root/.cache/huggingface/endpoints_datasets
+
+# Harness orchestration knobs -- NOT vLLM server args.
+harness:
+  nreplicas: 8             # number of TP1 vLLM workers (1..8), one GPU each; all behind one HAProxy router
+  gpu_ids: [0, 1, 2, 3, 4, 5, 6, 7] # worker i -> gpu_ids[i]; harness.gpu_ids=[7] runs a 1-worker test off GPU 0
+  base_port: 8001          # workers bind 8001..8000+N; haproxy frontend stays on the scenario endpoint (:8000)
+  enable_numa_binding: true # pin each worker to its GPU-local NUMA node cores; loadgen -> reserved tail
+  stream_worker_logs: false # false: per-worker vLLM output -> log files only + milestones (quiet). true: stream all N to console
+  start_server: true       # set false to benchmark an already-running endpoint
+  keep_server: false       # set true to leave the server running after the benchmark
+  health_timeout: 1800     # seconds to wait for /health before giving up
+  profile: false
+  warmup:                  # untimed warmup pass before the timed run (MLPerf-legal SUT bring-up)
+    enabled: true          # compiles runtime-JIT kernels (flydsl MoE, mha_varlen) so a cold container's timed run is warm; set false for fast dev iteration
+    n_samples: 2048
+
+hydra:
+  run:
+    # runs land under <submission>/outputs/ (in-container: /submission/outputs) — the same tree the packager reads.
+    dir: ${submission_root:}/outputs/${scenario_type:${scenario}}/single_run/${now:%Y%m%d-%H%M%S}

@@ -1,0 +1,14 @@
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package punkt_tab to /root/nltk_data...
+[nltk_data]   Package punkt_tab is already up-to-date!
+INFO:DATASET:Loading dataset...
+INFO:DATASET:Finished loading dataset.
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+INFO:absl:Using default tokenizer.
+
+Results
+
+{'rouge1': '38.5949', 'rouge2': '15.7867', 'rougeL': '24.3919', 'rougeLsum': '35.6229', 'gen_len': 8190845, 'gen_num': 13368}
+
+hash=7b6de4ec5b6f8b6998ec3b602be193c8bf0f13fd382fada8b02daa03e4147a21

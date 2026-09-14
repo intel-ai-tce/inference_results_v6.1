@@ -1,0 +1,22 @@
+PRIMERGY_CDI_RTX_PRO_6000_PCIE_96GBx8_TRT:
+- RACK:
+  - ComputingNode:
+    - Description: "A Computing Node"
+      Min PSUs Needed: 1
+      PSUs:
+      - Name: PSU1
+        PowerCapacityWatts: 1600
+      - Name: PSU2
+        PowerCapacityWatts: 1600
+  - PCIeBox:
+    - Description: "A PCIe Box that holds GPUs, SSDs, etc."
+      Min PSUs Needed: 3
+      PSUs:
+      - Name: PSU1
+        PowerCapacityWatts: 3000
+      - Name: PSU2
+        PowerCapacityWatts: 3000
+      - Name: PSU3
+        PowerCapacityWatts: 3000
+      - Name: PSU4
+        PowerCapacityWatts: 3000

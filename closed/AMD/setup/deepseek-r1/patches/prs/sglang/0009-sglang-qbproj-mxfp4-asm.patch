@@ -1,0 +1,282 @@
+diff --git a/python/sglang/srt/models/deepseek_common/q_b_proj_mxfp4.py b/python/sglang/srt/models/deepseek_common/q_b_proj_mxfp4.py
+new file mode 100644
+index 0000000000..a067085140
+--- /dev/null
++++ b/python/sglang/srt/models/deepseek_common/q_b_proj_mxfp4.py
+@@ -0,0 +1,175 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Opt-in MXFP4 fast path for the DeepSeek attention ``q_b_proj`` GEMM.
++
++The stock DeepSeek checkpoint keeps ``q_b_proj`` in bf16 (it is listed in the
++model's quantization ``exclude`` list), so it runs as a bf16 hipBLASLt/Tensile
++gemm. This module lets that single attention gemm be executed as an aiter ASM
++a4w4 MXFP4 gemm instead.
++
++Two *independent* features, both OFF by default and each gated by its own env
++flag:
++
++* ``ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ``
++    Dynamically quantize the bf16 ``q_b_proj`` weight to MXFP4 at load time and
++    stash the (pre-shuffled) fp4 weight + e8m0 block scale on the layer.
++
++* ``ENABLE_Q_B_PROJ_MXFP4``
++    Route the ``q_b_proj`` forward through the aiter ASM a4w4 MXFP4 gemm
++    ``f4gemm_bf16_per1x32Fp4_BpreShuffle_192x128`` with a per-1x32 fp4 activation
++    quant (``aiter`` ``dynamic_per_group_scaled_quant``, group=32) rather than the
++    default bf16 gemm.
++
++The gemm path needs fp4 weights, so ``ENABLE_Q_B_PROJ_MXFP4`` only takes effect
++when the weight was quantized (i.e. ``ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ`` was
++also set). If it is requested without fp4 weights, it logs once and falls back
++to the bf16 gemm.
++"""
++
++from __future__ import annotations
++
++import logging
++import os
++
++import torch
++
++logger = logging.getLogger(__name__)
++
++# Mangled aiter ASM symbol for the 192x128-tile f4gemm kernel requested for
++# q_b_proj (see asm_f4gemm_configs.hpp). This is the exact string
++# gemm_a4w4_asm looks up (host prepends the gfx arch id).
++_QBP_ASM_KERNEL_NAME = "_ZN5aiter42f4gemm_bf16_per1x32Fp4_BpreShuffle_192x128E"
++
++_HAS_AITER_MXFP4 = False
++try:
++    from aiter.ops.gemm_op_a4w4 import gemm_a4w4_asm as _gemm_a4w4_asm
++    from aiter.ops.quant import per_1x32_mx_quant_hip as _per_1x32_mx_quant_hip
++    from aiter.ops.shuffle import shuffle_weight as _shuffle_weight
++    from aiter.utility import dtypes as _dtypes
++    from aiter.utility.fp4_utils import dynamic_mxfp4_quant as _dynamic_mxfp4_quant
++    from aiter.utility.fp4_utils import e8m0_shuffle as _e8m0_shuffle
++
++    _HAS_AITER_MXFP4 = True
++except Exception:  # pragma: no cover - depends on the aiter build
++    _HAS_AITER_MXFP4 = False
++
++
++def _flag(name: str) -> bool:
++    return os.environ.get(name, "0") == "1"
++
++
++def enable_q_b_proj_mxfp4_gemm() -> bool:
++    """True when the q_b_proj MXFP4 gemm swap is requested."""
++    return _flag("ENABLE_Q_B_PROJ_MXFP4")
++
++
++def enable_dynamic_mxfp4_quant_q_b_proj() -> bool:
++    """True when the q_b_proj bf16->MXFP4 dynamic load-time quant is requested."""
++    return _flag("ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ")
++
++
++def maybe_quantize_q_b_proj_mxfp4(self_attn: torch.nn.Module) -> None:
++    """Quantize the bf16 ``q_b_proj`` weight to pre-shuffled MXFP4 at load time.
++
++    No-op unless ``ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1``. On success it adds to
++    the ``q_b_proj`` module:
++
++      * ``weight_fp4``        packed fp4x2 weight, B-preshuffled for the asm gemm
++      * ``weight_scale_fp4``  e8m0 block scale, shuffled to the asm layout
++
++    The original bf16 ``weight`` is left in place so the surrounding
++    fused-RMSNorm paths (which branch on ``q_b_proj.weight.dtype``) keep taking
++    the bf16 branch and hand a bf16 activation to the gemm wrapper.
++    """
++    if not enable_dynamic_mxfp4_quant_q_b_proj():
++        return
++    q_b_proj = getattr(self_attn, "q_b_proj", None)
++    if q_b_proj is None:
++        return
++    if getattr(q_b_proj, "weight_fp4", None) is not None:
++        return  # already quantized
++    if not _HAS_AITER_MXFP4:
++        logger.warning_once(
++            "ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1 but aiter MXFP4 ops are "
++            "unavailable; q_b_proj stays bf16."
++        )
++        return
++
++    weight = q_b_proj.weight.data
++    if weight.dtype != torch.bfloat16:
++        logger.warning_once(
++            f"ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1 but q_b_proj weight dtype is "
++            f"{weight.dtype}, expected bf16; skipping (already quantized?)."
++        )
++        return
++
++    # Plain (unshuffled) MXFP4 quant, then convert both the weight bytes and the
++    # e8m0 block-scale to the asm a4w4 pre-shuffled layout, mirroring the DSR
++    # o_proj mxfp4-asm load path.
++    w_fp4, w_scale = _dynamic_mxfp4_quant(weight, shuffle=False)
++    w_fp4 = _shuffle_weight(w_fp4.view(torch.uint8), layout=(16, 16)).contiguous()
++    w_scale = _e8m0_shuffle(w_scale.view(torch.uint8)).contiguous()
++
++    q_b_proj.weight_fp4 = torch.nn.Parameter(w_fp4, requires_grad=False)
++    q_b_proj.weight_scale_fp4 = torch.nn.Parameter(w_scale, requires_grad=False)
++    q_b_proj.q_b_proj_mxfp4_out_features = int(weight.shape[0])
++    logger.info_once(
++        "ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1: quantized q_b_proj weight to "
++        "MXFP4 (pre-shuffled for the aiter asm a4w4 gemm)."
++    )
++
++
++def q_b_proj_apply(q_b_proj: torch.nn.Module, x: torch.Tensor) -> torch.Tensor:
++    """``q_b_proj(x)`` returning a bare tensor.
++
++    Uses the aiter ASM a4w4 MXFP4 gemm when ``ENABLE_Q_B_PROJ_MXFP4=1`` and the
++    fp4 weight is available; otherwise falls back to the stock bf16 linear
++    (identical behaviour to ``q_b_proj(x)[0]``).
++    """
++    use_mxfp4 = enable_q_b_proj_mxfp4_gemm()
++    if (
++        use_mxfp4
++        and _HAS_AITER_MXFP4
++        and getattr(q_b_proj, "weight_fp4", None) is not None
++    ):
++        return _q_b_proj_mxfp4_forward(q_b_proj, x)
++
++    if use_mxfp4 and getattr(q_b_proj, "weight_fp4", None) is None:
++        logger.warning_once(
++            "ENABLE_Q_B_PROJ_MXFP4=1 but q_b_proj has no MXFP4 weight; set "
++            "ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1 to quantize it on load. "
++            "Falling back to the bf16 gemm."
++        )
++    return q_b_proj(x)[0]
++
++
++def _q_b_proj_mxfp4_forward(q_b_proj: torch.nn.Module, x: torch.Tensor) -> torch.Tensor:
++    out_features = q_b_proj.weight_fp4.shape[0]
++    if x.dim() == 3:
++        out_shape = (*x.shape[:-1], out_features)
++        x2d = x.reshape(-1, x.shape[-1])
++    else:
++        out_shape = (x.shape[0], out_features)
++        x2d = x
++
++    # Per-1x32 fp4 activation quant (aiter dynamic_per_group_scaled_quant,
++    # group_size=32, e8m0 scale shuffled to the asm layout).
++    x_q, x_s = _per_1x32_mx_quant_hip(x2d, quant_dtype=_dtypes.fp4x2, shuffle=True)
++
++    m = x_q.shape[0]
++    # The asm a4w4 gemm needs the M dim padded to a multiple of 32.
++    out = torch.empty(
++        ((m + 31) // 32 * 32, out_features),
++        dtype=torch.bfloat16,
++        device=x_q.device,
++    )
++    _gemm_a4w4_asm(
++        x_q,
++        q_b_proj.weight_fp4,
++        x_s,
++        q_b_proj.weight_scale_fp4,
++        out,
++        kernelName=_QBP_ASM_KERNEL_NAME,
++        bpreshuffle=True,
++    )
++    y = out[:m]
++    return y.view(*out_shape)
+diff --git a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
+index 285c060b83..ae03b35a15 100644
+--- a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
++++ b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
+@@ -22,6 +22,7 @@ from sglang.srt.model_executor.forward_context import (
+     get_attn_backend,
+     get_token_to_kv_pool,
+ )
++from sglang.srt.models.deepseek_common.q_b_proj_mxfp4 import q_b_proj_apply
+ from sglang.srt.models.deepseek_common.utils import (
+     _is_cuda,
+     _is_hip,
+@@ -221,7 +222,7 @@ class DeepseekMHAForwardMixin:
+                     )
+                 else:
+                     q_lora = self.q_a_layernorm(q)
+-                    q = self.q_b_proj(q_lora)[0].view(
++                    q = q_b_proj_apply(self.q_b_proj, q_lora).view(
+                         -1, self.num_local_heads, self.qk_head_dim
+                     )
+                 if self.should_run_indexer():
+@@ -263,7 +264,9 @@ class DeepseekMHAForwardMixin:
+                 q = self.q_b_proj(q)[0].view(-1, self.num_local_heads, self.qk_head_dim)
+             else:
+                 q = self.q_a_layernorm(q)
+-                q = self.q_b_proj(q)[0].view(-1, self.num_local_heads, self.qk_head_dim)
++                q = q_b_proj_apply(self.q_b_proj, q).view(
++                    -1, self.num_local_heads, self.qk_head_dim
++                )
+ 
+         else:
+             q = self.q_proj(hidden_states)[0].view(
+diff --git a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py
+index 6112b565b2..808af7e19f 100644
+--- a/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py
++++ b/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py
+@@ -15,6 +15,7 @@ from sglang.srt.models.deepseek_common.utils import (
+     _is_cuda,
+     _is_hip,
+ )
++from sglang.srt.models.deepseek_common.q_b_proj_mxfp4 import q_b_proj_apply
+ from sglang.srt.utils import BumpAllocator, get_bool_env_var
+ 
+ if TYPE_CHECKING:
+@@ -62,7 +63,9 @@ class DeepseekMLARocmForwardMixin:
+                 [self.q_lora_rank, self.kv_lora_rank + self.qk_rope_head_dim], dim=-1
+             )
+             q = self.q_a_layernorm(q)
+-            q = self.q_b_proj(q)[0].view(-1, self.num_local_heads, self.qk_head_dim)
++            q = q_b_proj_apply(self.q_b_proj, q).view(
++                -1, self.num_local_heads, self.qk_head_dim
++            )
+         else:
+             q = self.q_proj(hidden_states)[0].view(
+                 -1, self.num_local_heads, self.qk_head_dim
+diff --git a/python/sglang/srt/models/deepseek_v2.py b/python/sglang/srt/models/deepseek_v2.py
+index 95db44a461..1f47a8bea0 100644
+--- a/python/sglang/srt/models/deepseek_v2.py
++++ b/python/sglang/srt/models/deepseek_v2.py
+@@ -162,6 +162,7 @@ from sglang.srt.models.deepseek_common.attention_forward_methods import (
+ from sglang.srt.models.deepseek_common.deepseek_weight_loader import (
+     DeepseekV2WeightLoaderMixin,
+ )
++from sglang.srt.models.deepseek_common.q_b_proj_mxfp4 import q_b_proj_apply
+ from sglang.srt.models.deepseek_common.utils import (
+     _device_sm,
+     _get_llama_4_scaling,
+@@ -2009,7 +2010,7 @@ class DeepseekV2AttentionMLA(
+                 self.q_b_proj, q_lora, backend=self.fused_a_gemm_backend
+             )
+         else:
+-            q = self.q_b_proj(q_lora)[0]
++            q = q_b_proj_apply(self.q_b_proj, q_lora)
+         return q.view(-1, self.num_local_heads, self.qk_head_dim)
+ 
+     def rebuild_cp_kv_cache(self, latent_cache, forward_batch, k_nope, k_pe):
+diff --git a/python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py b/python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
+index c07c399924..9b632c70d6 100644
+--- a/python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
++++ b/python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
+@@ -61,6 +61,9 @@ from sglang.srt.models.deepseek_common.utils import (
+     is_wint4afp8_or_wint4a16_config,
+ )
+ from sglang.srt.utils import bind_or_assign, get_bool_env_var, log_info_on_rank0
++from sglang.srt.models.deepseek_common.q_b_proj_mxfp4 import (
++    maybe_quantize_q_b_proj_mxfp4,
++)
+ 
+ if _use_aiter_gfx95:
+     from sglang.srt.layers.quantization.quark.utils import quark_post_load_weights
+@@ -508,6 +511,10 @@ class DeepseekV2WeightLoaderMixin:
+                 else self.model.decoder.self_attn
+             )
+ 
++            # Opt-in: dynamically quantize the bf16 q_b_proj weight to MXFP4
++            # (no-op unless ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ=1).
++            maybe_quantize_q_b_proj_mxfp4(self_attn)
++
+             if hasattr(self_attn.kv_b_proj, "qweight"):
+                 # awq compatible, dequantize the weight if supported
+                 awq_dequantize_f = awq_dequantize_func()

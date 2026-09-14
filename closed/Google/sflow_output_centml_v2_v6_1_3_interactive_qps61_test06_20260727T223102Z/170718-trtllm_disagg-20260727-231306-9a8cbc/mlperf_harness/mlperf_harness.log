@@ -1,0 +1,474 @@
+2026-07-27 23:27:48,166 - sflow.task.mlperf_harness - INFO - 0: rm: cannot remove '/usr/local/cuda/compat/lib': Read-only file system
+2026-07-27 23:27:51,326 - sflow.task.mlperf_harness - INFO - 0: WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+2026-07-27 23:27:51,377 - sflow.task.mlperf_harness - INFO - 0: Frontend URLs 10.128.0.52:8003,10.128.0.106:8000,10.128.0.111:8001,10.128.0.35:8002
+2026-07-27 23:27:53,466 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:53,462 main.py:497 INFO RANK=0] Detected system ID: GB200-NVL72_GB200-186GB_aarch64x72
+2026-07-27 23:27:53,466 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:53,463 main.py:88 INFO RANK=0] Loading configs from /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/harness.py
+2026-07-27 23:27:53,517 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:53,470 compliance.py:73 INFO RANK=0] AUDIT HARNESS: Looking for audit.config in /work/3rdparty/mlc-inference/compliance/TEST06/deepseek-r1/audit.config...
+2026-07-27 23:27:53,517 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:53,470 compliance.py:77 INFO RANK=0] AUDIT HARNESS: Search failed. Looking for audit.config in /work/3rdparty/mlc-inference/compliance/TEST06/audit.config...
+2026-07-27 23:27:54,027 - sflow.task.mlperf_harness - INFO - 0: /bin/dash: 1: sudo: not found
+2026-07-27 23:27:54,027 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:53,993 harness.py:86 INFO RANK=0] WARNING: Failed to set vboost slider. Skipping...
+2026-07-27 23:27:54,689 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,651 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:27:54,689 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,651 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:27:54,689 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,651 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,834 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,834 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,834 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,834 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,836 utils.py:430 INFO RANK=0] Harness iteration stats will be dumped to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_iteration_stats.log
+2026-07-27 23:27:54,842 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:54,837 INFO] [ TrtllmEndpointCore#0 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+2026-07-27 23:27:57,447 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,435 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:27:57,447 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,435 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:27:57,447 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,436 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:27:57,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,471 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:27:57,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,471 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:27:57,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,471 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:27:57,549 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,527 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:27:57,549 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,527 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:27:57,549 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,527 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:27:57,549 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,527 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:27:57,601 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,563 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:27:57,601 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,563 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:27:57,601 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,563 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:27:57,601 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,563 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,732 INFO] [ TrtllmEndpointCore#0 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.52:8003, max_concurrency: 5120)
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,732 INFO] [ factory.py:129 create_server ] Initialized TrtllmEndpointCore#0 with HarnessConfig:
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0: TrtllmEndpointConfig(_core_type=None,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      server_instance_size=None,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      enable_ttft_latency_tracker=False,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      show_steady_state_progress=False,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      gen_config_path=PosixPath('src/nv_mlpinf/benchmarks/deepseek_r1/generation_config.json'),
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      test_mode='PerformanceOnly',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      workload=<nv_mlpinf.common.workload.Workload object at 0xe72c453e9970>,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      traffic_distribution_policy='round_robin',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      log_dir=PosixPath('/work/build/compliance_logs/TEST06'),
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      capture_server_logs_dir=None,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      disagg_bench_mode=None,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      readiness_timeout=1800,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      gen_config=GenerationConfig(eos_token_id=1,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  bos_token_id=0,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:       max_output_len=20000,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  min_output_len=1,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  name='deepseek-r1',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  runtime_beam_width=1,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  streaming=True,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  temperature=0.0,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  top_k=1,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  top_p=1,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  use_stop_tokens=False,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                                  skip_special_tokens=True),
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      random_seed=0,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      trtllm_endpoint_urls=['10.128.0.52:8003',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                            '10.128.0.106:8000',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                            '10.128.0.111:8001',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                                            '10.128.0.35:8002'],
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      endpoint_url='10.128.0.52:8003',
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      mpi_mode=<MPIMode.LEGACY: 'l
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0: egacy'>,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      harness_use_hf_tokenizer=False,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      global_size=None,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      workers_per_core=2,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      max_concurrency=5120,
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0:                      enable_metrics=False)
+2026-07-27 23:27:57,754 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:27:57,733 INFO] [ TrtllmEndpointCore#1 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,100 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,100 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,100 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,140 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,141 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:00,149 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,141 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:00,201 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,192 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:00,201 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,192 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:00,201 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,192 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:00,201 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,192 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:00,252 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,234 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:00,252 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,234 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:00,252 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,234 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:00,252 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,234 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:00,456 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,406 INFO] [ TrtllmEndpointCore#1 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.106:8000, max_concurrency: 5120)
+2026-07-27 23:28:00,456 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,407 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#1.
+2026-07-27 23:28:00,456 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:00,408 INFO] [ TrtllmEndpointCore#2 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,763 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,763 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,763 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,766 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,766 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:02,796 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,766 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,854 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,854 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,854 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,854 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,856 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,856 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,856 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:02,898 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:02,856 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:03,051 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:03,024 INFO] [ TrtllmEndpointCore#2 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.111:8001, max_concurrency: 5120)
+2026-07-27 23:28:03,051 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:03,025 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#2.
+2026-07-27 23:28:03,051 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:03,026 INFO] [ TrtllmEndpointCore#3 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,468 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,468 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,468 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,476 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,476 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-07-27 23:28:05,498 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,476 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,560 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,560 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,560 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,560 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,566 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs:
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,566 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,566 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+2026-07-27 23:28:05,600 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,567 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+2026-07-27 23:28:05,753 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,736 INFO] [ TrtllmEndpointCore#3 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.35:8002, max_concurrency: 5120)
+2026-07-27 23:28:05,753 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,736 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#3.
+2026-07-27 23:28:05,753 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,736 INFO] [ factory.py:137 create_server ] Factory created 4 CoreType.TRTLLM_ENDPOINT cores
+2026-07-27 23:28:05,753 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,737 INFO] [ LLMServer-396151 server.py:114 LLMServer.__init__ ] LLMServer initialized with 4 cores
+2026-07-27 23:28:05,753 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,737 INFO] [ warmup.py:54 WarmupManager.run_health_checks_with_retry ] Running health checks on all cores...
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,896 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#1 is healthy.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#2 is healthy.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#3 is healthy.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#0 is healthy.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ warmup.py:97 WarmupManager.run_health_checks_with_retry ] All cores are ready.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ llmlib/__init__.py:169 TrtllmServeClientHarnessOp.wrap_lg_test ] Warming up the server...
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,897 INFO] [ llmlib/__init__.py:171 TrtllmServeClientHarnessOp.wrap_lg_test ] Server warmup completed.
+2026-07-27 23:28:05,907 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:28:05,898 WARNING] [ llmlib/__init__.py:178 TrtllmServeClientHarnessOp.wrap_lg_test ] Disabled automatic garbage collection for the test run.
+2026-07-27 23:28:06,009 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:06,009 - sflow.task.mlperf_harness - INFO - Processing:   0%|          | 0/1 [00:00<?]
+2026-07-27 23:28:14,189 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:14,189 - sflow.task.mlperf_harness - INFO - Processing:   1%|          | 1/100 [00:08<13:31]
+2026-07-27 23:28:14,189 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:14,189 - sflow.task.mlperf_harness - INFO - Processing:   1%|          | 1/100 [00:08<13:31, 0.12samples/s] Stats=[ 0.12 samples/s, 38.56 tokens/s, 4.09 TPOT(ms) ]
+2026-07-27 23:28:14,603 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:14,603 - sflow.task.mlperf_harness - INFO - Processing:   2%|▏         | 2/100 [00:08<00:36, 0.12samples/s] Stats=[ 0.12 samples/s, 38.56 tokens/s, 4.09 TPOT(ms) ]
+2026-07-27 23:28:14,603 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:14,603 - sflow.task.mlperf_harness - INFO - Processing:   2%|▏         | 2/100 [00:08<00:36, 2.69samples/s] Stats=[ 0.23 samples/s, 80.42 tokens/s, 4.39 TPOT(ms) ]
+2026-07-27 23:28:15,326 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:15,326 - sflow.task.mlperf_harness - INFO - Processing:   5%|▌         | 5/100 [00:09<00:23, 2.69samples/s] Stats=[ 0.23 samples/s, 80.42 tokens/s, 4.39 TPOT(ms) ]
+2026-07-27 23:28:15,326 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:15,326 - sflow.task.mlperf_harness - INFO - Processing:   5%|▌         | 5/100 [00:09<00:23, 4.08samples/s] Stats=[ 0.54 samples/s, 212.19 tokens/s, 4.65 TPOT(ms) ]
+2026-07-27 23:28:16,412 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:16,412 - sflow.task.mlperf_harness - INFO - Processing:   7%|▋         | 7/100 [00:10<00:51, 4.08samples/s] Stats=[ 0.54 samples/s, 212.19 tokens/s, 4.65 TPOT(ms) ]
+2026-07-27 23:28:16,412 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:16,412 - sflow.task.mlperf_harness - INFO - Processing:   7%|▋         | 7/100 [00:10<00:51, 1.80samples/s] Stats=[ 0.67 samples/s, 318.68 tokens/s, 5.48 TPOT(ms) ]
+2026-07-27 23:28:16,774 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:16,774 - sflow.task.mlperf_harness - INFO - Processing:   9%|▉         | 9/100 [00:10<00:16, 1.80samples/s] Stats=[ 0.67 samples/s, 318.68 tokens/s, 5.48 TPOT(ms) ]
+2026-07-27 23:28:16,774 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:16,774 - sflow.task.mlperf_harness - INFO - Processing:   9%|▉         | 9/100 [00:10<00:16, 5.52samples/s] Stats=[ 0.84 samples/s, 431.78 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:17,340 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:17,340 - sflow.task.mlperf_harness - INFO - Processing:  13%|█▎        | 13/100 [00:11<00:12, 5.52samples/s] Stats=[ 0.84 samples/s, 431.78 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:17,340 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:17,340 - sflow.task.mlperf_harness - INFO - Processing:  13%|█▎        | 13/100 [00:11<00:12, 7.23samples/s] Stats=[ 1.15 samples/s, 694.34 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:17,801 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:17,801 - sflow.task.mlperf_harness - INFO - Processing:  16%|█▌        | 16/100 [00:11<00:13, 7.23samples/s] Stats=[ 1.15 samples/s, 694.34 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:17,801 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:17,801 - sflow.task.mlperf_harness - INFO - Processing:  16%|█▌        | 16/100 [00:11<00:13, 6.18samples/s] Stats=[ 1.35 samples/s, 879.87 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:18,161 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:18,161 - sflow.task.mlperf_harness - INFO - Processing:  21%|██        | 21/100 [00:12<00:05, 6.18samples/s] Stats=[ 1.35 samples/s, 879.87 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:18,161 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:18,161 - sflow.task.mlperf_harness - INFO - Processing:  21%|██        | 21/100 [00:12<00:05, 13.86samples/s] Stats=[ 1.72 samples/s, 1237.97 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:18,830 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:18,830 - sflow.task.mlperf_harness - INFO - Processing:  26%|██▌       | 26/100 [00:12<00:09, 13.86samples/s] Stats=[ 1.72 samples/s, 1237.97 tokens/s, 5.67 TPOT(ms) ]
+2026-07-27 23:28:18,830 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:18,830 - sflow.task.mlperf_harness - INFO - Processing:  26%|██▌       | 26/100 [00:12<00:09, 7.81samples/s] Stats=[ 2.03 samples/s, 1559.40 tokens/s, 5.93 TPOT(ms) ]
+2026-07-27 23:28:19,801 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:19,801 - sflow.task.mlperf_harness - INFO - Processing:  29%|██▉       | 29/100 [00:13<00:23, 7.81samples/s] Stats=[ 2.03 samples/s, 1559.40 tokens/s, 5.93 TPOT(ms) ]
+2026-07-27 23:28:19,801 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:19,801 - sflow.task.mlperf_harness - INFO - Processing:  29%|██▉       | 29/100 [00:13<00:23, 3.07samples/s] Stats=[ 2.10 samples/s, 1705.65 tokens/s, 5.93 TPOT(ms) ]
+2026-07-27 23:28:20,214 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:20,214 - sflow.task.mlperf_harness - INFO - Processing:  34%|███▍      | 34/100 [00:14<00:05, 3.07samples/s] Stats=[ 2.10 samples/s, 1705.65 tokens/s, 5.93 TPOT(ms) ]
+2026-07-27 23:28:20,214 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:20,214 - sflow.task.mlperf_harness - INFO - Processing:  34%|███▍      | 34/100 [00:14<00:05, 12.27samples/s] Stats=[ 2.39 samples/s, 2097.33 tokens/s, 6.11 TPOT(ms) ]
+2026-07-27 23:28:20,671 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:20,671 - sflow.task.mlperf_harness - INFO - Processing:  39%|███▉      | 39/100 [00:14<00:05, 12.27samples/s] Stats=[ 2.39 samples/s, 2097.33 tokens/s, 6.11 TPOT(ms) ]
+2026-07-27 23:28:20,671 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:20,671 - sflow.task.mlperf_harness - INFO - Processing:  39%|███▉      | 39/100 [00:14<00:05, 11.32samples/s] Stats=[ 2.66 samples/s, 2491.48 tokens/s, 6.11 TPOT(ms) ]
+2026-07-27 23:28:22,042 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:22,042 - sflow.task.mlperf_harness - INFO - Processing:  43%|████▎     | 43/100 [00:16<00:19, 11.32samples/s] Stats=[ 2.66 samples/s, 2491.48 tokens/s, 6.11 TPOT(ms) ]
+2026-07-27 23:28:22,042 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:22,042 - sflow.task.mlperf_harness - INFO - Processing:  43%|████▎     | 43/100 [00:16<00:19, 2.86samples/s] Stats=[ 2.68 samples/s, 2641.58 tokens/s, 6.16 TPOT(ms) ]
+2026-07-27 23:28:22,602 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:22,602 - sflow.task.mlperf_harness - INFO - Processing:  45%|████▌     | 45/100 [00:16<00:14, 2.86samples/s] Stats=[ 2.68 samples/s, 2641.58 tokens/s, 6.16 TPOT(ms) ]
+2026-07-27 23:28:22,602 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:22,602 - sflow.task.mlperf_harness - INFO - Processing:  45%|████▌     | 45/100 [00:16<00:14, 3.71samples/s] Stats=[ 2.71 samples/s, 2756.43 tokens/s, 6.16 TPOT(ms) ]
+2026-07-27 23:28:24,559 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:24,559 - sflow.task.mlperf_harness - INFO - Processing:  47%|████▋     | 47/100 [00:18<00:52, 3.71samples/s] Stats=[ 2.71 samples/s, 2756.43 tokens/s, 6.16 TPOT(ms) ]
+2026-07-27 23:28:24,559 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:24,559 - sflow.task.mlperf_harness - INFO - Processing:  47%|████▋     | 47/100 [00:18<00:52, 1.02samples/s] Stats=[ 2.53 samples/s, 2684.22 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:25,378 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:25,378 - sflow.task.mlperf_harness - INFO - Processing:  48%|████▊     | 48/100 [00:19<00:43, 1.02samples/s] Stats=[ 2.53 samples/s, 2684.22 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:25,378 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:25,378 - sflow.task.mlperf_harness - INFO - Processing:  48%|████▊     | 48/100 [00:19<00:43, 1.20samples/s] Stats=[ 2.48 samples/s, 2686.89 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:26,972 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:26,972 - sflow.task.mlperf_harness - INFO - Processing:  50%|█████     | 50/100 [00:20<00:39, 1.20samples/s] Stats=[ 2.48 samples/s, 2686.89 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:26,972 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:26,972 - sflow.task.mlperf_harness - INFO - Processing:  50%|█████     | 50/100 [00:20<00:39, 1.27samples/s] Stats=[ 2.39 samples/s, 2726.54 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:27,331 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:27,331 - sflow.task.mlperf_harness - INFO - Processing:  52%|█████▏    | 52/100 [00:21<00:08, 1.27samples/s] Stats=[ 2.39 samples/s, 2726.54 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:27,331 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:27,331 - sflow.task.mlperf_harness - INFO - Processing:  52%|█████▏    | 52/100 [00:21<00:08, 5.55samples/s] Stats=[ 2.44 samples/s, 2913.55 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:27,692 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:27,692 - sflow.task.mlperf_harness - INFO - Processing:  54%|█████▍    | 54/100 [00:21<00:08, 5.55samples/s] Stats=[ 2.44 samples/s, 2913.55 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:27,692 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:27,692 - sflow.task.mlperf_harness - INFO - Processing:  54%|█████▍    | 54/100 [00:21<00:08, 5.28samples/s] Stats=[ 2.49 samples/s, 3118.02 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:28,714 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:28,714 - sflow.task.mlperf_harness - INFO - Processing:  56%|█████▌    | 56/100 [00:22<00:22, 5.28samples/s] Stats=[ 2.49 samples/s, 3118.02 tokens/s, 6.20 TPOT(ms) ]
+2026-07-27 23:28:28,714 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:28,714 - sflow.task.mlperf_harness - INFO - Processing:  56%|█████▌    | 56/100 [00:22<00:22, 1.99samples/s] Stats=[ 2.47 samples/s, 3214.12 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:29,635 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:29,635 - sflow.task.mlperf_harness - INFO - Processing:  58%|█████▊    | 58/100 [00:23<00:19, 1.99samples/s] Stats=[ 2.47 samples/s, 3214.12 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:29,635 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:29,635 - sflow.task.mlperf_harness - INFO - Processing:  58%|█████▊    | 58/100 [00:23<00:19, 2.17samples/s] Stats=[ 2.46 samples/s, 3342.06 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:30,405 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:30,405 - sflow.task.mlperf_harness - INFO - Processing:  59%|█████▉    | 59/100 [00:24<00:32, 2.17samples/s] Stats=[ 2.46 samples/s, 3342.06 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:30,405 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:30,405 - sflow.task.mlperf_harness - INFO - Processing:  59%|█████▉    | 59/100 [00:24<00:32, 1.26samples/s] Stats=[ 2.42 samples/s, 3350.86 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:31,076 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:31,076 - sflow.task.mlperf_harness - INFO - Processing:  60%|██████    | 60/100 [00:25<00:25, 1.26samples/s] Stats=[ 2.42 samples/s, 3350.86 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:31,076 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:31,076 - sflow.task.mlperf_harness - INFO - Processing:  60%|██████    | 60/100 [00:25<00:25, 1.59samples/s] Stats=[ 2.40 samples/s, 3397.68 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:31,688 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:31,688 - sflow.task.mlperf_harness - INFO - Processing:  61%|██████    | 61/100 [00:25<00:25, 1.59samples/s] Stats=[ 2.40 samples/s, 3397.68 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:31,688 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:31,688 - sflow.task.mlperf_harness - INFO - Processing:  61%|██████    | 61/100 [00:25<00:25, 1.56samples/s] Stats=[ 2.38 samples/s, 3446.73 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:32,664 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:32,664 - sflow.task.mlperf_harness - INFO - Processing:  63%|██████▎   | 63/100 [00:26<00:17, 1.56samples/s] Stats=[ 2.38 samples/s, 3446.73 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:32,664 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:32,664 - sflow.task.mlperf_harness - INFO - Processing:  63%|██████▎   | 63/100 [00:26<00:17, 2.10samples/s] Stats=[ 2.37 samples/s, 3582.15 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:33,332 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:33,332 - sflow.task.mlperf_harness - INFO - Processing:  65%|██████▌   | 65/100 [00:27<00:11, 2.10samples/s] Stats=[ 2.37 samples/s, 3582.15 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:33,332 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:33,332 - sflow.task.mlperf_harness - INFO - Processing:  65%|██████▌   | 65/100 [00:27<00:11, 2.95samples/s] Stats=[ 2.38 samples/s, 3765.98 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:34,668 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:34,668 - sflow.task.mlperf_harness - INFO - Processing:  67%|██████▋   | 67/100 [00:28<00:22, 2.95samples/s] Stats=[ 2.38 samples/s, 3765.98 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:34,669 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:34,669 - sflow.task.mlperf_harness - INFO - Processing:  67%|██████▋   | 67/100 [00:28<00:22, 1.46samples/s] Stats=[ 2.34 samples/s, 3873.40 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:35,231 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:35,231 - sflow.task.mlperf_harness - INFO - Processing:  68%|██████▊   | 68/100 [00:29<00:17, 1.46samples/s] Stats=[ 2.34 samples/s, 3873.40 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:35,231 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:35,231 - sflow.task.mlperf_harness - INFO - Processing:  68%|██████▊   | 68/100 [00:29<00:17, 1.81samples/s] Stats=[ 2.33 samples/s, 3938.35 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:36,502 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:36,502 - sflow.task.mlperf_harness - INFO - Processing:  69%|██████▉   | 69/100 [00:30<00:38, 1.81samples/s] Stats=[ 2.33 samples/s, 3938.35 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:36,502 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:36,502 - sflow.task.mlperf_harness - INFO - Processing:  69%|██████▉   | 69/100 [00:30<00:38, 0.80samples/s] Stats=[ 2.26 samples/s, 3914.84 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:37,062 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:37,062 - sflow.task.mlperf_harness - INFO - Processing:  70%|███████   | 70/100 [00:31<00:17, 0.80samples/s] Stats=[ 2.26 samples/s, 3914.84 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:37,062 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:37,062 - sflow.task.mlperf_harness - INFO - Processing:  70%|███████   | 70/100 [00:31<00:17, 1.74samples/s] Stats=[ 2.25 samples/s, 3981.05 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:38,026 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:38,026 - sflow.task.mlperf_harness - INFO - Processing:  72%|███████▏  | 72/100 [00:32<00:13, 1.74samples/s] Stats=[ 2.25 samples/s, 3981.05 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:38,026 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:38,026 - sflow.task.mlperf_harness - INFO - Processing:  72%|███████▏  | 72/100 [00:32<00:13, 2.03samples/s] Stats=[ 2.25 samples/s, 4132.03 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:40,777 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:40,777 - sflow.task.mlperf_harness - INFO - Processing:  73%|███████▎  | 73/100 [00:34<01:14, 2.03samples/s] Stats=[ 2.25 samples/s, 4132.03 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:40,777 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:40,777 - sflow.task.mlperf_harness - INFO - Processing:  73%|███████▎  | 73/100 [00:34<01:14, 0.36samples/s] Stats=[ 2.10 samples/s, 3952.97 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:41,898 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:41,898 - sflow.task.mlperf_harness - INFO - Processing:  75%|███████▌  | 75/100 [00:35<00:13, 0.36samples/s] Stats=[ 2.10 samples/s, 3952.97 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:41,898 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:41,898 - sflow.task.mlperf_harness - INFO - Processing:  75%|███████▌  | 75/100 [00:35<00:13, 1.82samples/s] Stats=[ 2.09 samples/s, 4095.01 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:42,461 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:42,461 - sflow.task.mlperf_harness - INFO - Processing:  76%|███████▌  | 76/100 [00:36<00:13, 1.82samples/s] Stats=[ 2.09 samples/s, 4095.01 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:42,461 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:42,461 - sflow.task.mlperf_harness - INFO - Processing:  76%|███████▌  | 76/100 [00:36<00:13, 1.77samples/s] Stats=[ 2.08 samples/s, 4175.85 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:42,818 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:42,818 - sflow.task.mlperf_harness - INFO - Processing:  78%|███████▊  | 78/100 [00:36<00:03, 1.77samples/s] Stats=[ 2.08 samples/s, 4175.85 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:42,818 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:42,818 - sflow.task.mlperf_harness - INFO - Processing:  78%|███████▊  | 78/100 [00:36<00:03, 5.84samples/s] Stats=[ 2.12 samples/s, 4441.36 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:44,708 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:44,708 - sflow.task.mlperf_harness - INFO - Processing:  80%|████████  | 80/100 [00:38<00:18, 5.84samples/s] Stats=[ 2.12 samples/s, 4441.36 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:44,708 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:44,708 - sflow.task.mlperf_harness - INFO - Processing:  80%|████████  | 80/100 [00:38<00:18, 1.06samples/s] Stats=[ 2.07 samples/s, 4527.53 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:45,219 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:45,219 - sflow.task.mlperf_harness - INFO - Processing:  81%|████████  | 81/100 [00:39<00:09, 1.06samples/s] Stats=[ 2.07 samples/s, 4527.53 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:45,219 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:45,219 - sflow.task.mlperf_harness - INFO - Processing:  81%|████████  | 81/100 [00:39<00:09, 2.01samples/s] Stats=[ 2.07 samples/s, 4622.32 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:45,836 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:45,836 - sflow.task.mlperf_harness - INFO - Processing:  82%|████████▏ | 82/100 [00:39<00:11, 2.01samples/s] Stats=[ 2.07 samples/s, 4622.32 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:45,836 - sflow.task.mlperf_harness - INFO - Processing:  82%|████████▏ | 82/100 [00:39<00:11, 1.59samples/s] Stats=[ 2.06 samples/s, 4698.78 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:48,093 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:48,093 - sflow.task.mlperf_harness - INFO - Processing:  83%|████████▎ | 83/100 [00:42<00:38, 1.59samples/s] Stats=[ 2.06 samples/s, 4698.78 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:48,093 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:48,093 - sflow.task.mlperf_harness - INFO - Processing:  83%|████████▎ | 83/100 [00:42<00:38, 0.44samples/s] Stats=[ 1.97 samples/s, 4596.06 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:49,731 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:49,731 - sflow.task.mlperf_harness - INFO - Processing:  85%|████████▌ | 85/100 [00:43<00:12, 0.44samples/s] Stats=[ 1.97 samples/s, 4596.06 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:49,731 - sflow.task.mlperf_harness - INFO - Processing:  85%|████████▌ | 85/100 [00:43<00:12, 1.21samples/s] Stats=[ 1.94 samples/s, 4728.48 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:50,347 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:50,347 - sflow.task.mlperf_harness - INFO - Processing:  86%|████████▌ | 86/100 [00:44<00:08, 1.21samples/s] Stats=[ 1.94 samples/s, 4728.48 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:50,347 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:50,347 - sflow.task.mlperf_harness - INFO - Processing:  86%|████████▌ | 86/100 [00:44<00:08, 1.59samples/s] Stats=[ 1.94 samples/s, 4816.12 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:52,558 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:52,558 - sflow.task.mlperf_harness - INFO - Processing:  88%|████████▊ | 88/100 [00:46<00:13, 1.59samples/s] Stats=[ 1.94 samples/s, 4816.12 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:52,558 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:52,558 - sflow.task.mlperf_harness - INFO - Processing:  88%|████████▊ | 88/100 [00:46<00:13, 0.90samples/s] Stats=[ 1.89 samples/s, 4881.47 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:55,593 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:55,593 - sflow.task.mlperf_harness - INFO - Processing:  89%|████████▉ | 89/100 [00:49<00:33, 0.90samples/s] Stats=[ 1.89 samples/s, 4881.47 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:55,593 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:55,593 - sflow.task.mlperf_harness - INFO - Processing:  89%|████████▉ | 89/100 [00:49<00:33, 0.33samples/s] Stats=[ 1.79 samples/s, 4736.14 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:56,054 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:56,054 - sflow.task.mlperf_harness - INFO - Processing:  90%|█████████ | 90/100 [00:50<00:04, 0.33samples/s] Stats=[ 1.79 samples/s, 4736.14 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:28:56,054 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:28:56,054 - sflow.task.mlperf_harness - INFO - Processing:  90%|█████████ | 90/100 [00:50<00:04, 2.11samples/s] Stats=[ 1.80 samples/s, 4846.38 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:00,239 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:00,239 - sflow.task.mlperf_harness - INFO - Processing:  91%|█████████ | 91/100 [00:54<00:37, 2.11samples/s] Stats=[ 1.80 samples/s, 4846.38 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:00,239 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:00,239 - sflow.task.mlperf_harness - INFO - Processing:  91%|█████████ | 91/100 [00:54<00:37, 0.24samples/s] Stats=[ 1.68 samples/s, 4640.73 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:08,198 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:08,198 - sflow.task.mlperf_harness - INFO - Processing:  92%|█████████▏| 92/100 [01:02<01:03, 0.24samples/s] Stats=[ 1.68 samples/s, 4640.73 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:08,198 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:08,198 - sflow.task.mlperf_harness - INFO - Processing:  92%|█████████▏| 92/100 [01:02<01:03, 0.13samples/s] Stats=[ 1.48 samples/s, 4213.18 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:09,274 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:09,274 - sflow.task.mlperf_harness - INFO - Processing:  93%|█████████▎| 93/100 [01:03<00:07, 0.13samples/s] Stats=[ 1.48 samples/s, 4213.18 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:09,274 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:09,274 - sflow.task.mlperf_harness - INFO - Processing:  93%|█████████▎| 93/100 [01:03<00:07, 0.92samples/s] Stats=[ 1.47 samples/s, 4296.55 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:10,150 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:10,150 - sflow.task.mlperf_harness - INFO - Processing:  94%|█████████▍| 94/100 [01:04<00:05, 0.92samples/s] Stats=[ 1.47 samples/s, 4296.55 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:10,150 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:10,150 - sflow.task.mlperf_harness - INFO - Processing:  94%|█████████▍| 94/100 [01:04<00:05, 1.16samples/s] Stats=[ 1.47 samples/s, 4404.94 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:14,985 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:14,985 - sflow.task.mlperf_harness - INFO - Processing:  95%|█████████▌| 95/100 [01:08<00:24, 1.16samples/s] Stats=[ 1.47 samples/s, 4404.94 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:14,985 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:14,985 - sflow.task.mlperf_harness - INFO - Processing:  95%|█████████▌| 95/100 [01:08<00:24, 0.21samples/s] Stats=[ 1.38 samples/s, 4259.69 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:26,866 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:26,866 - sflow.task.mlperf_harness - INFO - Processing:  96%|█████████▌| 96/100 [01:20<00:47, 0.21samples/s] Stats=[ 1.38 samples/s, 4259.69 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:26,866 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:26,866 - sflow.task.mlperf_harness - INFO - Processing:  96%|█████████▌| 96/100 [01:20<00:47, 0.08samples/s] Stats=[ 1.19 samples/s, 3793.99 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:33,433 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:33,433 - sflow.task.mlperf_harness - INFO - Processing:  97%|█████████▋| 97/100 [01:27<00:19, 0.08samples/s] Stats=[ 1.19 samples/s, 3793.99 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:33,433 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:33,433 - sflow.task.mlperf_harness - INFO - Processing:  97%|█████████▋| 97/100 [01:27<00:19, 0.15samples/s] Stats=[ 1.11 samples/s, 3679.19 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:44,680 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:44,680 - sflow.task.mlperf_harness - INFO - Processing:  98%|█████████▊| 98/100 [01:38<00:22, 0.15samples/s] Stats=[ 1.11 samples/s, 3679.19 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:44,680 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:44,680 - sflow.task.mlperf_harness - INFO - Processing:  98%|█████████▊| 98/100 [01:38<00:22, 0.09samples/s] Stats=[ 0.99 samples/s, 3423.00 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:51,678 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:51,678 - sflow.task.mlperf_harness - INFO - Processing:  99%|█████████▉| 99/100 [01:45<00:06, 0.09samples/s] Stats=[ 0.99 samples/s, 3423.00 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:51,678 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:51,678 - sflow.task.mlperf_harness - INFO - Processing:  99%|█████████▉| 99/100 [01:45<00:06, 0.14samples/s] Stats=[ 0.94 samples/s, 3371.93 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:54,537 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,537 - sflow.task.mlperf_harness - INFO - Processing: 100%|██████████| 100/100 [01:48<00:00, 0.14samples/s] Stats=[ 0.94 samples/s, 3371.93 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:54,537 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,537 - sflow.task.mlperf_harness - INFO - Processing: 100%|██████████| 100/100 [01:48<00:00, 0.35samples/s] Stats=[ 0.92 samples/s, 3466.61 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: MLPerf Results Summary
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: SUT name : PySUT
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Scenario : Server
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Mode     : PerformanceOnly
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Completed samples per second    : 4.65
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Completed tokens per second: 17654.64
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Result is : INVALID
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:   Performance constraints satisfied : NO
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:   Min duration satisfied : Yes
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:   Min queries satisfied : Yes
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:   Early stopping satisfied: NO
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Recommendations:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  * TTFT constrain not met: Reduce target QPS to improve latency.
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: TTFT Early Stopping Result:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: TPOT Early Stopping Result:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  * Run unsuccessful.
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  * Processed 100 queries.
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  * Would need to run at least 359 more queries,
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  with the run being successful if every additional
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:  query were under latency.
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Additional Stats
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Scheduled samples per second : 53.01
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Min latency (ns)                : 7079770089
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Max latency (ns)                : 106750262282
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Mean latency (ns)               : 26691860314
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 50.00 percentile latency (ns)   : 20059250922
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 90.00 percentile latency (ns)   : 53874205935
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 95.00 percentile latency (ns)   : 80673791338
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 97.00 percentile latency (ns)   : 98551489151
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 99.00 percentile latency (ns)   : 106750262282
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 99.90 percentile latency (ns)   : 106750262282
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Completed tokens per second                 : 17654.64
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Min First Token latency (ns)                : 4040294201
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Max First Token latency (ns)                : 7268561005
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: Mean First Token latency (ns)               : 6101996981
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 50.00 percentile first token latency (ns)   : 61314832
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 40
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 90.00 percentile first token latency (ns)   : 7014927690
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 95.00 percentile first token latency (ns)   : 7087712989
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 97.00 percentile first token latency (ns)   : 7165301753
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 99.00 percentile first token latency (ns)   : 7268561005
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0: 99.90 percentile first token latency (ns)   : 7268561005
+2026-07-27 23:29:54,588 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: Min Time per Output Token (ns)                : 3634569
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: Max Time per Output Token (ns)                : 6242442
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: Mean Time per Output Token (ns)               :
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 5409334
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 50.00 percentile time to output token (ns)   : 5477391
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 90.00 percentile time to output token (ns)   : 6028894
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 95.00 percentile time to output token (ns)   : 6138881
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 97.00 percentile time to output token (ns)   :
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 6203838
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 99.00 percentile time to output token (ns)   : 6242442
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 99.90 percentile time to output token (ns)   : 6242442
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: Test Parameters Used
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: ================================================
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: samples_per_query : 1
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: target_qps : 57.96
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: ttft_latency (ns): 1500000000
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: tpot_latency (ns): 15000000
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: max_async_queries : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: min_duration (ms): 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: max_duration (ms): 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: min_query_count : 100
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: max_query_count : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: qsl_rng_seed : 2085463073848966840
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: sample_index_rng_seed : 2747215439041700203
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: schedule_rng_seed : 16159082839903944936
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: accuracy_log_rng_seed : 720381539243781796
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: accuracy_log_probability :
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: accuracy_log_sampling_target : 100
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: print_timestamps : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: performance_issue_unique : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: performance_issue_same : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: performance_issue_same_index : 0
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: performance_sample_count : 4388
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: accuracy_sample_count : 4388
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: 1 warning encountered. See detailed log.
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: No errors encountered during test.
+2026-07-27 23:29:54,589 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:54,571 INFO] [ llmlib/__init__.py:184 TrtllmServeClientHarnessOp.wrap_lg_test ] Test Complete. Cleaning up LLMServer...
+2026-07-27 23:29:54,998 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:54,998 - sflow.task.mlperf_harness - INFO - Processing: 100%|██████████| 100/100 [01:48<00:00, 0.35samples/s] Stats=[ 0.92 samples/s, 3466.61 tokens/s, 6.24 TPOT(ms) ]
+2026-07-27 23:29:55,868 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:55,852 utils.py:442 INFO RANK=0] Harness iteration stats dumped to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_iteration_stats.log
+2026-07-27 23:29:55,868 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:55,856 utils.py:391 INFO RANK=0] Harness stats saved to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_stats.log
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 utils.py:421 INFO RANK=0] Harness timeline plot generated to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_stats_timeline.png
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#2 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#1 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#0 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 INFO] [ LLMServer-396151 server.py:206 LLMServer.stop_work ] Total Samples Completed: 100
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#3 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: /bin/dash: 1: sudo: not found
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,081 harness.py:94 INFO RANK=0] WARNING: Failed to reset vboost slider.
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,113 lg_logs.py:317 INFO RANK=0] Converting perf metric from Scenario.Server to Scenario.Interactive
+2026-07-27 23:29:56,125 - sflow.task.mlperf_harness - INFO - 0: [2026-07-27 23:29:56,114 utils.py:55 INFO RANK=0] Running command: /usr/bin/python /work/3rdparty/mlc-inference/compliance/TEST06/run_verification.py --compliance_dir=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive --output_dir=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive --scenario=Interactive --dtype=int32
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: First token check pass: True
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: EOS check pass: True
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: Sample length check pass: True
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: TEST06 verification complete
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: ======================== Result summaries: ========================
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0:
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: Interactive Scenario:
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: +----------------------------------------+-------------+-----------+--------------------+---------------------------+------------------------------------+------------------+------------------+
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: | System Name                            | Benchmark   | Setting   | Valid?             | Per-query time usage      | Metric Name                        |   Measured Value | Avg. Power (W)   |
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: +========================================+=============+===========+====================+===========================+====================================+==================+==================+
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: | GB200-NVL72_GB200-186GB_aarch64x72_TRT | deepseek-r1 | cp990     | INVALID (duration) | TTFT: 484.6%, TPOT: 41.6% | result_completed_tokens_per_second |         17654.60 | N/A              |
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: +----------------------------------------+-------------+-----------+--------------------+---------------------------+------------------------------------+------------------+------------------+
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0:   * Note: 'Per-query time usage' is the measured 99th-perce
+2026-07-27 23:29:56,277 - sflow.task.mlperf_harness - INFO - 0: ntile latency divided by the requested server latency. This value should not exceed 100% for a 'VALID' result.
+2026-07-27 23:29:57,095 - sflow.task.mlperf_harness - INFO - 0: === mlperf_harness run_harness exited with 0; outside validation will decide job status ===

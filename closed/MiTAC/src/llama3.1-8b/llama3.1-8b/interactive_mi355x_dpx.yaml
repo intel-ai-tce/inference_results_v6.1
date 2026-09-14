@@ -1,0 +1,147 @@
+# benchmark details
+benchmark_name: llama3_1-8b-interactive
+scenario: server
+test_mode: performance
+engine_version: async
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO" #"ERROR", "INFO", "DEBUG"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_V1: 1 #0
+  VLLM_ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 2560
+  VLLM_ROCM_USE_AITER_CUSTOM_ALL_REDUCE: 1
+  VLLM_TRITON_FP4_GEMM_USE_ASM: 0
+  VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: 0 #0 check this one
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1 #1 check this one
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_PAGED_ATTN: 0 #0, this one has conflict with VLLM_V1_USE_PREFILL_DECODE_ATTENTION
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_USE_AITER_TRITON_ROPE: 1 #1 using 0 with Zsolt's latest docker and older version of harness
+  #VLLM_USE_AITER_TRITON_SILU_MUL: 1 #1
+  VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: 1 #1 check this one
+  VLLM_V1_USE_PREFILL_DECODE_ATTENTION: 0
+  VLLM_USE_AITER_UNIFIED_ATTENTION: 0 #0
+  #VLLM_ROCM_USE_AITER_MHA: 1 #1
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1 #1, to check accuracy
+  #VLLM_USE_FUSED_ALLREDUCE_RMSNORM: 1
+  VLLM_MIN_REQUEST_DECODE_STEP: 32 #32, 32, 16, 48, 32, 48
+  # Prefill-admission cadence. NOTE: this knob is INERT in the stock v0.22.0 image
+  # (the build-time scheduler patch was never applied -> verified no symbol in vllm).
+  # It can be made live with code/patches/apply_scheduler_patch.py. MEASURED effect
+  # once live, Interactive @qps790 (TTFT p99 / VALID):
+  #   0 (off/stock) -> 456ms VALID | 11 -> 640ms INVALID | 11+adaptive_hwm64 -> 650ms INVALID.
+  # Interactive is TTFT-bound with TPOT headroom, so throttling prefill is the WRONG
+  # direction here -> keep the cadence OFF (0). (The cadence only helps TPOT-bound
+  # scenarios like Offline/Server.)
+  VLLM_SUBSEQUENT_DECODE_STEPS: 0 #was 11; measured optimum for Interactive = 0 (stock)
+  # Prefill-tokens-per-step cap (code/patches/apply_prefill_cap_patch.py). Splits the
+  # rare "monster" prefill steps (a burst packs up to ~1366 reqs / 73728 tokens into
+  # ONE ~50-80ms step -> head-of-line blocks mid-burst arrivals -> TTFT p99 tail).
+  # Chunked prefill does NOT fix this (prompts are short <=2668; the monster is MANY
+  # prompts, not one long one). Decode throttling can't help (decode ~0.2% of those
+  # steps). Capping the aggregate prefill/step spends the TPOT headroom (16 vs 30ms)
+  # for TTFT. MEASURED (MI355X, 8 DP engines), p99 TTFT (<=500ms) / p99 TPOT (<=30ms):
+  #   qps810: off->600ms INVALID | 12288->372ms VALID | 16384->429ms VALID
+  #   qps830: 12288->490ms VALID(tight) | 16384->447ms VALID
+  # Finer sweep (12288 -> 3072): 6144 is the knee -> lowest p99 TTFT (~445ms) with TPOT
+  # still comfortably valid; below 6144 TPOT starts climbing (too little prefill/step)
+  # while TTFT stops improving. -> 6144 is the measured optimum.
+  VLLM_MAX_PREFILL_TOKENS_PER_STEP: 6144 #0=off (stock). measured optimum for Interactive (knee of TTFT/TPOT tradeoff).
+  #VLLM_LLAMA2_MLPERF_SCHED: 1
+  #VLLM_LLAMA2_MLPERF_MAX_TARGET_DECODE_BATCH: 2048 #4096, 3072
+  #VLLM_LLAMA2_MLPERF_MIN_TARGET_DECODE_BATCH: 2048 #4096, 3072
+  #VLLM_LLAMA2_MLPERF_STEP_DECODE_BATCH: 256 #256
+  HARNESS_PRELOAD_AITER_KERNELS: 1 #this one helps 
+  #VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+  #VLLM_SCHED_PREFILL_KVC_FREEPCT: 0.75
+  #VLLM_USE_WEIGHT_STREAMING: true
+  #RCCL_MSCCL_ENABLE: 1
+  #NCCL_NSOCKS_PERTHREAD: 4
+  #NCCL_SOCKET_NTHREADS: 4
+  #RCCL_MSCCL_ENABLE: 1
+  #GPU_MAX_HW_QUEUES: 2
+  #HSA_KERNARG_POOL_SIZE: 4000000  
+  #The following is for fused kernels
+  ENGINE: vllm-rocm
+  VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT: 1 # perf; REQUIRES num_gpu_blocks_override<=131072 (see below) or accuracy collapses (int32 offset overflow in shuffle ASM PA)
+  HIP_ONLINE_TUNING: 0
+  HSA_NO_SCRATCH_RECLAIM: 1
+
+# configuration related to the LLM model.
+vllm_engine_config:
+  model: /model/
+  tokenizer: /lab-mlperf-inference/code/tokenizer_patch
+  dtype: bfloat16
+  tensor_parallel_size: 1
+  quantization: quark
+  trust_remote_code: True
+  max_model_len: 2668
+  gpu_memory_utilization: 0.95 # DPX: half-partition (~144GB)
+  enforce_eager: False # CUDA graphs; verified rouge1=38.52 with shuffle flag + num_gpu_blocks_override=131072
+  disable_custom_all_reduce: False
+  max_num_batched_tokens: 98304 #swept @qps886: p99 TTFT noise-dominated ~435-533ms near 500ms limit; 98304 best VALID single (434.8ms). completed flat ~883, TPOT ~16ms (limit 30). was 73728
+  max_num_seqs: 4096 # DPX: seqs=3072 @1115 still INVALID (TPOT 31ms) -> kept 4096
+  enable_chunked_prefill: True #False, True
+  enable_prefix_caching: False
+  async_scheduling: True
+  num_gpu_blocks_override: 122880 # DPX: ~120GB KV per 144GB partition; <131072 keeps shuffle ASM PA int32 offset safe.
+  attention_backend: ROCM_AITER_FA
+  compilation_config:
+    cudagraph_mode: FULL_AND_PIECEWISE
+    compile_sizes: [1,2,4,8,16,32,64,128,256,512,1024,2048,4096] # DPX: lean list (16 engines capture in parallel -> avoid CPU-contended slow compiles)
+    cudagraph_capture_sizes: [4096,4032,3968,3904,3840,3776,3712,3648,3584,3520,3456,3392,3328,3264,3200,3136,3072,3008,2944,2880,2816,2752,2688,2624,2560,2496,2432,2368,2304,2240,2176,2112,2048,1984,1920,1856,1792,1728,1664,1600,1536,1472,1408,1344,1280,1216,1152,1088,1024,960,896,832,768,704,640,576,512,448,384,320,256,192,128,64,32,16,8,4,2,1]
+# configuration related to the sampling params
+vllm_sampling_config:
+  # temperature=0 -> greedy/argmax fast path (token-identical to temp=1 + top_k=1),
+  # skips per-step random-sampling kernels. Validated on Offline: +10.5% throughput.
+  temperature: 0 #was 1
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 128 #2000
+  min_tokens: 1 #2
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/cnn_eval.json
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama3.1-8b/user_mi355x.conf
+  # Prefill-aware request routing across the 8 DP engines (harness-side dispatch,
+  # MLPerf-legal). Generalizes shortest_queue: routes by
+  #   score = (sent-finished) + beta*(sent-first_seen)
+  # i.e. up-weights each engine's PENDING-PREFILL backlog (reqs dispatched but not
+  # yet at first token) -- which is exactly what a new arrival's TTFT queues behind,
+  # unlike decoding reqs (~0.2% of a step). Plain shortest_queue (beta=0) counts
+  # decoders equally and so mis-routes bursts. Implemented in
+  # harness_llm/backends/common/{server_utils,server_sut}.py.
+  # MEASURED (MI355X 8x, qps=900, cap=6144): TTFT p99 445->192ms (-57%),
+  # TPOT p99 18ms. beta=8 is the knee (beta=2->254, 4->267, 8->192, 16->222ms).
+  # This flips Interactive from TTFT-bound to TPOT-bound: at qps1050 TTFT p99 is
+  # still fine (371ms<500) but TPOT p99 31.5ms>30 -> INVALID, so the valid ceiling
+  # is now ~1000-1020 (TPOT-bound), up from ~900 (was TTFT-bound). VERIFY exact qps.
+  schedule_algo: shortest_queue_prefill #was shortest_queue (default); prefill-backlog-aware
+  prefill_backlog_weight: 8 #beta; 0==shortest_queue. measured knee for Interactive
+  target_qps: 1105 # DPX16+NPS2 KNEE (fulu base, cu128 kernels): 1105=141,392 tok/s VALID (TPOT p99 29.67ms; 1110 INVALID 30.08ms). TPOT-bound at 30ms wall. Beats SPX 136,016 (+3.95%). -1 => use conf
+  total_sample_count: 13368
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  warmup_duration: 0
+  enable_warmup: True #False
+  warm_up_sample_count_per_server: 8800
+  device_count: 16 # DPX: 2 compute partitions x 8 physical GPUs
+  debug_dump_model_output: False

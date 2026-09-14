@@ -1,0 +1,8 @@
+# Intentionally empty.
+#
+# The amdsiloai/pytorch-xdit:v26.6 base image already provides torch, xDiT,
+# AITER, flash-attn, transformers, diffusers, huggingface_hub, etc. Adding
+# entries here risks shadowing the curated versions in the base image.
+#
+# Pure-Python harness deps (PyYAML) are declared in pyproject.toml so they
+# are installed by `pip install -e .` -- but only if not already present.

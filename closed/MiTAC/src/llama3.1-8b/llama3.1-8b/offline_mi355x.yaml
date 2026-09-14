@@ -1,0 +1,140 @@
+# benchmark details
+benchmark_name: llama3_1-8b
+scenario: offline 
+test_mode: performance
+backend: vllm
+engine_version: async #this one leads to higher performance for Offline
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO" #"ERROR", "INFO", "DEBUG"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_V1: 1 #0
+  VLLM_ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 2560
+  VLLM_ROCM_USE_AITER_CUSTOM_ALL_REDUCE: 1
+  VLLM_TRITON_FP4_GEMM_USE_ASM: 0
+  VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: 0 #0 check this one
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1 #1 check this one
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_PAGED_ATTN: 0 #0, this one has conflict with VLLM_V1_USE_PREFILL_DECODE_ATTENTION
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_USE_AITER_TRITON_ROPE: 1 #1 using 0 with Zsolt's latest docker and older version of harness
+  VLLM_USE_AITER_TRITON_SILU_MUL: 1 #1
+  VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: 1 #1 check this one
+  VLLM_V1_USE_PREFILL_DECODE_ATTENTION: 0
+  VLLM_USE_AITER_UNIFIED_ATTENTION: 0 #0
+  #VLLM_ROCM_USE_AITER_MHA: 1 #1
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1 #1, to check accuracy
+  #VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT: 1 # accuracy is failing with this ASM PA
+  #VLLM_USE_FUSED_ALLREDUCE_RMSNORM: 1
+  VLLM_MIN_REQUEST_DECODE_STEP: 32 #32, 32, 16, 48, 32, 48
+  # Cadence now LIVE via code/patches (apply_scheduler_patch.py). MEASURED on this
+  # stack (v0.22): cadence strictly REGRESSES Offline throughput (samples/s):
+  #   0 -> 1064.1 | 7 -> 1046.2 (-1.7%) | 11 -> 1026.9 (-3.5%) | 24 -> 972.7 (-8.6%).
+  # v0.22's V1 scheduler is already well-pipelined; throttling prefill only hurts.
+  # Keep OFF (0). (Was 11, but that value was inert before the patch was wired in.)
+  VLLM_SUBSEQUENT_DECODE_STEPS: 0 #was 11 (inert); 0 = measured Offline optimum (stock)
+  #VLLM_LLAMA2_MLPERF_SCHED: 1
+  #VLLM_LLAMA2_MLPERF_MAX_TARGET_DECODE_BATCH: 2048 #2048, 3072
+  #VLLM_LLAMA2_MLPERF_MIN_TARGET_DECODE_BATCH: 2048 #2048, 3072
+  #VLLM_LLAMA2_MLPERF_STEP_DECODE_BATCH: 256 #256
+  HARNESS_PRELOAD_AITER_KERNELS: 1 #this one helps
+  #VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+  #VLLM_SCHED_PREFILL_KVC_FREEPCT: 0.75 #0.75, 
+  #VLLM_USE_WEIGHT_STREAMING: true
+  #RCCL_MSCCL_ENABLE: 1
+  #NCCL_NSOCKS_PERTHREAD: 4
+  #NCCL_SOCKET_NTHREADS: 4
+  #RCCL_MSCCL_ENABLE: 1
+  #The following is for fused kernels
+  ENGINE: vllm-rocm
+  VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT: 1 # accuracy with this ASM PA due to GQA,  --num-gpu-blocks-override 131072
+  HIP_ONLINE_TUNING: 0 
+  HSA_NO_SCRATCH_RECLAIM: 1 
+ 
+# configuration related to the LLM model.
+vllm_engine_config:
+  model: /model/
+  tokenizer: /lab-mlperf-inference/code/tokenizer_patch
+  dtype: bfloat16
+  tensor_parallel_size: 1
+  quantization: quark #MXFP4 weights + FP8 KV cache (redline/flywheel q1 model)
+  trust_remote_code: True
+  max_model_len: 2668
+  gpu_memory_utilization: 0.97 #0.96
+  enforce_eager: False
+  disable_custom_all_reduce: False
+  max_num_batched_tokens: 24576 #swept: peak 24576 (~1211-1224 sps); 65536->1172, 98304->1134
+  max_num_seqs: 6144 #swept at mnbt=24576: 6144 best (~1220); 9600->1216, 10752->1208
+  enable_chunked_prefill: True #False
+  attention_backend: ROCM_AITER_FA
+  #trust_request_chat_template: True # newly added
+  #num_gpu_blocks_override: 131072 # caps KV cache (~128GB) and concurrency; let gpu_memory_utilization size it instead
+  enable_prefix_caching: False
+  async_scheduling: True
+  #kv_cache_dtype: fp8
+  #block_size: 16
+  compilation_config:
+    cudagraph_mode: FULL_AND_PIECEWISE
+    # Trimmed from 157 -> 14 sizes. MEASURED: identical Offline throughput
+    # (1058.8 vs 1055-1062 samples/s) with ~2x faster graph capture (19s vs 39s)
+    # and ~1 GiB/GPU less capture memory. compile_sizes drives full inductor
+    # specialization per size; beyond a handful the runtime gain is negligible
+    # while warmup cost is large. cudagraph_capture_sizes (below) is kept dense
+    # since it's cheap and reduces decode-batch padding.
+    # Capped at max_num_seqs=6144 (was 9600): sizes above the max decode batch are
+    # never used. Dense step-64 (cap64 sweep: 1224 sps) minimizes decode-batch
+    # padding; coarser lists add padding and can fail FULL_AND_PIECEWISE capture.
+    compile_sizes: [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,6144]
+    cudagraph_capture_sizes: [6144,6080,6016,5952,5888,5824,5760,5696,5632,5568,5504,5440,5376,5312,5248,5184,5120,5056,4992,4928,4864,4800,4736,4672,4608,4544,4480,4416,4352,4288,4224,4160,4096,4032,3968,3904,3840,3776,3712,3648,3584,3520,3456,3392,3328,3264,3200,3136,3072,3008,2944,2880,2816,2752,2688,2624,2560,2496,2432,2368,2304,2240,2176,2112,2048,1984,1920,1856,1792,1728,1664,1600,1536,1472,1408,1344,1280,1216,1152,1088,1024,960,896,832,768,704,640,576,512,448,384,320,256,192,128,64,32,16,8,4,2,1]   
+# configuration related to the sampling params
+vllm_sampling_config:
+  # temperature=0 -> vLLM greedy/argmax fast path. Output is token-identical to the
+  # previous temperature=1 + top_k=1 (top_k=1 already forces argmax), but skips the
+  # random-sampling kernels. MEASURED Offline: 1166.6 vs 1055-1062 samples/s (+10.5%).
+  # Profiler showed aten::exponential_ (Gumbel noise) + _topk_topp_kernel were ~15.5%
+  # of decode GPU time on this decode-bound workload.
+  temperature: 0 #was 1 (with top_k=1 -> already greedy); 0 = argmax fast path
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 128 
+  min_tokens: 1 #2
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/cnn_eval.json
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama3.1-8b/user_mi355x.conf
+  target_qps: -1 # -1 => Offline.target_qps taken from user_mi355x.conf
+  # v6.1 Closed needs a >=600s Offline run. In this harness main.py pins LoadGen to
+  # min_query_count=max_query_count=total_sample_count whenever this differs from the
+  # per-model default (13368), so total_sample_count directly sets how many queries
+  # Offline issues (min_duration does NOT extend Offline here). At ~1220 samples/s,
+  # 802080 (=13368*60) queries => ~657s wall (>600s). QSL stays capped to the 13368
+  # distinct dataset samples; LoadGen draws the 802080 with replacement.
+  total_sample_count: 802080 #13368*60 -> ~657s @ ~1220 samples/s (v6.1 600s floor)
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  warmup_duration: 0
+  enable_warmup: True #False
+  warm_up_sample_count_per_server: 8800  
+  #sorting:
+    #strategy: lexicographic
+  #sort_samples: descending # ascending, modulo_desc, batchpacking, descending, modulo_asc, lexicographic
+  device_count: 8 #8, 1
+  debug_dump_model_output: False 

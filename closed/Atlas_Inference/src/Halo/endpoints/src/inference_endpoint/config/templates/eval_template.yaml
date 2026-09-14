@@ -1,0 +1,33 @@
+# Accuracy Evaluation
+name: "accuracy-eval"
+version: "1.0"
+type: "eval"
+
+model_params:
+  name: "meta-llama/Llama-3.1-8B-Instruct"
+  temperature: 0.0
+  max_new_tokens: 2048
+
+datasets:
+  - name: "gpqa"
+    type: "accuracy"
+    path: "datasets/gpqa.jsonl"
+    samples: 500
+    eval_method: "exact_match"
+
+settings:
+  runtime:
+    scheduler_random_seed: 42 # For Poisson/distribution sampling
+    dataloader_random_seed: 42 # For dataset shuffling
+
+  load_pattern:
+    type: "max_throughput"
+
+  client:
+    num_workers: 4
+
+endpoint_config:
+  endpoints:
+    - "http://localhost:8000"
+  api_key: null
+  api_type: "openai" # Options: openai or sglang

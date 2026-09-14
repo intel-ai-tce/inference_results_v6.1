@@ -1,0 +1,24 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG SGLANG_DIR=setup/sglang
+ARG GPU_ARCH=gfx950
+ARG BUILD_FLAGS="--no-deps"
+
+# Re-install sglang
+COPY ${SGLANG_DIR} /lab-mlperf-inference/sglang
+RUN cd /lab-mlperf-inference/sglang \
+    && python3 -m pip uninstall -y sgl_kernel sglang \
+    && rm -rf /sgl-workspace/sglang \
+    && pip install --upgrade pip \
+    && cd sgl-kernel \
+    && rm -f pyproject.toml \
+    && mv pyproject_rocm.toml pyproject.toml \
+    && AMDGPU_TARGET=${GPU_ARCH} python setup_rocm.py install \
+    && cd .. \
+    && rm -rf python/pyproject.toml && mv python/pyproject_other.toml python/pyproject.toml \
+    && python -m pip --no-cache-dir install -e "python[all_hip]" ${BUILD_FLAGS} \
+    && python -m pip cache purge
+
+WORKDIR /lab-mlperf-inference/code/

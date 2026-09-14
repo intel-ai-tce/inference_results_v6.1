@@ -1,0 +1,102 @@
+FROM rocm/dev-ubuntu-22.04@sha256:b4be4b0b29e46d56e9bea2cd06500f4519aaac30dc5df02bd4710bbf393c1c4c
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ARG PYTHON_VERSION=3.12
+ARG MAX_JOBS=16
+ARG PYTORCH_REPOSITORY=https://github.com/ROCm/pytorch.git
+ARG PYTORCH_REVISION=89075173
+ARG TORCHVISION_REPOSITORY=https://github.com/pytorch/vision.git
+ARG TORCHVISION_REVISION=d801a34632023859a0a274803d6abaf0a45d77a5
+ARG TORCHVISION_VERSION=0.24.1+d801a34
+ARG TRITON_REPOSITORY=https://github.com/ROCm/triton.git
+ARG TRITON_REVISION=57c693b6
+ARG FLASH_ATTENTION_REPOSITORY=https://github.com/Dao-AILab/flash-attention.git
+ARG FLASH_ATTENTION_REVISION=0e60e394
+ARG VLLM_REPOSITORY=https://github.com/vllm-project/vllm.git
+ARG VLLM_REVISION=11b6af5280d6d6dfb8953af16e67b25f819b3be9
+ARG AITER_REPOSITORY=https://github.com/ROCm/aiter.git
+ARG AITER_REVISION=6af8b687480509d67f42a69bca7ed092c432e8dc
+ARG MLPERF_LOADGEN_REPOSITORY=https://github.com/mlcommons/inference.git
+ARG MLPERF_LOADGEN_TAG=v5.1.1
+ARG MLPERF_LOADGEN_REVISION=6776245e99dce0600cfc9a6fb61efd310f87de3d
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    VIRTUAL_ENV=/opt/vllm-venv \
+    PATH=/opt/vllm-venv/bin:$PATH \
+    PYTORCH_ROCM_ARCH=gfx950 \
+    AITER_ROCM_ARCH=gfx950 \
+    GPU_TARGETS=gfx950 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    MAX_JOBS=${MAX_JOBS}
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates curl git git-lfs gnupg software-properties-common \
+        build-essential cmake ninja-build ccache pkg-config \
+        libopenblas-dev libssl-dev libffi-dev libnuma-dev libyaml-cpp-dev \
+        python3-pip python3-setuptools python3-wheel \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python${PYTHON_VERSION} python${PYTHON_VERSION}-dev python${PYTHON_VERSION}-venv \
+    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/local/bin/python \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python -m venv "$VIRTUAL_ENV" \
+    && python -m pip install --upgrade pip wheel "setuptools<80" \
+    && python -m pip install \
+        astunparse hypothesis numpy pybind11==3.0.1 pyyaml requests six sympy typing_extensions \
+        filelock jinja2 networkx fsspec mpmath packaging psutil
+
+RUN git clone --depth=1 --branch "${MLPERF_LOADGEN_TAG}" "${MLPERF_LOADGEN_REPOSITORY}" /opt/src/mlperf-inference \
+    && test "$(git -C /opt/src/mlperf-inference rev-parse HEAD)" = "${MLPERF_LOADGEN_REVISION}" \
+    && python -m pip install --no-build-isolation /opt/src/mlperf-inference/loadgen \
+    && rm -rf /opt/src/mlperf-inference
+
+RUN git clone --filter=blob:none --no-checkout "$PYTORCH_REPOSITORY" /opt/src/pytorch \
+    && git -C /opt/src/pytorch checkout --detach "$PYTORCH_REVISION" \
+    && git -C /opt/src/pytorch submodule sync --recursive \
+    && git -C /opt/src/pytorch submodule update --init --recursive --depth 1 \
+    && cd /opt/src/pytorch \
+    && python tools/amd_build/build_amd.py \
+    && python -m pip install -r requirements.txt \
+    && python -m pip install "cmake<4" \
+    && USE_ROCM=1 BUILD_TEST=0 MAX_JOBS="${MAX_JOBS}" python setup.py bdist_wheel \
+    && python -m pip install dist/torch-*.whl \
+    && cd /tmp && python -c 'import torch; assert torch.version.hip, torch.__version__'
+
+RUN git clone --filter=blob:none --no-checkout "$TORCHVISION_REPOSITORY" /opt/src/vision \
+    && git -C /opt/src/vision checkout --detach "$TORCHVISION_REVISION" \
+    && cd /opt/src/vision \
+    && BUILD_VERSION="$TORCHVISION_VERSION" python setup.py bdist_wheel \
+    && python -m pip install --no-deps dist/torchvision-*.whl \
+    && cd /tmp && python -c 'import importlib.metadata as metadata, torch; assert torch.__version__ == "2.9.1+git8907517", torch.__version__; assert torch.version.hip, torch.__version__; assert metadata.version("torchvision") == "0.24.1+d801a34", metadata.version("torchvision")'
+RUN git clone --filter=blob:none --no-checkout "$TRITON_REPOSITORY" /opt/src/triton \
+    && git -C /opt/src/triton checkout --detach "$TRITON_REVISION" \
+    && python -m pip install --no-build-isolation /opt/src/triton \
+    && git clone --filter=blob:none --no-checkout "$FLASH_ATTENTION_REPOSITORY" /opt/src/flash-attention \
+    && git -C /opt/src/flash-attention checkout --detach "$FLASH_ATTENTION_REVISION" \
+    && cd /opt/src/flash-attention \
+    && GPU_ARCHS=gfx950 python -m pip install --no-build-isolation .
+
+RUN git clone "$VLLM_REPOSITORY" /opt/src/vllm \
+    && git -C /opt/src/vllm checkout --detach "$VLLM_REVISION" \
+    && cd /opt/src/vllm \
+    && python -m pip install -r requirements/rocm.txt \
+    && GPU_TARGETS=gfx950 python setup.py develop \
+    && git clone "$AITER_REPOSITORY" /opt/src/aiter \
+    && git -C /opt/src/aiter checkout --detach "$AITER_REVISION" \
+    && cd /opt/src/aiter \
+    && python -m pip install -U "setuptools<80" \
+    && python -m pip install .
+
+ARG AMDSMI_VERSION=26.0.0+37d158ab
+ARG OMEGACONF_VERSION=2.3.1
+
+RUN python -m pip install --no-cache-dir --no-build-isolation "omegaconf==${OMEGACONF_VERSION}" /opt/rocm/share/amd_smi
+
+RUN AMDSMI_EXPECT="${AMDSMI_VERSION}" OMEGACONF_EXPECT="${OMEGACONF_VERSION}" LOADGEN_EXPECT="5.1.1" MLPERF_LOADGEN_TAG="${MLPERF_LOADGEN_TAG}" python -c 'import importlib.metadata as metadata, os, amdsmi, omegaconf, pybind11, torch, torchvision, triton, vllm, aiter; aiter_version = metadata.version("aiter"); assert torch.__version__ == "2.9.1+git8907517", torch.__version__; assert torch.version.hip, torch.__version__; assert torchvision.__version__ == "0.24.1+d801a34", torchvision.__version__; assert triton.__version__ == "3.4.0", triton.__version__; assert vllm.__version__ == "0.14.0rc1", vllm.__version__; assert aiter_version.startswith("0.1.7.post5.dev1+g6af8b6874"), aiter_version; assert metadata.version("pybind11") == "3.0.1"; assert metadata.version("mlcommons_loadgen") == os.environ["LOADGEN_EXPECT"]; assert metadata.version("amdsmi") == os.environ["AMDSMI_EXPECT"]; assert metadata.version("omegaconf") == os.environ["OMEGACONF_EXPECT"]; print("vllm=" + vllm.__version__ + " torch=" + torch.__version__ + " hip=" + str(torch.version.hip) + " torchvision=" + torchvision.__version__ + " triton=" + triton.__version__ + " aiter=" + aiter_version + " pybind11=" + metadata.version("pybind11") + " amdsmi=" + metadata.version("amdsmi") + " omegaconf=" + metadata.version("omegaconf") + " mlcommons_loadgen=" + metadata.version("mlcommons_loadgen") + " mlperf_loadgen_source=" + os.environ["MLPERF_LOADGEN_TAG"])'
+
+CMD ["sleep", "infinity"]

@@ -1,0 +1,51 @@
+variables:
+  # IFB topology — B300 x16 (2 DP ranks x TP8).
+  DP_MULTIPLICITY:
+    type: integer
+    value: 2
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 8
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+
+  BASE_PORT:
+    value: 8336
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/deepseek-r1/official/centml-DeepSeek-R1-NVFP4-v2-mlpinf/93947a0d7bd04f73ff98636f6b18ff5839e7aaf9
+  TRTLLM_YAML:
+    value: /work/configs/deepseek_r1/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml
+  TRTLLM_ENV_EXPORTS:
+    value: |
+      export TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER='1'
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export OMPI_MCA_coll_ucc_enable='0'
+      export TRTLLM_ENABLE_PDL='0'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+  HTTP_INTERFACE:
+    value: ""
+  HARNESS_CONFIG_DIR:
+    value: /work/configs/deepseek_r1/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Offline
+
+  BENCHMARK:
+    value: deepseek-r1
+  SCENARIO:
+    value: Offline
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx16
+  TEST_MODE:
+    value: PerformanceOnly
+  LOADGEN_MODE:
+    value: full
+  HARNESS_EXTRA_ARGS:
+    value: ""

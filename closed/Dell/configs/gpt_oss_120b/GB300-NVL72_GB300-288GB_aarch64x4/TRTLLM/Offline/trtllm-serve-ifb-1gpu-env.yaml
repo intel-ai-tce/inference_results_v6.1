@@ -1,0 +1,7 @@
+'TLLM_DISABLE_TINYGEMM2': '1'
+'TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER': '1'
+# VSWA per-window KV pool split (ascending window order: 128, 32768). REQUIRED with
+# max_attention_window: the default is EQUAL shares per window, which halves the
+# full-attention pool and caps the decode batch at ~931 instead of 1792. 5% amply
+# covers the sliding pool (1792 seqs x ~160 tok); 95% -> full pool ~1830 seqs.
+'TRTLLM_WINDOW_SIZE_SHARES': '0.05,0.95'

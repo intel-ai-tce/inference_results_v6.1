@@ -1,0 +1,19 @@
+# Wan 2.2 T2V VisualGenArgs — B200 Offline (1 GPU per replica).
+#
+# Mirrors the v6.0 reference B200 Offline (cfg_size=1, ulysses_size=1). Mapping:
+#   v6_0 attn_type='te-fp8'              -> attention_config.backend: TE
+#   v6_0 linear_type='te-fp8-per-tensor' -> linear FP8 from the checkpoint.
+#
+# quant_config intentionally OMITTED: MODEL_PATH is a pre-quantized ModelOpt
+# FP8 checkpoint whose transformer config.json carries quantization_config
+# (FP8, static per-tensor). With no user quant_algo, VisualGenArgs loads that
+# embedded config.
+#
+# Determinism: fixed_latent_path via TLLM_VISUAL_GEN_FIXED_LATENT_PATH (worker_env.yaml).
+attention_config:
+  backend: TE
+parallel_config:
+  cfg_size: 1
+  ulysses_size: 1
+cuda_graph_config:
+  enable: false

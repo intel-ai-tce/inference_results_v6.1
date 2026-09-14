@@ -1,0 +1,76 @@
+# Shared slurm + container environment for wan22-a14b sflow submissions.
+# Per-submission configs (wan22_config.yaml) supply TOTAL_GPUS; per-scenario
+# slurm_envs may layer on top of this to override defaults.
+
+variables:
+  CONTAINER_IMAGE:
+    description: "Backend (server) image — TRT-LLM VisualGen with both TE FP8 and FA4 attention backends (sm100+sm103). Override via --set CONTAINER_IMAGE=... to use a custom .sqsh or a different registry tag."
+    value: "docker://registry.gitlab.com/nvidia/mlperf-inference-partner/nv-mlpinf-partner/wan22-trtllm-server:v6.1-jun26-wan22-trtllm-aarch64"
+  ENDPOINT_CONTAINER_IMAGE:
+    description: "Frontend (inference-endpoint client) image — Ubuntu 24.04 + mlcommons inference-endpoint + libgl1 for VBench. Override via --set ENDPOINT_CONTAINER_IMAGE=... to use a custom .sqsh or a different registry tag."
+    value: "docker://registry.gitlab.com/nvidia/mlperf-inference-partner/nv-mlpinf-partner/wan22-endpoint-client:v6.1-jun26-wan22-endpoints-aarch64"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/NVIDIA, bind-mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "REQUIRED. Host path to MLPerf scratch (models, fixed_latent.pt), bind-mounted at /home/mlperf_inference_storage. Set via --set SCRATCH_DIR=... (e.g. the shared MLPerf scratch on slurm clusters). Empty default so no host-specific path is baked in."
+    value: ""
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+
+  SLURM_ACCOUNT:
+    description: "REQUIRED. Slurm account (pass via --set SLURM_ACCOUNT=<your-account>)."
+    value: coreai_mlperf_inference
+  SLURM_PARTITION:
+    value: "gb300"
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  MASTER_PORT_BASE:
+    description: "Base port for the per-replica torch.distributed rendezvous (MASTER_PORT = MASTER_PORT_BASE + replica index). Override if it collides with other jobs on shared nodes."
+    type: integer
+    value: 35580
+  SEGMENT:
+    description: "NVLink-segment size in nodes for topology-aware placement. Default 1 = no multi-node co-location (independent replicas; Offline at any scale, and all single-node scenarios). Override to the node count for a scenario where one replica spans multiple nodes (x72 SingleStream = 18) so all 72 GPUs land in one NVL domain."
+    type: integer
+    value: 1
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+
+  - name: endpoint_sqsh
+    type: srun
+    container_image: ${{ variables.ENDPOINT_CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+    extra_args:
+      - "--exclusive"
+      - "--segment=${{ variables.SEGMENT }}"

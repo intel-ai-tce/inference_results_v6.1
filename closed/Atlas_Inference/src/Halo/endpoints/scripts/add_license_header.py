@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Add license headers to Python files."""
+
+import argparse
+import sys
+from datetime import datetime
+from pathlib import Path
+
+YEAR = datetime.now().year
+
+
+LICENSE_HEADER = f"""# SPDX-FileCopyrightText: Copyright (c) {YEAR} NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""
+
+
+def has_license_header(content: str) -> bool:
+    """Check if file already has a license header."""
+    return "SPDX-License-Identifier" in content or "Copyright" in content[:500]
+
+
+def add_header_to_file(filepath: Path) -> bool:
+    """Add license header to a file if it doesn't have one.
+
+    Returns:
+        True if file was modified, False otherwise.
+    """
+    content = filepath.read_text()
+
+    # Skip if already has header
+    if has_license_header(content):
+        # Check if year is correct
+        if str(YEAR) not in content[:500]:
+            # Search for original year and replace it in the first line
+            lines = content.split("\n")
+            for i, line in enumerate(lines):
+                if line.startswith("# SPDX-FileCopyrightText:") and "NVIDIA" in line:
+                    lines[i] = (
+                        f"# SPDX-FileCopyrightText: Copyright (c) {YEAR} NVIDIA CORPORATION & AFFILIATES. All rights reserved."
+                    )
+                    break
+            content = "\n".join(lines)
+            filepath.write_text(content)
+            return True
+        return False
+
+    # Handle shebang
+    if content.startswith("#!"):
+        lines = content.split("\n", 1)
+        shebang = lines[0] + "\n"
+        rest = lines[1] if len(lines) > 1 else ""
+        new_content = shebang + LICENSE_HEADER + rest
+    else:
+        new_content = LICENSE_HEADER + content
+
+    filepath.write_text(new_content)
+    return True
+
+
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(description="Add license headers to files")
+    parser.add_argument("files", nargs="+", help="Files to add headers to")
+    args = parser.parse_args()
+
+    modified = []
+    for filepath in args.files:
+        path = Path(filepath)
+        if path.suffix == ".py" and add_header_to_file(path):
+            modified.append(filepath)
+
+    if modified:
+        print(f"Added license headers to {len(modified)} file(s):")
+        for f in modified:
+            print(f"  - {f}")
+        return 1  # Return 1 to indicate files were modified
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

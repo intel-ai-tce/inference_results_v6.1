@@ -1,0 +1,124 @@
+# benchmark details
+benchmark_name: llama3_1-405b
+scenario: offline
+test_mode: performance
+backend: vllm
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO" #"ERROR", "INFO", "DEBUG"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_V1: 1 #0
+  VLLM_ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 2560
+  VLLM_ROCM_USE_AITER_CUSTOM_ALL_REDUCE: 1
+  VLLM_TRITON_FP4_GEMM_USE_ASM: 0
+  VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: 0 #0 check this one
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1 #1 check this one
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_PAGED_ATTN: 0 #0, this one has conflict with VLLM_V1_USE_PREFILL_DECODE_ATTENTION
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_USE_AITER_TRITON_ROPE: 1 #1 using 0 with Zsolt's latest docker and older version of harness
+  VLLM_USE_AITER_TRITON_SILU_MUL: 1 #1
+  VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: 1 #1 check this one
+  #VLLM_LLAMA2_MLPERF_SCHED: 1
+  #VLLM_LLAMA2_MLPERF_MAX_TARGET_DECODE_BATCH: 2048 #3072
+  #VLLM_LLAMA2_MLPERF_MIN_TARGET_DECODE_BATCH: 2048 #3072
+  #VLLM_LLAMA2_MLPERF_STEP_DECODE_BATCH: 32 #256
+  #HARNESS_PRELOAD_AITER_KERNELS: 1 #this one helps llama2 but may not help llama3
+  #VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+  VLLM_V1_USE_PREFILL_DECODE_ATTENTION: 0
+  VLLM_USE_AITER_UNIFIED_ATTENTION: 0 #0 
+  VLLM_ROCM_USE_AITER_MHA: 1 #1
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1 #1, to check accuracy
+  VLLM_MIN_REQUEST_DECODE_STEP: 32 #32, 32, 16, 48, 32, 48
+  VLLM_SUBSEQUENT_DECODE_STEPS: 11 #7, 6, 3, 9, 9, 6
+  #VLLM_SCHED_PREFILL_KVC_FREEPCT: 0.75
+  #VLLM_USE_WEIGHT_STREAMING: true
+  #RCCL_MSCCL_ENABLE: 1
+  #NCCL_NSOCKS_PERTHREAD: 4
+  #NCCL_SOCKET_NTHREADS: 4
+  #RCCL_MSCCL_ENABLE: 1
+
+# configuration related to the LLM model.
+vllm_engine_config:
+  model: /model/pruned_59_84/
+  dtype: bfloat16 #BFloat16
+  tensor_parallel_size: 2 #1, 8, 2, 4 
+  pipeline_parallel_size: 1
+  num_scheduler_steps: 1 #16
+  quantization: quark
+  max_model_len: 22512 #22016, 21988, 22000, 29000 
+  gpu_memory_utilization: 0.95 #0.97, 0.95
+  #max_seq_len_to_capture: 21988 #29000 
+  #max_cudagraph_capture_size: 512 #512, 1024, 1536, 2048, 2560, 3072, 5504  
+  enforce_eager: False #False, use False for torch compile, cudagraph capture 
+  disable_custom_all_reduce: False #need to set it as False to use QuickReduce feature
+  max_num_batched_tokens: 20162 #20162, 22016, 29000, 22000, 20166, 20160 
+  max_num_seqs: 1024 #960, 2816, 256, 384, 512, 768, 832, 896, 932, 1024, 1280
+  enable_chunked_prefill: True #False
+  enable_prefix_caching: False
+  disable_log_stats: False
+  block_size: 16
+  kv_cache_dtype: fp8
+  async_scheduling: True
+  #--compilation-config '{"custom_ops": ["-rms_norm", "-quant_fp8", "-silu_and_mul"]}'
+  #compilation_config:
+    #custom_ops: ["-rms_norm", "-quant_fp4", "-silu_and_mul"]
+  #compilation_config:
+  #cudagraph_mode: PIECEWISE 
+    #cudagraph_mode: FULL_AND_PIECEWISE #NONE, FULL, PIECEWISE, FULL_DECODE_ONLY
+    #compile_sizes: [2, 4, 8, 16, 32, 64, 128, 256, 512, 2048]
+    # cudagraph_capture_sizes is generated from cudagraph_capture_range
+    #cudagraph_capture_range: [[768, 0, -32], 24, 16, 8, 4, 2, 1]
+    #cudagraph_capture_range: [[22016, 0, -64], 56, 48, 40, 32, 24, 16, 8, 4, 2, 1]
+  #compilation_config:
+    #full_cuda_graph: True
+    #cudagraph_capture_sizes: [640, 608, 576, 544, 512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1]
+    #cudagraph_capture_sizes: [1024, 960, 896, 832, 768, 704, 640, 576, 512,448,384,320,256,192,128,64,32,16,8,4,2,1]
+    #cudagraph_capture_sizes: [768, 704, 640, 576, 512,448,384,320,256,192,128,64,32,16,8,4,2,1]
+  #compilation_config: '{"full_cuda_graph": true}'
+  #compilation_config: '{"full_cuda_graph": true, "cudagraph_capture_sizes": [768, 736, 704, 672, 640, 608, 576, 544, 512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1]}'
+  #compilation_config: '{"full_cuda_graph": true, "cudagraph_capture_sizes": [1536, 1504, 1472, 1440, 1408, 1376, 1344, 1312, 1280, 1248, 1216, 1184, 1152, 1120, 1088, 1056, 1024, 992, 960, 928, 896, 864, 832, 800, 768, 736, 704, 672, 640, 608, 576, 544, 512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1]}'
+
+# configuration related to the sampling params
+vllm_sampling_config:
+  temperature: 1
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 2000
+  min_tokens: 2
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/mlperf_llama3.1_405b_dataset_8313_processed_fp16_eval.pkl
+  mlperf_conf_path: /app/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/user_mi355x.conf
+  target_qps: -1 # 80
+  total_sample_count: 24939 #8313
+  output_log_dir: /app/logs
+  load_balance_token_weight: 0.005
+  enable_log_trace: False
+  warmup_duration: 0
+  enable_warmup: True #True
+  warm_up_sample_count_per_server: 20
+  sorting:
+    strategy: batchpacking
+  #sort_samples: ascending # ascending, modulo_desc, batchpacking, descending, modulo_asc, lexicographic
+  schedule_algo: shortest_queue_with_tokens
+  device_count: 8 #8 
+  duration_sec: 1 #-1

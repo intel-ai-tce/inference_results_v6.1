@@ -1,0 +1,7 @@
+{
+    "input_data_types": "fp32",
+    "retraining": "No",
+    "starting_weights_filename": "openai/gpt-oss-120b + gpt-oss-20b (MXFP4), intfloat/e5-base-v2, colbert-ir/colbertv2.0",
+    "weight_data_types": "mxfp4 (LLMs), fp32 (embedding/reranker)",
+    "weight_transformations": "MXFP4 quantization of the gpt-oss LLMs"
+}

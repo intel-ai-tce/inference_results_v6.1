@@ -1,0 +1,9 @@
+{
+    "server_type": "trtllm-ifb",
+    "model_path": "/home/mlperf_inference_storage/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4-6.1-submission",
+    "gpus_per_node": 4,
+    "dp_multiplicity": 72,
+    "gpus_per_dp_rank": 1,
+    "trtllm_yml": "configs/llama2_70b/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Server/trtllm-serve-ifb-1gpu.yaml",
+    "env_yml": "configs/llama2_70b/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Server/trtllm-serve-ifb-1gpu-env.yaml"
+}

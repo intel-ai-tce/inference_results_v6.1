@@ -1,0 +1,71 @@
++ '[' -n '' ']'
++ unset VIRTUAL_ENV VIRTUAL_ENV_PROMPT PYTHONHOME
++ SFLOW_ACTIVATE=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/activate
++ SFLOW_LOCK=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv.lock
++ mkdir -p /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv
++ flock -w 600 9
++ '[' -f /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/activate ']'
++ source /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ '[' linux-gnu = cygwin ']'
+++ '[' linux-gnu = msys ']'
+++ export VIRTUAL_ENV=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv
+++ VIRTUAL_ENV=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv
+++ _OLD_VIRTUAL_PATH=/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/home/alisachen_google_com/.codex/tmp/arg0/codex-arg0MpYkJg:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/home/alisachen_google_com/.codex/tmp/arg0/codex-arg0MpYkJg:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(.sflow_venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(.sflow_venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ hash -r
++ /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/uv pip install 'sflow @ git+https://github.com/NVIDIA/nv-sflow.git@6efbf59c4a835473b08362eb623358e3ace31d6e' --prerelease=allow
+Using Python 3.12.3 environment at: nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv
+Resolved 23 packages in 209ms
+Checked 23 packages in 0.92ms
++ source /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ '[' linux-gnu = cygwin ']'
+++ '[' linux-gnu = msys ']'
+++ export VIRTUAL_ENV=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv
+++ VIRTUAL_ENV=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv
+++ _OLD_VIRTUAL_PATH=/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/home/alisachen_google_com/.codex/tmp/arg0/codex-arg0MpYkJg:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/home/alisachen_google_com/.codex/tmp/arg0/codex-arg0MpYkJg:/home/alisachen_google_com/.codex/packages/standalone/releases/0.144.6-aarch64-unknown-linux-musl/codex-path:/home/alisachen_google_com/.local/bin:/home/alisachen_google_com/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(.sflow_venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(.sflow_venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ hash -r
++ cd /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA
++ /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_compute_node_venv/.sflow_venv/bin/sflow run --file /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/deepseek_config_sflow.yaml --file /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/slurm_env_sflow.yaml --file /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/scaleout/sflow/templates/trtllm_ifb_loadgen.yaml --set WORK_DIR=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA --set CONTAINER_IMAGE=/lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --set CONTAINER_MOUNTS=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/mlperf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --set TEST_MODE=AccuracyOnly --set HARNESS_EXTRA_ARGS= --set SLURM_ACCOUNT=coreai_mlperf_inference --set SLURM_PARTITION=a4x --set SLURM_TIME=04:00:00 --log-level error --workspace-dir /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA --output-dir /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z
++ SFLOW_RC=0
+++ find /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z -maxdepth 1 -type d -name '170701-*'
+++ head -1
++ SFLOW_WF_DIR=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-trtllm_ifb-20260724-182022-6856a6
++ '[' -n /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-trtllm_ifb-20260724-182022-6856a6 ']'
++ '[' -d /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-trtllm_ifb-20260724-182022-6856a6 ']'
++ SBATCH_OUT=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-sflow-submit.out
++ SBATCH_ERR=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-sflow-submit.err
++ cp /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-sflow-submit.out /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-trtllm_ifb-20260724-182022-6856a6/
++ cp /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-sflow-submit.err /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_submission_20260724T181836Z/170701-trtllm_ifb-20260724-182022-6856a6/

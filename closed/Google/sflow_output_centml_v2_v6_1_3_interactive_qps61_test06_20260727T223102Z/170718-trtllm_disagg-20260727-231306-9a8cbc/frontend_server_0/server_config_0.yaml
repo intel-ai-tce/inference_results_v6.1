@@ -1,0 +1,15 @@
+hostname: 10.128.0.106
+port: 8000
+backend: pytorch
+context_servers:
+  num_instances: 2
+  urls:
+  - 10.128.0.106:8336
+  - 10.128.0.111:8337
+generation_servers:
+  num_instances: 4
+  urls:
+  - 10.128.0.42:8340
+  - 10.128.0.38:8339
+  - 10.128.0.35:8338
+  - 10.128.0.99:8341

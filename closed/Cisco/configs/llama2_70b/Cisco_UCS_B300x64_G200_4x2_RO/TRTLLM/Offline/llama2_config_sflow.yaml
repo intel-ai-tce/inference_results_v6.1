@@ -1,0 +1,58 @@
+variables:
+  # IFB topology - B300 x64 scale (8 nodes x 8 GPU, one DP rank per GPU).
+  # 4x the x16 Offline config; per-GPU IFB workers are scale-free (same worker YAML).
+  DP_MULTIPLICITY:
+    type: integer
+    value: 64
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+
+  BASE_PORT:
+    value: 8336
+
+  MODEL_PATH:
+    # DeepSeek/GPT-OSS/Llama checkpoints live on shared storage mounted at
+    # /home/mlperf_inference_storage (see slurm_env_sflow.yaml SCRATCH_DIR).
+    value: /home/mlperf_inference_storage/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4
+  TRTLLM_YAML:
+    value: /work/configs/llama2_70b/Cisco_UCS_B300x64_G200_4x2_RO/TRTLLM/Offline/trtllm-serve-ifb-1gpu.yaml
+  TRTLLM_ENV_EXPORTS:
+    value: |
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export TRTLLM_ENABLE_PDL='1'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+  HTTP_INTERFACE:
+    value: ""
+  HARNESS_CONFIG_DIR:
+    value: /work/configs/llama2_70b/Cisco_UCS_B300x64_G200_4x2_RO/TRTLLM/Offline
+
+  BENCHMARK:
+    value: llama2-70b
+  SCENARIO:
+    value: Offline
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx64
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  LOADGEN_MODE:
+    description: >-
+      'full' = submission-valid loadgen settings from harness.py. 'dev' = short
+      probe run (exports MLPINF_LOADGEN_MODE=dev; harness.py swaps in short
+      min_duration + reduced sample count + MLPINF_DEV_QPS -> offline_expected_qps).
+    value: full
+  HARNESS_EXTRA_ARGS:
+    description: "Additional harness flags; TEST_MODE is passed separately."
+    value: ""

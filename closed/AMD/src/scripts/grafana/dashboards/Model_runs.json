@@ -1,0 +1,388 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_SQLITE",
+      "label": "SQLite",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "frser-sqlite-datasource",
+      "pluginName": "SQLite"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "frser-sqlite-datasource",
+      "name": "SQLite",
+      "version": "3.5.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.4.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "panels": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_SQLITE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "throughput"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 99
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "train_time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 104
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "epoch_num"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 104
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "log_file"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 112
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "model"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 134
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 19,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 1,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "pluginVersion": "11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "${DS_SQLITE}"
+              },
+              "queryText": "select\n  timestamp as time,\n  run_type,\n  system_name,\n  docker_image,\n  scenario,\n  perf_validity,\n  accuracy_validity,\n  perf_tokens_per_sec,\n  perf_samples_per_sec,\n  perf_target_qps,\n  ttft_lat_99pct_ns,\n  tpot_lat_99pct_ns,\n  rouge1,\n  rouge2,\n  rougeL,\n  tokens_per_sample,\n  vllm_commit,\n  harness_commit,\n  hipblaslt_commit,\n  power_settings,\n  artifact_path,\n  notes\nfrom results\nwhere model == 'llama2-70b' and accelerator == 'mi355x'",
+              "queryType": "table",
+              "rawQueryText": "select\n  timestamp as time,\n  run_type,\n  system_name,\n  docker_image,\n  scenario,\n  perf_validity,\n  accuracy_validity,\n  perf_tokens_per_sec,\n  perf_samples_per_sec,\n  perf_target_qps,\n  ttft_lat_99pct_ns,\n  tpot_lat_99pct_ns,\n  rouge1,\n  rouge2,\n  rougeL,\n  tokens_per_sample,\n  vllm_commit,\n  harness_commit,\n  hipblaslt_commit,\n  power_settings,\n  artifact_path,\n  notes\nfrom results\nwhere model == 'llama2-70b' and accelerator == 'mi355x'",
+              "refId": "A",
+              "timeColumns": [
+                "time",
+                "ts"
+              ]
+            }
+          ],
+          "title": "LLAMA2-70B MI355X",
+          "type": "table"
+        }
+      ],
+      "title": "LLAMA2-70B",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3,
+      "panels": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_SQLITE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "throughput"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 99
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "train_time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 104
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "epoch_num"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 104
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "log_file"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 112
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "model"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 134
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 19,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 6,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "scenario"
+              }
+            ]
+          },
+          "pluginVersion": "11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "${DS_SQLITE}"
+              },
+              "queryText": "select\n  timestamp as time,\n  run_type,\n  system_name,\n  docker_image,\n  scenario,\n  perf_validity,\n  accuracy_validity,\n  perf_tokens_per_sec,\n  perf_samples_per_sec,\n  perf_target_qps,\n  ttft_lat_99pct_ns,\n  tpot_lat_99pct_ns,\n  rouge1,\n  rouge2,\n  rougeL,\n  tokens_per_sample,\n  vllm_commit,\n  harness_commit,\n  hipblaslt_commit,\n  power_settings,\n  artifact_path,\n  notes\nfrom results\nwhere model == 'llama2-70b-interactive' and accelerator == 'mi355x'",
+              "queryType": "table",
+              "rawQueryText": "select\n  timestamp as time,\n  run_type,\n  system_name,\n  docker_image,\n  scenario,\n  perf_validity,\n  accuracy_validity,\n  perf_tokens_per_sec,\n  perf_samples_per_sec,\n  perf_target_qps,\n  ttft_lat_99pct_ns,\n  tpot_lat_99pct_ns,\n  rouge1,\n  rouge2,\n  rougeL,\n  tokens_per_sample,\n  vllm_commit,\n  harness_commit,\n  hipblaslt_commit,\n  power_settings,\n  artifact_path,\n  notes\nfrom results\nwhere model == 'llama2-70b-interactive' and accelerator == 'mi355x'",
+              "refId": "A",
+              "timeColumns": [
+                "time",
+                "ts"
+              ]
+            }
+          ],
+          "title": "LLAMA2-70B INTERACTIVE MI355X",
+          "transformations": [
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [],
+                "fields": {}
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "LLAMA2-70B INTERACTIVE",
+      "type": "row"
+    }
+  ],
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Model runs",
+  "uid": "de9gies3jtbswf",
+  "version": 30,
+  "weekStart": ""
+}

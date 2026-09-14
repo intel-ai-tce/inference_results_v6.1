@@ -1,0 +1,38 @@
+Q3VL: select the FlyDSL mrope-prologue KV writer at runtime (aiter#4371).
+
+VLLM_Q3VL_MROPE_FLYDSL=1 rebinds the fused mrope+RMSNorm+cache+fp8-quant KV
+writer (`_q3vl_aiter_mrope`) from the HIP op to the FlyDSL kernel
+`flydsl_fused_qk_norm_mrope_3d_cache_pts_quant_shuffle`. The two share an
+identical call signature (FlyDSL is a drop-in) and both require
+use_shuffle_layout=True, which Path B (0030) already sets -- so the call site
+in `_q3vl_norm_mrope_kv_impl` is unchanged. Default (flag unset/0) keeps the
+HIP op, so this patch is a no-op unless the flag is on. Requires 0029 (adds the
+FlyDSL kernel to aiter) + 0030/0031 (shuffle-layout KV end-to-end).
+
+NOTE: the module aliases `import os as _os`, so the guard uses `_os.environ`.
+
+diff --git a/vllm/model_executor/models/qwen3_moe.py b/vllm/model_executor/models/qwen3_moe.py
+--- a/vllm/model_executor/models/qwen3_moe.py
++++ b/vllm/model_executor/models/qwen3_moe.py
+@@ -90,9 +90,18 @@
+ _Q3VL_ATTN_LOGGED = False
+ _Q3VL_CS_BF16: dict = {}
+ try:
+-    from aiter import (
+-        fused_qk_norm_mrope_3d_cache_pts_quant_shuffle as _q3vl_aiter_mrope,
+-    )
++    # Q3VL: mrope-prologue KV writer. VLLM_Q3VL_MROPE_FLYDSL=1 selects the FlyDSL
++    # shuffle-layout kernel (aiter#4371) instead of the HIP op. Both share the
++    # exact same call signature (FlyDSL is a drop-in) and both require
++    # use_shuffle_layout=True (Path B), so the call site below is unchanged.
++    if _os.environ.get("VLLM_Q3VL_MROPE_FLYDSL", "0") == "1":
++        from aiter.ops.flydsl import (
++            flydsl_fused_qk_norm_mrope_3d_cache_pts_quant_shuffle as _q3vl_aiter_mrope,
++        )
++    else:
++        from aiter import (
++            fused_qk_norm_mrope_3d_cache_pts_quant_shuffle as _q3vl_aiter_mrope,
++        )
+     from vllm.model_executor.layers.attention.attention import get_attention_context
+     from vllm.utils.torch_utils import (
+         is_quantized_kv_cache as _q3vl_is_quant_kv,

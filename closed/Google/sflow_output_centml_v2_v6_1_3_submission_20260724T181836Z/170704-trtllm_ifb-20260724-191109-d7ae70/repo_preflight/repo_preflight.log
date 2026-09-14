@@ -1,0 +1,3 @@
+2026-07-24 19:11:25,786 - sflow.task.repo_preflight - INFO - 0: rm: cannot remove '/usr/local/cuda/compat/lib': Read-only file system
+2026-07-24 19:11:27,440 - sflow.task.repo_preflight - INFO - 0: PASS: MLCommons submission checker is available
+2026-07-24 19:11:27,440 - sflow.task.repo_preflight - INFO - 0: PASS: DeepSeek-R1 evaluation submodules and data are available

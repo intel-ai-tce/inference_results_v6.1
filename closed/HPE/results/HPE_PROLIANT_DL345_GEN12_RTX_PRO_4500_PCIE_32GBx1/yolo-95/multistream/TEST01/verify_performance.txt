@@ -1,0 +1,6 @@
+[2026-07-26 13:41:33,450 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /home/benchmark/MLC/repos/local/cache/get-mlperf-inference-results-dir_fda23fc9/valid_results/r10_bm_03.houcbglr1.hpecorp.net-reference-gpu-pytorch-v2.13.0-cu120/yolo-95/multistream/performance/run_1/mlperf_log_detail.txt.
+[2026-07-26 13:41:33,450 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /home/benchmark/MLC/repos/local/cache/get-mlperf-inference-results-dir_fda23fc9/valid_results/r10_bm_03.houcbglr1.hpecorp.net-reference-gpu-pytorch-v2.13.0-cu120/yolo-95/multistream/TEST01/mlperf_log_detail.txt.
+Verifying performance.
+Reference score = 676268814.0
+Test score = 636670610.0
+TEST PASS

@@ -1,0 +1,9 @@
+# Build output (produced by build_rocm.sh)
+/build_rocm/
+
+# Installed native extension (build_rocm.sh copies it here from build_rocm/lib)
+/python/pynve/*.so
+
+# Python caches
+__pycache__/
+*.py[cod]

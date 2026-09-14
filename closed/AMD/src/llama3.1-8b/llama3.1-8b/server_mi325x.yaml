@@ -1,0 +1,55 @@
+# benchmark details
+benchmark_name: llama3_1-405b
+scenario: server
+test_mode: performance
+engine_version: async
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "ERROR"
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_ROCM_CUSTOM_PAGED_ATTN: 1
+  HARNESS_GC_LIMIT: 100000
+  VLLM_ROCM_FP8_PADDING: 1
+  VLLM_USE_V1: 1
+
+# configuration related to the LLM model.
+vllm_engine_config:
+  model: /model/llama3.1-405b/fp8_quantized
+  tensor_parallel_size: 8
+  quantization: fp8
+  max_model_len: 22000
+  swap_space: 0
+  gpu_memory_utilization: 0.99
+  enforce_eager: True
+  disable_custom_all_reduce: False
+  max_num_batched_tokens: 22000
+  max_num_seqs: 50
+  enable_chunked_prefill: False
+  enable_prefix_caching: False
+
+# configuration related to the sampling params
+vllm_sampling_config:
+  temperature: 1
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 2000
+  min_tokens: 2
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/llama3.1-405b/mlperf_llama3.1_405b_dataset_8313_processed_fp16_eval.pkl
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama3.1-405b/user_mi325x.conf
+  target_qps: -1 # 80
+  total_sample_count: 8313
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  device_count: 8
+  enable_warmup: True
+  enable_batcher: False

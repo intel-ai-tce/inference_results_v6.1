@@ -1,0 +1,14 @@
+{
+    "server_type": "trtllm-disagg",
+    "model_path": "/home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4",
+    "gpus_per_node": 4,
+    "num_ctx_workers": 2,
+    "num_gen_workers": 4,
+    "num_master_servers": 4,
+    "gpus_per_ctx_worker": 4,
+    "gpus_per_gen_worker": 16,
+    "ctx_trtllm_yml": "configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-dep4.yaml",
+    "ctx_env_yml": "configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-dep4-env.yaml",
+    "gen_trtllm_yml": "configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-dep16.yaml",
+    "gen_env_yml": "configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-dep16-env.yaml"
+}

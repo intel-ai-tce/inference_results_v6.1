@@ -1,0 +1,44 @@
+backend: pytorch
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+moe_expert_parallel_size: 1
+max_batch_size: 1792
+max_num_tokens: 16384
+max_seq_len: 32768
+print_iter_log: false
+enable_iter_perf_stats: false
+return_perf_metrics: false
+enable_layerwise_nvtx_marker: false
+stream_interval: 20
+enable_chunked_prefill: true
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+kv_cache_config:
+  dtype: fp8
+  # 0.97 (not 0.98): bs1792 cuda-graph private pools (~3.7 GiB) are captured AFTER
+  # the KV-size profiling pass; at 0.98 + msl 32768 the torch allowance is ~1.6 GiB
+  # short and every server OOMs on the first big prefill step (job 2339956).
+  free_gpu_memory_fraction: 0.97
+  enable_block_reuse: false
+  # VSWA: gpt-oss sliding-window layers are layer_idx % 2 == 0 (window 128). Short list
+  # auto-repeats to 36 layers -> even=128, odd=32768 (full window = max_seq_len).
+  # Halves KV bytes/seq -> KV pool holds ~1.86x more sequences -> max_batch_size 1792.
+  max_attention_window: [128, 32768]
+enable_attention_dp: false
+num_postprocess_workers: 8
+torch_compile_config:
+  enable_fullgraph: true
+  enable_piecewise_cuda_graph: true
+  enable_userbuffers: false
+  capture_num_tokens: [512, 768, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 8704, 9216, 9728, 10240, 11264, 12288, 13312, 13914]
+moe_config:
+  backend: TRTLLM
+cuda_graph_config:
+  enable_padding: true
+  # no graphs between 896 and 1792: enable_padding pads mid batches up to 1792,
+  # and dropping the 6 intermediate graphs saves ~1.9 GiB of graph pool memory.
+  batch_sizes: [1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512, 640, 768, 896, 1024, 1152, 1280, 1408, 1792]
+cache_transceiver_config:
+  backend: DEFAULT
+sampler_type: TRTLLMSampler

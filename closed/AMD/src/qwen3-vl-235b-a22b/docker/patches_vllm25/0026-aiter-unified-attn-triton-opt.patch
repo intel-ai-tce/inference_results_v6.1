@@ -1,0 +1,255 @@
+diff --git a/aiter/ops/triton/_triton_kernels/attention/unified_attention.py b/aiter/ops/triton/_triton_kernels/attention/unified_attention.py
+--- a/aiter/ops/triton/_triton_kernels/attention/unified_attention.py
++++ b/aiter/ops/triton/_triton_kernels/attention/unified_attention.py
+@@ -256,8 +256,131 @@
+         k_descale = None
+         v_descale = None
+     KV_cache_modifier: tl.constexpr = ".cg" if ALL_DECODE else ""
+-    # iterate through tiles (now limited to the sliding window range)
+-    for j in range(tile_start, tile_end):
++
++    # Smallest causal boundary among all rows in this Q-block (the row with
++    # the smallest query_pos is the most restrictive). Tiles that end at or
++    # before this boundary are causally visible in full for every row (and,
++    # by construction, also within max_seq_prefix_len), so they need none of
++    # the per-element causal/bounds masking that the general path below
++    # applies. Kept as a separate, uniform loop (rather than a branch inside
++    # one loop) so the compiler can still pipeline it -- a branchy version of
++    # this was tried and measured slower despite doing less total work.
++    #
++    # Only worthwhile when there are enough tiles per Q-block to amortize the
++    # fixed cost of a second loop -- that's true for prefill (long context
++    # spread over few, large Q-blocks) but not decode (ALL_DECODE has a
++    # single query per program, so this added a regression at short/medium
++    # context there); scoped to the prefill case only.
++    if SLIDING_WINDOW <= 0 and not ALL_DECODE:
++        full_tile_boundary = context_len + q_block_local_idx * BLOCK_Q + 1
++        fast_tile_end = tl.minimum(full_tile_boundary // TILE_SIZE, tile_end)
++        fast_tile_end = tl.maximum(fast_tile_end, tile_start)
++    else:
++        fast_tile_end = tile_start
++
++    for j in range(tile_start, fast_tile_end):
++        seq_offset = j * TILE_SIZE + offs_t
++
++        if SHUFFLED_KV_CACHE:
++            physical_block_idx_shfl = tl.load(
++                block_tables_ptr + block_table_offset + j
++            ).to(tl.int64)
++            k_offset = (
++                physical_block_idx_shfl * stride_k_cache_0
++                + kv_head_idx * stride_k_cache_1
++                + offs_shfl
++            )
++            v_offset = (
++                physical_block_idx_shfl * stride_v_cache_0
++                + kv_head_idx * stride_v_cache_1
++                + offs_shfl
++            )
++            fast_k_mask = None
++            fast_v_mask = None
++        else:
++            physical_block_idx = tl.load(
++                block_tables_ptr + block_table_offset + seq_offset // BLOCK_SIZE
++            ).to(tl.int64)
++            v_offset = (
++                physical_block_idx[:, None] * stride_v_cache_0
++                + kv_head_idx * stride_v_cache_2
++                + offs_d[None, :] * stride_v_cache_3
++                + (seq_offset % BLOCK_SIZE)[:, None] * stride_v_cache_1
++            )
++            k_offset = (
++                physical_block_idx[None, :] * stride_k_cache_0
++                + kv_head_idx * stride_k_cache_2
++                + offs_d[:, None] * stride_k_cache_3
++                + (seq_offset % BLOCK_SIZE)[None, :] * stride_k_cache_1
++            )
++            # Still need the (cheap, sequence-independent) head-dim padding
++            # mask for non-power-of-2 head sizes -- just not the tile_mask
++            # factor, since this tile is already proven in-bounds.
++            fast_k_mask = dim_mask[:, None]
++            fast_v_mask = dim_mask[None, :]
++
++        K_load = tl.load(
++            key_cache_ptr + k_offset,
++            mask=fast_k_mask,
++            other=0.0,
++            cache_modifier=KV_cache_modifier,
++        )
++        K = K_load.to(Q.dtype)
++        if SHUFFLED_KV_CACHE:
++            K = (
++                K.reshape(HEAD_SIZE_PADDED // K_WIDTH, TILE_SIZE, K_WIDTH)
++                .permute(1, 0, 2)
++                .reshape(TILE_SIZE, HEAD_SIZE_PADDED)
++                .trans(1, 0)
++            )
++
++        V_load = tl.load(
++            value_cache_ptr + v_offset,
++            mask=fast_v_mask,
++            other=0.0,
++            cache_modifier=KV_cache_modifier,
++        )
++        V = V_load.to(Q.dtype)
++        if SHUFFLED_KV_CACHE:
++            V = (
++                V.reshape(TILE_SIZE // K_WIDTH, HEAD_SIZE_PADDED, K_WIDTH)
++                .permute(0, 2, 1)
++                .reshape(TILE_SIZE, HEAD_SIZE_PADDED)
++            )
++
++        S = qk_scale * tl.dot(Q, K)
++
++        if USE_SOFTCAP:
++            S = apply_softcap(S, softcap) * RCP_LN2
++
++        if USE_ALIBI_SLOPES:
++            # prescale w. RCP_LN2 for later exp2
++            S += alibi_slope[:, None] * (seq_offset - context_len) * RCP_LN2
++
++        if USE_QQ_BIAS:
++            key_rel_pos = seq_offset - context_len
++            is_query_key = key_rel_pos >= 0 and key_rel_pos < qq_bias_stride_0
++            qq_bias = tl.load(
++                qq_bias_row_ptrs + key_rel_pos[None, :],
++                mask=is_query_key[None, :],
++                other=0.0,
++            )
++            S += qq_bias * RCP_LN2
++
++        m_j = tl.maximum(M, tl.max(S, axis=1))
++        m_j = tl.where(m_j > float("-inf"), m_j, 0.0)
++        P = tl.math.exp2(S - m_j[:, None])
++        l_j = tl.sum(P, axis=1)
++        alpha = tl.math.exp2(M - m_j)
++        acc = acc * alpha[:, None]
++        L = L * alpha + l_j
++        M = m_j
++        acc = tl.dot(P.to(V.dtype), V, acc=acc)
++
++    # Boundary tiles: the tile(s) straddling the causal edge (or, when
++    # sliding window is active, the full range) still need the general,
++    # fully-masked path below.
++    for j in range(fast_tile_end, tile_end):
+         seq_offset = j * TILE_SIZE + offs_t
+         # to reduce the masking effect when not needed
+         if TILE_SIZE == BLOCK_SIZE:
+diff --git a/aiter/ops/triton/attention/unified_attention.py b/aiter/ops/triton/attention/unified_attention.py
+--- a/aiter/ops/triton/attention/unified_attention.py
++++ b/aiter/ops/triton/attention/unified_attention.py
+@@ -114,6 +114,45 @@
+     elif q_dtype == e4m3_dtype and kv_cache_dtype == e4m3_dtype:
+         TILE_SIZE = max(32, TILE_SIZE)
+ 
++    # --- tuned override -----------------------------------------------------
++    # Alternate launch config for the all_decode + non-shuffled +
++    # head_size=128 + num_queries_per_kv<=16 shape family. Scoped to exactly
++    # that shape family -- everything else keeps the original values
++    # computed above untouched.
++    is_tuned_shape = (
++        all_decode
++        and not shuffled_kv_cache
++        and head_size == 128
++        and num_queries_per_kv <= 16
++        and not arch.is_rdna
++    )
++    if is_tuned_shape:
++        if q_dtype == e4m3_dtype and kv_cache_dtype == e4m3_dtype:
++            TILE_SIZE, num_warps, num_stages_2d, waves_per_eu = 64, 1, 2, 0
++        else:
++            TILE_SIZE, num_warps, num_stages_2d, waves_per_eu = 32, 1, 2, 2
++
++    # Alternate launch config for the large-prefill (max_seqlen_q >= 256)
++    # + non-shuffled + head_size=128 + FP8 Q/KV shape family. Measured a
++    # consistent speedup across every prefill token-count tested, with no
++    # regression on any of them (checked both as single long sequences and
++    # as multiple shorter sequences summing to the same token count).
++    # Only tested with FP8 Q + FP8 KV -- scoped to exactly that, not
++    # extended to BF16/FP16 prefill which wasn't validated.
++    is_tuned_prefill_shape = (
++        not all_decode
++        and max_seqlen_q >= 256
++        and not shuffled_kv_cache
++        and head_size == 128
++        and q_dtype == e4m3_dtype
++        and kv_cache_dtype == e4m3_dtype
++        and not arch.is_rdna
++    )
++    if is_tuned_prefill_shape:
++        BLOCK_M, TILE_SIZE, num_warps, num_stages_2d, waves_per_eu = 256, 128, 8, 2, 0
++        BLOCK_Q = BLOCK_M // num_queries_per_kv  # BLOCK_M changed above, keep in sync
++    # -------------------------------------------------------------------------
++
+     return {
+         "BLOCK_M": BLOCK_M,
+         "BLOCK_Q": BLOCK_Q,
+@@ -371,8 +410,51 @@
+         total_num_q_blocks = num_tokens // BLOCK_Q + num_seqs
+     num_2d_prgms = total_num_q_blocks * num_kv_heads
+     ALL_DECODE = int(max_seqlen_q) == 1
++
++    # --- tuned override: force 2D instead of 3D split-KV for small-batch
++    # decode ---
++    # For ALL_DECODE + head_size=128 + GQA<=16 + non-shuffled cache,
++    # AITER's use_2d_kernel() heuristic routes small batches to the 3D
++    # split-KV kernel + reduce_segments combine. Measured end-to-end through
++    # this same unified_attention() entry point (i.e. apples-to-apples, same
++    # Python-side dispatch overhead on both sides): the single-launch 2D
++    # kernel beats 3D+combine for short-to-moderate context lengths, is
++    # roughly breakeven for longer ones, and regresses beyond that.
++    # Threshold set conservatively inside the clear-win zone -- do not raise
++    # this without re-validating with a fair (same-wrapper) comparison; an
++    # earlier raw-kernel-vs-wrapper comparison overstated the win at higher
++    # context lengths because it didn't control for Python-side dispatch
++    # overhead on both sides.
++    force_2d_decode = (
++        ALL_DECODE
++        and not shuffled_kv_cache
++        and head_size == 128
++        and num_queries_per_kv <= 16
++        and not IS_DEVICE_ARCH_GFX12
++        and not get_arch().is_rdna
++        and max_seqlen_k < 4096
++        # Scoped to small batches only. At large batches this override
++        # clobbers select_2d_config()'s own, separately-tuned ALL_DECODE
++        # config (TILE_SIZE=64, num_warps=1), which is already the right
++        # choice there and regresses noticeably if overridden with the
++        # small-batch tuning below.
++        #
++        # No lower bound here (tried adding a lower bound on max_seqlen_k to
++        # avoid a small dip at very short context -- made it worse, not
++        # better: without this override, very short context still hits the
++        # 2D path via use_2d_kernel()'s own unconditional short-context rule,
++        # but then gets select_2d_config()'s *unconditional* is_tuned_shape
++        # config (num_warps=1), which is tuned for large batches and is
++        # noticeably worse than true default at this small batch/context
++        # combo -- i.e. removing this override at low context doesn't fall
++        # back to the untouched original, it falls forward into a worse
++        # override. Keeping this one active is the better of the two
++        # available options.
++        and num_seqs < 150
++    )
++
+     # if batch contains a prefill
+-    if use_2d_kernel(
++    if force_2d_decode or use_2d_kernel(
+         head_size,
+         SLIDING_WINDOW,
+         ALL_DECODE,
+@@ -423,6 +505,15 @@
+                 kv_cache_dtype,
+                 shuffled_kv_cache,
+             )
++            if force_2d_decode:
++                # Tuned for the small-batch decode-via-2D shape family
++                # (see force_2d_decode above), distinct from
++                # select_2d_config()'s own ALL_DECODE tuning (which targets
++                # much larger batches).
++                config["TILE_SIZE"] = 128
++                config["num_warps"] = 4
++                config["num_stages"] = 2
++                config["waves_per_eu"] = 2
+             assert config["BLOCK_Q"] >= 1
+             if ALL_DECODE:
+                 total_num_q_blocks = num_seqs

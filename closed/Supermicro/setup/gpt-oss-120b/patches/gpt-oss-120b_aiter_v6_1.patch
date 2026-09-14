@@ -1,0 +1,1467 @@
+diff --git a/aiter/ops/attention.py b/aiter/ops/attention.py
+index 305b8f3f9..77fddf2f3 100644
+--- a/aiter/ops/attention.py
++++ b/aiter/ops/attention.py
+@@ -9,10 +9,13 @@ import torch
+ import triton
+ import triton.language as tl
+ from csrc.cpp_itfs.pa.pa import paged_attention_rocm as paged_attention_rocm_core
++
+ from csrc.cpp_itfs.pa.pa_ragged import (
+     paged_attention_ragged as paged_attention_ragged_core,
+ )
+ from csrc.cpp_itfs.pa.pa_v1 import paged_attention_v1 as paged_attention_v1_core
++from csrc.cpp_itfs.pa.pa_v2 import paged_attention_v2 as paged_attention_v2_core
++
+ from csrc.cpp_itfs.torch_utils import direct_register_custom_op
+ from aiter.ops.triton.gluon.pa_decode_gluon import pa_decode_gluon
+ 
+@@ -1314,3 +1317,54 @@ def hk_mla_decode_fwd(
+     split_lse: torch.Tensor,
+     final_output: torch.Tensor,
+ ) -> None: ...
++
++
++
++def paged_attention_v2(
++    out: torch.Tensor,
++    exp_sums: torch.Tensor,
++    max_logits: torch.Tensor,
++    tmp_out: torch.Tensor,
++    query: torch.Tensor,
++    key_cache: torch.Tensor,
++    value_cache: torch.Tensor,
++    scale: float,
++    k_scale: float,
++    v_scale: float,
++    block_tables: torch.Tensor,
++    context_lens: torch.Tensor,
++    max_context_len: int,
++    par_tokens: int = 256,
++    sink_ptr: Optional[torch.Tensor] = None,
++    sliding_window: int = 0,
++    k_scale_per_token: Optional[torch.Tensor] = None,
++    v_scale_per_token: Optional[torch.Tensor] = None,
++) -> torch.Tensor:
++    paged_attention_v2_core(
++        out,
++        exp_sums,
++        max_logits,
++        tmp_out,
++        query,
++        key_cache,
++        value_cache,
++        scale,
++        k_scale,
++        v_scale,
++        block_tables,
++        context_lens,
++        max_context_len,
++        par_tokens,
++        sink_ptr,
++        sliding_window,
++        k_scale_per_token,
++        v_scale_per_token,
++    )
++    return out
++
++
++direct_register_custom_op(
++    "paged_attention_v2",
++    paged_attention_v2,
++    ["out", "exp_sums", "max_logits", "tmp_out"],
++)
+\ No newline at end of file
+diff --git a/csrc/cpp_itfs/pa/pa_v2.cpp.jinja b/csrc/cpp_itfs/pa/pa_v2.cpp.jinja
+new file mode 100644
+index 000000000..70f82523c
+--- /dev/null
++++ b/csrc/cpp_itfs/pa/pa_v2.cpp.jinja
+@@ -0,0 +1,104 @@
++#include "pa_v2.cuh"
++
++extern "C" {
++void {{func_name}}(
++        void* query_ptr,
++        void* key_cache_ptr,
++        void* value_cache_ptr,
++        float scale,
++        float k_scale,
++        float v_scale,
++        int* block_tables_ptr,
++        int* context_lens_ptr,
++        const int max_num_blocks_per_seq,
++        const int q_stride,
++        const int kv_block_stride,
++        const int kv_head_stride,
++        void* out_ptr,
++        const int num_heads,
++        const int gqa_ratio,
++        const int num_seqs,
++        const int num_kv_heads,
++        const int num_partitions,
++        const int par_tokens,
++        void* exp_sums_ptr,
++        void* max_logits_ptr,
++        void* tmp_out_ptr,
++        const void* sink_ptr,
++        const int sliding_window,
++        void* k_scale_per_token_ptr,
++        void* v_scale_per_token_ptr,
++        void* stream);
++}
++
++void {{func_name}}(
++        void* query_ptr,
++        void* key_cache_ptr,
++        void* value_cache_ptr,
++        float scale,
++        float k_scale,
++        float v_scale,
++        int* block_tables_ptr,
++        int* context_lens_ptr,
++        const int max_num_blocks_per_seq,
++        const int q_stride,
++        const int kv_block_stride,
++        const int kv_head_stride,
++        void* out_ptr,
++        const int num_heads,
++        const int gqa_ratio,
++        const int num_seqs,
++        const int num_kv_heads,
++        const int num_partitions,
++        const int par_tokens,
++        void* exp_sums_ptr,
++        void* max_logits_ptr,
++        void* tmp_out_ptr,
++        const void* sink_ptr,
++        const int sliding_window,
++        void* k_scale_per_token_ptr,
++        void* v_scale_per_token_ptr,
++        void* stream)
++{
++    constexpr int head_size = {{head_size}};
++    void* sink_void = const_cast<void*>(sink_ptr);
++
++    if (num_partitions == 1) {
++        launch_paged_attention_v2_{{dtype}}_{{head_size}}(
++            query_ptr, key_cache_ptr, value_cache_ptr,
++            scale, k_scale, v_scale,
++            block_tables_ptr, context_lens_ptr,
++            max_num_blocks_per_seq,
++            q_stride, kv_block_stride, kv_head_stride,
++            out_ptr,
++            num_heads, gqa_ratio,
++            num_seqs, num_kv_heads,
++            num_partitions, par_tokens,
++            exp_sums_ptr, max_logits_ptr,
++            stream, sink_void,
++            sliding_window,
++            k_scale_per_token_ptr, v_scale_per_token_ptr);
++
++    } else {
++        launch_paged_attention_v2_{{dtype}}_{{head_size}}(
++            query_ptr, key_cache_ptr, value_cache_ptr,
++            scale, k_scale, v_scale,
++            block_tables_ptr, context_lens_ptr,
++            max_num_blocks_per_seq,
++            q_stride, kv_block_stride, kv_head_stride,
++            tmp_out_ptr,
++            num_heads, gqa_ratio,
++            num_seqs, num_kv_heads,
++            num_partitions, par_tokens,
++            exp_sums_ptr, max_logits_ptr,
++            stream, sink_void,
++            sliding_window,
++            k_scale_per_token_ptr, v_scale_per_token_ptr);
++
++        launch_v2_reduce_{{dtype}}(
++            tmp_out_ptr, exp_sums_ptr, max_logits_ptr,
++            out_ptr, sink_void,
++            num_seqs, num_heads, num_partitions,
++            head_size, gqa_ratio, stream);
++    }
++}
+diff --git a/csrc/cpp_itfs/pa/pa_v2.cuh b/csrc/cpp_itfs/pa/pa_v2.cuh
+new file mode 100644
+index 000000000..2460db358
+--- /dev/null
++++ b/csrc/cpp_itfs/pa/pa_v2.cuh
+@@ -0,0 +1,1010 @@
++#include <hip/hip_runtime.h>
++#include <hip/hip_fp16.h>
++#include <hip/hip_fp8.h>
++#include <hip/hip_bf16.h>
++#include <float.h>
++
++using bhalf8_t = __attribute__((__vector_size__(8 * sizeof(__bf16)))) __bf16;
++
++template <typename T> struct QVec8;
++
++template <int HEAD_SIZE, int BLOCK_SIZE_T, int NUM_THREADS>
++struct V2Config {
++    static constexpr int WARP_SIZE        = 64;
++    static constexpr int NWARPS           = NUM_THREADS / WARP_SIZE;
++    static constexpr int K32              = 32;
++    static constexpr int QKHELOOP         = HEAD_SIZE / K32;
++    static constexpr int VHELOOP          = HEAD_SIZE / 16;
++    static constexpr int BLOCK_SIZE       = BLOCK_SIZE_T;
++    static constexpr int TOKENS_PER_BATCH = BLOCK_SIZE_T;
++    static constexpr int TOKENS_PER_ITER  = NWARPS * TOKENS_PER_BATCH;
++    static constexpr int X_SIZE           = 16;
++    static constexpr int V_GROUP_SIZE     = 8;
++    static constexpr int PAD_STRIDE       = VHELOOP * 4 + 1;
++    static constexpr int N_OTHER          = NWARPS - 1;
++    static constexpr int MS_PER_WARP      = 32;
++    static constexpr int OA_PER_WARP      = WARP_SIZE * PAD_STRIDE;
++    static constexpr int MS_REGION        = N_OTHER * MS_PER_WARP;
++    static constexpr int OA_BASE          = MS_REGION;
++    static constexpr int SHMEM_FLOATS     = MS_REGION + N_OTHER * OA_PER_WARP;
++};
++
++using half4_t  = __attribute__((__vector_size__(4 * sizeof(_Float16)))) _Float16;
++using half8_t  = __attribute__((__vector_size__(8 * sizeof(_Float16)))) _Float16;
++using float4_t = __attribute__((__vector_size__(4 * sizeof(float)))) float;
++
++template <> struct QVec8<_Float16> { using type = half8_t;  };
++template <> struct QVec8<__bf16>   { using type = bhalf8_t; };
++
++template <int HEAD_SIZE, int BLOCK_SIZE, int NUM_THREADS, int MAX_BLOCKS,
++          typename QType = _Float16>
++__global__ void __launch_bounds__(NUM_THREADS, MAX_BLOCKS)
++paged_attention_v2(
++    const QType*    __restrict__ q,
++    const uint8_t*  __restrict__ k_cache,
++    const uint8_t*  __restrict__ v_cache,
++    float scale,
++    float k_scale,
++    float v_scale,
++    const int* __restrict__ block_tables,
++    const int* __restrict__ context_lens,
++    int max_num_blocks_per_seq,
++    int q_stride,
++    int kv_block_stride,
++    int kv_head_stride,
++    QType* __restrict__ out,
++    int num_heads,
++    int gqa_ratio,
++    // Sinks share Q's dtype (bf16 for bf16 models, fp16 for fp16 models).
++    // Implicit (float) conversion via the * RCP_LN2 multiply keeps the
++    // running-max math in fp32.
++    const QType* __restrict__ sink_ptr,
++    float* __restrict__ exp_sums,
++    float* __restrict__ max_logits,
++    int max_num_partitions,
++    int par_tokens,
++    int sliding_window,
++    // Per-token FP8 dequant scales, layout [num_blocks, num_kv_heads, BLOCK_SIZE].
++    // Pass nullptr to fall back to the scalar `k_scale` / `v_scale` arguments.
++    const float* __restrict__ k_scale_per_token,
++    const float* __restrict__ v_scale_per_token)
++{
++    using QVec8T = typename QVec8<QType>::type;
++    using C = V2Config<HEAD_SIZE, BLOCK_SIZE, NUM_THREADS>;
++    constexpr float RCP_LN2  = 1.4426950408889634f;
++
++    const int kv_head_idx   = blockIdx.x;
++    const int seq_idx       = blockIdx.y;
++    const int partition_idx = blockIdx.z;
++
++    const int warpid   = threadIdx.x / C::WARP_SIZE;
++    const int laneid   = threadIdx.x % C::WARP_SIZE;
++    const int lane16id = laneid % 16;
++    const int rowid    = laneid / 16;
++
++    const int full_context_len = context_lens[seq_idx];
++
++    const int par_start = partition_idx * par_tokens;
++    if (full_context_len <= 0 || par_start >= full_context_len) {
++        if (max_num_partitions > 1
++            && threadIdx.x < gqa_ratio
++            && warpid == 0) {
++            int qh = kv_head_idx * gqa_ratio + threadIdx.x;
++            int64_t ms_off =
++                (int64_t)seq_idx * num_heads * max_num_partitions
++                + (int64_t)qh * max_num_partitions + partition_idx;
++            max_logits[ms_off] = -FLT_MAX;
++            exp_sums[ms_off]   = 0.0f;
++        }
++        return;
++    }
++    const int context_len = min(par_start + par_tokens, full_context_len);
++
++   
++    const int win_start = (sliding_window > 0)
++                          ? max(0, full_context_len - sliding_window) : 0;
++    const int effective_par_start = max(par_start, win_start);
++
++    const int* block_table_seq = block_tables + seq_idx * max_num_blocks_per_seq;
++    const int last_ctx_block_idx =
++        block_table_seq[(full_context_len - 1) / C::BLOCK_SIZE];
++
++    extern __shared__ float shmem[];
++    int* s_bt = reinterpret_cast<int*>(shmem);
++
++    const int first_block = effective_par_start / C::BLOCK_SIZE;
++    const int num_context_blocks =
++        (context_len + C::BLOCK_SIZE - 1) / C::BLOCK_SIZE;
++    const int blocks_in_partition = num_context_blocks - first_block;
++
++
++    if (blocks_in_partition <= 0) {
++        if (max_num_partitions > 1
++            && threadIdx.x < gqa_ratio
++            && warpid == 0) {
++            int qh = kv_head_idx * gqa_ratio + threadIdx.x;
++            int64_t ms_off =
++                (int64_t)seq_idx * num_heads * max_num_partitions
++                + (int64_t)qh * max_num_partitions + partition_idx;
++            max_logits[ms_off] = -FLT_MAX;
++            exp_sums[ms_off]   = 0.0f;
++        }
++        return;
++    }
++
++    for (int i = threadIdx.x; i < blocks_in_partition; i += NUM_THREADS)
++        s_bt[i] = block_table_seq[first_block + i];
++    __syncthreads();
++
++    const int qhead_idx = kv_head_idx * gqa_ratio +
++                          (lane16id < gqa_ratio ? lane16id : gqa_ratio - 1);
++    const bool lane_active = lane16id < gqa_ratio;
++
++
++    const bool per_tok_k = (k_scale_per_token != nullptr);
++    const bool per_tok_v = (v_scale_per_token != nullptr);
++    const int  kv_sc_block_stride = (int)gridDim.x * C::BLOCK_SIZE;
++    const int  kv_sc_head_off     = kv_head_idx * C::BLOCK_SIZE;
++
++    float sink_logit_log2 = -FLT_MAX;
++    if (sink_ptr != nullptr && max_num_partitions == 1) {
++        sink_logit_log2 = (float)sink_ptr[qhead_idx] * RCP_LN2;
++    }
++
++    constexpr float FP8_MAX_E4M3 = 448.0f;
++    constexpr float Q_AMAX_EPS   = 1e-8f;
++
++    float Qf[C::QKHELOOP][8];
++    float q_amax = 0.0f;
++    #pragma unroll
++    for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++        int dim = qkhe * C::K32 + rowid * 8;
++        QVec8T q_vec = *reinterpret_cast<const QVec8T*>(
++            q + (int64_t)seq_idx * q_stride + qhead_idx * HEAD_SIZE + dim);
++        #pragma unroll
++        for (int i = 0; i < 8; i++) {
++            float f = (float)q_vec[i];
++            Qf[qkhe][i] = f;
++            q_amax = fmaxf(q_amax, fabsf(f));
++        }
++    }
++    // Reduce across rowid (4 lanes per (seq, qhead) group; lane16id
++    // identifies the qhead, rowid the head-dim stripe).
++    q_amax = fmaxf(q_amax, __shfl_xor(q_amax, 16));
++    q_amax = fmaxf(q_amax, __shfl_xor(q_amax, 32));
++
++    const float q_descale = FP8_MAX_E4M3 / fmaxf(q_amax, Q_AMAX_EPS);
++    const float q_scale   = 1.0f / q_descale;  // = q_amax / 448 (or eps)
++
++    long Qlocal[C::QKHELOOP];
++    #pragma unroll
++    for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++        union { int16_t b16[4]; long i64; } qp;
++        #pragma unroll
++        for (int i = 0; i < 2; i++) {
++            float f0 = Qf[qkhe][i * 4 + 0] * q_descale;
++            float f1 = Qf[qkhe][i * 4 + 1] * q_descale;
++            float f2 = Qf[qkhe][i * 4 + 2] * q_descale;
++            float f3 = Qf[qkhe][i * 4 + 3] * q_descale;
++            qp.b16[i * 2]     = (int16_t)__builtin_amdgcn_cvt_pk_fp8_f32(
++                                     f0, f1, 0, false);
++            qp.b16[i * 2 + 1] = (int16_t)__builtin_amdgcn_cvt_pk_fp8_f32(
++                                     f2, f3, 0, false);
++        }
++        Qlocal[qkhe] = qp.i64;
++    }
++
++
++    const float scale_log2          = scale * q_scale * RCP_LN2;            // per-token K path
++    const float combined_scale_log2 = scale * k_scale * q_scale * RCP_LN2;  // scalar K path
++
++    float running_max = sink_logit_log2;
++    float running_sum = (warpid == 0 && sink_logit_log2 > -FLT_MAX)
++                        ? 1.0f : 0.0f;
++
++    float out_acc[C::VHELOOP][4];
++    #pragma unroll
++    for (int v = 0; v < C::VHELOOP; v++)
++        for (int i = 0; i < 4; i++)
++            out_acc[v][i] = 0.0f;
++
++    const uint8_t* k_ptr = k_cache + kv_head_idx * kv_head_stride;
++    const uint8_t* v_ptr = v_cache + kv_head_idx * kv_head_stride;
++
++    const int v_group       = rowid / 2;
++    const int v_inner       = (rowid % 2) * 4;
++    constexpr int V_GRP_STR = HEAD_SIZE * C::V_GROUP_SIZE;
++
++    const int total_blocks_to_process = blocks_in_partition;
++    const int total_iters =
++        (total_blocks_to_process + C::NWARPS - 1) / C::NWARPS;
++
++    // Double-buffered K: preload iter 0 and iter 1
++    long Kregs[C::QKHELOOP];
++    long Kregs_next[C::QKHELOOP];
++    int saved_kbi;
++    int saved_kbi_next;
++
++    {
++        const int rel0 = warpid;
++        saved_kbi = (rel0 < blocks_in_partition)
++            ? s_bt[rel0] : last_ctx_block_idx;
++        #pragma unroll
++        for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++            int kchunk = qkhe * 2 + rowid / 2;
++            int kinner = (rowid & 1) * 8;
++            Kregs[qkhe] = *reinterpret_cast<const long*>(
++                k_ptr + (int64_t)saved_kbi * kv_block_stride
++                      + kchunk * C::BLOCK_SIZE * C::X_SIZE
++                      + lane16id * C::X_SIZE + kinner);
++        }
++    }
++
++    if (total_iters > 1) {
++        const int rel1 = C::NWARPS + warpid;
++        saved_kbi_next = (rel1 < blocks_in_partition)
++            ? s_bt[rel1] : last_ctx_block_idx;
++        #pragma unroll
++        for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++            int kchunk = qkhe * 2 + rowid / 2;
++            int kinner = (rowid & 1) * 8;
++            Kregs_next[qkhe] = *reinterpret_cast<const long*>(
++                k_ptr + (int64_t)saved_kbi_next * kv_block_stride
++                      + kchunk * C::BLOCK_SIZE * C::X_SIZE
++                      + lane16id * C::X_SIZE + kinner);
++        }
++    } else {
++        saved_kbi_next = saved_kbi;
++    }
++
++    const float pv_correction = per_tok_v ? 1.0f : v_scale;
++
++
++    for (int iter = 0; iter < total_iters; iter += 2) {
++        const bool have_second = (iter + 1 < total_iters);
++
++        const int blk_idx_a     = first_block + iter * C::NWARPS + warpid;
++        const int batch_start_a = blk_idx_a * C::BLOCK_SIZE;
++        const int kbi_a         = saved_kbi;
++
++        const uint8_t* v_base_a = v_ptr + (int64_t)kbi_a * kv_block_stride;
++        int va_tiles[C::VHELOOP];
++        #pragma unroll
++        for (int vhe = 0; vhe < C::VHELOOP; vhe++) {
++            int dim = vhe * 16 + lane16id;
++            va_tiles[vhe] = __builtin_nontemporal_load(
++                reinterpret_cast<const int*>(
++                    v_base_a + dim * C::X_SIZE + rowid * 4));
++        }
++
++
++        const int64_t v_sc_a_base = per_tok_v
++            ? ((int64_t)kbi_a * kv_sc_block_stride + kv_sc_head_off) : 0;
++        float va0 = per_tok_v ? v_scale_per_token[v_sc_a_base + rowid * 4 + 0] : 1.0f;
++        float va1 = per_tok_v ? v_scale_per_token[v_sc_a_base + rowid * 4 + 1] : 1.0f;
++        float va2 = per_tok_v ? v_scale_per_token[v_sc_a_base + rowid * 4 + 2] : 1.0f;
++        float va3 = per_tok_v ? v_scale_per_token[v_sc_a_base + rowid * 4 + 3] : 1.0f;
++
++        float4_t qk_a = {0.0f, 0.0f, 0.0f, 0.0f};
++        #pragma unroll
++        for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++)
++            qk_a = __builtin_amdgcn_mfma_f32_16x16x32_fp8_fp8(
++                       Kregs[qkhe], Qlocal[qkhe], qk_a, 0, 0, 0);
++
++        #pragma unroll
++        for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++)
++            Kregs[qkhe] = Kregs_next[qkhe];
++        saved_kbi = saved_kbi_next;
++
++        if (iter + 2 < total_iters) {
++            const int rel_nxt = (iter + 2) * C::NWARPS + warpid;
++            saved_kbi_next = (rel_nxt < blocks_in_partition)
++                ? s_bt[rel_nxt] : last_ctx_block_idx;
++            #pragma unroll
++            for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++                int kchunk = qkhe * 2 + rowid / 2;
++                int kinner = (rowid & 1) * 8;
++                Kregs_next[qkhe] = *reinterpret_cast<const long*>(
++                    k_ptr + (int64_t)saved_kbi_next * kv_block_stride
++                          + kchunk * C::BLOCK_SIZE * C::X_SIZE
++                          + lane16id * C::X_SIZE + kinner);
++            }
++        }
++
++        const bool full_a = (batch_start_a >= effective_par_start) &&
++                            (batch_start_a + C::BLOCK_SIZE <= context_len);
++        const int64_t k_sc_a_base = per_tok_k
++            ? ((int64_t)kbi_a * kv_sc_block_stride + kv_sc_head_off) : 0;
++        #pragma unroll
++        for (int i = 0; i < 4; i++) {
++            if (per_tok_k) {
++                float ks = k_scale_per_token[k_sc_a_base + rowid * 4 + i];
++                qk_a[i] *= scale_log2 * ks;
++            } else {
++                qk_a[i] *= combined_scale_log2;
++            }
++            if (!full_a) {
++                int tok = batch_start_a + rowid * 4 + i;
++                if (tok >= context_len || tok < effective_par_start) {
++                    qk_a[i] = -FLT_MAX;
++                    // Zero out the corresponding v-scale so it doesn't
++                    // inflate the per-pair max (and thus crush precision).
++                    if (per_tok_v) {
++                        if      (i == 0) va0 = 0.0f;
++                        else if (i == 1) va1 = 0.0f;
++                        else if (i == 2) va2 = 0.0f;
++                        else             va3 = 0.0f;
++                    }
++                }
++            }
++        }
++
++        float batch_max_a = -FLT_MAX;
++        #pragma unroll
++        for (int i = 0; i < 4; i++)
++            batch_max_a = fmaxf(batch_max_a, qk_a[i]);
++        for (int mask = C::WARP_SIZE / 2; mask >= 16; mask /= 2)
++            batch_max_a = fmaxf(batch_max_a, __shfl_xor(batch_max_a, mask));
++
++        float new_max_a = fmaxf(running_max, batch_max_a);
++        float alpha_a = (running_max > -FLT_MAX)
++                        ? exp2f(running_max - new_max_a) : 0.0f;
++
++        float batch_sum_a = 0.0f;
++        if (full_a) {
++            #pragma unroll
++            for (int i = 0; i < 4; i++) {
++                float e = exp2f(qk_a[i] - new_max_a);
++                qk_a[i] = e;
++                batch_sum_a += e;
++            }
++        } else {
++            #pragma unroll
++            for (int i = 0; i < 4; i++) {
++                int tok = batch_start_a + rowid * 4 + i;
++                float e = (tok < context_len && tok >= effective_par_start)
++                          ? exp2f(qk_a[i] - new_max_a) : 0.0f;
++                qk_a[i] = e;
++                batch_sum_a += e;
++            }
++        }
++        for (int mask = C::WARP_SIZE / 2; mask >= 16; mask /= 2)
++            batch_sum_a += __shfl_xor(batch_sum_a, mask);
++
++        running_sum = alpha_a * running_sum + batch_sum_a;
++        running_max = new_max_a;
++
++        int kbi_b    = kbi_a;
++        float pbv0 = 0.0f, pbv1 = 0.0f, pbv2 = 0.0f, pbv3 = 0.0f;
++        float pa_rescale = 1.0f;
++
++        int vb_tiles[C::VHELOOP];
++
++
++        float vb0 = 1.0f, vb1 = 1.0f, vb2 = 1.0f, vb3 = 1.0f;
++
++        if (have_second) {
++            const int blk_idx_b     = first_block + (iter + 1) * C::NWARPS + warpid;
++            const int batch_start_b = blk_idx_b * C::BLOCK_SIZE;
++            kbi_b = saved_kbi;
++
++            // >>> Early V_B loads — latency hidden by QK_B + softmax_B <<<
++            const uint8_t* v_base_b = v_ptr + (int64_t)kbi_b * kv_block_stride;
++            #pragma unroll
++            for (int vhe = 0; vhe < C::VHELOOP; vhe++) {
++                int dim = vhe * 16 + lane16id;
++                vb_tiles[vhe] = __builtin_nontemporal_load(
++                    reinterpret_cast<const int*>(
++                        v_base_b + dim * C::X_SIZE + rowid * 4));
++            }
++
++            // >>> Per-token V-scale loads (block B)
++            const int64_t v_sc_b_base = per_tok_v
++                ? ((int64_t)kbi_b * kv_sc_block_stride + kv_sc_head_off) : 0;
++            if (per_tok_v) {
++                vb0 = v_scale_per_token[v_sc_b_base + rowid * 4 + 0];
++                vb1 = v_scale_per_token[v_sc_b_base + rowid * 4 + 1];
++                vb2 = v_scale_per_token[v_sc_b_base + rowid * 4 + 2];
++                vb3 = v_scale_per_token[v_sc_b_base + rowid * 4 + 3];
++            }
++
++            // QK_B MFMA (overlaps with V_B loads)
++            float4_t qk_b = {0.0f, 0.0f, 0.0f, 0.0f};
++            #pragma unroll
++            for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++)
++                qk_b = __builtin_amdgcn_mfma_f32_16x16x32_fp8_fp8(
++                           Kregs[qkhe], Qlocal[qkhe], qk_b, 0, 0, 0);
++
++            #pragma unroll
++            for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++)
++                Kregs[qkhe] = Kregs_next[qkhe];
++            saved_kbi = saved_kbi_next;
++
++            if (iter + 3 < total_iters) {
++                const int rel_nxt = (iter + 3) * C::NWARPS + warpid;
++                saved_kbi_next = (rel_nxt < blocks_in_partition)
++                    ? s_bt[rel_nxt] : last_ctx_block_idx;
++                #pragma unroll
++                for (int qkhe = 0; qkhe < C::QKHELOOP; qkhe++) {
++                    int kchunk = qkhe * 2 + rowid / 2;
++                    int kinner = (rowid & 1) * 8;
++                    Kregs_next[qkhe] = *reinterpret_cast<const long*>(
++                        k_ptr + (int64_t)saved_kbi_next * kv_block_stride
++                              + kchunk * C::BLOCK_SIZE * C::X_SIZE
++                              + lane16id * C::X_SIZE + kinner);
++                }
++            }
++
++            // Softmax B — fast path for full blocks
++            const bool full_b = (batch_start_b >= effective_par_start) &&
++                                (batch_start_b + C::BLOCK_SIZE <= context_len);
++            const int64_t k_sc_b_base = per_tok_k
++                ? ((int64_t)kbi_b * kv_sc_block_stride + kv_sc_head_off) : 0;
++            #pragma unroll
++            for (int i = 0; i < 4; i++) {
++                if (per_tok_k) {
++                    float ks = k_scale_per_token[k_sc_b_base + rowid * 4 + i];
++                    qk_b[i] *= scale_log2 * ks;
++                } else {
++                    qk_b[i] *= combined_scale_log2;
++                }
++                if (!full_b) {
++                    int tok = batch_start_b + rowid * 4 + i;
++                    if (tok >= context_len || tok < effective_par_start) {
++                        qk_b[i] = -FLT_MAX;
++                        if (per_tok_v) {
++                            if      (i == 0) vb0 = 0.0f;
++                            else if (i == 1) vb1 = 0.0f;
++                            else if (i == 2) vb2 = 0.0f;
++                            else             vb3 = 0.0f;
++                        }
++                    }
++                }
++            }
++
++            float batch_max_b = -FLT_MAX;
++            #pragma unroll
++            for (int i = 0; i < 4; i++)
++                batch_max_b = fmaxf(batch_max_b, qk_b[i]);
++            for (int mask = C::WARP_SIZE / 2; mask >= 16; mask /= 2)
++                batch_max_b = fmaxf(batch_max_b, __shfl_xor(batch_max_b, mask));
++
++            float new_max_b = fmaxf(running_max, batch_max_b);
++            float alpha_b = (running_max > -FLT_MAX)
++                            ? exp2f(running_max - new_max_b) : 0.0f;
++
++            float batch_sum_b = 0.0f;
++            if (full_b) {
++                #pragma unroll
++                for (int i = 0; i < 4; i++) {
++                    float e = exp2f(qk_b[i] - new_max_b);
++                    qk_b[i] = e;
++                    batch_sum_b += e;
++                }
++            } else {
++                #pragma unroll
++                for (int i = 0; i < 4; i++) {
++                    int tok = batch_start_b + rowid * 4 + i;
++                    float e = (tok < context_len && tok >= effective_par_start)
++                              ? exp2f(qk_b[i] - new_max_b) : 0.0f;
++                    qk_b[i] = e;
++                    batch_sum_b += e;
++                }
++            }
++            for (int mask = C::WARP_SIZE / 2; mask >= 16; mask /= 2)
++                batch_sum_b += __shfl_xor(batch_sum_b, mask);
++
++            running_sum = alpha_b * running_sum + batch_sum_b;
++            running_max = new_max_b;
++            pa_rescale  = alpha_b;
++
++            // Combined rescale: fold alpha_a and alpha_b into single pass
++            float alpha_ab = alpha_a * alpha_b;
++            #pragma unroll
++            for (int v = 0; v < C::VHELOOP; v++)
++                for (int i = 0; i < 4; i++)
++                    out_acc[v][i] *= alpha_ab;
++
++            float pb_gate = (running_max > -FLT_MAX) ? 1.0f : 0.0f;
++            pbv0 = qk_b[0] * pb_gate * vb0;
++            pbv1 = qk_b[1] * pb_gate * vb1;
++            pbv2 = qk_b[2] * pb_gate * vb2;
++            pbv3 = qk_b[3] * pb_gate * vb3;
++        } else {
++            // No second block — apply deferred alpha_a rescale
++            #pragma unroll
++            for (int v = 0; v < C::VHELOOP; v++)
++                for (int i = 0; i < 4; i++)
++                    out_acc[v][i] *= alpha_a;
++
++            // No second block: zero its V so its (zeroed) P contributes
++            // nothing. pbv* already default to 0.0f above.
++            #pragma unroll
++            for (int vhe = 0; vhe < C::VHELOOP; vhe++)
++                vb_tiles[vhe] = 0;
++        }
++
++   
++        float pa_gate = (running_max > -FLT_MAX) ? pa_rescale : 0.0f;
++
++        bhalf8_t p_bf16;
++        p_bf16[0] = (__bf16)(qk_a[0] * pa_gate * va0);
++        p_bf16[1] = (__bf16)(qk_a[1] * pa_gate * va1);
++        p_bf16[2] = (__bf16)(qk_a[2] * pa_gate * va2);
++        p_bf16[3] = (__bf16)(qk_a[3] * pa_gate * va3);
++        p_bf16[4] = (__bf16)pbv0;
++        p_bf16[5] = (__bf16)pbv1;
++        p_bf16[6] = (__bf16)pbv2;
++        p_bf16[7] = (__bf16)pbv3;
++
++        #pragma unroll
++        for (int vhe = 0; vhe < C::VHELOOP; vhe++) {
++            // Dequantize the packed fp8 V tiles (block A bytes 0-3, block B
++            // bytes 0-3) to bf16 for the bf16 PV matmul.
++            bhalf8_t v_bf16;
++            v_bf16[0] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(va_tiles[vhe], 0);
++            v_bf16[1] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(va_tiles[vhe], 1);
++            v_bf16[2] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(va_tiles[vhe], 2);
++            v_bf16[3] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(va_tiles[vhe], 3);
++            v_bf16[4] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(vb_tiles[vhe], 0);
++            v_bf16[5] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(vb_tiles[vhe], 1);
++            v_bf16[6] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(vb_tiles[vhe], 2);
++            v_bf16[7] = (__bf16)__builtin_amdgcn_cvt_f32_fp8(vb_tiles[vhe], 3);
++
++            float4_t vc = {0.0f, 0.0f, 0.0f, 0.0f};
++            vc = __builtin_amdgcn_mfma_f32_16x16x32_bf16(
++                     v_bf16, p_bf16, vc, 0, 0, 0);
++
++            #pragma unroll
++            for (int i = 0; i < 4; i++)
++                out_acc[vhe][i] += vc[i];
++        }
++    }
++
++
++    __syncthreads();
++
++    if constexpr (C::NWARPS == 2) {
++        if (warpid == 1) {
++            if (rowid == 0) {
++                shmem[lane16id * 2 + 0] = running_max;
++                shmem[lane16id * 2 + 1] = running_sum;
++            }
++            #pragma unroll
++            for (int vi = 0; vi < C::VHELOOP; vi++) {
++                int off = C::OA_BASE
++                        + laneid * C::PAD_STRIDE
++                        + vi * 4;
++                shmem[off + 0] = out_acc[vi][0];
++                shmem[off + 1] = out_acc[vi][1];
++                shmem[off + 2] = out_acc[vi][2];
++                shmem[off + 3] = out_acc[vi][3];
++            }
++        }
++
++        __syncthreads();
++
++        if (warpid == 0 && lane_active) {
++            float w1_max = shmem[lane16id * 2 + 0];
++            float w1_sum = shmem[lane16id * 2 + 1];
++
++            float global_max = fmaxf(running_max, w1_max);
++            float r0 = (running_max > -FLT_MAX)
++                        ? exp2f(running_max - global_max) : 0.0f;
++            float r1 = (w1_max > -FLT_MAX)
++                        ? exp2f(w1_max - global_max) : 0.0f;
++            float global_sum = running_sum * r0 + w1_sum * r1;
++
++            float inv_global_sum = __fdividef(pv_correction, global_sum + 1e-6f);
++
++            #pragma unroll
++            for (int vi = 0; vi < C::VHELOOP; vi++) {
++                int off = C::OA_BASE
++                        + laneid * C::PAD_STRIDE
++                        + vi * 4;
++                float final_out[4];
++                #pragma unroll
++                for (int i = 0; i < 4; i++)
++                    final_out[i] = (out_acc[vi][i] * r0
++                                  + shmem[off + i] * r1) * inv_global_sum;
++
++                int base_dim = vi * 16 + rowid * 4;
++
++                if (max_num_partitions == 1) {
++                    int64_t out_off =
++                        (int64_t)seq_idx * num_heads * HEAD_SIZE
++                        + (int64_t)qhead_idx * HEAD_SIZE
++                        + base_dim;
++                    #pragma unroll
++                    for (int i = 0; i < 4; i++)
++                        out[out_off + i] = (QType)final_out[i];
++                } else {
++                    int64_t out_off =
++                        (int64_t)seq_idx * num_heads
++                            * max_num_partitions * HEAD_SIZE
++                        + (int64_t)qhead_idx * max_num_partitions * HEAD_SIZE
++                        + (int64_t)partition_idx * HEAD_SIZE
++                        + base_dim;
++                    #pragma unroll
++                    for (int i = 0; i < 4; i++)
++                        out[out_off + i] = (QType)final_out[i];
++                }
++            }
++
++            if (rowid == 0) {
++                if (max_num_partitions > 1) {
++                    int64_t ms_off =
++                        (int64_t)seq_idx * num_heads * max_num_partitions
++                        + (int64_t)qhead_idx * max_num_partitions
++                        + partition_idx;
++                    max_logits[ms_off] = global_max;
++                    exp_sums[ms_off]   = global_sum;
++                } else if (exp_sums != nullptr) {
++                    int64_t ms_off =
++                        (int64_t)seq_idx * num_heads + qhead_idx;
++                    max_logits[ms_off] = global_max;
++                    exp_sums[ms_off]   = global_sum;
++                }
++            }
++        }
++    } else {
++        if (warpid > 0) {
++            const int wi = warpid - 1;
++            if (rowid == 0) {
++                shmem[wi * C::MS_PER_WARP + lane16id * 2 + 0] = running_max;
++                shmem[wi * C::MS_PER_WARP + lane16id * 2 + 1] = running_sum;
++            }
++            #pragma unroll
++            for (int vi = 0; vi < C::VHELOOP; vi++) {
++                int off = C::OA_BASE
++                        + wi * C::OA_PER_WARP
++                        + laneid * C::PAD_STRIDE
++                        + vi * 4;
++                shmem[off + 0] = out_acc[vi][0];
++                shmem[off + 1] = out_acc[vi][1];
++                shmem[off + 2] = out_acc[vi][2];
++                shmem[off + 3] = out_acc[vi][3];
++            }
++        }
++
++        __syncthreads();
++
++        if (warpid == 0 && lane_active) {
++            float global_max = running_max;
++            #pragma unroll
++            for (int w = 0; w < C::N_OTHER; w++) {
++                float wmax = shmem[w * C::MS_PER_WARP + lane16id * 2 + 0];
++                global_max = fmaxf(global_max, wmax);
++            }
++
++            float r0 = (running_max > -FLT_MAX)
++                        ? exp2f(running_max - global_max) : 0.0f;
++            float global_sum = running_sum * r0;
++
++            #pragma unroll
++            for (int v = 0; v < C::VHELOOP; v++)
++                #pragma unroll
++                for (int i = 0; i < 4; i++)
++                    out_acc[v][i] *= r0;
++
++            #pragma unroll
++            for (int w = 0; w < C::N_OTHER; w++) {
++                float wmax = shmem[w * C::MS_PER_WARP + lane16id * 2 + 0];
++                float wsum = shmem[w * C::MS_PER_WARP + lane16id * 2 + 1];
++                float rw = (wmax > -FLT_MAX)
++                            ? exp2f(wmax - global_max) : 0.0f;
++                global_sum += wsum * rw;
++
++                #pragma unroll
++                for (int vi = 0; vi < C::VHELOOP; vi++) {
++                    int off = C::OA_BASE
++                            + w * C::OA_PER_WARP
++                            + laneid * C::PAD_STRIDE
++                            + vi * 4;
++                    #pragma unroll
++                    for (int i = 0; i < 4; i++)
++                        out_acc[vi][i] += shmem[off + i] * rw;
++                }
++            }
++
++            float inv_global_sum = __fdividef(pv_correction, global_sum + 1e-6f);
++
++            #pragma unroll
++            for (int vi = 0; vi < C::VHELOOP; vi++) {
++                int base_dim = vi * 16 + rowid * 4;
++
++                if (max_num_partitions == 1) {
++                    int64_t out_off =
++                        (int64_t)seq_idx * num_heads * HEAD_SIZE
++                        + (int64_t)qhead_idx * HEAD_SIZE
++                        + base_dim;
++                    #pragma unroll
++                    for (int i = 0; i < 4; i++)
++                        out[out_off + i] = (QType)(out_acc[vi][i] * inv_global_sum);
++                } else {
++                    int64_t out_off =
++                        (int64_t)seq_idx * num_heads
++                            * max_num_partitions * HEAD_SIZE
++                        + (int64_t)qhead_idx * max_num_partitions * HEAD_SIZE
++                        + (int64_t)partition_idx * HEAD_SIZE
++                        + base_dim;
++                    #pragma unroll
++                    for (int i = 0; i < 4; i++)
++                        out[out_off + i] = (QType)(out_acc[vi][i] * inv_global_sum);
++                }
++            }
++
++            if (rowid == 0) {
++                if (max_num_partitions > 1) {
++                    int64_t ms_off =
++                        (int64_t)seq_idx * num_heads * max_num_partitions
++                        + (int64_t)qhead_idx * max_num_partitions
++                        + partition_idx;
++                    max_logits[ms_off] = global_max;
++                    exp_sums[ms_off]   = global_sum;
++                } else if (exp_sums != nullptr) {
++                    int64_t ms_off =
++                        (int64_t)seq_idx * num_heads + qhead_idx;
++                    max_logits[ms_off] = global_max;
++                    exp_sums[ms_off]   = global_sum;
++                }
++            }
++        }
++    }
++}
++
++
++constexpr int V2_BLOCK_SIZE    = 16;
++constexpr int V2_NT_WIDE       = 256;  // 4 warps — low/mid batch
++constexpr int V2_NT_NARROW     = 128;  // 2 warps — very high batch
++constexpr int V2_WIDE_MB       = 2;
++constexpr int V2_NARROW_MB     = 4;
++
++constexpr int V2_GRID_THRESHOLD = 8192;
++
++template <int HEAD_DIM, typename QType>
++static void launch_v2_impl(
++    void* q, void* k_cache, void* v_cache,
++    float scale, float k_scale, float v_scale,
++    void* block_tables, void* context_lens,
++    int max_num_blocks_per_seq,
++    int q_stride, int kv_block_stride, int kv_head_stride,
++    void* out,
++    int num_heads, int gqa_ratio,
++    int num_seqs, int num_kv_heads,
++    int num_partitions, int par_tokens,
++    void* exp_sums, void* max_logits,
++    void* stream_ptr,
++    void* sink_ptr,
++    int sliding_window,
++    void* k_scale_per_token,
++    void* v_scale_per_token)
++{
++    dim3 grid(num_kv_heads, num_seqs, num_partitions);
++    hipStream_t stream = (hipStream_t)stream_ptr;
++    const int total_blocks = num_kv_heads * num_seqs * num_partitions;
++
++    // Shared memory: max of epilogue needs and block table preload
++    const int bt_entries = (par_tokens + V2_BLOCK_SIZE - 1) / V2_BLOCK_SIZE;
++    const int bt_bytes = bt_entries * (int)sizeof(int);
++
++    if (total_blocks < V2_GRID_THRESHOLD) {
++        using C = V2Config<HEAD_DIM, V2_BLOCK_SIZE, V2_NT_WIDE>;
++        int shmem_bytes = C::SHMEM_FLOATS * (int)sizeof(float);
++        if (bt_bytes > shmem_bytes) shmem_bytes = bt_bytes;
++        dim3 block(V2_NT_WIDE);
++        paged_attention_v2<HEAD_DIM, V2_BLOCK_SIZE, V2_NT_WIDE, V2_WIDE_MB, QType>
++            <<<grid, block, shmem_bytes, stream>>>(
++            (const QType*)q, (const uint8_t*)k_cache, (const uint8_t*)v_cache,
++            scale, k_scale, v_scale,
++            (const int*)block_tables, (const int*)context_lens,
++            max_num_blocks_per_seq, q_stride, kv_block_stride, kv_head_stride,
++            (QType*)out,
++            num_heads, gqa_ratio,
++            (const QType*)sink_ptr,
++            (float*)exp_sums, (float*)max_logits,
++            num_partitions, par_tokens, sliding_window,
++            (const float*)k_scale_per_token,
++            (const float*)v_scale_per_token);
++    } else {
++        using C = V2Config<HEAD_DIM, V2_BLOCK_SIZE, V2_NT_NARROW>;
++        int shmem_bytes = C::SHMEM_FLOATS * (int)sizeof(float);
++        if (bt_bytes > shmem_bytes) shmem_bytes = bt_bytes;
++        dim3 block(V2_NT_NARROW);
++        paged_attention_v2<HEAD_DIM, V2_BLOCK_SIZE, V2_NT_NARROW, V2_NARROW_MB, QType>
++            <<<grid, block, shmem_bytes, stream>>>(
++            (const QType*)q, (const uint8_t*)k_cache, (const uint8_t*)v_cache,
++            scale, k_scale, v_scale,
++            (const int*)block_tables, (const int*)context_lens,
++            max_num_blocks_per_seq, q_stride, kv_block_stride, kv_head_stride,
++            (QType*)out,
++            num_heads, gqa_ratio,
++            (const QType*)sink_ptr,
++            (float*)exp_sums, (float*)max_logits,
++            num_partitions, par_tokens, sliding_window,
++            (const float*)k_scale_per_token,
++            (const float*)v_scale_per_token);
++    }
++}
++
++#define DEFINE_V2_LAUNCHER(HDIM, QTAG, QTYPE)                                 \
++extern "C" void launch_paged_attention_v2_##QTAG##_##HDIM(                    \
++    void* q, void* k_cache, void* v_cache,                                     \
++    float scale, float k_scale, float v_scale,                                 \
++    void* block_tables, void* context_lens,                                    \
++    int max_num_blocks_per_seq,                                                \
++    int q_stride, int kv_block_stride, int kv_head_stride,                     \
++    void* out,                                                                  \
++    int num_heads, int gqa_ratio,                                              \
++    int num_seqs, int num_kv_heads,                                            \
++    int num_partitions, int par_tokens,                                        \
++    void* exp_sums, void* max_logits,                                          \
++    void* stream_ptr,                                                           \
++    void* sink_ptr,                                                             \
++    int sliding_window,                                                         \
++    void* k_scale_per_token,                                                    \
++    void* v_scale_per_token)                                                    \
++{                                                                               \
++    launch_v2_impl<HDIM, QTYPE>(                                               \
++        q, k_cache, v_cache, scale, k_scale, v_scale,                          \
++        block_tables, context_lens,                                             \
++        max_num_blocks_per_seq, q_stride, kv_block_stride, kv_head_stride,     \
++        out, num_heads, gqa_ratio,                                              \
++        num_seqs, num_kv_heads,                                                 \
++        num_partitions, par_tokens,                                             \
++        exp_sums, max_logits,                                                   \
++        stream_ptr, sink_ptr, sliding_window,                                   \
++        k_scale_per_token, v_scale_per_token);                                  \
++}
++
++DEFINE_V2_LAUNCHER(64,  fp16, _Float16)
++DEFINE_V2_LAUNCHER(128, fp16, _Float16)
++DEFINE_V2_LAUNCHER(64,  bf16, __bf16)
++DEFINE_V2_LAUNCHER(128, bf16, __bf16)
++
++// ============================================================
++// Reduce kernels
++// ============================================================
++template <int HEAD_SIZE, typename QType>
++__global__ void v2_reduce_partitions(
++    const QType*    __restrict__ part_out,
++    const float*    __restrict__ exp_sums,
++    const float*    __restrict__ max_logits,
++    QType*          __restrict__ final_out,
++    // Sinks share Q's dtype (see paged_attention_v2 above).
++    const QType*    __restrict__ sink_ptr,
++    int num_partitions,
++    int num_heads,
++    int gqa_ratio)
++{
++    constexpr float RCP_LN2 = 1.4426950408889634f;
++    const int seq_idx  = blockIdx.x;
++    const int head_idx = blockIdx.y;
++    const int dim      = threadIdx.x;
++    if (dim >= HEAD_SIZE) return;
++
++    const int64_t base_ms =
++        (int64_t)seq_idx * num_heads * num_partitions
++        + (int64_t)head_idx * num_partitions;
++    const int64_t base_out =
++        (int64_t)seq_idx * num_heads * num_partitions * HEAD_SIZE
++        + (int64_t)head_idx * num_partitions * HEAD_SIZE;
++
++    float gmax = -FLT_MAX;
++    for (int p = 0; p < num_partitions; p++)
++        gmax = fmaxf(gmax, max_logits[base_ms + p]);
++    if (sink_ptr != nullptr) {
++        float sink_log2 = (float)sink_ptr[head_idx] * RCP_LN2;
++        gmax = fmaxf(gmax, sink_log2);
++    }
++
++    float weighted_sum = 0.0f;
++    float acc = 0.0f;
++    for (int p = 0; p < num_partitions; p++) {
++        float ml = max_logits[base_ms + p];
++        // Skip partitions that were entirely masked out (e.g. by sliding
++        // window). part_out for those partitions may be uninitialized;
++        // multiplying NaN by 0 would poison the result.
++        if (!(ml > -FLT_MAX)) continue;
++        float es = exp_sums[base_ms + p];
++        float rescale = exp2f(ml - gmax);
++        float w = es * rescale;
++        weighted_sum += w;
++        acc += (float)part_out[base_out + (int64_t)p * HEAD_SIZE + dim] * w;
++    }
++    if (sink_ptr != nullptr) {
++        float sink_log2 = (float)sink_ptr[head_idx] * RCP_LN2;
++        weighted_sum += exp2f(sink_log2 - gmax);
++    }
++
++    int64_t final_off =
++        (int64_t)seq_idx * num_heads * HEAD_SIZE
++        + (int64_t)head_idx * HEAD_SIZE + dim;
++    final_out[final_off] = (QType)(acc / (weighted_sum + 1e-6f));
++}
++
++template <int HEAD_SIZE, typename QType>
++__global__ void v2_apply_sinks(
++    QType* __restrict__ out,
++    const float* __restrict__ exp_sums_buf,
++    const float* __restrict__ max_logits_buf,
++    // Sinks share Q's dtype (see paged_attention_v2 above).
++    const QType* __restrict__ sink_ptr,
++    int num_heads)
++{
++    constexpr float RCP_LN2 = 1.4426950408889634f;
++    const int seq_idx  = blockIdx.x;
++    const int head_idx = blockIdx.y;
++    const int dim      = threadIdx.x;
++    if (dim >= HEAD_SIZE || sink_ptr == nullptr) return;
++
++    int64_t ms_off = (int64_t)seq_idx * num_heads + head_idx;
++    float part_max = max_logits_buf[ms_off];
++    float part_sum = exp_sums_buf[ms_off];
++    float sink_log2 = (float)sink_ptr[head_idx] * RCP_LN2;
++    float gmax = fmaxf(part_max, sink_log2);
++
++    float part_rescale = (part_max > -FLT_MAX) ? exp2f(part_max - gmax) : 0.0f;
++    float sink_w = exp2f(sink_log2 - gmax);
++    float total = part_sum * part_rescale + sink_w;
++
++    int64_t out_off =
++        (int64_t)seq_idx * num_heads * HEAD_SIZE
++        + (int64_t)head_idx * HEAD_SIZE + dim;
++    float val = (float)out[out_off];
++    out[out_off] = (QType)(val * part_sum * part_rescale / (total + 1e-6f));
++}
++
++#define DEFINE_V2_REDUCE_LAUNCHER(QTAG, QTYPE)                                \
++extern "C" void launch_v2_reduce_##QTAG(                                      \
++    void* part_out, void* exp_sums, void* max_logits,                         \
++    void* final_out, void* sink_ptr,                                          \
++    int num_seqs, int num_heads, int num_partitions,                          \
++    int head_size, int gqa_ratio, void* stream_ptr)                           \
++{                                                                              \
++    hipStream_t stream = (hipStream_t)stream_ptr;                              \
++    if (num_partitions > 1) {                                                  \
++        dim3 grid(num_seqs, num_heads, 1);                                     \
++        dim3 block(head_size);                                                 \
++        if (head_size == 128)                                                  \
++            v2_reduce_partitions<128, QTYPE><<<grid, block, 0, stream>>>(     \
++                (const QTYPE*)part_out, (const float*)exp_sums,                \
++                (const float*)max_logits, (QTYPE*)final_out,                   \
++                (const QTYPE*)sink_ptr, num_partitions, num_heads, gqa_ratio); \
++        else                                                                   \
++            v2_reduce_partitions<64, QTYPE><<<grid, block, 0, stream>>>(      \
++                (const QTYPE*)part_out, (const float*)exp_sums,                \
++                (const float*)max_logits, (QTYPE*)final_out,                   \
++                (const QTYPE*)sink_ptr, num_partitions, num_heads, gqa_ratio); \
++    }                                                                          \
++}
++
++DEFINE_V2_REDUCE_LAUNCHER(fp16, _Float16)
++DEFINE_V2_REDUCE_LAUNCHER(bf16, __bf16)
++
++
++#define DEFINE_V2_APPLY_SINKS_LAUNCHER(QTAG, QTYPE)                            \
++extern "C" void launch_v2_apply_sinks_##QTAG(                                  \
++    void* out, void* exp_sums, void* max_logits,                               \
++    const void* sink_ptr,                                                       \
++    int num_seqs, int num_heads,                                                \
++    int head_size, void* stream_ptr)                                            \
++{                                                                               \
++    if (sink_ptr == nullptr) return;                                            \
++    hipStream_t stream = (hipStream_t)stream_ptr;                               \
++    dim3 grid(num_seqs, num_heads, 1);                                          \
++    dim3 block(head_size);                                                      \
++    if (head_size == 128)                                                       \
++        v2_apply_sinks<128, QTYPE><<<grid, block, 0, stream>>>(                \
++            (QTYPE*)out, (const float*)exp_sums,                                \
++            (const float*)max_logits, (const QTYPE*)sink_ptr,                   \
++            num_heads);                                                         \
++    else                                                                        \
++        v2_apply_sinks<64, QTYPE><<<grid, block, 0, stream>>>(                 \
++            (QTYPE*)out, (const float*)exp_sums,                                \
++            (const float*)max_logits, (const QTYPE*)sink_ptr,                   \
++            num_heads);                                                         \
++}
++
++DEFINE_V2_APPLY_SINKS_LAUNCHER(fp16, _Float16)
++DEFINE_V2_APPLY_SINKS_LAUNCHER(bf16, __bf16)
+diff --git a/csrc/cpp_itfs/pa/pa_v2.py b/csrc/cpp_itfs/pa/pa_v2.py
+new file mode 100644
+index 000000000..bbf32d6d6
+--- /dev/null
++++ b/csrc/cpp_itfs/pa/pa_v2.py
+@@ -0,0 +1,196 @@
++from jinja2 import Template
++from csrc.cpp_itfs.utils import compile_template_op, AITER_CORE_DIR
++import ctypes
++import math
++
++
++MD_NAME = "pa_v2"
++
++with open(f"{AITER_CORE_DIR}/csrc/cpp_itfs/pa/pa_v2.cpp.jinja", "r") as f:
++    src_template = Template(f.read())
++
++
++def compile(
++    head_size: int,
++    dtype: str = "fp16",
++    folder: str = None,
++):
++    """Compile a pa_v2 launcher for a (head_size, dtype) tuple.
++
++    dtype is the Q / output dtype: "fp16" or "bf16".
++    KV cache is always FP8 e4m3 (uint8 packed).
++    """
++    if dtype not in ("fp16", "bf16"):
++        raise ValueError(f"pa_v2: unsupported dtype {dtype!r}, expected fp16 or bf16")
++    return compile_template_op(
++        src_template,
++        MD_NAME,
++        [
++            f"{AITER_CORE_DIR}/csrc/cpp_itfs/pa/pa_v2.cuh",
++        ],
++        head_size=head_size,
++        dtype=dtype,
++        folder=folder,
++    )
++
++
++_TORCH_DTYPE_TAG = None
++
++
++def _dtype_tag(query):
++    """Map torch dtype -> launcher tag ('fp16' or 'bf16')."""
++    global _TORCH_DTYPE_TAG
++    if _TORCH_DTYPE_TAG is None:
++        import torch
++
++        _TORCH_DTYPE_TAG = {
++            torch.float16: "fp16",
++            torch.bfloat16: "bf16",
++        }
++    tag = _TORCH_DTYPE_TAG.get(query.dtype)
++    if tag is None:
++        raise ValueError(
++            f"pa_v2: unsupported query dtype {query.dtype}, expected float16 or bfloat16"
++        )
++    return tag
++
++
++def paged_attention_v2(
++    out,
++    exp_sums,
++    max_logits,
++    tmp_out,
++    query,
++    key_cache,
++    value_cache,
++    scale: float,
++    k_scale: float,
++    v_scale: float,
++    block_tables,
++    context_lens,
++    max_context_len: int,
++    par_tokens: int = 256,
++    sink_ptr=None,
++    sliding_window: int = 0,
++    k_scale_per_token=None,
++    v_scale_per_token=None,
++):
++    """Run pa_v2.
++
++    ``k_scale_per_token`` / ``v_scale_per_token`` are optional FP32 tensors
++    with layout ``[num_blocks, num_kv_heads, BLOCK_SIZE]``. When supplied the
++    kernel applies them per (block, kv_head, slot-in-block) and the scalar
++    ``k_scale`` / ``v_scale`` arguments are ignored.
++    """
++    import torch
++    from csrc.cpp_itfs.torch_utils import torch_to_c_types
++
++    num_seqs = block_tables.size(0)
++    num_heads = query.size(1)
++    head_size = query.size(2)
++    q_stride = query.stride(0)
++    num_kv_heads = key_cache.size(1)
++    max_num_blocks_per_seq = block_tables.size(1)
++    kv_block_stride = key_cache.stride(0)
++    kv_head_stride = key_cache.stride(1)
++    gqa_ratio = num_heads // num_kv_heads
++
++    num_partitions = int(math.ceil(max_context_len / par_tokens))
++
++    func = compile(head_size, dtype=_dtype_tag(query))
++
++    if sink_ptr is not None:
++        if sink_ptr.dtype != query.dtype:
++            raise TypeError(
++                f"pa_v2 sinks dtype ({sink_ptr.dtype}) must match query "
++                f"dtype ({query.dtype}); convert sinks to query.dtype "
++                f"before calling."
++            )
++        if not sink_ptr.is_contiguous():
++            sink_ptr = sink_ptr.contiguous()
++        sink_c_ptr = ctypes.c_void_p(sink_ptr.data_ptr())
++    else:
++        sink_c_ptr = ctypes.c_void_p(0)
++
++    def _scale_c_ptr(t):
++        if t is None:
++            return ctypes.c_void_p(0)
++        if t.dtype != torch.float32:
++            raise TypeError(
++                f"pa_v2 per-token scale must be float32, got {t.dtype}"
++            )
++        if not t.is_contiguous():
++            t = t.contiguous()
++        return ctypes.c_void_p(t.data_ptr())
++
++    k_per_tok_ptr = _scale_c_ptr(k_scale_per_token)
++    v_per_tok_ptr = _scale_c_ptr(v_scale_per_token)
++
++    (
++        query_ptr,
++        key_cache_ptr,
++        value_cache_ptr,
++        out_ptr,
++        exp_sums_ptr,
++        max_logits_ptr,
++        tmp_out_ptr,
++        stream,
++    ) = torch_to_c_types(
++        query,
++        key_cache,
++        value_cache,
++        out,
++        exp_sums,
++        max_logits,
++        tmp_out,
++        torch.cuda.current_stream(),
++    )
++
++    block_tables_ptr = ctypes.cast(
++        block_tables.data_ptr(), ctypes.POINTER(ctypes.c_int)
++    )
++    context_lens_ptr = ctypes.cast(
++        context_lens.data_ptr(), ctypes.POINTER(ctypes.c_int)
++    )
++
++    func(
++        query_ptr,
++        key_cache_ptr,
++        value_cache_ptr,
++        ctypes.c_float(scale),
++        ctypes.c_float(k_scale),
++        ctypes.c_float(v_scale),
++        block_tables_ptr,
++        context_lens_ptr,
++        ctypes.c_int(max_num_blocks_per_seq),
++        ctypes.c_int(q_stride),
++        ctypes.c_int(kv_block_stride),
++        ctypes.c_int(kv_head_stride),
++        out_ptr,
++        ctypes.c_int(num_heads),
++        ctypes.c_int(gqa_ratio),
++        ctypes.c_int(num_seqs),
++        ctypes.c_int(num_kv_heads),
++        ctypes.c_int(num_partitions),
++        ctypes.c_int(par_tokens),
++        exp_sums_ptr,
++        max_logits_ptr,
++        tmp_out_ptr,
++        sink_c_ptr,
++        ctypes.c_int(int(sliding_window)),
++        k_per_tok_ptr,
++        v_per_tok_ptr,
++        stream,
++    )
++    return out
++
++
++if __name__ == "__main__":
++    import argparse
++
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--head_size", type=int, required=True)
++    parser.add_argument("--dtype", type=str, default="fp16", choices=["fp16", "bf16"])
++    parser.add_argument("--folder", type=str, default=None)
++    args = parser.parse_args()
++    compile(**vars(args))
+diff --git a/aiter/ops/triton/moe/moe_op_gemm_a8w4.py b/aiter/ops/triton/moe/moe_op_gemm_a8w4.py
+index a1269cf24..3b7cfc2d5 100644
+--- a/aiter/ops/triton/moe/moe_op_gemm_a8w4.py
++++ b/aiter/ops/triton/moe/moe_op_gemm_a8w4.py
+@@ -71,7 +71,7 @@ def get_kernel_config(m, n, k, routing_data):
+     xcd_swizzle = num_xcds
+     w_cache_modifier = ".cg" if block_m <= 32 else None
+     arch = get_arch()
+-    num_stages = 1 if arch == "gfx950" else 2
++    num_stages = 2 # if arch == "gfx950" else 2
+     split_k = 1
+     block_k = 256
+
+diff --git a/aiter/fused_moe.py b/aiter/fused_moe.py
+index cbe5c7803..bf53c274d 100755
+--- a/aiter/fused_moe.py
++++ b/aiter/fused_moe.py
+@@ -263,7 +263,7 @@ def fused_moe_(
+         and a1_scale is not None
+     ):
+         q_dtype_a = dtypes.fp8
+-    bf16_fp8_bound = 256
++    bf16_fp8_bound = 0
+     if quant_type == QuantType.per_1x32:
+         if activation == ActivationType.Swiglu:
+             if get_gfx() != "gfx950" or M < bf16_fp8_bound:
+
+
+diff --git a/aiter/configs/model_configs/gptoss_fp8fp4_tuned_fmoe.csv b/aiter/configs/model_configs/gptoss_fp8fp4_tuned_fmoe.csv
+index 86a5dea5f..a4a7bb65a 100644
+--- a/aiter/configs/model_configs/gptoss_fp8fp4_tuned_fmoe.csv
++++ b/aiter/configs/model_configs/gptoss_fp8fp4_tuned_fmoe.csv
+@@ -1,15 +1,17 @@
+-cu_num,token,model_dim,inter_dim,expert,topk,act_type,dtype,q_dtype_a,q_dtype_w,q_type,use_g1u1,doweight_stage1,block_m,ksplit,us1,kernelName1,err1,us2,kernelName2,err2,us,run_1stage,tflops,bw,_tag
+-256,512,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,214.3544,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w2_gui_fp8,0.0%,111.631,flydsl_moe2_afp8_wfp4_bf16_t32x256x256_atomic_bnt2_persist,0.0%,325.9854,0,355.73,11131.16,
+-256,1024,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,235.2077,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_gui_fp8,0.0%,125.5088,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_bnt2,0.0%,360.7165,0,642.97,10072.5,
+-256,2048,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,312.5584,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_w2_bnt0_gui_fp8,0.0%,172.1029,flydsl_moe2_afp8_wfp4_bf16_t64x128x256_atomic_persist,0.0%,484.6613,0,957.07,7516.08,
+-256,4096,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,442.3352,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_w2_bnt0_gui_fp8,0.0%,256.1523,flydsl_moe2_afp8_wfp4_bf16_t64x128x256_atomic_persist_sbm128,0.0%,698.4875,0,1328.17,5242.22,
+-256,8192,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,714.6281,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_bnt0_gui_fp8,0.0%,413.5452,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_persist_sbm128,0.0%,1128.1733,0,1644.63,3279.08,
+-256,16384,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,1356.5778,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_w2_bnt0_gui,0.0%,731.3886,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_sbm128,0.0%,2087.9664,0,1777.26,1807.92,
+-256,32768,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,2474.7814,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_w2_bnt0_gui_fp8,0.0%,1348.5732,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_xcd4_persist,0.0%,3823.3546,0,1941.15,1026.81,
+-256,512,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,527.0715,cktile_a8w4_bm32,0.0,117.3402,cktile_a8w4_bm32,0.0,644.4117,0,0.0,0.0,flydsl_fallback
+-256,1024,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,286.4048,cktile_a8w4_bm32,0.0,142.6674,cktile_a8w4_bm32,0.0,429.0722,0,0.0,0.0,flydsl_fallback
+-256,2048,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,446.6267,cktile_a8w4_bm32,0.0,181.4069,cktile_a8w4_bm32,0.0,628.0336,0,0.0,0.0,flydsl_fallback
+-256,4096,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,786.0193,cktile_a8w4_bm32,0.0,275.9191,cktile_a8w4_bm32,0.0,1061.9384,0,0.0,0.0,flydsl_fallback
+-256,8192,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,1478.4233,cktile_a8w4_bm32,0.0,480.9397,cktile_a8w4_bm32,0.0,1959.363,0,0.0,0.0,flydsl_fallback
+-256,16384,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,2752.7649,cktile_a8w4_bm32,0.0,908.23,cktile_a8w4_bm32,0.0,3660.9949,0,0.0,0.0,flydsl_fallback
+-256,32768,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,5411.816400000001,cktile_a8w4_bm32,0.0,1750.1288,cktile_a8w4_bm32,0.0,7161.9452,0,0.0,0.0,flydsl_fallback
++cu_num,token,model_dim,inter_dim,expert,topk,act_type,dtype,q_dtype_a,q_dtype_w,q_type,use_g1u1,doweight_stage1,block_m,ksplit,us1,kernelName1,err1,us2,kernelName2,err2,us,run_1stage,tflops,bw,xbf16,_tag
++256,512,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,214.3544,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w2_gui_fp8,0.0%,111.631,flydsl_moe2_afp8_wfp4_bf16_t32x256x256_atomic_bnt2_persist,0.0%,325.9854,0,355.73,11131.16,0,
++256,1024,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,235.2077,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_gui_fp8,0.0%,125.5088,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_bnt2,0.0%,360.7165,0,642.97,10072.5,0,
++256,2048,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,312.5584,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_w2_bnt0_gui_fp8,0.0%,172.1029,flydsl_moe2_afp8_wfp4_bf16_t64x128x256_atomic_persist,0.0%,484.6613,0,957.07,7516.08,0,
++256,4096,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,442.3352,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_w2_bnt0_gui_fp8,0.0%,256.1523,flydsl_moe2_afp8_wfp4_bf16_t64x128x256_atomic_persist_sbm128,0.0%,698.4875,0,1328.17,5242.22,0,
++256,8192,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,714.6281,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_bnt0_gui_fp8,0.0%,413.5452,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_persist_sbm128,0.0%,1128.1733,0,1644.63,3279.08,0,
++256,16384,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,128,0,1356.5778,flydsl_moe1_afp8_wfp4_bf16_t128x256x256_w2_bnt0_gui,0.0%,731.3886,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_sbm128,0.0%,2087.9664,0,1777.26,1807.92,0,
++256,32768,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,64,0,2474.7814,flydsl_moe1_afp8_wfp4_bf16_t64x256x256_w2_bnt0_gui_fp8,0.0%,1348.5732,flydsl_moe2_afp8_wfp4_bf16_t64x256x256_atomic_xcd4_persist,0.0%,3823.3546,0,1941.15,1026.81,0,
++256,1,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,12.9552,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_gui_xcd4_fp8,0.0%,16.1953,flydsl_moe2_afp8_wfp4_bf16_t16x128x256_atomic_bnt2_persist_sbm32,0.0%,29.1505,0,7.77,124316.49,0,
++256,2,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,17.4248,flydsl_moe1_afp8_wfp4_bf16_t32x64x256_w4_gui_fp8,0.0%,17.9304,flydsl_moe2_afp8_wfp4_bf16_t16x128x256_atomic_sbm32,0.0%,35.3552,0,12.81,102499.69,0,
++256,4,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,28.5857,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w3_gui_fp8,0.0%,21.399,flydsl_moe2_afp8_wfp4_bf16_t16x128x256_reduce_sbm32,0.0%,49.9847,0,18.12,72500.5,0,
++256,8,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,50.8045,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w3_gui_fp8,0.0%,31.3209,flydsl_moe2_afp8_wfp4_bf16_t32x128x256_atomic_bnt2,0.0%,82.1254,0,22.06,44127.06,0,
++256,16,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,83.6332,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w4_gui_fp8,0.0%,48.1281,flydsl_moe2_afp8_wfp4_bf16_t32x128x256_atomic_bnt2_persist,0.0%,131.7613,0,27.5,27504.48,0,
++256,32,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,135.0941,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w4_gui_fp8,0.0%,75.6954,flydsl_moe2_afp8_wfp4_bf16_t32x128x256_atomic_bnt2_persist,0.0%,210.7895,0,34.38,17193.33,0,
++256,64,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,174.999,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w4_gui_fp8,0.0%,94.9349,flydsl_moe2_afp8_wfp4_bf16_t32x128x256_atomic_bnt2,0.0%,269.9339,0,53.7,13427.24,0,
++256,128,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,189.7894,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w4_gui_fp8,0.0%,103.5704,flydsl_moe2_afp8_wfp4_bf16_t32x256x256_atomic_bnt2,0.0%,293.3598,0,98.82,12357.04,0,
++256,256,3072,3072,128,4,ActivationType.Swiglu,torch.bfloat16,torch.float8_e4m3fn,torch.float4_e2m1fn_x2,QuantType.per_1x32,1,0,32,0,198.6829,flydsl_moe1_afp8_wfp4_bf16_t32x128x256_w3_gui_fp8,0.0%,108.2604,flydsl_moe2_afp8_wfp4_bf16_t32x256x256_atomic_bnt2,0.0%,306.9433,0,188.9,11814.03,0,

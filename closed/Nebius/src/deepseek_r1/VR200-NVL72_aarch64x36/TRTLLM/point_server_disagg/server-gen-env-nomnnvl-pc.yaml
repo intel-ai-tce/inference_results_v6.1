@@ -1,0 +1,23 @@
+# DSR1 disagg-server 4c8g x72 — worker env (BOTH ctx and gen; identical).
+# MNNVL: left UNSET (UCX default = on) to match the 295929 PASS. Do NOT add =n — on a
+#   cross-rack seg2 run 'n' disables the NVLink KV transport -> CacheReceiver CUDA illegal-memory crash.
+# UCX_TLS ^posix + UCX_RNDV_SCHEME put_zcopy fix the sm_107 disagg startup/KV-transfer hang.
+UCX_RNDV_SCHEME: 'put_zcopy'
+# UCX_TLS: '^posix'
+TRTLLM_MOE_A2A_DISABLE_CFT_COUNTED_WRITES: '1'
+TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER: '1'
+TRTLLM_GEMM_ALLREDUCE_FUSION_ENABLED: '1'
+TLLM_NUMA_AWARE_WORKER_AFFINITY: '1'
+TRTLLM_ENABLE_PDL: '1'
+TRTLLM_SERVER_DISABLE_GC: '1'
+TRTLLM_WORKER_DISABLE_GC: '1'
+NCCL_GRAPH_MIXING_SUPPORT: '0'
+
+# --- push-combine enable (added for PC variant) ---
+TRTLLM_FORCE_COMM_METHOD: 'PUSH_COMBINE'
+TRTLLM_TILE_PUSH_COMBINE_DSO: '/usr/local/lib/python3.12/dist-packages/tensorrt_llm/libs/tile_push_comm_ops.so'
+
+UCX_TLS: '^posix,rc,ud,dc'
+TLLM_AUTOTUNER_CACHE_PATH: '/trtllm_cache/dsr1_disagg_server_gen_cache.json'
+# PYTORCH_CUDA_ALLOC_CONF: 'expandable_segments:True'
+UCX_PROTO_INFO: 'y'

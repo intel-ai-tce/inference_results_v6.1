@@ -1,0 +1,26 @@
+{
+  "fused_moe_kernel": {
+    "file": "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/fused_moe.py",
+    "function": "fused_moe_kernel",
+    "line": 293,
+    "name": "fused_moe_kernel",
+    "call_count": 982112,
+    "ext_id": 3971,
+    "bottleneck_rank": 1,
+    "pct_gpu_time": 35.39,
+    "total_dur": 29374.1168,
+    "deps": []
+  },
+  "kernel_unified_attention": {
+    "file": "/usr/local/lib/python3.12/dist-packages/vllm/v1/attention/ops/triton_unified_attention.py",
+    "function": "kernel_unified_attention",
+    "line": 179,
+    "name": "kernel_unified_attention",
+    "call_count": 491056,
+    "ext_id": 3939,
+    "bottleneck_rank": 4,
+    "pct_gpu_time": 8.6,
+    "total_dur": 7137.4562,
+    "deps": []
+  }
+}

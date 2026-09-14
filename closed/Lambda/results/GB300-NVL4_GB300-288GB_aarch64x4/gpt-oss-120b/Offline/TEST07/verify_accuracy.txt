@@ -1,0 +1,92 @@
+2026-07-31 07:00:46,276 - INFO - Loading MLPerf log from /home/ubuntu/nv-mlpinf-partner/closed/NVIDIA/scaleout/sflow_output/gptoss_offline_performanceonly_20260731-064625/84-trtllm_ifb-20260731-064626-e97b26/mlperf_harness/PerformanceOnly/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/mlperf_log_accuracy.json
+2026-07-31 07:00:46,364 - INFO - Loaded 990 log entries
+2026-07-31 07:00:46,364 - INFO - Loading reference data from /home/mlperf_inference_storage/data/gpt-oss/v4/acc/acc_eval_compliance_gpqa.parquet
+2026-07-31 07:00:46,390 - INFO - Loaded reference data from Parquet file
+2026-07-31 07:00:46,398 - INFO - Reference data shape: (990, 6)
+2026-07-31 07:00:46,398 - INFO - Reference columns: ['input_tokens', 'num_tokens', 'text_input', 'original_messages', 'ground_truth', 'dataset']
+2026-07-31 07:00:46,399 - INFO - Unique datasets in reference data (1 total):
+2026-07-31 07:00:46,399 - INFO -   'gpqa_diamond' (990 samples)
+2026-07-31 07:00:46,399 - INFO - 
+Sample rows from reference data:
+2026-07-31 07:00:46,399 - INFO -   Row 0: dataset='gpqa_diamond'
+2026-07-31 07:00:46,399 - INFO -   Row 1: dataset='gpqa_diamond'
+2026-07-31 07:00:46,399 - INFO -   Row 2: dataset='gpqa_diamond'
+2026-07-31 07:00:46,399 - INFO - 
+Expected Dataset → Evaluator mapping:
+2026-07-31 07:00:46,399 - INFO -   'gpqa_diamond' (normalized: 'gpqa_diamond') → 'gpqa'
+2026-07-31 07:00:46,399 - INFO - Loading tokenizer: openai/gpt-oss-120b
+2026-07-31 07:00:46,527 - INFO - HTTP Request: HEAD https://huggingface.co/openai/gpt-oss-120b/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-31 07:00:46,527 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-31 07:00:46,532 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/openai/gpt-oss-120b/b5c939de8f754692c1647ca79fbf85e8c1e70f8a/config.json "HTTP/1.1 200 OK"
+2026-07-31 07:00:46,614 - INFO - HTTP Request: HEAD https://huggingface.co/openai/gpt-oss-120b/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-31 07:00:46,620 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/openai/gpt-oss-120b/b5c939de8f754692c1647ca79fbf85e8c1e70f8a/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-31 07:00:46,696 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-07-31 07:00:46,789 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-07-31 07:00:48,281 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b "HTTP/1.1 200 OK"
+2026-07-31 07:00:48,325 - INFO - Grouping MLPerf log entries by dataset...
+2026-07-31 07:00:48,363 - INFO - Grouped entries by dataset:
+2026-07-31 07:00:48,363 - INFO -   gpqa_diamond: 990 entries
+2026-07-31 07:00:48,363 - INFO - Total entries: 990
+2026-07-31 07:00:48,363 - INFO - 
+Processing MLPerf log entries by dataset...
+2026-07-31 07:00:48,363 - INFO - 
+================================================================================
+2026-07-31 07:00:48,363 - INFO - Processing gpqa_diamond: 990 samples
+2026-07-31 07:00:48,363 - INFO - ================================================================================
+
+Evaluating gpqa_diamond:   0%|          | 0/990 [00:00<?, ?entry/s]
+Evaluating gpqa_diamond:  21%|██        | 208/990 [00:00<00:00, 2077.55entry/s]
+Evaluating gpqa_diamond:  42%|████▏     | 416/990 [00:00<00:00, 1316.82entry/s]
+Evaluating gpqa_diamond:  57%|█████▋    | 564/990 [00:00<00:00, 844.80entry/s] 
+Evaluating gpqa_diamond:  68%|██████▊   | 669/990 [00:00<00:00, 546.21entry/s]
+Evaluating gpqa_diamond:  75%|███████▌  | 744/990 [00:01<00:00, 428.73entry/s]
+Evaluating gpqa_diamond:  81%|████████  | 801/990 [00:01<00:00, 375.66entry/s]
+Evaluating gpqa_diamond:  86%|████████▌ | 847/990 [00:01<00:00, 342.81entry/s]
+Evaluating gpqa_diamond:  89%|████████▉ | 886/990 [00:01<00:00, 318.09entry/s]
+Evaluating gpqa_diamond:  93%|█████████▎| 920/990 [00:01<00:00, 300.00entry/s]
+Evaluating gpqa_diamond:  96%|█████████▌| 951/990 [00:02<00:00, 286.92entry/s]
+Evaluating gpqa_diamond:  99%|█████████▉| 980/990 [00:02<00:00, 278.93entry/s]
+Evaluating gpqa_diamond: 100%|██████████| 990/990 [00:02<00:00, 436.91entry/s]
+2026-07-31 07:00:50,630 - INFO - 
+Calculating final scores...
+
+================================================================================
+MLPerf Accuracy Evaluation Results
+================================================================================
+Total samples evaluated: 990
+Overall raw accuracy: 61.31% (607/990)
+================================================================================
+
+Per-Dataset Breakdown:
+--------------------------------------------------------------------------------
+Dataset                    Correct    Total  Repeats      Score   Accuracy
+--------------------------------------------------------------------------------
+gpqa_diamond                   607      990        5     121.40     61.31%
+================================================================================
+
+Final Score Calculation:
+--------------------------------------------------------------------------------
+Formula: gpqa_diamond/5
+Score:   = 607/5
+         = 121.40
+         = 121.40
+Max:     = 990/5
+         = 198.00
+
+FINAL SCORE: 61.31% (121.40/198.00)
+================================================================================
+
+
+Printing for submission_checker:
+
+'exact_match': 61.313
+2026-07-31 07:00:50,630 - INFO - Evaluation complete!
+
+================================================================================
+TEST07 Verification Summary
+================================================================================
+Accuracy score: 61.313
+Accuracy threshold: 60.698
+Accuracy check pass: True
+TEST PASS

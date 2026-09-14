@@ -1,0 +1,47 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+# Applies curated upstream PRs / local patches on top of the base sgl-dev image.
+#
+# Cost model (why the layers are ordered this way):
+#   * sglang + aiter are editable installs (pip -e). Their patches are pure
+#     Python / Triton / CSV / tuning-script changes, so `git apply` alone is
+#     enough -- NO recompile. (aiter Triton kernels are JIT-compiled at runtime.)
+#   * mori has compiled HIP .so artifacts, so its patch requires a rebuild.
+#
+# Layers are ordered least-frequently-changed first (mori rebuild -> aiter ->
+# sglang) so that iterating on the cheap sglang/aiter patches does not bust the
+# expensive mori compile cache. Each patch group is COPYed immediately before
+# its RUN so editing one group only invalidates that group's layer.
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG PATCHES_DIR
+ARG SGLANG_DIR=/sgl-workspace/sglang
+ARG AITER_DIR=/sgl-workspace/aiter
+ARG MORI_DIR=/sgl-workspace/mori
+ARG GPU_ARCH=gfx950
+
+# --- 1. mori: patch + recompile (the only component needing a build) ---
+COPY ${PATCHES_DIR}/mori /tmp/prs/mori
+RUN if ls /tmp/prs/mori/*.patch >/dev/null 2>&1; then \
+        cd ${MORI_DIR} && \
+        for p in $(ls /tmp/prs/mori/*.patch | sort); do echo "[mori] git apply $p" && git apply "$p"; done && \
+        MORI_GPU_ARCHS=${GPU_ARCH} pip install -e . --no-build-isolation -v ; \
+    else echo "[mori] no patches, skipping"; fi
+
+# --- 2. aiter: patch in place (editable, no rebuild) ---
+COPY ${PATCHES_DIR}/aiter /tmp/prs/aiter
+RUN if ls /tmp/prs/aiter/*.patch >/dev/null 2>&1; then \
+        cd ${AITER_DIR} && \
+        for p in $(ls /tmp/prs/aiter/*.patch | sort); do echo "[aiter] git apply $p" && git apply "$p"; done ; \
+    else echo "[aiter] no patches, skipping"; fi
+
+# --- 3. sglang: patch in place (editable, no rebuild) + preload shim ---
+COPY ${PATCHES_DIR}/sglang /tmp/prs/sglang
+RUN if ls /tmp/prs/sglang/*.patch >/dev/null 2>&1; then \
+        cd ${SGLANG_DIR} && \
+        for p in $(ls /tmp/prs/sglang/*.patch | sort); do echo "[sglang] git apply $p" && git apply "$p"; done ; \
+    else echo "[sglang] no patches, skipping"; fi \
+    && cp /lab-mlperf-inference/code/harness_llm/common/preload/triton_preload.py ${SGLANG_DIR}/python/sglang/srt/managers/
+
+WORKDIR /lab-mlperf-inference/code/

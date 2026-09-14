@@ -1,0 +1,2005 @@
+2026-07-21 15:07:35,313 - INFO - Detected input file type: mlperf_json
+2026-07-21 15:07:35,313 - INFO - Processing: /work/sflow_output/8903-trtllm_ifb-20260721-032044-18e34a/mlperf_harness/AccuracyOnly/GB300-NVL72_GB300-288GB_aarch64x72_TRT/deepseek-r1/Offline/mlperf_log_accuracy.json
+2026-07-21 15:07:35,313 - INFO - Processing MLPerf accuracy log JSON file
+2026-07-21 15:07:35,319 - INFO - Using default checkpoint path: deepseek-ai/DeepSeek-R1
+2026-07-21 15:07:35,319 - INFO - Processing MLPerf log: /work/sflow_output/8903-trtllm_ifb-20260721-032044-18e34a/mlperf_harness/AccuracyOnly/GB300-NVL72_GB300-288GB_aarch64x72_TRT/deepseek-r1/Offline/mlperf_log_accuracy.json
+2026-07-21 15:07:35,319 - INFO - Using dataset: /home/mlperf_inference_storage/data/deepseek-r1/mlperf_deepseek_r1_dataset_4388_fp8_eval.pkl
+2026-07-21 15:07:35,319 - INFO - Using checkpoint: deepseek-ai/DeepSeek-R1
+2026-07-21 15:07:36,100 - INFO - Tokenizer loaded successfully
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/eval_accuracy.py:97: DeprecationWarning: numpy.core.numeric is deprecated and has been renamed to numpy._core.numeric. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core.numeric._frombuffer.
+  dataset_df = pickle.load(f)
+2026-07-21 15:07:36,590 - INFO - Loaded 4388 ground truth entries
+2026-07-21 15:07:36,593 - INFO - Detected JSON array format
+2026-07-21 15:07:36,742 - INFO - Loaded 4388 MLPerf results
+2026-07-21 15:07:36,801 - INFO - Processing 4388 valid predictions
+2026-07-21 15:07:39,510 - INFO - Token decoding completed
+2026-07-21 15:07:39,571 - INFO - Created DataFrame with 4388 rows
+Processing datasets:   0%|          | 0/5 [00:00<?, ?it/s]2026-07-21 15:07:39,575 - INFO - Processing 932 rows for dataset 'aime1983'
+2026-07-21 15:07:39,708 - INFO - aime1983 results: 776/885 correct (87.7% accuracy)
+Processing datasets:  20%|██        | 1/5 [00:00<00:00,  7.53it/s]2026-07-21 15:07:39,708 - INFO - Processing 198 rows for dataset 'gpqa'
+2026-07-21 15:07:39,807 - INFO - gpqa results: 138/197 correct (70.1% accuracy)
+2026-07-21 15:07:39,807 - INFO - Processing 349 rows for dataset 'livecodebench'
+2026-07-21 15:07:39,848 - INFO - Evaluating 329 LiveCodeBench items with 144 workers
+
+Evaluating LiveCodeBench:   0%|          | 0/329 [00:00<?, ?it/s][A2026-07-21 15:07:40,254 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,258 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,261 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,263 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,264 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,265 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,266 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,267 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,268 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,268 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,268 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,268 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,268 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,269 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,271 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,271 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,272 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,273 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,274 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,277 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,278 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,280 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,286 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,287 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,289 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,289 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,289 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,291 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,293 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,294 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,296 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,298 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,298 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,298 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,298 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,304 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,308 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,309 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,314 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,314 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,314 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,321 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,323 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,329 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,329 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,329 - INFO - PyTorch version 2.11.0 available.
+2026-07-21 15:07:40,329 - INFO - PyTorch version 2.11.0 available.
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+Loaded 400 problems
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+Loaded 400 problems
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Loaded 400 problems
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+Loaded 400 problems
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.77it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.61it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.45it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.52it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.50it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.24it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.36it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.29it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.25it/s][ALoaded 400 problems
+Evaluating 1...
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.16it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.15it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.21it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.60it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.58it/s][A
+Evaluating LiveCodeBench:   0%|          | 1/329 [00:42<3:50:59, 42.25s/it][A
+100%|██████████| 1/1 [00:00<00:00,  4.25it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.07it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.51it/s][A100%|██████████| 1/1 [00:00<00:00,  4.14it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.76it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.76it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.06it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.46it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.02it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.83it/s][A100%|██████████| 1/1 [00:00<00:00,  3.95it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.01it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.03it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.95it/s][A100%|██████████| 1/1 [00:00<00:00,  4.02it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.35it/s][ALoaded 400 problems
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.92it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.33it/s][A100%|██████████| 1/1 [00:00<00:00,  3.95it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.32it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.79it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.13it/s][A100%|██████████| 1/1 [00:00<00:00,  3.85it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.15it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.82it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.45it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.59it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.64it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.80it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.75it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.66it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.34it/s][A100%|██████████| 1/1 [00:00<00:00,  3.64it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.02it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.65it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.84it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.72it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.96it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.98it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.10it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.71it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.02it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.94it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.18it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.10it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.80it/s][A100%|██████████| 1/1 [00:00<00:00,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.62it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.14it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.41it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.33it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.52it/s][A100%|██████████| 1/1 [00:00<00:00,  4.01it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.38it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.19it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.10it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.69it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.07it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.45it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.27it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.38it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.48it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.16it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.51it/s][A100%|██████████| 1/1 [00:00<00:00,  3.37it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.01it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.84it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.02it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.81it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.93it/s][A100%|██████████| 1/1 [00:00<00:00,  4.04it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.67it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.35it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.81it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.92it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.70it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.00it/s][A100%|██████████| 1/1 [00:00<00:00,  3.59it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.03it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.91it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.02it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.29it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.99it/s][A100%|██████████| 1/1 [00:00<00:00,  3.59it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.62it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.96it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.55it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.29it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.23it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.53it/s][A100%|██████████| 1/1 [00:00<00:00,  3.49it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.76it/s][A100%|██████████| 1/1 [00:00<00:00,  3.84it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.86it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.72it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.36it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.18it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.47it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.67it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.73it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.82it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.17it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.06it/s][A100%|██████████| 1/1 [00:00<00:00,  3.60it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.49it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.72it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.52it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.83it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.31it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.31it/s][A100%|██████████| 1/1 [00:00<00:00,  3.60it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.73it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.07it/s][A100%|██████████| 1/1 [00:00<00:00,  3.19it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.29it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.15it/s][A100%|██████████| 1/1 [00:00<00:00,  3.74it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.76it/s][A100%|██████████| 1/1 [00:00<00:00,  3.32it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.91it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.31it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.73it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.25it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.35it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.48it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.61it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.44it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.31it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.61it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.87it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.07it/s][A100%|██████████| 1/1 [00:00<00:00,  4.29it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.18it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.13it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.56it/s][A100%|██████████| 1/1 [00:00<00:00,  3.15it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.53it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.02it/s][A100%|██████████| 1/1 [00:00<00:00,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.27it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.30it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.56it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.93it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.01it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.06it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.19it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.76it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.09it/s][A100%|██████████| 1/1 [00:00<00:00,  3.06it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.00it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.13it/s]
+1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.38it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.23it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.14it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.17it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.92it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.29it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.53it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.70it/s][A100%|██████████| 1/1 [00:00<00:00,  2.89it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.83it/s][A100%|██████████| 1/1 [00:00<00:00,  3.18it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.16it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  2.93it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.51it/s][A100%|██████████| 1/1 [00:00<00:00,  3.29it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.32it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.62it/s]
+
+Evaluating LiveCodeBench:  17%|█▋        | 55/329 [00:42<02:28,  1.84it/s] [A100%|██████████| 1/1 [00:00<00:00,  2.86it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.39it/s][A100%|██████████| 1/1 [00:00<00:00,  3.90it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.15it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.10it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.06it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.45it/s][A100%|██████████| 1/1 [00:00<00:00,  2.76it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.51it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.16it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.38it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.58it/s][A100%|██████████| 1/1 [00:00<00:00,  4.71it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.99it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.70it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.55it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.04it/s][A100%|██████████| 1/1 [00:00<00:00,  2.93it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.88it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.35it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.85it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.04it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.26it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.83it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.14it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.28it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.04it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.06it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.25it/s][A1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.72it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.77it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.92it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.09it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  7.16it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  6.04it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.58it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.17it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.46it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.62it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.85it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.02it/s]
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.54it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.83it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.56it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  2.62it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.96it/s]
+Loaded 400 problems
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.60it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.42it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.82it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.04it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.47it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  4.10it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.53it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.32it/s][A100%|██████████| 1/1 [00:00<00:00,  3.41it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.36it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.83it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.59it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  4.07it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  4.22it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.77it/s]
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  4.91it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.60it/s]
+1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.49it/s][A100%|██████████| 1/1 [00:00<00:00,  4.92it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.29it/s][A100%|██████████| 1/1 [00:00<00:00,  3.21it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.73it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.76it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.60it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.41it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.68it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.74it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  6.17it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  6.39it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.46it/s][A
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  5.19it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+1.0
+Evaluating 1...
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.53it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.52it/s][A100%|██████████| 1/1 [00:00<00:00,  2.55it/s]
+
+Evaluating LiveCodeBench:  39%|███▉      | 129/329 [00:42<00:37,  5.38it/s][A100%|██████████| 1/1 [00:00<00:00,  4.66it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.33it/s]
+100%|██████████| 1/1 [00:00<00:00,  5.48it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.77it/s][A100%|██████████| 1/1 [00:00<00:00,  4.77it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.24it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  5.93it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  5.60it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.46it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.27it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.63it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.16it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.76it/s][A100%|██████████| 1/1 [00:00<00:00,  4.10it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  5.14it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.72it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.80it/s]
+100%|██████████| 1/1 [00:00<00:00,  5.19it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.11it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.76it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.63it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.56it/s][A100%|██████████| 1/1 [00:00<00:00,  4.34it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.57it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.00it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.83it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.34it/s][A100%|██████████| 1/1 [00:00<00:00,  5.01it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.94it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.42it/s][A1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  5.43it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.54it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.95it/s][A100%|██████████| 1/1 [00:00<00:00,  4.19it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.19it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.58it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.93it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.76it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.65it/s][A100%|██████████| 1/1 [00:00<00:00,  4.89it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.09it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.04it/s]
+100%|██████████| 1/1 [00:00<00:00,  5.10it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.18it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.79it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.44it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.79it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.71it/s][A100%|██████████| 1/1 [00:00<00:00,  4.67it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.33it/s][A100%|██████████| 1/1 [00:00<00:00,  3.54it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.88it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.74it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.42it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.05it/s][A100%|██████████| 1/1 [00:00<00:00,  4.18it/s]
+1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  4.74it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.29it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.79it/s][A100%|██████████| 1/1 [00:00<00:00,  5.16it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.36it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.06it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.06it/s][A100%|██████████| 1/1 [00:00<00:00,  3.96it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.09it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.04it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  4.30it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.95it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.09it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.51it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.77it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.39it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.00it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.43it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.15it/s][A100%|██████████| 1/1 [00:00<00:00,  4.82it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.14it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.45it/s][A100%|██████████| 1/1 [00:00<00:00,  3.80it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.72it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.72it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.65it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.17it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.08it/s][A100%|██████████| 1/1 [00:00<00:00,  3.75it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.43it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.80it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.76it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.11it/s][A100%|██████████| 1/1 [00:00<00:00,  3.18it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.55it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.96it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.43it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.82it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.63it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.09it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.39it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.64it/s][A100%|██████████| 1/1 [00:00<00:00,  3.97it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.66it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.51it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.82it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.48it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.75it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.42it/s][A100%|██████████| 1/1 [00:00<00:00,  3.41it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.88it/s][A100%|██████████| 1/1 [00:00<00:00,  3.28it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.55it/s][A100%|██████████| 1/1 [00:00<00:00,  3.99it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.77it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.36it/s][A100%|██████████| 1/1 [00:00<00:00,  4.25it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.95it/s][A0.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.98it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.95it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.37it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  3.51it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.28it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.14it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.25it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.51it/s][A100%|██████████| 1/1 [00:00<00:00,  3.41it/s]
+1.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  2.79it/s][A100%|██████████| 1/1 [00:00<00:00,  3.12it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.55it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.27it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.67it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.58it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.03it/s][A100%|██████████| 1/1 [00:00<00:00,  3.10it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.85it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.72it/s]
+
+Evaluating LiveCodeBench:  59%|█████▉    | 194/329 [00:42<00:13,  9.64it/s][A100%|██████████| 1/1 [00:00<00:00,  2.61it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.39it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.12it/s][A100%|██████████| 1/1 [00:00<00:00,  2.78it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.84it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.11it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.97it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.79it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.24it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.57it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.91it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.26it/s][A100%|██████████| 1/1 [00:00<00:00,  3.92it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.61it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.47it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.95it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.23it/s][A100%|██████████| 1/1 [00:00<00:00,  2.74it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.60it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.51it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.40it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.17it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.56it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.22it/s][A100%|██████████| 1/1 [00:00<00:00,  2.13it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.46it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.40it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.24it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.32it/s][A100%|██████████| 1/1 [00:00<00:00,  2.29it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.84it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.18it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.75it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.89it/s][A100%|██████████| 1/1 [00:00<00:00,  2.16it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.73it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.63it/s][A100%|██████████| 1/1 [00:00<00:00,  4.79it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.68it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.24it/s][A100%|██████████| 1/1 [00:00<00:00,  3.60it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.18it/s][A100%|██████████| 1/1 [00:00<00:00,  4.31it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  6.12it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.95it/s][A100%|██████████| 1/1 [00:00<00:00,  4.39it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.28it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.84it/s][A100%|██████████| 1/1 [00:00<00:00,  2.15it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.53it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.18it/s][A100%|██████████| 1/1 [00:00<00:00,  3.01it/s]
+100%|██████████| 1/1 [00:00<00:00,  5.48it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.89it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.00it/s][A100%|██████████| 1/1 [00:00<00:00,  3.57it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.20it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.16it/s][A100%|██████████| 1/1 [00:00<00:00,  2.09it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.12it/s][A100%|██████████| 1/1 [00:00<00:00,  2.86it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.29it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.96it/s][A100%|██████████| 1/1 [00:00<00:00,  2.05it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.66it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  3.19it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.39it/s][A100%|██████████| 1/1 [00:00<00:00,  1.90it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.18it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.05it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.92it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.13it/s][A100%|██████████| 1/1 [00:00<00:00,  4.07it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.08it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.13it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.60it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.83it/s][A100%|██████████| 1/1 [00:00<00:00,  1.87it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.84it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.83it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.11it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.41it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.86it/s][A100%|██████████| 1/1 [00:00<00:00,  2.68it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.82it/s]
+
+Evaluating LiveCodeBench:  73%|███████▎  | 240/329 [00:42<00:06, 13.72it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.26it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.63it/s][A100%|██████████| 1/1 [00:00<00:00,  3.09it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.58it/s][A100%|██████████| 1/1 [00:00<00:00,  1.60it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.01it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.47it/s][A100%|██████████| 1/1 [00:00<00:00,  2.48it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.56it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.50it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.26it/s][A100%|██████████| 1/1 [00:00<00:00,  2.40it/s]
+100%|██████████| 1/1 [00:00<00:00,  2.20it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.94it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.52it/s]
+100%|██████████| 1/1 [00:00<00:00,  3.28it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.58it/s][A100%|██████████| 1/1 [00:00<00:00,  1.56it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  2.85it/s][A100%|██████████| 1/1 [00:00<00:00,  2.78it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.35it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.37it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.35it/s][A100%|██████████| 1/1 [00:00<00:00,  1.32it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.34it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.32it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.30it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.14s/it][A100%|██████████| 1/1 [00:00<00:00,  1.27it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.33it/s][A100%|██████████| 1/1 [00:01<00:00,  1.15s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.11s/it][A100%|██████████| 1/1 [00:00<00:00,  1.31it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.33it/s][A100%|██████████| 1/1 [00:01<00:00,  1.12s/it]
+100%|██████████| 1/1 [00:00<00:00,  1.31it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.77it/s][A100%|██████████| 1/1 [00:00<00:00,  1.74it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.16it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.44it/s][A100%|██████████| 1/1 [00:00<00:00,  1.42it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.12it/s][A100%|██████████| 1/1 [00:00<00:00,  1.15it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.10it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.05it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.07it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.44it/s][A100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.42it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.05it/s]
+
+100%|██████████| 1/1 [00:01<00:00,  1.38s/it][A100%|██████████| 1/1 [00:01<00:00,  1.40s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.02s/it][A100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.43s/it][A
+100%|██████████| 1/1 [00:00<00:00,  1.21it/s][A100%|██████████| 1/1 [00:01<00:00,  1.45s/it]
+100%|██████████| 1/1 [00:00<00:00,  1.20it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.03it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.15s/it][A100%|██████████| 1/1 [00:00<00:00,  1.02it/s]
+
+100%|██████████| 1/1 [00:01<00:00,  1.21s/it][A100%|██████████| 1/1 [00:01<00:00,  1.16s/it]
+100%|██████████| 1/1 [00:01<00:00,  1.23s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.19s/it][A100%|██████████| 1/1 [00:01<00:00,  1.20s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.30s/it][A100%|██████████| 1/1 [00:01<00:00,  1.31s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.08s/it][A100%|██████████| 1/1 [00:01<00:00,  1.09s/it]
+
+Evaluating LiveCodeBench:  84%|████████▎ | 275/329 [00:43<00:03, 16.58it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.45s/it][A100%|██████████| 1/1 [00:01<00:00,  1.46s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.38s/it][A100%|██████████| 1/1 [00:01<00:00,  1.40s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.65s/it][A100%|██████████| 1/1 [00:01<00:00,  1.67s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.20s/it][A100%|██████████| 1/1 [00:02<00:00,  2.21s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.23s/it][A100%|██████████| 1/1 [00:02<00:00,  2.25s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.92s/it][A100%|██████████| 1/1 [00:01<00:00,  1.93s/it]
+
+100%|██████████| 1/1 [00:01<00:00,  1.99s/it][A100%|██████████| 1/1 [00:01<00:00,  1.99s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.11s/it][A100%|██████████| 1/1 [00:02<00:00,  2.13s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.40s/it][A100%|██████████| 1/1 [00:02<00:00,  2.41s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.38s/it][A100%|██████████| 1/1 [00:02<00:00,  2.39s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.59s/it][A100%|██████████| 1/1 [00:02<00:00,  2.60s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.82s/it][A100%|██████████| 1/1 [00:02<00:00,  2.83s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.23s/it][A
+100%|██████████| 1/1 [00:02<00:00,  2.75s/it][A100%|██████████| 1/1 [00:03<00:00,  3.24s/it]
+100%|██████████| 1/1 [00:02<00:00,  2.76s/it]
+
+100%|██████████| 1/1 [00:02<00:00,  2.74s/it][A100%|██████████| 1/1 [00:02<00:00,  2.75s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.01s/it][A100%|██████████| 1/1 [00:03<00:00,  3.02s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.38s/it][A100%|██████████| 1/1 [00:03<00:00,  3.40s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.23s/it][A100%|██████████| 1/1 [00:03<00:00,  3.25s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.46s/it][A100%|██████████| 1/1 [00:03<00:00,  3.47s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.89s/it][A100%|██████████| 1/1 [00:03<00:00,  3.90s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.69s/it][A100%|██████████| 1/1 [00:03<00:00,  3.70s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.57s/it][A100%|██████████| 1/1 [00:03<00:00,  3.58s/it]
+
+100%|██████████| 1/1 [00:03<00:00,  3.84s/it][A100%|██████████| 1/1 [00:03<00:00,  3.86s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.41s/it][A100%|██████████| 1/1 [00:04<00:00,  4.41s/it]
+
+Evaluating LiveCodeBench:  91%|█████████ | 299/329 [00:46<00:02, 14.23it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.97s/it][A100%|██████████| 1/1 [00:03<00:00,  3.98s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.56s/it][A100%|██████████| 1/1 [00:04<00:00,  4.58s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.18s/it][A100%|██████████| 1/1 [00:04<00:00,  4.20s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.29s/it][A100%|██████████| 1/1 [00:04<00:00,  4.29s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.53s/it][A100%|██████████| 1/1 [00:04<00:00,  4.54s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.71s/it][A100%|██████████| 1/1 [00:04<00:00,  4.72s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.61s/it][A100%|██████████| 1/1 [00:04<00:00,  4.61s/it]
+
+100%|██████████| 1/1 [00:04<00:00,  4.53s/it][A100%|██████████| 1/1 [00:04<00:00,  4.53s/it]
+
+100%|██████████| 1/1 [00:05<00:00,  5.09s/it][A100%|██████████| 1/1 [00:05<00:00,  5.11s/it]
+
+100%|██████████| 1/1 [00:05<00:00,  5.25s/it][A100%|██████████| 1/1 [00:05<00:00,  5.26s/it]
+
+100%|██████████| 1/1 [00:05<00:00,  5.40s/it][A100%|██████████| 1/1 [00:05<00:00,  5.41s/it]
+
+100%|██████████| 1/1 [00:05<00:00,  5.65s/it][A100%|██████████| 1/1 [00:05<00:00,  5.66s/it]
+
+100%|██████████| 1/1 [00:05<00:00,  5.83s/it][A100%|██████████| 1/1 [00:05<00:00,  5.85s/it]
+
+100%|██████████| 1/1 [00:07<00:00,  7.55s/it][A100%|██████████| 1/1 [00:07<00:00,  7.57s/it]
+
+100%|██████████| 1/1 [00:08<00:00,  8.14s/it][A100%|██████████| 1/1 [00:08<00:00,  8.15s/it]
+
+100%|██████████| 1/1 [00:08<00:00,  8.28s/it][A100%|██████████| 1/1 [00:08<00:00,  8.29s/it]
+
+Evaluating LiveCodeBench:  96%|█████████▌| 315/329 [00:51<00:01,  9.43it/s][A
+100%|██████████| 1/1 [00:08<00:00,  8.69s/it][A100%|██████████| 1/1 [00:08<00:00,  8.71s/it]
+
+100%|██████████| 1/1 [00:10<00:00, 10.25s/it][A100%|██████████| 1/1 [00:10<00:00, 10.28s/it]
+
+100%|██████████| 1/1 [00:10<00:00, 10.39s/it][A100%|██████████| 1/1 [00:10<00:00, 10.40s/it]
+
+100%|██████████| 1/1 [00:10<00:00, 10.86s/it][A100%|██████████| 1/1 [00:10<00:00, 10.86s/it]
+
+100%|██████████| 1/1 [00:13<00:00, 13.02s/it][A100%|██████████| 1/1 [00:13<00:00, 13.04s/it]
+
+100%|██████████| 1/1 [00:12<00:00, 12.82s/it][A100%|██████████| 1/1 [00:12<00:00, 12.83s/it]
+
+100%|██████████| 1/1 [00:20<00:00, 20.44s/it][A100%|██████████| 1/1 [00:20<00:00, 20.46s/it]
+
+100%|██████████| 1/1 [00:23<00:00, 23.99s/it][A100%|██████████| 1/1 [00:23<00:00, 23.99s/it]
+
+Evaluating LiveCodeBench:  96%|█████████▌| 315/329 [01:09<00:01,  9.43it/s][A
+100%|██████████| 1/1 [00:39<00:00, 39.63s/it][A100%|██████████| 1/1 [00:39<00:00, 39.64s/it]
+
+Evaluating LiveCodeBench:  98%|█████████▊| 324/329 [01:22<00:02,  2.05it/s][A
+100%|██████████| 1/1 [00:41<00:00, 41.54s/it][A100%|██████████| 1/1 [00:41<00:00, 41.55s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 325/329 [01:24<00:02,  1.96it/s][A
+Evaluating LiveCodeBench:  99%|█████████▉| 325/329 [01:39<00:02,  1.96it/s][A
+100%|██████████| 1/1 [00:58<00:00, 58.37s/it][A100%|██████████| 1/1 [00:58<00:00, 58.37s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 326/329 [01:41<00:02,  1.09it/s][Atimeout occured: alarm went off
+
+100%|██████████| 1/1 [01:00<00:00, 60.18s/it][A100%|██████████| 1/1 [01:00<00:00, 60.19s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 327/329 [01:42<00:01,  1.05it/s][A
+Evaluating LiveCodeBench:  99%|█████████▉| 327/329 [01:59<00:01,  1.05it/s][A
+100%|██████████| 1/1 [01:46<00:00, 106.10s/it][A100%|██████████| 1/1 [01:46<00:00, 106.12s/it]
+
+Evaluating LiveCodeBench: 100%|█████████▉| 328/329 [02:28<00:03,  3.04s/it][A
+100%|██████████| 1/1 [02:01<00:00, 121.69s/it][A100%|██████████| 1/1 [02:01<00:00, 121.69s/it]
+
+Evaluating LiveCodeBench: 100%|██████████| 329/329 [02:44<00:00,  3.83s/it][AEvaluating LiveCodeBench: 100%|██████████| 329/329 [02:44<00:00,  2.00it/s]
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+0.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+0.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+0.0
+1.0
+2026-07-21 15:10:25,467 - INFO - livecodebench results: 308/329 correct (93.6% accuracy)
+Processing datasets:  60%|██████    | 3/5 [02:45<02:02, 61.43s/it]2026-07-21 15:10:25,468 - INFO - Processing 499 rows for dataset 'math500'
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:16: SyntaxWarning: invalid escape sequence '\^'
+  BAD_REGEXES = ["\^[0-9]+\^", "\^[0-9][0-9]+"]
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:16: SyntaxWarning: invalid escape sequence '\^'
+  BAD_REGEXES = ["\^[0-9]+\^", "\^[0-9][0-9]+"]
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:96: SyntaxWarning: invalid escape sequence '\d'
+  p1 = re.compile("(\d)(,)(\d\d\d)($|\D)")
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:111: SyntaxWarning: invalid escape sequence '\{'
+  m = re.search("^\\\\text\{(?P<text>.+?)\}$", expr)
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:144: SyntaxWarning: invalid escape sequence '\^'
+  expr = re.sub(f"{unit}(es)?(s)? *(\^[0-9]+)?", "", expr)
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/grader.py:145: SyntaxWarning: invalid escape sequence '\^'
+  expr = re.sub(f"\^ *\\\\circ", "", expr)
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/math_normalize.py:14: SyntaxWarning: invalid escape sequence '\{'
+  m = re.search("^\\\\text\{(?P<text>.+?)\}$", answer)
+/tmp/dsr1_accuracy_8966_0/deepseek-r1/submodules/prm800k/prm800k/grading/math_normalize.py:129: SyntaxWarning: invalid escape sequence '\%'
+  string = string.replace("\%", "")
+2026-07-21 15:10:25,699 - INFO - math500 results: 470/495 correct (94.9% accuracy)
+Processing datasets:  80%|████████  | 4/5 [02:46<00:40, 40.25s/it]2026-07-21 15:10:25,699 - INFO - Processing 2410 rows for dataset 'mmlu_pro'
+2026-07-21 15:10:26,351 - INFO - mmlu_pro results: 1881/2410 correct (78.0% accuracy)
+Processing datasets: 100%|██████████| 5/5 [02:46<00:00, 27.15s/it]Processing datasets: 100%|██████████| 5/5 [02:46<00:00, 33.36s/it]
+2026-07-21 15:10:26,419 - INFO - Evaluated results saved to: /work/sflow_output/8903-trtllm_ifb-20260721-032044-18e34a/mlperf_harness/AccuracyOnly/GB300-NVL72_GB300-288GB_aarch64x72_TRT/deepseek-r1/Offline/deepseek-r1-accuracy_evaluated.pkl
+2026-07-21 15:10:26,665 - INFO - Done!
+
+Results
+
+{'exact_match': 81.42661804922516, 'tokens_per_sample': 3825.77484047402, 'num-samples': 4388}
+
+hash=7e463c72d35ae34a282657c56e6174f3173b0b5ec5a7ecfdb4bf98b18b3274de

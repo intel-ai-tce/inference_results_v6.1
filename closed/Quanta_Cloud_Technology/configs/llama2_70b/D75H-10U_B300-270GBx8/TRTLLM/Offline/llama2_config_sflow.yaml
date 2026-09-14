@@ -1,0 +1,35 @@
+variables:
+  # IFB topology - b300x8 scale.
+  DP_MULTIPLICITY:
+    type: integer
+    value: 8
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+
+  BASE_PORT:
+    value: 8336
+
+  MODEL_PATH:
+    #    value: /home/mlperf_inference_storage/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4
+    value: /data/mlperf_inf_data-6.0/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4
+  TRTLLM_YAML:
+    value: /work/configs/llama2_70b/B300-SXM-270GBx8/TRTLLM/Offline/trtllm-serve-ifb-1gpu.yaml
+  TRTLLM_ENV_YAML:
+    value: /work/configs/llama2_70b/B300-SXM-270GBx8/TRTLLM/Offline/trtllm-serve-ifb-1gpu-env.yaml
+
+  BENCHMARK:
+    value: llama2-70b
+  SCENARIO:
+    value: Offline
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx8
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    description: "Additional harness flags; TEST_MODE is passed separately."
+    value: ""

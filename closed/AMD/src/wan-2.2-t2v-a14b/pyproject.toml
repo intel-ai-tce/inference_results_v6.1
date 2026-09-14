@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wan_harness"
+version = "0.1.0"
+description = "MLPerf inference harness for the wan-2.2-t2v-a14b text-to-video benchmark"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "AMD-AGI" }]
+keywords = ["mlperf", "inference", "wan-2.2", "text-to-video"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: POSIX :: Linux",
+]
+
+# Keep this list intentionally tiny. The amdsiloai/pytorch-xdit:v26.6 base
+# image already ships torch, xDiT, AITER, flash-attn, transformers, diffusers,
+# huggingface_hub, pyyaml, etc. We rely on those at runtime instead of pinning
+# our own (potentially conflicting) versions here.
+#
+# `mlperf_loadgen` is installed separately from the mlcommons/inference clone
+# inside the Dockerfile because it is not on PyPI.
+dependencies = [
+    "PyYAML>=6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-cov>=4",
+]
+
+[project.scripts]
+wan-harness = "wan_harness.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["wan_harness*"]
+
+[tool.setuptools.package-data]
+wan_harness = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "loadgen: tests that require the mlperf_loadgen Python module to be importable",
+]

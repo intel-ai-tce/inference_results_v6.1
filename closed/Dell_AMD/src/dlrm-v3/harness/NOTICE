@@ -1,0 +1,33 @@
+dlrm-v3-harness-rocm
+====================
+
+AMD ROCm/gfx950 port of the DLRM-v3 MLPerf-Inference harness.
+
+This product is a derivative work and is distributed under the Apache License,
+Version 2.0 (see the LICENSE file). It includes and/or is derived from the
+following upstream software:
+
+1. MLCommons Inference Results (DLRM-v3 inference harness)
+   Source: mlcommons/inference_results_v6.0, closed/NVIDIA/code/dlrm-v3
+           (baseline commit 4d3916a)
+   Copyright held by the respective upstream authors (NVIDIA Corporation and
+   MLCommons), as published in that repository.
+   Licensed under the Apache License, Version 2.0.
+
+2. Portions derived from Meta Platforms torchrec / generative-recommenders
+   (e.g. benchmarks/accuracy.py, inference_harness/backends/model/STU_custom.py)
+   Copyright (c) Meta Platforms, Inc. and affiliates.
+   Licensed under the Apache License, Version 2.0.
+
+Modifications
+-------------
+ROCm/gfx950 port modifications:
+   Copyright (c) 2026 Advanced Micro Devices, Inc.
+   Licensed under the Apache License, Version 2.0.
+
+Per Apache-2.0 section 4(b), files changed by AMD should carry a notice that they
+were modified. Individual upstream files in this tree currently do not all retain
+their original copyright/SPDX headers, and AMD-modified files are not yet
+individually annotated. Restoring per-file upstream headers and adding per-file
+AMD "modified" notices is a tracked remediation item (see NOTICE_INTERNAL.md);
+this repository-level NOTICE records the attribution in the interim.

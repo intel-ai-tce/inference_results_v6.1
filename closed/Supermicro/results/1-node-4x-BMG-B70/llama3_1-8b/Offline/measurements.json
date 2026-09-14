@@ -1,0 +1,7 @@
+{
+    "starting_weights_filename": "https://huggingface.co/meta-llama/Llama-2-70b-chat-hf",
+    "weight_transformations": "Yes",
+    "weight_data_types": "INT8",
+    "input_data_types": "INT8",
+    "retraining": "No"
+}

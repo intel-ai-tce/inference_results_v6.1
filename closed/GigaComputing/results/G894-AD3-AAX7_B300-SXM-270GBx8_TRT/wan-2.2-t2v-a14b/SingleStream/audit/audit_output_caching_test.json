@@ -1,0 +1,12 @@
+{
+  "test": "output_caching_test",
+  "passed": true,
+  "ref_qps": 0.0524373702773611,
+  "audit_qps": 0.05243905967438064,
+  "threshold": 0.2,
+  "ref_completed": 50,
+  "ref_requested": 50,
+  "audit_completed": 50,
+  "audit_requested": 50,
+  "reason": "audit_qps=0.0524 < ref_qps * (1 + 20%) = 0.0629"
+}

@@ -1,0 +1,113 @@
+diff --git a/python/sglang/srt/server_args.py b/python/sglang/srt/server_args.py
+index 14947fbf3c..b942c41530 100644
+--- a/python/sglang/srt/server_args.py
++++ b/python/sglang/srt/server_args.py
+@@ -916,6 +916,25 @@ class ServerArgs:
+         "Run multiple continuous decoding steps to reduce scheduling overhead. This can potentially increase throughput but may also increase time-to-first-token latency. The default value is 1, meaning only run one decoding step at a time.",
+         NS("schedule"),
+     ] = 1
++    enable_decode_graph_preserving: A[
++        bool,
++        "Defer admitting new prefill batches for a bounded number of iterations "
++        "while a CUDA-graph-capturable decode batch is running, so decode steps "
++        "keep replaying the captured graph instead of falling back to eager. "
++        "Under DP attention a single prefilling rank forces every rank's decode "
++        "off graph replay (the graph gate is a min() across ranks), so prefill "
++        "is confined to a DP-aligned periodic burst. Trades a small TTFT "
++        "increase for higher decode throughput; intended for throughput-oriented "
++        "(offline) serving.",
++        NS("schedule"),
++    ] = False
++    decode_graph_preserve_max_defer: A[
++        int,
++        "Number of consecutive iterations prefill is deferred by "
++        "--enable-decode-graph-preserving between prefill bursts (burst every "
++        "max_defer + 1 iterations). Bounds the worst-case added time-to-first-token.",
++        NS("schedule"),
++    ] = 8
+     scheduler_recv_interval: A[
+         int,
+         "The interval to poll requests in scheduler. Can be set to >1 to reduce the overhead of this.",
+diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
+index 07e77b7aa2..117aa90dff 100644
+--- a/python/sglang/srt/managers/scheduler.py
++++ b/python/sglang/srt/managers/scheduler.py
+@@ -1017,6 +1017,7 @@ class Scheduler(
+             self.chunked_prefill_size = None
+         self.chunked_req = None
+         self._pending_chunked_abort_req = None
++        self._decode_graph_preserve_iter = 0
+         self.is_mixed_chunk = (
+             self.chunked_prefill_size is not None and get_schedule().enable_mixed_chunk
+         )
+@@ -2799,7 +2800,12 @@ class Scheduler(
+             if running_batch.is_empty():
+                 running_batch.batch_is_full = False
+ 
+-        if self.dllm_config is not None:
++        if self._should_defer_prefill_for_decode_graph(running_batch):
++            # Decode-graph-preserving admission control: keep replaying the
++            # captured decode graph this iteration instead of interjecting a
++            # prefill that would force every DP-attention rank to eager decode.
++            new_batch = None
++        elif self.dllm_config is not None:
+             new_batch = self.get_new_batch_dllm(running_batch)
+         else:
+             prefill_plan = self.get_new_batch_prefill(running_batch)
+@@ -2847,6 +2853,56 @@ class Scheduler(
+ 
+         return NextBatchPlan(batch_to_run=ret, running_batch=running_batch)
+ 
++    def _should_defer_prefill_for_decode_graph(self, running_batch) -> bool:
++        """Decode-graph-preserving prefill admission control (DP-coordinated).
++
++        Under DP attention, a single rank running a prefill/extend forward
++        forces every rank's decode step off CUDA-graph replay: the graph gate
++        ``can_cuda_graph`` in ``prepare_mlp_sync_batch`` is a ``min()`` over all
++        ranks. During the queue ramp, prefill is admittable almost every
++        iteration, so a large fraction of decode steps fall back to eager.
++
++        To keep decode graphed, prefill is confined to a periodic burst: on
++        ``max_defer`` out of every ``max_defer + 1`` scheduler iterations a new
++        prefill is deferred and decode replays the captured graph; on the
++        remaining iteration a prefill burst is allowed. The decision keys off a
++        per-iteration counter that advances in lockstep across DP ranks (every
++        rank runs one scheduler iteration per collective step), so all ranks
++        defer -- and burst -- on the *same* iterations. That phase alignment is
++        what keeps the cross-rank ``min()`` gate True during the decode window;
++        an un-coordinated per-rank counter leaves ranks bursting out of phase
++        and the min() gate mostly False. Bounds added TTFT by ``max_defer``
++        iterations. Gated behind ``--enable-decode-graph-preserving`` (off by
++        default).
++        """
++        # Advance the shared phase counter every iteration so it stays identical
++        # across DP ranks (each runs one scheduler iteration per collective step).
++        it = self._decode_graph_preserve_iter
++        self._decode_graph_preserve_iter = it + 1
++
++        if not get_schedule().enable_decode_graph_preserving:
++            return False
++        # Never stall an in-flight chunked prefill: it holds KV and must finish.
++        if self.chunked_req is not None:
++            return False
++        # Must prefill to (re)fill the pipeline when there is no decode work.
++        if running_batch.is_empty() or running_batch.is_prefill_only:
++            return False
++        # No queued prefill work -> nothing to defer.
++        if not self.waiting_queue:
++            return False
++        # Only worth preserving if the running decode batch is actually
++        # graph-capturable; above the decode graph cap it is eager regardless.
++        cuda_graph_config = getattr(self.server_args, "cuda_graph_config", None)
++        decode_cfg = getattr(cuda_graph_config, "decode", None)
++        decode_max_bs = getattr(decode_cfg, "max_bs", None)
++        if decode_max_bs is not None and running_batch.batch_size() > decode_max_bs:
++            return False
++        # Periodic prefill burst: allow prefill once every (max_defer + 1)
++        # iterations, defer on the others.
++        period = get_schedule().decode_graph_preserve_max_defer + 1
++        return (it % period) != 0
++
+     def get_num_allocatable_reqs(self, running_bs):
+         res = get_parallel().pp_max_micro_batch_size - running_bs
+         res = min(res, self.req_to_token_pool.available_size())

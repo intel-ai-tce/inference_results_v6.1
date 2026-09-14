@@ -1,0 +1,62 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG MLPERF_BUILD_CONFIG
+
+# Note-1: sqlite3 and libfmt-dev dependencies are for RPD
+# Note-2: zip for compressing RPD outputs
+RUN apt update \
+ && apt install -y \
+	libfmt-dev \
+	libsqlite3-dev \
+	numactl \
+	sqlite3 \
+	zip \
+	nano \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN pip install \
+	absl-py==2.1.0 \
+	datasets==2.20.0 \
+	nltk==3.8.1 \
+	numpy==1.26.4 \
+	py-libnuma==1.2 \
+	rouge_score==0.1.2 \
+	omegaconf==2.3.0 \
+	evaluate==0.4.3 \
+	matplotlib==3.10.3 \
+	optuna==4.1.0
+
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/mlcommons/inference.git mlperf_inference \
+ && cd mlperf_inference/loadgen \
+ && git checkout 52235a451d18c98db11dc51b89140deb8c80ecf1 \
+ && git submodule update --init --recursive \
+ && CFLAGS="-std=c++14 -O3" python -m pip install .
+
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/ROCm/rocm_bandwidth_test rocm_bandwidth_test \
+ && cd rocm_bandwidth_test \
+ && git checkout 6bd5c1a208069be5fbe9e2da088bca4be7f9de22 \
+ && mkdir build \
+ && cd build \
+ && cmake -DCMAKE_MODULE_PATH="/lab-mlperf-inference/rocm_bandwidth_test/cmake_modules" -DCMAKE_PREFIX_PATH="/opt/rocm/" .. \
+ && make \
+ && make install
+
+# RPD
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/ROCm/rocmprofiledata --depth 10 rocm_profile_data \
+ && cd rocm_profile_data \
+ && git checkout 5ec871db2b11b3df5bc989f75b53c8b1ec0e9e4d \
+ && sed -i 's/--user//g' /lab-mlperf-inference/rocm_profile_data/rocpd_python/Makefile \
+ && make \
+ && make install \
+ && cd rocpd_python \
+ && python setup.py install
+
+COPY code /lab-mlperf-inference/code
+COPY submission /lab-mlperf-inference/submission
+COPY ${MLPERF_BUILD_CONFIG} /lab-mlperf-inference
+WORKDIR /lab-mlperf-inference/code/

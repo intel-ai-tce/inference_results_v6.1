@@ -1,0 +1,19 @@
+diff --git a/python/sglang/srt/layers/attention/aiter_backend.py b/python/sglang/srt/layers/attention/aiter_backend.py
+--- a/python/sglang/srt/layers/attention/aiter_backend.py
++++ b/python/sglang/srt/layers/attention/aiter_backend.py
+@@ -5,6 +5,7 @@ end to end attention solution with aiter kernels
+ """
+ 
+ import logging
++import os
+ from dataclasses import dataclass
+ from enum import Enum, auto
+ from typing import TYPE_CHECKING, Optional
+@@ -330,6 +331,6 @@ class AiterAttnBackend(AttentionBackend):
+             self.max_split_per_batch = 32 if _use_mla_ps_kernel else None
+ 
+             if self.num_draft_tokens is None and _use_mla_ps_kernel:
+-                self.max_split_per_batch = 64
++                self.max_split_per_batch = int(os.environ.get("SGLANG_MLA_MAX_SPLIT", "64"))
+ 
+             self.fix_max_split_per_batch = self.max_split_per_batch

@@ -1,0 +1,88 @@
+import os
+import sys
+import glob
+import hashlib
+from pathlib import Path
+
+data = {
+    "gpt-oss-120b": {
+        "model_path" : ["/model/gpt-oss-120b", "/model/gpt-oss-120b/orig", "/model/gpt-oss-120b/fp4_quantized", "/model/gpt-oss-120b/original", "/model/original/gpt-oss-120b"],
+        "safetensor_md5sum" : ["302c08bef24e406ac5bae73e768dc205", "7348601da33911a5ca9ded5eb59f2f4c", "6755d7dada79aeaddfc207652cb62be8", "01020c7ecfc9cec468f7e82038e6aa61"],
+        "dataset_path" : ["/data/gptoss-dataset/perf/perf_eval_ref.parquet", "/data/gpt-oss-120b/perf_eval_ref.parquet", "/data/gpt-oss-120b/acc_eval_ref.parquet", "/data/gptoss-dataset/acc/acc_eval_ref.parquet" ,"/data/gpt-oss-120b/acc_eval_compliance_gpqa.parquet"],
+        "dataset_md5sum" : ["e4cd6cef6dd975f3e50c85b3279b358b", "29d35424fc8d31461e73a7766446480e", "e35e6bc6d7343df1930501bb61e61260"],
+    },
+}
+
+
+class ResourceChecker:
+
+
+    def check(self, configs):
+        result = []
+        benchmark_name = configs["benchmark_name"]
+        scenario = configs["scenario"]
+        benchmark = data[benchmark_name]
+        if isinstance(benchmark.get(scenario), dict):
+            benchmark = benchmark.get(scenario)
+        output_log_dir = configs["harness_config"]["output_log_dir"]
+
+        invalid_file_path = output_log_dir + "/INVALID"
+        if os.path.exists(invalid_file_path):
+            os.remove(invalid_file_path)
+
+        #validate model
+        current_model_path = configs["llm_config"].get("model", configs["llm_config"].get("model_path", None))
+        expected_model_paths = benchmark["model_path"]
+        expected_model_md5sums = benchmark["safetensor_md5sum"]
+        if current_model_path not in expected_model_paths:
+            result.append("The model path is NOT matching with the default settings \n"
+                          f"  default: {', '.join(expected_model_paths)} \n"
+                          f"  current: {current_model_path}")
+        else:
+            folder_path = Path(current_model_path)
+            if folder_path.exists() and folder_path.is_dir():
+                matching_files = glob.glob(f"{folder_path}/model-00001*.safetensors")
+                if matching_files:
+                    md5sum = self.get_md5sum(matching_files[0])
+                    if md5sum not in expected_model_md5sums:
+                        result.append("The model's MD5 checksum does not match the expected value \n"
+                                      f"  expected: {', '.join(expected_model_md5sums)} \n"
+                                      f"  current:  {md5sum}")
+
+        #validate dataset
+        current_dataset_path = configs["harness_config"]["dataset_path"]
+        expected_dataset_paths = benchmark["dataset_path"]
+        expected_dataset_md5sums = benchmark["dataset_md5sum"]
+        if current_dataset_path not in expected_dataset_paths:
+            result.append("The dataset path is NOT matching with the default settings \n"
+                          f"  default: {', '.join(expected_dataset_paths)} \n"
+                          f"  current: {current_dataset_path}")
+        else:
+            dataset = Path(current_dataset_path)
+            if dataset.exists() and dataset.is_file():
+                md5sum = self.get_md5sum(dataset)
+                if md5sum not in expected_dataset_md5sums:
+                    result.append("The dataset's MD5 checksum does not match the expected value \n"
+                                    f"  expected: {', '.join(expected_model_md5sums)} \n"
+                                    f"  current:  {md5sum}")
+
+        if result:
+            print("Resource validation error:", file=sys.stderr)
+
+            for value in result:
+                print(value + "\n", file=sys.stderr)
+
+            with open(invalid_file_path, "w") as file:
+                for value in result:
+                    file.write(value + "\n")
+
+            if configs["harness_config"]["resource_checker_abort_on_failure"]:
+                sys.exit(1)
+
+    def get_md5sum(self, file):
+        hash_md5 = hashlib.md5()
+        with open(file, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+
+        return hash_md5.hexdigest()

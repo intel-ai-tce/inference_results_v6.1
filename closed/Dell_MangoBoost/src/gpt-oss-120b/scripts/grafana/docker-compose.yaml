@@ -1,0 +1,27 @@
+name: inference
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "4141:3000"
+    volumes:
+      - /home/amd/inference/grafana_db:/var/lib/grafana/datasources
+      - /grafana/inference/dashboards:/var/lib/grafana/dashboards
+      - /grafana/inference/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - /grafana/inference/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/exec_dashboard.json
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_INSTALL_PLUGINS=frser-sqlite-datasource
+    restart: unless-stopped
+  sqlite_web:
+    image: ghcr.io/coleifer/sqlite-web:latest
+    ports:
+      - "7171:8080"
+    volumes:
+      - /home/amd/inference/grafana_db:/data
+    environment:
+      - SQLITE_DATABASE=database.db

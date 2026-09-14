@@ -1,0 +1,7 @@
+{
+  "retraining": "no",
+  "input_data_types": "tokenized",
+  "weight_data_types": "fp8,fp4",
+  "starting_weights_filename": "Meta-Llama-3.1-8B-Instruct",
+  "weight_transformations": "H200 FP8 + MI350X FP4; weighted data-parallel routing (MI350X weight 2.26)"
+}

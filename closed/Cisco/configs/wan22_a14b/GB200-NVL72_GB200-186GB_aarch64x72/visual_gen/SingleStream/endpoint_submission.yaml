@@ -1,0 +1,45 @@
+name: wan22-a14b-gb200-singlestream-accuracy-vbench
+version: '1.0'
+type: online
+
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  streaming: 'off'
+
+datasets:
+  - name: wan22_perf
+    type: performance
+    path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+    samples: 144
+  - name: wan22_vbench
+    type: accuracy
+    path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+    samples: 248
+    accuracy_config:
+      eval_method: vbench
+      ground_truth: prompt
+      num_repeats: 1
+      extras:
+        vbench_project_path: /opt/vbench_accuracy
+        subprocess_timeout_s: 3600
+
+settings:
+  runtime:
+    n_samples_to_issue: 144
+    scheduler_random_seed: 42
+    dataloader_random_seed: 42
+  load_pattern:
+    type: concurrency
+    target_concurrency: 1
+  client:
+    num_workers: 1
+    warmup_connections: 0
+    worker_initialization_timeout: 300.0
+
+endpoint_config:
+  endpoints: []
+  api_type: videogen
+  api_key: null
+
+report_dir: ${SFLOW_TASK_OUTPUT_DIR}

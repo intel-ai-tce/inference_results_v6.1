@@ -1,0 +1,7 @@
+{
+    "starting_weights_filename": "https://huggingface.co/openai/gpt-oss-120b",
+    "weight_transformations": "No",
+    "weight_data_types": "MXFP4",
+    "input_data_types": "BF16",
+    "retraining": "No"
+}

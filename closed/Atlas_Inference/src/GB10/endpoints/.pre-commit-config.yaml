@@ -1,0 +1,72 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(src/inference_endpoint/openai/openai_types_gen.py|src/inference_endpoint/openai/openapi.yaml|src/inference_endpoint/evaluation/legacy_mlperf_deepseek_r1/mlperf_eval/.*)$
+      - id: end-of-file-fixer
+        exclude: ^(src/inference_endpoint/evaluation/legacy_mlperf_deepseek_r1/mlperf_eval/.*)$
+      - id: check-yaml
+      - id: check-added-large-files
+        exclude: ^(src/inference_endpoint/openai/openai_types_gen.py|src/inference_endpoint/openai/openapi.yaml|docs/res/.*)$
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  # TODO: sync rev with ruff version in pyproject.toml (currently 0.15.8)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.3
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        args: [--config-file=./pyproject.toml, src, tests]
+        pass_filenames: false
+        verbose: true
+        additional_dependencies:
+          - types-PyYAML==6.0.12
+          - types-requests>=2.32.4
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        types_or: [yaml, json, markdown]
+        exclude: ^(src/inference_endpoint/openai/openai_types_gen.py|src/inference_endpoint/openai/openapi.yaml|src/inference_endpoint/config/templates/)
+
+  - repo: local
+    hooks:
+      - id: pytest-check
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args: ["--tb=short", "--strict-markers"]
+        stages: [manual]
+
+      - id: regenerate-templates
+        name: Regenerate YAML templates from schema defaults
+        entry: python scripts/regenerate_templates.py
+        language: system
+        pass_filenames: false
+        files: ^(src/inference_endpoint/config/(schema\.py|templates/.*)|src/inference_endpoint/endpoint_client/config\.py|scripts/regenerate_templates\.py)$
+
+      - id: add-license-header
+        name: Add license headers
+        entry: python scripts/add_license_header.py
+        language: system
+        types: [python]
+        pass_filenames: true
+        exclude: ^(src/inference_endpoint/openai/openai_types_gen.py|src/inference_endpoint/evaluation/legacy_mlperf_deepseek_r1/mlperf_eval/.*)$
+
+      - id: uv-lock-check
+        name: Check uv.lock is up-to-date
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$

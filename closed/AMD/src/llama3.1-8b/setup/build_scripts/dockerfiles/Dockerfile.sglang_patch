@@ -1,0 +1,15 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG SGLANG_DIR=/sgl-workspace/sglang
+ARG PATCH_FILE
+
+# Patching sglang
+COPY ${PATCH_FILE} ${SGLANG_DIR}
+RUN cd ${SGLANG_DIR} \
+    && echo "${SGLANG_DIR}/${PATCH_FILE}" \
+    && git apply $( basename ${PATCH_FILE} ) \
+	&& cp /lab-mlperf-inference/code/harness_llm/common/preload/triton_preload.py ${SGLANG_DIR}/python/sglang/srt/managers/;
+
+WORKDIR /lab-mlperf-inference/code/

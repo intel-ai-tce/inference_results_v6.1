@@ -1,0 +1,7 @@
+{
+    "retraining": "No",
+    "input_data_types": "TODO",
+    "weight_data_types": "BF16/F32/F8_E4M3/U8",
+    "starting_weights_filename": "https://huggingface.co/nvidia/Qwen3-VL-235B-A22B-Instruct-NVFP4-MLPerf-Inference-Closed-V6.0",
+    "weight_transformations": "NVFP4 Quantization with LLM-COMPRESSOR"
+}

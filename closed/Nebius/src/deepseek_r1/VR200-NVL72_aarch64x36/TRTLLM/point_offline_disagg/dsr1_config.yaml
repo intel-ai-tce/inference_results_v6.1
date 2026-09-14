@@ -1,0 +1,41 @@
+variables:
+  # Disagg-OFFLINE 4c8g x72: 4 CTX x 2GPU (dep2) + 8 GEN x 8GPU (dep8) + 4 frontend = 72 GPU across 2 half-rack NVLink domains (20 nodes, seg=10).
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 1
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 2
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 2
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 8
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 2
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+  BASE_PORT:
+    type: integer
+    value: 30000
+  FRONTEND_PORT:
+    type: integer
+    value: 8000
+
+  MODEL_PATH:
+    value: /REPLACE/DeepSeek-R1-NVFP4-v2-mlpinf
+  TRTLLM_YAML_CTX:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/server-ctx.yaml
+  TRTLLM_ENV_YAML_CTX:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/server-ctx-env.yaml
+  TRTLLM_YAML_GEN:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/server-gen-bs1024.yaml
+  TRTLLM_ENV_YAML_GEN:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/server-gen-env.yaml
+  ENDPOINT_CONFIG:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/client_bs1024_360k.yaml
+  ENDPOINT_ENV_YAML:
+    value: /work/NVIDIA/src/configs/NVL72-288GB_aarch64x72_TRT/deepseek-r1/point_offline_disagg/endpoint_env.yaml

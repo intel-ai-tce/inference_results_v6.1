@@ -1,0 +1,82 @@
+variables:
+  LCB_CONTAINER_IMAGE:
+    description: "lcb-service release_v6 sqsh for accuracy LiveCodeBench scorer"
+    value: /REPLACE/lcb-service_release_v6.sqsh
+
+  CONTAINER_IMAGE:
+    description: "TRT-LLM serving container (FP4)."
+    value: /REPLACE/mlperf-7-30-final-stable.sqsh
+  ENDPOINT_CONTAINER_IMAGE:
+    description: "inference-endpoint client image. Built = published  (/opt/venv layout, required by the templates) + PR#372 overlay (reinstall mlcommons/endpoints 157709 into /opt/venv). PR#372 = LoadGen-parity QPS/TPS, REQUIRED for the server/disagg poisson metric; upstream  alone LACKS it and a plain generate_client_sqsh build lacks /opt/venv. Build: see ../CLIENT_IMAGE.md. Override per run with --set ENDPOINT_CONTAINER_IMAGE=<path>."
+    value: /REPLACE/endpoint_client.sqsh
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to repo root (endpoints-launch); mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models); mounted at /home/mlperf_inference_storage."
+    value: /REPLACE/mlperf_inference_storage
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage,/REPLACE/DeepSeek-R1-NVFP4-v2-mlpinf:/REPLACE/DeepSeek-R1-NVFP4-v2-mlpinf"
+
+  SLURM_ACCOUNT:
+    value: REPLACE_ACCOUNT
+  SLURM_PARTITION:
+    description: "Compute partition."
+    value: batch-xdr
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)."
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+
+  - name: endpoint_sqsh
+    type: srun
+    container_image: ${{ variables.ENDPOINT_CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+
+  - name: lcb_sqsh
+    type: srun
+    container_image: ${{ variables.LCB_CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: false
+    container_remap_root: false
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /app
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--exclusive"
+      - "--constraint=ts5"
+      - "--gpus-per-node=${{ variables.GPUS_PER_NODE }}"

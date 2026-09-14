@@ -1,0 +1,85 @@
+2026-07-31 06:12:19,203 - INFO - Loading MLPerf log from /lab-mlperf-inference/submission/cache/current-best/gpt-oss-120b/Offline/audit/compliance/TEST07/mlperf_log_accuracy.json
+2026-07-31 06:12:19,248 - INFO - Loaded 990 log entries
+2026-07-31 06:12:19,249 - INFO - Loading reference data from /data/gpt-oss-120b/acc_eval_compliance_gpqa.parquet
+2026-07-31 06:12:19,267 - INFO - Loaded reference data from Parquet file
+2026-07-31 06:12:19,273 - INFO - Reference data shape: (990, 6)
+2026-07-31 06:12:19,273 - INFO - Reference columns: ['input_tokens', 'num_tokens', 'text_input', 'original_messages', 'ground_truth', 'dataset']
+2026-07-31 06:12:19,273 - INFO - Unique datasets in reference data (1 total):
+2026-07-31 06:12:19,273 - INFO -   'gpqa_diamond' (990 samples)
+2026-07-31 06:12:19,273 - INFO - 
+Sample rows from reference data:
+2026-07-31 06:12:19,274 - INFO -   Row 0: dataset='gpqa_diamond'
+2026-07-31 06:12:19,274 - INFO -   Row 1: dataset='gpqa_diamond'
+2026-07-31 06:12:19,274 - INFO -   Row 2: dataset='gpqa_diamond'
+2026-07-31 06:12:19,274 - INFO - 
+Expected Dataset → Evaluator mapping:
+2026-07-31 06:12:19,274 - INFO -   'gpqa_diamond' (normalized: 'gpqa_diamond') → 'gpqa'
+2026-07-31 06:12:19,274 - INFO - Loading tokenizer: /model/gpt-oss-120b
+2026-07-31 06:12:20,341 - INFO - Grouping MLPerf log entries by dataset...
+2026-07-31 06:12:20,362 - INFO - Grouped entries by dataset:
+2026-07-31 06:12:20,362 - INFO -   gpqa_diamond: 990 entries
+2026-07-31 06:12:20,362 - INFO - Total entries: 990
+2026-07-31 06:12:20,362 - INFO - 
+Processing MLPerf log entries by dataset...
+2026-07-31 06:12:20,362 - INFO - 
+================================================================================
+2026-07-31 06:12:20,362 - INFO - Processing gpqa_diamond: 990 samples
+2026-07-31 06:12:20,362 - INFO - ================================================================================
+
+Evaluating gpqa_diamond:   0%|          | 0/990 [00:00<?, ?entry/s]
+Evaluating gpqa_diamond:   6%|▌         | 59/990 [00:00<00:01, 582.08entry/s]
+Evaluating gpqa_diamond:  14%|█▍        | 141/990 [00:00<00:01, 712.27entry/s]
+Evaluating gpqa_diamond:  22%|██▏       | 217/990 [00:00<00:01, 733.53entry/s]
+Evaluating gpqa_diamond:  30%|███       | 297/990 [00:00<00:00, 758.29entry/s]
+Evaluating gpqa_diamond:  38%|███▊      | 373/990 [00:00<00:00, 751.96entry/s]
+Evaluating gpqa_diamond:  45%|████▌     | 449/990 [00:00<00:00, 748.86entry/s]
+Evaluating gpqa_diamond:  53%|█████▎    | 524/990 [00:00<00:00, 745.10entry/s]
+Evaluating gpqa_diamond:  61%|██████    | 602/990 [00:00<00:00, 753.71entry/s]
+Evaluating gpqa_diamond:  68%|██████▊   | 678/990 [00:00<00:00, 741.42entry/s]
+Evaluating gpqa_diamond:  76%|███████▋  | 756/990 [00:01<00:00, 749.87entry/s]
+Evaluating gpqa_diamond:  84%|████████▍ | 832/990 [00:01<00:00, 744.75entry/s]
+Evaluating gpqa_diamond:  92%|█████████▏| 907/990 [00:01<00:00, 718.06entry/s]
+Evaluating gpqa_diamond:  99%|█████████▉| 980/990 [00:01<00:00, 720.70entry/s]
+Evaluating gpqa_diamond: 100%|██████████| 990/990 [00:01<00:00, 733.67entry/s]
+2026-07-31 06:12:21,712 - INFO - 
+Calculating final scores...
+2026-07-31 06:12:21,712 - INFO - Evaluation complete!
+
+================================================================================
+MLPerf Accuracy Evaluation Results
+================================================================================
+Total samples evaluated: 990
+Overall raw accuracy: 62.73% (621/990)
+================================================================================
+
+Per-Dataset Breakdown:
+--------------------------------------------------------------------------------
+Dataset                    Correct    Total  Repeats      Score   Accuracy
+--------------------------------------------------------------------------------
+gpqa_diamond                   621      990        5     124.20     62.73%
+================================================================================
+
+Final Score Calculation:
+--------------------------------------------------------------------------------
+Formula: gpqa_diamond/5
+Score:   = 621/5
+         = 124.20
+         = 124.20
+Max:     = 990/5
+         = 198.00
+
+FINAL SCORE: 62.73% (124.20/198.00)
+================================================================================
+
+
+Printing for submission_checker:
+
+'exact_match': 62.727
+
+================================================================================
+TEST07 Verification Summary
+================================================================================
+Accuracy score: 62.727
+Accuracy threshold: 60.698
+Accuracy check pass: True
+TEST PASS

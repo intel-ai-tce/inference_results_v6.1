@@ -1,0 +1,70 @@
+diff --git a/vllm/model_executor/models/qwen3_vl.py b/vllm/model_executor/models/qwen3_vl.py
+index a852861..d44da23 100644
+--- a/vllm/model_executor/models/qwen3_vl.py
++++ b/vllm/model_executor/models/qwen3_vl.py
+@@ -29,6 +29,8 @@ from functools import lru_cache, partial
+ from itertools import islice
+ from typing import Any
+ 
++import os
++
+ import numpy as np
+ import torch
+ import torch.nn as nn
+@@ -96,6 +98,17 @@ from vllm.sequence import IntermediateTensors
+ from vllm.tokenizers.protocol import TokenizerLike
+ from vllm.tokenizers.registry import cached_tokenizer_from_config
+ from vllm.triton_utils import HAS_TRITON, tl, triton
++
++# MLPerf Q3VL fusion #7: fold the ViT post-attention residual-add into norm2 using AITER's
++# fused bf16 add+LayerNorm kernel (mirrors the LLM's add_rmsnorm). Opt-in via env so the
++# baseline path stays byte-identical unless enabled; disabled automatically if AITER lacks it.
++_Q3VL_FUSE_VIT_ADD_LN = os.environ.get("VLLM_Q3VL_FUSE_VIT_ADD_LN", "0") == "1"
++try:
++    from aiter.ops.norm import layernorm2d_fwd_with_add as _aiter_ln_add
++except Exception:
++    _aiter_ln_add = None
++    _Q3VL_FUSE_VIT_ADD_LN = False
++_Q3VL_FUSE_LOGGED = False
+ from vllm.utils.collection_utils import is_list_of
+ from vllm.utils.math_utils import round_up
+ from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
+@@ -451,7 +464,7 @@ class Qwen3_VisionBlock(nn.Module):
+         max_seqlen: torch.Tensor,  # Only used for Flash Attention
+         sequence_lengths: torch.Tensor,  # Only used for FlashInfer CuDNN backend
+     ) -> torch.Tensor:
+-        x = x + self.attn(
++        attn_out = self.attn(
+             self.norm1(x),
+             cu_seqlens=cu_seqlens,
+             rotary_pos_emb_cos=rotary_pos_emb_cos,
+@@ -460,7 +473,28 @@ class Qwen3_VisionBlock(nn.Module):
+             sequence_lengths=sequence_lengths,
+         )
+ 
+-        x = x + self.mlp(self.norm2(x))
++        if _Q3VL_FUSE_VIT_ADD_LN:
++            global _Q3VL_FUSE_LOGGED
++            if not _Q3VL_FUSE_LOGGED:
++                logger.warning("[Q3VL] ViT add+LayerNorm fusion active (fusion #7)")
++                _Q3VL_FUSE_LOGGED = True
++            # Fuse the post-attention residual-add into norm2 in one kernel:
++            #   residual = x + attn_out ; normed = LayerNorm(residual)
++            # (norm1's add spans blocks and is left unfused to avoid the deepstack-tap rewrite.)
++            dim = x.shape[-1]
++            x_flat = x.reshape(-1, dim)
++            attn_flat = attn_out.reshape(-1, dim)
++            residual = torch.empty_like(x_flat)
++            normed = torch.empty_like(x_flat)
++            _aiter_ln_add(
++                normed, attn_flat, x_flat, residual,
++                self.norm2.weight, self.norm2.bias, self.norm2.eps,
++            )
++            x = residual.view_as(x)
++            x = x + self.mlp(normed.view_as(x))
++        else:
++            x = x + attn_out
++            x = x + self.mlp(self.norm2(x))
+         return x
+ 
+ 

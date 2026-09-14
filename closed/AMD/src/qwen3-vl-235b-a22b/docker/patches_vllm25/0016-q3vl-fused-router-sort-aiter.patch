@@ -1,0 +1,800 @@
+diff --git a/aiter/fused_moe.py b/aiter/fused_moe.py
+index 4c44c587c..4434fcf46 100644
+--- a/aiter/fused_moe.py
++++ b/aiter/fused_moe.py
+@@ -57,6 +57,10 @@ BLOCK_SIZE_M = 32
+ # Sorting backend flags (mutually exclusive; CK > FlyDSL > Opus priority).
+ # Default is Opus.  Set AITER_USE_FLYDSL_MOE_SORTING=1 to prefer FlyDSL when available.
+ _USE_CK_MOE_SORTING = os.environ.get("AITER_USE_CK_MOE_SORTING", "0") == "1"
++# Fusion campaign 2 - #3 (Alt C): fuse router-softmax into the opus sort (skip the
++# standalone topkGatingSoftmax launch + the topk_ids HBM round-trip). Default OFF ->
++# baseline byte-identical. LARGE/prefill path only; the wrapper falls back otherwise.
++_Q3VL_FUSE_ROUTER_SORT = os.environ.get("VLLM_Q3VL_FUSE_ROUTER_SORT", "0") == "1"
+ _USE_FLYDSL_MOE_SORTING = os.environ.get("AITER_USE_FLYDSL_MOE_SORTING", "0") == "1"
+ # "adaptive sort" backend selection (mxfp4 sort as a general World-1 backend):
+ #   auto (default) / adaptive -> use the adaptive branch. NO shape fallback: the
+@@ -400,6 +404,116 @@ def moe_sorting(
+         raise e
+ 
+ 
++# Fusion #3 e2e plumbing: the sort lives deep inside fused_moe_ (a torch custom op),
++# while router_logits is only available in vLLM's moe_runner. Rather than change any
++# custom-op signature (which would affect the default-off campaign path), we pass the
++# router context via a thread-local set by vLLM right before the (synchronous) MoE call
++# and read at the sort site below. Default-off => never set => get returns None => baseline.
++import threading as _threading
++
++_Q3VL_ROUTER_CTX = _threading.local()
++_Q3VL_FUSED_SORT_LOGGED = False
++
++
++def q3vl_set_router_ctx(gating_output, need_renorm):
++    _Q3VL_ROUTER_CTX.gating = gating_output
++    _Q3VL_ROUTER_CTX.need_renorm = bool(need_renorm)
++
++
++def q3vl_clear_router_ctx():
++    _Q3VL_ROUTER_CTX.gating = None
++    _Q3VL_ROUTER_CTX.need_renorm = False
++
++
++def q3vl_get_router_ctx():
++    return (
++        getattr(_Q3VL_ROUTER_CTX, "gating", None),
++        getattr(_Q3VL_ROUTER_CTX, "need_renorm", False),
++    )
++
++
++def moe_sorting_fused(
++    gating_output,
++    num_experts,
++    topk,
++    model_dim,
++    moebuf_dtype,
++    need_renorm,
++    block_size=BLOCK_SIZE_M,
++    dispatch_policy=0,
++    accumulate=True,
++):
++    """Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus sort.
++
++    Computes softmax-top-k on ``gating_output`` [M, num_experts] and writes the opus
++    mesh + topk_weights directly, skipping the standalone topkGatingSoftmax launch and
++    the topk_ids HBM round-trip. Returns the SAME 5-tuple as the non-local
++    ``_moe_sorting_impl`` -- (sorted_ids, sorted_weights, sorted_expert_ids,
++    num_valid_ids, moe_buf) -- so it is a drop-in at the fused_moe_ sort site, or
++    ``None`` when the config is outside the supported LARGE/uint8-mesh path (caller
++    falls back to topk_softmax + moe_sorting). The fence MIRRORS the C++ fence in
++    moe_sorting_opus_fused exactly.
++    """
++    M = gating_output.shape[0]
++    # ---- fence (mirror C++ moe_sorting_opus_fused) ----
++    if M < 2048:
++        return None
++    if num_experts <= 0 or (num_experts & (num_experts - 1)) != 0:
++        return None
++    if num_experts not in (16, 32, 64, 128, 256):
++        return None
++    if topk >= 255:
++        return None
++    if gating_output.dtype not in (dtypes.bf16, dtypes.fp16, dtypes.fp32):
++        return None
++    ws_size = aiter.moe_sorting_opus_get_workspace_size(
++        M, num_experts, topk, dispatch_policy
++    )
++    if ws_size <= 0:
++        return None
++
++    device = gating_output.device
++    gating = gating_output if gating_output.is_contiguous() else gating_output.contiguous()
++
++    # buffer sizes IDENTICAL to _moe_sorting_impl so the downstream GEMM stages see the
++    # exact same layout as the baseline sort.
++    max_num_tokens_padded = int(M * topk + num_experts * block_size - topk)
++    max_num_m_blocks = int((max_num_tokens_padded + block_size - 1) // block_size)
++    sorted_ids = torch.empty(max_num_tokens_padded, dtype=dtypes.i32, device=device)
++    sorted_weights = torch.empty(
++        max_num_tokens_padded, dtype=dtypes.fp32, device=device
++    )
++    sorted_expert_ids = torch.empty(max_num_m_blocks, dtype=dtypes.i32, device=device)
++    num_valid_ids = torch.empty(2, dtype=dtypes.i32, device=device)
++    # topk_weights is both written by the fused kernel and read by P23 (internal only).
++    topk_weights = torch.empty((M, topk), dtype=dtypes.fp32, device=device)
++    # moe_buf allocation mirrors _moe_sorting_impl (non-EP): (M, model_dim) when the
++    # stage2 accumulates atomically, else a placeholder (FlyDSL stage2 reduce mode owns
++    # its [M, topk, model_dim] intermediate).
++    if accumulate:
++        moe_buf = torch.empty((M, model_dim), dtype=moebuf_dtype, device=device)
++    else:
++        moe_buf = torch.empty((0, 0), dtype=moebuf_dtype, device=device)
++    workspace = torch.empty(ws_size, dtype=torch.uint8, device=device)
++
++    aiter.moe_sorting_opus_fused_fwd(
++        gating,
++        topk_weights,
++        sorted_ids,
++        sorted_weights,
++        sorted_expert_ids,
++        num_valid_ids,
++        moe_buf,
++        num_experts,
++        int(block_size),
++        int(topk),
++        bool(need_renorm),
++        workspace,
++        dispatch_policy,
++    )
++    return sorted_ids, sorted_weights, sorted_expert_ids, num_valid_ids, moe_buf
++
++
+ def get_topk_valid_mask(
+     topk_ids: torch.Tensor,
+     expert_mask: Optional[torch.Tensor] = None,
+@@ -732,20 +846,51 @@ def fused_moe_(
+         )
+         local_topk_ids = None
+     else:
+-        sorting_ret = moe_sorting(
+-            topk_ids,
+-            topk_weight,
+-            global_E,
+-            model_dim,
+-            dtype,
+-            block_size_M,
+-            expert_mask,
+-            num_local_tokens,
+-            moe_sorting_dispatch_policy,
+-            return_local_topk_ids=need_local_topk_ids,
+-            accumulate=not stage2_uses_route_reduce(metadata.stage2),
+-            flat=metadata.flat,
+-        )
++        _accumulate = not stage2_uses_route_reduce(metadata.stage2)
++        # Fusion #3 (Alt C): when enabled and the router context is available, fuse the
++        # router-softmax into the opus sort (skip P0 + the topk_ids round-trip). Only the
++        # non-flat, non-EP, non-local-topk LARGE path is eligible; moe_sorting_fused returns
++        # None for anything else, in which case we fall back to the baseline sort below.
++        sorting_ret = None
++        if _Q3VL_FUSE_ROUTER_SORT and not metadata.flat and expert_mask is None \
++                and not need_local_topk_ids and num_local_tokens is None:
++            _gating, _need_renorm = q3vl_get_router_ctx()
++            if _gating is not None and _gating.shape[0] == M:
++                sorting_ret = moe_sorting_fused(
++                    _gating,
++                    global_E,
++                    topk,
++                    model_dim,
++                    dtype,
++                    _need_renorm,
++                    block_size=block_size_M,
++                    dispatch_policy=moe_sorting_dispatch_policy,
++                    accumulate=_accumulate,
++                )
++                if sorting_ret is not None:
++                    global _Q3VL_FUSED_SORT_LOGGED
++                    if not _Q3VL_FUSED_SORT_LOGGED:
++                        logger.info(
++                            "[Q3VL fusion #3] fused router-softmax+sort ACTIVE "
++                            "(M=%d E=%d topk=%d renorm=%s accumulate=%s)",
++                            M, global_E, topk, _need_renorm, _accumulate,
++                        )
++                        _Q3VL_FUSED_SORT_LOGGED = True
++        if sorting_ret is None:
++            sorting_ret = moe_sorting(
++                topk_ids,
++                topk_weight,
++                global_E,
++                model_dim,
++                dtype,
++                block_size_M,
++                expert_mask,
++                num_local_tokens,
++                moe_sorting_dispatch_policy,
++                return_local_topk_ids=need_local_topk_ids,
++                accumulate=_accumulate,
++                flat=metadata.flat,
++            )
+         if need_local_topk_ids:
+             (
+                 sorted_ids,
+diff --git a/aiter/ops/moe_sorting_opus.py b/aiter/ops/moe_sorting_opus.py
+index 3a25fe057..8dd691534 100644
+--- a/aiter/ops/moe_sorting_opus.py
++++ b/aiter/ops/moe_sorting_opus.py
+@@ -36,3 +36,22 @@ def moe_sorting_opus_fwd(
+     m_indices: Optional[torch.Tensor] = None,
+     reverse_sorted: Optional[torch.Tensor] = None,
+ ) -> None: ...
++
++
++# Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus sort.
++@compile_ops("module_moe_sorting_opus", develop=True)
++def moe_sorting_opus_fused_fwd(
++    gating: torch.Tensor,
++    topk_weights: torch.Tensor,
++    sorted_token_ids: torch.Tensor,
++    sorted_weights: torch.Tensor,
++    sorted_expert_ids: torch.Tensor,
++    num_valid_ids: torch.Tensor,
++    moe_buf: torch.Tensor,
++    num_experts: int,
++    unit_size: int,
++    topk: int,
++    need_renorm: bool,
++    workspace: Optional[torch.Tensor] = None,
++    dispatch_policy: int = 0,
++) -> None: ...
+diff --git a/csrc/include/moe_sorting_opus.h b/csrc/include/moe_sorting_opus.h
+index d03129419..836fe2445 100644
+--- a/csrc/include/moe_sorting_opus.h
++++ b/csrc/include/moe_sorting_opus.h
+@@ -28,6 +28,21 @@ void moe_sorting_opus_fwd(aiter_tensor_t& topk_ids,
+                           std::optional<aiter_tensor_t> m_indices        = std::nullopt,
+                           std::optional<aiter_tensor_t> reverse_sorted   = std::nullopt);
+ 
++// Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus mesh scatter.
++void moe_sorting_opus_fused_fwd(aiter_tensor_t& gating,
++                                aiter_tensor_t& topk_weights,
++                                aiter_tensor_t& sorted_token_ids,
++                                aiter_tensor_t& sorted_weights,
++                                aiter_tensor_t& sorted_expert_ids,
++                                aiter_tensor_t& num_valid_ids,
++                                aiter_tensor_t& moe_buf,
++                                int num_experts,
++                                int unit_size,
++                                int topk,
++                                bool need_renorm,
++                                std::optional<aiter_tensor_t> workspace = std::nullopt,
++                                int dispatch_policy                     = 0);
++
+ #ifdef MOE_SORTING_OPUS_IMPL
+ // ============================================================================
+ // Implementation section - only compiled in the .cu translation unit
+@@ -42,6 +57,12 @@ void moe_sorting_opus_fwd(aiter_tensor_t& topk_ids,
+ 
+ #include "opus/opus.hpp"
+ 
++// Fusion #3: the fused router-softmax kernel below reuses the baseline topk
++// machinery. hip_reduce.h provides multithread_reduce (bit-identical sub-group
++// argmax reduce) + WARP_SIZE/get_warp_size_func; hipcub provides KeyValuePair.
++#include "hip_reduce.h"
++#include <hipcub/hipcub.hpp>
++
+ #ifndef OPUS_MOE_SORTING_MOCK_ID
+ #define OPUS_MOE_SORTING_MOCK_ID 1
+ #endif
+@@ -3232,6 +3253,336 @@ struct MoeSortingMultiPhaseKernel_P23
+ 
+ #undef MOE_SORTING_MOCK_ID
+ 
++// ============================================================================
++// Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus mesh scatter.
++//
++// topkGatingSoftmaxWithMesh is a VERBATIM copy of vllm::moe::topkGatingSoftmax
++// (topk_softmax_kernels.cu:225-501) with the shared-expert block removed (Q3VL has
++// none) and the WRITEBACK replaced: it still writes topk_weights to output[] (P2/P3
++// read p_weights[token*topk+slot], :2609) but instead of topk_ids/source_rows it
++// scatters the opus mesh exactly as P0_v1 does (moe_sorting_opus.h:1657):
++//   p_expert_mesh[(expert-start_expert)*mesh_stride + token] = (k_idx+1)&0xffff
++// Numerics (tie-break a.key<b.key on equal value; weight=expf(max-thread_max);
++// renorm in slot order; winner clear to -INF) are IDENTICAL to the baseline, so the
++// fused mesh + topk_weights are bit-identical to topk_softmax + P0_v1 -> P1/P23 emit
++// identical sorted_*/num_valid_ids. Requires ClearWorkspace before launch (this
++// kernel only scatters winners; non-winners stay 0 from the clear).
++// ============================================================================
++template <typename DTYPE,
++          int VPT,
++          int NUM_EXPERTS,
++          int WARPS_PER_CTA,
++          int BYTES_PER_LDG,
++          bool need_renorm,
++          typename MeshType>
++__launch_bounds__(WARPS_PER_CTA* opus::get_warp_size()) __global__
++    void topkGatingSoftmaxWithMesh(const DTYPE* input,
++                                   const bool* finished,
++                                   float* output,           // topk_weights [rows, output_stride]
++                                   const int num_rows,
++                                   MeshType* p_expert_mesh, // workspace base [expert, mesh_stride]
++                                   const int mesh_stride,
++                                   const int k,
++                                   const int start_expert,
++                                   const int end_expert,
++                                   const int output_stride,
++                                   const int input_stride)
++{
++    static_assert(VPT == (VPT & -VPT), "VPT must be power of 2");
++    static_assert(NUM_EXPERTS == (NUM_EXPERTS & -NUM_EXPERTS), "NUM_EXPERTS must be power of 2");
++    static_assert(BYTES_PER_LDG == (BYTES_PER_LDG & -BYTES_PER_LDG),
++                  "BYTES_PER_LDG must be power of 2");
++
++    static constexpr int ELTS_PER_LDG    = BYTES_PER_LDG / sizeof(DTYPE);
++    static constexpr int ELTS_PER_ROW    = NUM_EXPERTS;
++    static constexpr int THREADS_PER_ROW = ELTS_PER_ROW / VPT;
++    static constexpr int LDG_PER_THREAD  = VPT / ELTS_PER_LDG;
++
++    static_assert(VPT % ELTS_PER_LDG == 0,
++                  "The elements per thread must be a multiple of the elements per ldg");
++    static_assert(WARP_SIZE % THREADS_PER_ROW == 0,
++                  "The threads per row must cleanly divide the threads per warp");
++    static_assert(THREADS_PER_ROW == (THREADS_PER_ROW & -THREADS_PER_ROW),
++                  "THREADS_PER_ROW must be power of 2");
++    static_assert(THREADS_PER_ROW <= WARP_SIZE, "THREADS_PER_ROW can be at most warp size");
++
++    static constexpr int ELTS_PER_WARP = WARP_SIZE * VPT;
++    static constexpr int ROWS_PER_WARP = ELTS_PER_WARP / ELTS_PER_ROW;
++    static constexpr int ROWS_PER_CTA  = WARPS_PER_CTA * ROWS_PER_WARP;
++    static_assert(ELTS_PER_WARP % ELTS_PER_ROW == 0,
++                  "The elts per row must cleanly divide the total elt per warp");
++
++    const int cta_base_row       = blockIdx.x * ROWS_PER_CTA;
++    const int warp_base_row      = cta_base_row + threadIdx.y * ROWS_PER_WARP;
++    const int thread_row_in_warp = threadIdx.x / THREADS_PER_ROW;
++    const int thread_row         = warp_base_row + thread_row_in_warp;
++    if(thread_row >= num_rows)
++    {
++        return;
++    }
++    const bool row_is_active = finished ? !finished[thread_row] : true;
++
++    const DTYPE* thread_row_ptr        = input + thread_row * input_stride;
++    const int thread_group_idx         = threadIdx.x % THREADS_PER_ROW;
++    const int first_elt_read_by_thread = thread_group_idx * ELTS_PER_LDG;
++    const DTYPE* thread_read_ptr       = thread_row_ptr + first_elt_read_by_thread;
++
++    using AccessType = opus::vector_t<DTYPE, ELTS_PER_LDG>;
++    using ChunkType  = opus::vector_t<float, ELTS_PER_LDG>;
++    using kvp        = hipcub::KeyValuePair<int, float>;
++
++    float row_chunk[VPT];
++    ChunkType* row_chunk_vec_ptr          = reinterpret_cast<ChunkType*>(&row_chunk);
++    const AccessType* vec_thread_read_ptr = reinterpret_cast<const AccessType*>(thread_read_ptr);
++#pragma unroll
++    for(int ii = 0; ii < LDG_PER_THREAD; ++ii)
++    {
++        AccessType vec = vec_thread_read_ptr[ii * THREADS_PER_ROW];
++        for(int jj = 0; jj < ELTS_PER_LDG; ++jj)
++        {
++            row_chunk_vec_ptr[ii][jj] = static_cast<float>(vec[jj]);
++        }
++    }
++
++    float thread_max      = row_chunk[0];
++    int first_topk_expert = first_elt_read_by_thread;
++#pragma unroll
++    for(int ii = 1; ii < VPT; ++ii)
++    {
++        if(thread_max < row_chunk[ii])
++        {
++            thread_max        = row_chunk[ii];
++            first_topk_expert = first_elt_read_by_thread + ii;
++        }
++    }
++
++    auto arg_max = [](const kvp& a, const kvp& b) {
++        if(a.value > b.value || (a.value == b.value && a.key < b.key))
++        {
++            return a;
++        }
++        return b;
++    };
++    kvp thread_kvp    = {first_topk_expert, thread_max};
++    thread_kvp        = ::multithread_reduce(thread_kvp, arg_max, THREADS_PER_ROW);
++    thread_max        = thread_kvp.value;
++    first_topk_expert = thread_kvp.key;
++
++    int start_col                           = first_elt_read_by_thread;
++    static constexpr int COLS_PER_GROUP_LDG = ELTS_PER_LDG * THREADS_PER_ROW;
++
++    float renorm_value = 0.0f;
++    for(int k_idx = 0; k_idx < k; ++k_idx)
++    {
++        float max_val;
++        int expert;
++        if(k_idx == 0)
++        {
++            max_val = thread_max;
++            expert  = first_topk_expert;
++        }
++        else
++        {
++            max_val = row_chunk[0];
++            expert  = start_col;
++#pragma unroll
++            for(int ldg = 0, col = start_col; ldg < LDG_PER_THREAD;
++                ++ldg, col += COLS_PER_GROUP_LDG)
++            {
++#pragma unroll
++                for(int ii = 0; ii < ELTS_PER_LDG; ++ii)
++                {
++                    float val = row_chunk[ldg * ELTS_PER_LDG + ii];
++                    if(val > max_val)
++                    {
++                        max_val = val;
++                        expert  = col + ii;
++                    }
++                }
++            }
++            kvp thread_kvp = {expert, max_val};
++            thread_kvp     = ::multithread_reduce(thread_kvp, arg_max, THREADS_PER_ROW);
++            max_val        = thread_kvp.value;
++            expert         = thread_kvp.key;
++        }
++
++        // WRITEBACK: topk_weights (kept) + opus mesh (replaces topk_ids/source_rows).
++        if(thread_group_idx == 0)
++        {
++            const bool node_uses_expert   = expert >= start_expert && expert < end_expert;
++            const bool should_process_row = row_is_active && node_uses_expert;
++
++            const int output_idx = output_stride * thread_row + k_idx;
++            const float numer     = expf(max_val - thread_max);
++            output[output_idx]    = numer;
++            renorm_value += numer;
++
++            if(should_process_row)
++            {
++                const int eid = expert - start_expert;
++                p_expert_mesh[eid * mesh_stride + thread_row] =
++                    static_cast<MeshType>((k_idx + 1) & 0xffff);
++            }
++        }
++
++        // Winner clear to -INFINITY (verbatim).
++        {
++            const int ldg_group_for_expert     = expert / COLS_PER_GROUP_LDG;
++            const int thread_to_clear_in_group = (expert / ELTS_PER_LDG) % THREADS_PER_ROW;
++            if(thread_group_idx == thread_to_clear_in_group)
++            {
++                const int offset_for_expert = expert % ELTS_PER_LDG;
++                row_chunk[ldg_group_for_expert * ELTS_PER_LDG + offset_for_expert] = -INFINITY;
++            }
++        }
++    }
++
++    if constexpr(need_renorm)
++    {
++        if(thread_group_idx == 0 && renorm_value != 0.f)
++        {
++            renorm_value = 1 / renorm_value;
++            for(int k_idx = 0; k_idx < k; k_idx++)
++            {
++                int64_t const idx = output_stride * thread_row + k_idx;
++                output[idx] *= renorm_value;
++            }
++        }
++    }
++    else
++    {
++        float thread_sum_rest = 0.f;
++#pragma unroll
++        for(int ii = 0; ii < VPT; ++ii)
++        {
++            thread_sum_rest += expf(row_chunk[ii] - thread_max);
++        }
++        float row_sum_rest = ::multithread_reduce(
++            thread_sum_rest, [](float a, float b) { return a + b; }, THREADS_PER_ROW);
++
++        if(thread_group_idx == 0)
++        {
++            const float Z = renorm_value + row_sum_rest;
++            if(Z != 0.f)
++            {
++                const float scale = 1.f / Z;
++                for(int k_idx = 0; k_idx < k; ++k_idx)
++                {
++                    const int out_idx = output_stride * thread_row + k_idx;
++                    output[out_idx] *= scale;
++                }
++            }
++        }
++    }
++}
++
++// Row-parallel launcher, mirrors topkGatingSoftmaxLauncherHelper
++// (topk_softmax_kernels.cu:519-582) so grid/tile params match the baseline exactly.
++template <typename DTYPE, int EXPERTS, int WARPS_PER_TB, typename MeshType>
++inline void launchTopkGatingSoftmaxWithMesh(const DTYPE* input,
++                                            float* output,
++                                            MeshType* p_expert_mesh,
++                                            int mesh_stride,
++                                            int num_rows,
++                                            int k,
++                                            int start_expert,
++                                            int end_expert,
++                                            int output_stride,
++                                            int input_stride,
++                                            bool need_renorm,
++                                            hipStream_t stream)
++{
++    constexpr std::size_t MAX_BYTES_PER_LDG = EXPERTS < 512 ? 32 : 64;
++    constexpr int BYTES_PER_LDG =
++        static_cast<int>(MAX_BYTES_PER_LDG < sizeof(DTYPE) * EXPERTS ? MAX_BYTES_PER_LDG
++                                                                     : sizeof(DTYPE) * EXPERTS);
++    constexpr int ELTS_PER_LDG = BYTES_PER_LDG / sizeof(DTYPE);
++    static_assert(EXPERTS / (ELTS_PER_LDG * WARP_SIZE) <= 1, "EXPERTS not supported");
++    constexpr int VPT             = ELTS_PER_LDG; // VECs_PER_THREAD == 1
++    constexpr int THREADS_PER_ROW = EXPERTS / VPT;
++
++    int ROWS_PER_WARP = get_warp_size_func() / THREADS_PER_ROW;
++    int num_warps     = (num_rows + ROWS_PER_WARP - 1) / ROWS_PER_WARP;
++    int num_blocks    = (num_warps + WARPS_PER_TB - 1) / WARPS_PER_TB;
++    dim3 block_dim(WARP_SIZE, WARPS_PER_TB);
++
++    if(need_renorm)
++    {
++        topkGatingSoftmaxWithMesh<DTYPE, VPT, EXPERTS, WARPS_PER_TB, BYTES_PER_LDG, true, MeshType>
++            <<<num_blocks, block_dim, 0, stream>>>(input,
++                                                   nullptr,
++                                                   output,
++                                                   num_rows,
++                                                   p_expert_mesh,
++                                                   mesh_stride,
++                                                   k,
++                                                   start_expert,
++                                                   end_expert,
++                                                   output_stride,
++                                                   input_stride);
++    }
++    else
++    {
++        topkGatingSoftmaxWithMesh<DTYPE, VPT, EXPERTS, WARPS_PER_TB, BYTES_PER_LDG, false, MeshType>
++            <<<num_blocks, block_dim, 0, stream>>>(input,
++                                                   nullptr,
++                                                   output,
++                                                   num_rows,
++                                                   p_expert_mesh,
++                                                   mesh_stride,
++                                                   k,
++                                                   start_expert,
++                                                   end_expert,
++                                                   output_stride,
++                                                   input_stride);
++    }
++}
++
++// Dispatch the fused softmax over the (runtime) power-of-2 expert count. MeshType is
++// uint8_t (LARGE path). Returns false if the expert count is not instantiated
++// (caller must have fenced this out).
++template <typename DTYPE>
++inline bool launchFusedSoftmaxWithMesh(const void* p_gating,
++                                       float* p_weights,
++                                       void* p_ws,
++                                       int num_experts,
++                                       int mesh_stride,
++                                       int num_rows,
++                                       int topk,
++                                       bool need_renorm,
++                                       hipStream_t stream)
++{
++    const DTYPE* g    = reinterpret_cast<const DTYPE*>(p_gating);
++    uint8_t* mesh     = reinterpret_cast<uint8_t*>(p_ws);
++    const int in_str  = num_experts; // gating is contiguous [tokens, num_experts]
++    const int out_str = topk;        // topk_weights is contiguous [tokens, topk]
++#define OPUS_FUSED_SOFTMAX_CASE(EXP)                                                        \
++    case EXP:                                                                               \
++        launchTopkGatingSoftmaxWithMesh<DTYPE, EXP, 8, uint8_t>(g,                          \
++                                                               p_weights,                  \
++                                                               mesh,                       \
++                                                               mesh_stride,                \
++                                                               num_rows,                   \
++                                                               topk,                       \
++                                                               0,                          \
++                                                               num_experts,                \
++                                                               out_str,                    \
++                                                               in_str,                     \
++                                                               need_renorm,                \
++                                                               stream);                    \
++        return true;
++    switch(num_experts)
++    {
++        OPUS_FUSED_SOFTMAX_CASE(16)
++        OPUS_FUSED_SOFTMAX_CASE(32)
++        OPUS_FUSED_SOFTMAX_CASE(64)
++        OPUS_FUSED_SOFTMAX_CASE(128)
++        OPUS_FUSED_SOFTMAX_CASE(256)
++    default: return false;
++    }
++#undef OPUS_FUSED_SOFTMAX_CASE
++}
++
+ } // namespace aiter
+ 
+ // --- API dispatch ---
+@@ -3253,6 +3604,9 @@ struct moe_sorting_opus_trait
+ 
+ struct moe_sorting_opus_args : public aiter::MoeSortingHostArgs
+ {
++    // Fusion #3 (Alt C) extra inputs, used only by moe_sorting_opus_fused.
++    const void* p_gating = nullptr; // router logits [tokens, num_experts]
++    bool need_renorm     = false;   // model's real topk renormalize flag
+ };
+ 
+ int
+@@ -3638,4 +3992,85 @@ moe_sorting_opus_mp(moe_sorting_opus_trait t, moe_sorting_opus_args a, aiter::st
+     return -1;
+ }
+ 
++// Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus sort.
++// Launch sequence: maybe_clear_workspace -> topkGatingSoftmaxWithMesh (row-parallel)
++// -> P1 -> P23, reusing the LARGE uint8-mesh phases verbatim. P0_v1 is skipped (the
++// fused softmax writes the mesh directly). Returns -1 (caller falls back to baseline)
++// for ANY config outside the fenced LARGE path.
++inline float moe_sorting_opus_fused(moe_sorting_opus_trait t,
++                                    moe_sorting_opus_args a,
++                                    const std::string& gating_dtype,
++                                    aiter::stream_config s)
++{
++    // ---- FENCE (PR-review BLOCKER 1). Anything else -> baseline. ----
++    if(!(t.weight_type == "fp32" && t.index_type == "i32"))
++        return -1;
++    if(t.local_expert_masking)
++        return -1;
++    if(a.p_local_tokens != nullptr)
++        return -1;
++    if(a.p_local_topk_ids != nullptr)
++        return -1;
++    if(a.tokens < 2048) // LARGE path only; SMALL/P0_v2 is incompatible
++        return -1;
++    const bool pow2 = a.num_experts > 0 && ((a.num_experts & (a.num_experts - 1)) == 0);
++    if(!pow2)
++        return -1;
++    const int ws =
++        moe_sorting_opus_get_workspace_size(a.tokens, a.num_experts, a.topk, t.dispatch_policy);
++    if(ws <= 0) // oneshot path has no workspace/mesh
++        return -1;
++    const int mesh_byte = aiter::impl::moe_sorting_mesh_byte_size(a.tokens, a.num_experts, a.topk);
++    if(mesh_byte != 1) // MeshType uint8_t only (PR-review MAJOR 3)
++        return -1;
++    if(aiter::impl::moe_sorting_get_smem_size_p23(a.num_experts, false) > opus::get_smem_size())
++        return -1;
++    if(!(gating_dtype == "bf16" || gating_dtype == "fp16" || gating_dtype == "fp32"))
++        return -1;
++
++    using ms_index_t     = opus::index_t;
++    using ms_weight_type = float;
++    bool is_local_token  = false; // fenced out above
++
++    auto maybe_clear_workspace = [=](const aiter::stream_config& s_) {
++        if(t.clear_workspace_inside_api)
++        {
++            auto k = OPUS_MOR_SORTING_CLEAR_WS_DISPATCH_(false, 1024, 1);
++            k(s_);
++        }
++    };
++
++    const int mesh_stride = aiter::impl::moe_sorting_mp_mesh_stride(a.tokens);
++    const int num_rows    = a.tokens;
++    const int topk        = a.topk;
++
++    auto fused_softmax = [=](const aiter::stream_config& s_) {
++        hipStream_t st = s_.stream_id_;
++        bool ok        = false;
++        if(gating_dtype == "bf16")
++            ok = aiter::launchFusedSoftmaxWithMesh<opus::bf16_t>(
++                a.p_gating, reinterpret_cast<float*>(const_cast<void*>(a.p_weights)), a.p_ws,
++                a.num_experts,
++                mesh_stride, num_rows, topk, a.need_renorm, st);
++        else if(gating_dtype == "fp16")
++            ok = aiter::launchFusedSoftmaxWithMesh<opus::fp16_t>(
++                a.p_gating, reinterpret_cast<float*>(const_cast<void*>(a.p_weights)), a.p_ws,
++                a.num_experts,
++                mesh_stride, num_rows, topk, a.need_renorm, st);
++        else // fp32
++            ok = aiter::launchFusedSoftmaxWithMesh<float>(
++                a.p_gating, reinterpret_cast<float*>(const_cast<void*>(a.p_weights)), a.p_ws,
++                a.num_experts,
++                mesh_stride, num_rows, topk, a.need_renorm, st);
++        (void)ok; // num_experts already fenced to an instantiated case
++    };
++
++    float ave_time = aiter::launch_kernel(s,
++                                          maybe_clear_workspace,
++                                          fused_softmax,
++                                          OPUS_MOE_SORTING_MP_1(uint8_t, 16, false, false),
++                                          OPUS_MOE_SORTING_MP_23(uint8_t, 16, false, false));
++    return ave_time;
++}
++
+ #endif // MOE_SORTING_OPUS_IMPL
+diff --git a/csrc/include/rocm_ops.hpp b/csrc/include/rocm_ops.hpp
+index 04de29e06..1a64f1a98 100644
+--- a/csrc/include/rocm_ops.hpp
++++ b/csrc/include/rocm_ops.hpp
+@@ -1410,7 +1410,22 @@ namespace py = pybind11;
+           py::arg("dispatch_policy")   = 0,            \
+           py::arg("local_topk_ids")    = std::nullopt, \
+           py::arg("m_indices")         = std::nullopt, \
+-          py::arg("reverse_sorted")    = std::nullopt);
++          py::arg("reverse_sorted")    = std::nullopt);\
++    m.def("moe_sorting_opus_fused_fwd",                \
++          &moe_sorting_opus_fused_fwd,                 \
++          py::arg("gating"),                           \
++          py::arg("topk_weights"),                     \
++          py::arg("sorted_token_ids"),                 \
++          py::arg("sorted_weights"),                   \
++          py::arg("sorted_expert_ids"),                \
++          py::arg("num_valid_ids"),                    \
++          py::arg("moe_buf"),                          \
++          py::arg("num_experts"),                      \
++          py::arg("unit_size"),                        \
++          py::arg("topk"),                             \
++          py::arg("need_renorm"),                      \
++          py::arg("workspace")       = std::nullopt,   \
++          py::arg("dispatch_policy") = 0);
+ 
+ #define PA_SPARSE_PREFILL_OPUS_PYBIND                  \
+     m.def("pa_sparse_prefill_opus_fwd",                \
+diff --git a/csrc/py_itfs_cu/moe_sorting_opus_kernels.cu b/csrc/py_itfs_cu/moe_sorting_opus_kernels.cu
+index 0e91f1800..ad7063c19 100644
+--- a/csrc/py_itfs_cu/moe_sorting_opus_kernels.cu
++++ b/csrc/py_itfs_cu/moe_sorting_opus_kernels.cu
+@@ -82,3 +82,70 @@ void moe_sorting_opus_fwd(aiter_tensor_t& topk_ids,
+          static_cast<int>(moe_buf.element_size())},
+         {stream});
+ }
++
++// Fusion campaign 2 - #3 (Alt C): fused router-softmax + opus sort.
++// Mirrors moe_sorting_opus_fwd but takes `gating` (router logits) instead of topk_ids
++// and computes softmax-top-k inside the sort. The caller (Python moe_sorting_fused)
++// applies an identical fence and only invokes this on the supported LARGE path; the
++// AITER_CHECK below is a belt-and-suspenders guard so a config drift never silently
++// corrupts routing.
++void moe_sorting_opus_fused_fwd(aiter_tensor_t& gating,
++                                aiter_tensor_t& topk_weights,
++                                aiter_tensor_t& sorted_token_ids,
++                                aiter_tensor_t& sorted_weights,
++                                aiter_tensor_t& sorted_expert_ids,
++                                aiter_tensor_t& num_valid_ids,
++                                aiter_tensor_t& moe_buf,
++                                int num_experts,
++                                int unit_size,
++                                int topk,
++                                bool need_renorm,
++                                std::optional<aiter_tensor_t> workspace,
++                                int dispatch_policy)
++{
++    AITER_CHECK(topk_weights.dtype() == AITER_DTYPE_fp32, "topk_weights must be FP32 (float32)");
++    AITER_CHECK(gating.dim() == 2, "gating must be 2D [tokens, num_experts]");
++    AITER_CHECK(gating.is_contiguous(), "gating must be contiguous");
++    AITER_CHECK(topk_weights.is_contiguous(), "topk_weights must be contiguous");
++
++    const int num_tokens = gating.size(0);
++    AITER_CHECK(gating.size(1) == num_experts, "gating last dim must equal num_experts");
++    AITER_CHECK(topk_weights.dim() == 2 && topk_weights.size(0) == num_tokens &&
++                    topk_weights.size(1) == topk,
++                "topk_weights must be [tokens, topk]");
++
++    const std::string gating_dtype = AiterDtype_to_str(gating.dtype());
++
++    HipDeviceGuard device_guard(gating.device_id);
++    const hipStream_t stream = aiter::getCurrentHIPStream();
++
++    void* ws_ptr = workspace.has_value() ? workspace.value().data_ptr() : nullptr;
++
++    moe_sorting_opus_args a{};
++    a.p_topk_ids              = nullptr;
++    a.p_weights               = topk_weights.data_ptr(); // written by fused kernel, read by P23
++    a.p_local_expert_mask     = nullptr;
++    a.p_local_tokens          = nullptr;
++    a.p_sorted_token_ids      = sorted_token_ids.data_ptr();
++    a.p_sorted_weights        = sorted_weights.data_ptr();
++    a.p_sorted_expert_ids     = sorted_expert_ids.data_ptr();
++    a.p_total_tokens_post_pad = num_valid_ids.data_ptr();
++    a.p_moe_buf               = moe_buf.data_ptr();
++    a.p_ws                    = ws_ptr;
++    a.p_local_topk_ids        = nullptr;
++    a.tokens                  = num_tokens;
++    a.unit_size               = unit_size;
++    a.num_experts             = num_experts;
++    a.topk                    = topk;
++    a.moe_buf_interm_dim      = static_cast<int>(moe_buf.size(-1));
++    a.moe_buf_elem_bytes      = static_cast<int>(moe_buf.element_size());
++    a.p_gating                = gating.data_ptr();
++    a.need_renorm             = need_renorm;
++
++    const float ret =
++        moe_sorting_opus_fused({"i32", "fp32", false, true, dispatch_policy}, a, gating_dtype,
++                               {stream});
++    AITER_CHECK(ret >= 0.0f,
++                "moe_sorting_opus_fused: unsupported configuration (fence rejected). "
++                "The caller must fall back to topk_softmax + moe_sorting_opus_fwd.");
++}

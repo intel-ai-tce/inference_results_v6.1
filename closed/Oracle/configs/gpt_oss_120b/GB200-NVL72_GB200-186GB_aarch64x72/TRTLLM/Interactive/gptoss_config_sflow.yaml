@@ -1,0 +1,49 @@
+variables:
+  # Disagg topology - full GB200x72 scale: 24 CTX TP1 + 12 GEN TP4EP4 + 12 frontends = 72 GPUs.
+  # Matches server-topology.json: num_ctx_workers=24, num_gen_workers=12, num_master_servers=12.
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 24
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 1
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 12
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 4
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 12
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  BASE_PORT:
+    value: 8336
+  FRONTEND_PORT:
+    value: 8000
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b
+  TRTLLM_YAML_CTX:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-1gpu.yaml
+  TRTLLM_ENV_YAML_CTX:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-1gpu-env.yaml
+  TRTLLM_YAML_GEN:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-4gpu.yaml
+  TRTLLM_ENV_YAML_GEN:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-4gpu-env.yaml
+
+  BENCHMARK:
+    value: gpt-oss-120b
+  SCENARIO:
+    value: Interactive
+  SYSTEM_NAME:
+    value: GB200-NVL72_GB200-186GB_aarch64x72
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    value: ""

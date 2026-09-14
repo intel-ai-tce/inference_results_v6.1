@@ -1,0 +1,35 @@
+# Llama2-70B disagg GENERATION (decode) worker — TP1, B300 x64 Server.
+backend: pytorch
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+max_batch_size: 256
+max_num_tokens: 4608
+max_seq_len: 2048
+print_iter_log: false
+enable_iter_perf_stats: false
+return_perf_metrics: false
+enable_layerwise_nvtx_marker: false
+stream_interval: 50
+disable_overlap_scheduler: false
+enable_chunked_prefill: false
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+kv_cache_config:
+  dtype: fp8
+  free_gpu_memory_fraction: 0.90
+  enable_block_reuse: false
+num_postprocess_workers: 4
+torch_compile_config:
+  enable_fullgraph: true
+  enable_inductor: false
+  enable_piecewise_cuda_graph: true
+  enable_userbuffers: true
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes: [1, 2, 4, 8, 16, 32, 64, 128, 192, 256]
+cache_transceiver_config:
+  max_tokens_in_buffer: 4608
+  # B300 KV transfer uses the UCX transport pinned by the environment file.
+  backend: UCX
+sampler_type: TRTLLMSampler

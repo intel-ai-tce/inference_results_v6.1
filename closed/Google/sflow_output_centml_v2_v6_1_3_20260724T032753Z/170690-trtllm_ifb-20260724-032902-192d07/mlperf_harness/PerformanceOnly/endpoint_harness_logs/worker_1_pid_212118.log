@@ -1,0 +1,7 @@
+2026-07-24 03:37:01,637 - root - INFO - [Worker-1/PID-212118] - Worker 1 (PID: 212118) logging initialized
+2026-07-24 03:37:01,638 - root - INFO - [Worker-1/PID-212118] - Worker 1 starting (PID: 212118)
+2026-07-24 03:37:01,794 - root - INFO - [Worker-1/PID-212118] - Loaded tokenizer from local path: /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4
+2026-07-24 03:37:01,794 - root - INFO - [Worker-1/PID-212118] - Worker 1 initialized successfully
+2026-07-24 04:55:50,462 - root - INFO - [Worker-1/PID-212118] - Worker 1 received shutdown signal
+2026-07-24 04:55:50,462 - root - INFO - [Worker-1/PID-212118] - Worker 1 processed 35104 queries
+2026-07-24 04:55:50,463 - root - INFO - [Worker-1/PID-212118] - Worker 1 shutdown complete

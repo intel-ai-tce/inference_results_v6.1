@@ -1,0 +1,66 @@
+variables:
+  CONTAINER_IMAGE:
+    description: >-
+      Local Enroot .sqsh - no NGC pull, no registry auth; staged on all 18 nodes.
+      Built by converting the public NGC image
+      nvcr.io/nvidia/mlperf/mlperf-inference:tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64
+      via: enroot import -o mlperf-inference-jan28-aarch64.sqsh
+      docker://$oauthtoken@nvcr.io#nvidia/mlperf/mlperf-inference:tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64
+      (requires an NGC API key as the docker://$oauthtoken@ password, e.g. via
+      `enroot login nvcr.io` or an ~/.config/enroot/.credentials entry), then
+      staged to /mnt/data/images/ on all nodes. No local modifications beyond
+      the docker/Dockerfile.user user-account layer described below.
+    value: "/mnt/data/images/mlperf-inference-jan28-aarch64.sqsh"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/Wiwynn, mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models), mounted at /home/mlperf_inference_storage."
+    value: /mnt/data
+  CONTAINER_MOUNTS:
+    description: "Adds IMEX channel device: required for cross-node TP / MNNVL (Pyxis does not auto-mount it)"
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage,/dev/nvidia-caps-imex-channels:/dev/nvidia-caps-imex-channels"
+
+  SLURM_ACCOUNT:
+    description: "This cluster has no accounting plugin; leave empty"
+    value: ""
+  SLURM_PARTITION:
+    value: batch
+  SLURM_TIME:
+    description: "GPT-OSS-120B warmup is slow; widen to avoid sbatch being killed"
+    value: "08:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)"
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: true
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60,NCCL_SOCKET_IFNAME=enP5p9s0,UCX_NET_DEVICES=enP5p9s0,NCCL_NVLS_ENABLE=1,NCCL_P2P_DISABLE=0,NCCL_NET_GDR_LEVEL=PIX"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--gres=gpu:${{ variables.GPUS_PER_NODE }}"
+      - "--segment=${{ variables.SLURM_NODES }}"
+      - "--exclusive"

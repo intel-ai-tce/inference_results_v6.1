@@ -1,0 +1,58 @@
+# DSR1 SERVER-DISAGG 4c8g x72 (4 ctx dep2 + 8 gen dep8 + 6 frontends = 72 GPU/18 nodes) — SUBMISSION client.
+# Endpoint mirror of harness disagg-4c8g-q320-x72 (1,155,677 tok/s = 16,051 tok/s/GPU VALID, exact_match 80.95%).
+# Server q320 (the knee), MTP-0, bigbuf engines. Router = round_robin (trtllm-serve default, no router block).
+name: dsr1-gr100-server-disagg-4c8g-x72-submission
+version: "1.0"
+type: submission
+benchmark_mode: online
+
+model_params:
+  name: DeepSeek-R1-NVFP4-v2-mlpinf
+  tokenizer_name: /model
+  temperature: 0.0
+  max_new_tokens: 20000
+  top_k: 1
+  top_p: 1.0
+  streaming: "on"
+
+datasets:
+  - name: dsr1-perf
+    type: performance
+    path: /work/dataset/ds-r1/deepseek_r1_eval.parquet
+  - name: deepseek_r1_accuracy
+    type: accuracy
+    path: /work/dataset/ds-r1/deepseek_r1_eval.parquet
+    accuracy_config:
+      eval_method: legacy_mlperf_deepseek_r1
+      ground_truth: ground_truth
+      num_repeats: 1
+      extras:
+        subset_column: dataset
+        question_column: question
+        tokenizer_path: /model
+
+settings:
+  runtime:
+    min_duration_ms: 1800000     # 40 min perf
+    max_duration_ms: 3600000     # 60 min hard cap
+    n_samples_to_issue: 300000   # >= q310 x 40min
+    # n_samples_to_issue: 600000   # >= q310 x 40min
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: poisson
+    target_qps: 163              # reverted to the knee (q320 congestion-flooded 296865 @75%); shared by 5 launchers
+  client:
+    num_workers: 12              # multiple of 6 frontends
+    max_connections: 42000       # 295929 PASS value (reverted from 32000 workaround)
+    warmup_connections: -1
+    worker_initialization_timeout: 300.0
+  drain:
+    performance_timeout_s: null  # complete the tail (correct OSL); windowed TPS unaffected
+
+endpoint_config:
+  endpoints: []
+  api_type: openai_completions
+  api_key: null
+
+report_dir: ${SFLOW_TASK_OUTPUT_DIR}

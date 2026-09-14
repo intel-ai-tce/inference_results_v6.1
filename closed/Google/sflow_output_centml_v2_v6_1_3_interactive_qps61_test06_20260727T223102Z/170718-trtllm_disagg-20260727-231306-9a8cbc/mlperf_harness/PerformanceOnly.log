@@ -1,0 +1,245 @@
+[2026-07-27 23:27:53,462 main.py:497 INFO RANK=0] Detected system ID: GB200-NVL72_GB200-186GB_aarch64x72
+[2026-07-27 23:27:53,463 main.py:88 INFO RANK=0] Loading configs from /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/harness.py
+[2026-07-27 23:27:53,470 compliance.py:73 INFO RANK=0] AUDIT HARNESS: Looking for audit.config in /work/3rdparty/mlc-inference/compliance/TEST06/deepseek-r1/audit.config...
+[2026-07-27 23:27:53,470 compliance.py:77 INFO RANK=0] AUDIT HARNESS: Search failed. Looking for audit.config in /work/3rdparty/mlc-inference/compliance/TEST06/audit.config...
+/bin/dash: 1: sudo: not found
+[2026-07-27 23:27:53,993 harness.py:86 INFO RANK=0] WARNING: Failed to set vboost slider. Skipping...
+[2026-07-27 23:27:54,651 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:27:54,651 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:27:54,651 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:27:54,834 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:27:54,834 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:27:54,834 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:27:54,834 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:27:54,836 utils.py:430 INFO RANK=0] Harness iteration stats will be dumped to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_iteration_stats.log
+[2026-07-27 23:27:54,837 INFO] [ TrtllmEndpointCore#0 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+[2026-07-27 23:27:57,435 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:27:57,435 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:27:57,436 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:27:57,471 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:27:57,471 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:27:57,471 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:27:57,527 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:27:57,527 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:27:57,527 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:27:57,527 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:27:57,563 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:27:57,563 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:27:57,563 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:27:57,563 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:27:57,732 INFO] [ TrtllmEndpointCore#0 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.52:8003, max_concurrency: 5120)
+[2026-07-27 23:27:57,732 INFO] [ factory.py:129 create_server ] Initialized TrtllmEndpointCore#0 with HarnessConfig:
+TrtllmEndpointConfig(_core_type=None,
+                     server_instance_size=None,
+                     enable_ttft_latency_tracker=False,
+                     show_steady_state_progress=False,
+                     gen_config_path=PosixPath('src/nv_mlpinf/benchmarks/deepseek_r1/generation_config.json'),
+                     test_mode='PerformanceOnly',
+                     workload=<nv_mlpinf.common.workload.Workload object at 0xe72c453e9970>,
+                     traffic_distribution_policy='round_robin',
+                     log_dir=PosixPath('/work/build/compliance_logs/TEST06'),
+                     capture_server_logs_dir=None,
+                     disagg_bench_mode=None,
+                     readiness_timeout=1800,
+                     gen_config=GenerationConfig(eos_token_id=1,
+                                                 bos_token_id=0,
+                                                 max_output_len=20000,
+                                                 min_output_len=1,
+                                                 name='deepseek-r1',
+                                                 runtime_beam_width=1,
+                                                 streaming=True,
+                                                 temperature=0.0,
+                                                 top_k=1,
+                                                 top_p=1,
+                                                 use_stop_tokens=False,
+                                                 skip_special_tokens=True),
+                     random_seed=0,
+                     trtllm_endpoint_urls=['10.128.0.52:8003',
+                                           '10.128.0.106:8000',
+                                           '10.128.0.111:8001',
+                                           '10.128.0.35:8002'],
+                     endpoint_url='10.128.0.52:8003',
+                     mpi_mode=<MPIMode.LEGACY: 'legacy'>,
+                     harness_use_hf_tokenizer=False,
+                     global_size=None,
+                     workers_per_core=2,
+                     max_concurrency=5120,
+                     enable_metrics=False)
+[2026-07-27 23:27:57,733 INFO] [ TrtllmEndpointCore#1 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+[2026-07-27 23:28:00,100 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:00,100 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:00,100 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:00,140 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:00,141 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:00,141 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:00,192 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:00,192 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:00,192 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:00,192 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:00,234 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:00,234 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:00,234 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:00,234 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:00,406 INFO] [ TrtllmEndpointCore#1 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.106:8000, max_concurrency: 5120)
+[2026-07-27 23:28:00,407 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#1.
+[2026-07-27 23:28:00,408 INFO] [ TrtllmEndpointCore#2 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+[2026-07-27 23:28:02,763 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:02,763 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:02,763 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:02,766 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:02,766 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:02,766 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:02,854 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:02,854 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:02,854 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:02,854 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:02,856 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:02,856 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:02,856 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:02,856 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:03,024 INFO] [ TrtllmEndpointCore#2 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.111:8001, max_concurrency: 5120)
+[2026-07-27 23:28:03,025 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#2.
+[2026-07-27 23:28:03,026 INFO] [ TrtllmEndpointCore#3 trtllm_endpoint_core.py:70 TrtllmEndpointCore.__init__ ] Using HTTP backend: custom_http (AsyncLLMHttpRequestManager)
+[2026-07-27 23:28:05,468 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:05,468 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:05,468 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:05,476 utils.py:148 INFO RANK=0] Note: detected 140 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+[2026-07-27 23:28:05,476 utils.py:151 INFO RANK=0] Note: NumExpr detected 140 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-07-27 23:28:05,476 utils.py:164 INFO RANK=0] NumExpr defaulting to 16 threads.
+[2026-07-27 23:28:05,560 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:05,560 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:05,560 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:05,560 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:05,566 http_async_client.py:62 INFO RANK=0] Endpoint Harness WARs: 
+[2026-07-27 23:28:05,566 http_async_client.py:63 INFO RANK=0]   - DYNAMO_OVERRIDE_NOSKIP_FINAL_CHUNK: False
+[2026-07-27 23:28:05,566 http_async_client.py:64 INFO RANK=0]   - DYNAMO_OVERRIDE_USE_TEXT_INPUT: False
+[2026-07-27 23:28:05,567 http_async_client.py:65 INFO RANK=0]   - HTTP_OVERRIDE_USE_COMPLETIONS: True
+[2026-07-27 23:28:05,736 INFO] [ TrtllmEndpointCore#3 trtllm_endpoint_core.py:86 TrtllmEndpointCore.__init__ ] Initialized TrtllmEndpointCore with 2 workers (endpoint_url: 10.128.0.35:8002, max_concurrency: 5120)
+[2026-07-27 23:28:05,736 INFO] [ factory.py:131 create_server ] Initialized TrtllmEndpointCore#3.
+[2026-07-27 23:28:05,736 INFO] [ factory.py:137 create_server ] Factory created 4 CoreType.TRTLLM_ENDPOINT cores
+[2026-07-27 23:28:05,737 INFO] [ LLMServer-396151 server.py:114 LLMServer.__init__ ] LLMServer initialized with 4 cores
+[2026-07-27 23:28:05,737 INFO] [ warmup.py:54 WarmupManager.run_health_checks_with_retry ] Running health checks on all cores...
+[2026-07-27 23:28:05,896 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#1 is healthy.
+[2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#2 is healthy.
+[2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#3 is healthy.
+[2026-07-27 23:28:05,897 INFO] [ warmup.py:70 WarmupManager.check_core ] Core TrtllmEndpointCore#0 is healthy.
+[2026-07-27 23:28:05,897 INFO] [ warmup.py:97 WarmupManager.run_health_checks_with_retry ] All cores are ready.
+[2026-07-27 23:28:05,897 INFO] [ llmlib/__init__.py:169 TrtllmServeClientHarnessOp.wrap_lg_test ] Warming up the server...
+[2026-07-27 23:28:05,897 INFO] [ llmlib/__init__.py:171 TrtllmServeClientHarnessOp.wrap_lg_test ] Server warmup completed.
+[2026-07-27 23:28:05,898 WARNING] [ llmlib/__init__.py:178 TrtllmServeClientHarnessOp.wrap_lg_test ] Disabled automatic garbage collection for the test run.
+Processing:   0%|          | 0/1 [00:00<?]Processing:   1%|          | 1/100 [00:08<13:31]Processing:   1%|          | 1/100 [00:08<13:31, 0.12samples/s] Stats=[ 0.12 samples/s, 38.56 tokens/s, 4.09 TPOT(ms) ]Processing:   2%|▏         | 2/100 [00:08<00:36, 0.12samples/s] Stats=[ 0.12 samples/s, 38.56 tokens/s, 4.09 TPOT(ms) ]Processing:   2%|▏         | 2/100 [00:08<00:36, 2.69samples/s] Stats=[ 0.23 samples/s, 80.42 tokens/s, 4.39 TPOT(ms) ]Processing:   5%|▌         | 5/100 [00:09<00:23, 2.69samples/s] Stats=[ 0.23 samples/s, 80.42 tokens/s, 4.39 TPOT(ms) ]Processing:   5%|▌         | 5/100 [00:09<00:23, 4.08samples/s] Stats=[ 0.54 samples/s, 212.19 tokens/s, 4.65 TPOT(ms) ]Processing:   7%|▋         | 7/100 [00:10<00:51, 4.08samples/s] Stats=[ 0.54 samples/s, 212.19 tokens/s, 4.65 TPOT(ms) ]Processing:   7%|▋         | 7/100 [00:10<00:51, 1.80samples/s] Stats=[ 0.67 samples/s, 318.68 tokens/s, 5.48 TPOT(ms) ]Processing:   9%|▉         | 9/100 [00:10<00:16, 1.80samples/s] Stats=[ 0.67 samples/s, 318.68 tokens/s, 5.48 TPOT(ms) ]Processing:   9%|▉         | 9/100 [00:10<00:16, 5.52samples/s] Stats=[ 0.84 samples/s, 431.78 tokens/s, 5.67 TPOT(ms) ]Processing:  13%|█▎        | 13/100 [00:11<00:12, 5.52samples/s] Stats=[ 0.84 samples/s, 431.78 tokens/s, 5.67 TPOT(ms) ]Processing:  13%|█▎        | 13/100 [00:11<00:12, 7.23samples/s] Stats=[ 1.15 samples/s, 694.34 tokens/s, 5.67 TPOT(ms) ]Processing:  16%|█▌        | 16/100 [00:11<00:13, 7.23samples/s] Stats=[ 1.15 samples/s, 694.34 tokens/s, 5.67 TPOT(ms) ]Processing:  16%|█▌        | 16/100 [00:11<00:13, 6.18samples/s] Stats=[ 1.35 samples/s, 879.87 tokens/s, 5.67 TPOT(ms) ]Processing:  21%|██        | 21/100 [00:12<00:05, 6.18samples/s] Stats=[ 1.35 samples/s, 879.87 tokens/s, 5.67 TPOT(ms) ]Processing:  21%|██        | 21/100 [00:12<00:05, 13.86samples/s] Stats=[ 1.72 samples/s, 1237.97 tokens/s, 5.67 TPOT(ms) ]Processing:  26%|██▌       | 26/100 [00:12<00:09, 13.86samples/s] Stats=[ 1.72 samples/s, 1237.97 tokens/s, 5.67 TPOT(ms) ]Processing:  26%|██▌       | 26/100 [00:12<00:09, 7.81samples/s] Stats=[ 2.03 samples/s, 1559.40 tokens/s, 5.93 TPOT(ms) ] Processing:  29%|██▉       | 29/100 [00:13<00:23, 7.81samples/s] Stats=[ 2.03 samples/s, 1559.40 tokens/s, 5.93 TPOT(ms) ]Processing:  29%|██▉       | 29/100 [00:13<00:23, 3.07samples/s] Stats=[ 2.10 samples/s, 1705.65 tokens/s, 5.93 TPOT(ms) ]Processing:  34%|███▍      | 34/100 [00:14<00:05, 3.07samples/s] Stats=[ 2.10 samples/s, 1705.65 tokens/s, 5.93 TPOT(ms) ]Processing:  34%|███▍      | 34/100 [00:14<00:05, 12.27samples/s] Stats=[ 2.39 samples/s, 2097.33 tokens/s, 6.11 TPOT(ms) ]Processing:  39%|███▉      | 39/100 [00:14<00:05, 12.27samples/s] Stats=[ 2.39 samples/s, 2097.33 tokens/s, 6.11 TPOT(ms) ]Processing:  39%|███▉      | 39/100 [00:14<00:05, 11.32samples/s] Stats=[ 2.66 samples/s, 2491.48 tokens/s, 6.11 TPOT(ms) ]Processing:  43%|████▎     | 43/100 [00:16<00:19, 11.32samples/s] Stats=[ 2.66 samples/s, 2491.48 tokens/s, 6.11 TPOT(ms) ]Processing:  43%|████▎     | 43/100 [00:16<00:19, 2.86samples/s] Stats=[ 2.68 samples/s, 2641.58 tokens/s, 6.16 TPOT(ms) ] Processing:  45%|████▌     | 45/100 [00:16<00:14, 2.86samples/s] Stats=[ 2.68 samples/s, 2641.58 tokens/s, 6.16 TPOT(ms) ]Processing:  45%|████▌     | 45/100 [00:16<00:14, 3.71samples/s] Stats=[ 2.71 samples/s, 2756.43 tokens/s, 6.16 TPOT(ms) ]Processing:  47%|████▋     | 47/100 [00:18<00:52, 3.71samples/s] Stats=[ 2.71 samples/s, 2756.43 tokens/s, 6.16 TPOT(ms) ]Processing:  47%|████▋     | 47/100 [00:18<00:52, 1.02samples/s] Stats=[ 2.53 samples/s, 2684.22 tokens/s, 6.20 TPOT(ms) ]Processing:  48%|████▊     | 48/100 [00:19<00:43, 1.02samples/s] Stats=[ 2.53 samples/s, 2684.22 tokens/s, 6.20 TPOT(ms) ]Processing:  48%|████▊     | 48/100 [00:19<00:43, 1.20samples/s] Stats=[ 2.48 samples/s, 2686.89 tokens/s, 6.20 TPOT(ms) ]Processing:  50%|█████     | 50/100 [00:20<00:39, 1.20samples/s] Stats=[ 2.48 samples/s, 2686.89 tokens/s, 6.20 TPOT(ms) ]Processing:  50%|█████     | 50/100 [00:20<00:39, 1.27samples/s] Stats=[ 2.39 samples/s, 2726.54 tokens/s, 6.20 TPOT(ms) ]Processing:  52%|█████▏    | 52/100 [00:21<00:08, 1.27samples/s] Stats=[ 2.39 samples/s, 2726.54 tokens/s, 6.20 TPOT(ms) ]Processing:  52%|█████▏    | 52/100 [00:21<00:08, 5.55samples/s] Stats=[ 2.44 samples/s, 2913.55 tokens/s, 6.20 TPOT(ms) ]Processing:  54%|█████▍    | 54/100 [00:21<00:08, 5.55samples/s] Stats=[ 2.44 samples/s, 2913.55 tokens/s, 6.20 TPOT(ms) ]Processing:  54%|█████▍    | 54/100 [00:21<00:08, 5.28samples/s] Stats=[ 2.49 samples/s, 3118.02 tokens/s, 6.20 TPOT(ms) ]Processing:  56%|█████▌    | 56/100 [00:22<00:22, 5.28samples/s] Stats=[ 2.49 samples/s, 3118.02 tokens/s, 6.20 TPOT(ms) ]Processing:  56%|█████▌    | 56/100 [00:22<00:22, 1.99samples/s] Stats=[ 2.47 samples/s, 3214.12 tokens/s, 6.24 TPOT(ms) ]Processing:  58%|█████▊    | 58/100 [00:23<00:19, 1.99samples/s] Stats=[ 2.47 samples/s, 3214.12 tokens/s, 6.24 TPOT(ms) ]Processing:  58%|█████▊    | 58/100 [00:23<00:19, 2.17samples/s] Stats=[ 2.46 samples/s, 3342.06 tokens/s, 6.24 TPOT(ms) ]Processing:  59%|█████▉    | 59/100 [00:24<00:32, 2.17samples/s] Stats=[ 2.46 samples/s, 3342.06 tokens/s, 6.24 TPOT(ms) ]Processing:  59%|█████▉    | 59/100 [00:24<00:32, 1.26samples/s] Stats=[ 2.42 samples/s, 3350.86 tokens/s, 6.24 TPOT(ms) ]Processing:  60%|██████    | 60/100 [00:25<00:25, 1.26samples/s] Stats=[ 2.42 samples/s, 3350.86 tokens/s, 6.24 TPOT(ms) ]Processing:  60%|██████    | 60/100 [00:25<00:25, 1.59samples/s] Stats=[ 2.40 samples/s, 3397.68 tokens/s, 6.24 TPOT(ms) ]Processing:  61%|██████    | 61/100 [00:25<00:25, 1.59samples/s] Stats=[ 2.40 samples/s, 3397.68 tokens/s, 6.24 TPOT(ms) ]Processing:  61%|██████    | 61/100 [00:25<00:25, 1.56samples/s] Stats=[ 2.38 samples/s, 3446.73 tokens/s, 6.24 TPOT(ms) ]Processing:  63%|██████▎   | 63/100 [00:26<00:17, 1.56samples/s] Stats=[ 2.38 samples/s, 3446.73 tokens/s, 6.24 TPOT(ms) ]Processing:  63%|██████▎   | 63/100 [00:26<00:17, 2.10samples/s] Stats=[ 2.37 samples/s, 3582.15 tokens/s, 6.24 TPOT(ms) ]Processing:  65%|██████▌   | 65/100 [00:27<00:11, 2.10samples/s] Stats=[ 2.37 samples/s, 3582.15 tokens/s, 6.24 TPOT(ms) ]Processing:  65%|██████▌   | 65/100 [00:27<00:11, 2.95samples/s] Stats=[ 2.38 samples/s, 3765.98 tokens/s, 6.24 TPOT(ms) ]Processing:  67%|██████▋   | 67/100 [00:28<00:22, 2.95samples/s] Stats=[ 2.38 samples/s, 3765.98 tokens/s, 6.24 TPOT(ms) ]Processing:  67%|██████▋   | 67/100 [00:28<00:22, 1.46samples/s] Stats=[ 2.34 samples/s, 3873.40 tokens/s, 6.24 TPOT(ms) ]Processing:  68%|██████▊   | 68/100 [00:29<00:17, 1.46samples/s] Stats=[ 2.34 samples/s, 3873.40 tokens/s, 6.24 TPOT(ms) ]Processing:  68%|██████▊   | 68/100 [00:29<00:17, 1.81samples/s] Stats=[ 2.33 samples/s, 3938.35 tokens/s, 6.24 TPOT(ms) ]Processing:  69%|██████▉   | 69/100 [00:30<00:38, 1.81samples/s] Stats=[ 2.33 samples/s, 3938.35 tokens/s, 6.24 TPOT(ms) ]Processing:  69%|██████▉   | 69/100 [00:30<00:38, 0.80samples/s] Stats=[ 2.26 samples/s, 3914.84 tokens/s, 6.24 TPOT(ms) ]Processing:  70%|███████   | 70/100 [00:31<00:17, 0.80samples/s] Stats=[ 2.26 samples/s, 3914.84 tokens/s, 6.24 TPOT(ms) ]Processing:  70%|███████   | 70/100 [00:31<00:17, 1.74samples/s] Stats=[ 2.25 samples/s, 3981.05 tokens/s, 6.24 TPOT(ms) ]Processing:  72%|███████▏  | 72/100 [00:32<00:13, 1.74samples/s] Stats=[ 2.25 samples/s, 3981.05 tokens/s, 6.24 TPOT(ms) ]Processing:  72%|███████▏  | 72/100 [00:32<00:13, 2.03samples/s] Stats=[ 2.25 samples/s, 4132.03 tokens/s, 6.24 TPOT(ms) ]Processing:  73%|███████▎  | 73/100 [00:34<01:14, 2.03samples/s] Stats=[ 2.25 samples/s, 4132.03 tokens/s, 6.24 TPOT(ms) ]Processing:  73%|███████▎  | 73/100 [00:34<01:14, 0.36samples/s] Stats=[ 2.10 samples/s, 3952.97 tokens/s, 6.24 TPOT(ms) ]Processing:  75%|███████▌  | 75/100 [00:35<00:13, 0.36samples/s] Stats=[ 2.10 samples/s, 3952.97 tokens/s, 6.24 TPOT(ms) ]Processing:  75%|███████▌  | 75/100 [00:35<00:13, 1.82samples/s] Stats=[ 2.09 samples/s, 4095.01 tokens/s, 6.24 TPOT(ms) ]Processing:  76%|███████▌  | 76/100 [00:36<00:13, 1.82samples/s] Stats=[ 2.09 samples/s, 4095.01 tokens/s, 6.24 TPOT(ms) ]Processing:  76%|███████▌  | 76/100 [00:36<00:13, 1.77samples/s] Stats=[ 2.08 samples/s, 4175.85 tokens/s, 6.24 TPOT(ms) ]Processing:  78%|███████▊  | 78/100 [00:36<00:03, 1.77samples/s] Stats=[ 2.08 samples/s, 4175.85 tokens/s, 6.24 TPOT(ms) ]Processing:  78%|███████▊  | 78/100 [00:36<00:03, 5.84samples/s] Stats=[ 2.12 samples/s, 4441.36 tokens/s, 6.24 TPOT(ms) ]Processing:  80%|████████  | 80/100 [00:38<00:18, 5.84samples/s] Stats=[ 2.12 samples/s, 4441.36 tokens/s, 6.24 TPOT(ms) ]Processing:  80%|████████  | 80/100 [00:38<00:18, 1.06samples/s] Stats=[ 2.07 samples/s, 4527.53 tokens/s, 6.24 TPOT(ms) ]Processing:  81%|████████  | 81/100 [00:39<00:09, 1.06samples/s] Stats=[ 2.07 samples/s, 4527.53 tokens/s, 6.24 TPOT(ms) ]Processing:  81%|████████  | 81/100 [00:39<00:09, 2.01samples/s] Stats=[ 2.07 samples/s, 4622.32 tokens/s, 6.24 TPOT(ms) ]Processing:  82%|████████▏ | 82/100 [00:39<00:11, 2.01samples/s] Stats=[ 2.07 samples/s, 4622.32 tokens/s, 6.24 TPOT(ms) ]Processing:  82%|████████▏ | 82/100 [00:39<00:11, 1.59samples/s] Stats=[ 2.06 samples/s, 4698.78 tokens/s, 6.24 TPOT(ms) ]Processing:  83%|████████▎ | 83/100 [00:42<00:38, 1.59samples/s] Stats=[ 2.06 samples/s, 4698.78 tokens/s, 6.24 TPOT(ms) ]Processing:  83%|████████▎ | 83/100 [00:42<00:38, 0.44samples/s] Stats=[ 1.97 samples/s, 4596.06 tokens/s, 6.24 TPOT(ms) ]Processing:  85%|████████▌ | 85/100 [00:43<00:12, 0.44samples/s] Stats=[ 1.97 samples/s, 4596.06 tokens/s, 6.24 TPOT(ms) ]Processing:  85%|████████▌ | 85/100 [00:43<00:12, 1.21samples/s] Stats=[ 1.94 samples/s, 4728.48 tokens/s, 6.24 TPOT(ms) ]Processing:  86%|████████▌ | 86/100 [00:44<00:08, 1.21samples/s] Stats=[ 1.94 samples/s, 4728.48 tokens/s, 6.24 TPOT(ms) ]Processing:  86%|████████▌ | 86/100 [00:44<00:08, 1.59samples/s] Stats=[ 1.94 samples/s, 4816.12 tokens/s, 6.24 TPOT(ms) ]Processing:  88%|████████▊ | 88/100 [00:46<00:13, 1.59samples/s] Stats=[ 1.94 samples/s, 4816.12 tokens/s, 6.24 TPOT(ms) ]Processing:  88%|████████▊ | 88/100 [00:46<00:13, 0.90samples/s] Stats=[ 1.89 samples/s, 4881.47 tokens/s, 6.24 TPOT(ms) ]Processing:  89%|████████▉ | 89/100 [00:49<00:33, 0.90samples/s] Stats=[ 1.89 samples/s, 4881.47 tokens/s, 6.24 TPOT(ms) ]Processing:  89%|████████▉ | 89/100 [00:49<00:33, 0.33samples/s] Stats=[ 1.79 samples/s, 4736.14 tokens/s, 6.24 TPOT(ms) ]Processing:  90%|█████████ | 90/100 [00:50<00:04, 0.33samples/s] Stats=[ 1.79 samples/s, 4736.14 tokens/s, 6.24 TPOT(ms) ]Processing:  90%|█████████ | 90/100 [00:50<00:04, 2.11samples/s] Stats=[ 1.80 samples/s, 4846.38 tokens/s, 6.24 TPOT(ms) ]Processing:  91%|█████████ | 91/100 [00:54<00:37, 2.11samples/s] Stats=[ 1.80 samples/s, 4846.38 tokens/s, 6.24 TPOT(ms) ]Processing:  91%|█████████ | 91/100 [00:54<00:37, 0.24samples/s] Stats=[ 1.68 samples/s, 4640.73 tokens/s, 6.24 TPOT(ms) ]Processing:  92%|█████████▏| 92/100 [01:02<01:03, 0.24samples/s] Stats=[ 1.68 samples/s, 4640.73 tokens/s, 6.24 TPOT(ms) ]Processing:  92%|█████████▏| 92/100 [01:02<01:03, 0.13samples/s] Stats=[ 1.48 samples/s, 4213.18 tokens/s, 6.24 TPOT(ms) ]Processing:  93%|█████████▎| 93/100 [01:03<00:07, 0.13samples/s] Stats=[ 1.48 samples/s, 4213.18 tokens/s, 6.24 TPOT(ms) ]Processing:  93%|█████████▎| 93/100 [01:03<00:07, 0.92samples/s] Stats=[ 1.47 samples/s, 4296.55 tokens/s, 6.24 TPOT(ms) ]Processing:  94%|█████████▍| 94/100 [01:04<00:05, 0.92samples/s] Stats=[ 1.47 samples/s, 4296.55 tokens/s, 6.24 TPOT(ms) ]Processing:  94%|█████████▍| 94/100 [01:04<00:05, 1.16samples/s] Stats=[ 1.47 samples/s, 4404.94 tokens/s, 6.24 TPOT(ms) ]Processing:  95%|█████████▌| 95/100 [01:08<00:24, 1.16samples/s] Stats=[ 1.47 samples/s, 4404.94 tokens/s, 6.24 TPOT(ms) ]Processing:  95%|█████████▌| 95/100 [01:08<00:24, 0.21samples/s] Stats=[ 1.38 samples/s, 4259.69 tokens/s, 6.24 TPOT(ms) ]Processing:  96%|█████████▌| 96/100 [01:20<00:47, 0.21samples/s] Stats=[ 1.38 samples/s, 4259.69 tokens/s, 6.24 TPOT(ms) ]Processing:  96%|█████████▌| 96/100 [01:20<00:47, 0.08samples/s] Stats=[ 1.19 samples/s, 3793.99 tokens/s, 6.24 TPOT(ms) ]Processing:  97%|█████████▋| 97/100 [01:27<00:19, 0.08samples/s] Stats=[ 1.19 samples/s, 3793.99 tokens/s, 6.24 TPOT(ms) ]Processing:  97%|█████████▋| 97/100 [01:27<00:19, 0.15samples/s] Stats=[ 1.11 samples/s, 3679.19 tokens/s, 6.24 TPOT(ms) ]Processing:  98%|█████████▊| 98/100 [01:38<00:22, 0.15samples/s] Stats=[ 1.11 samples/s, 3679.19 tokens/s, 6.24 TPOT(ms) ]Processing:  98%|█████████▊| 98/100 [01:38<00:22, 0.09samples/s] Stats=[ 0.99 samples/s, 3423.00 tokens/s, 6.24 TPOT(ms) ]Processing:  99%|█████████▉| 99/100 [01:45<00:06, 0.09samples/s] Stats=[ 0.99 samples/s, 3423.00 tokens/s, 6.24 TPOT(ms) ]Processing:  99%|█████████▉| 99/100 [01:45<00:06, 0.14samples/s] Stats=[ 0.94 samples/s, 3371.93 tokens/s, 6.24 TPOT(ms) ]Processing: 100%|██████████| 100/100 [01:48<00:00, 0.14samples/s] Stats=[ 0.94 samples/s, 3371.93 tokens/s, 6.24 TPOT(ms) ]Processing: 100%|██████████| 100/100 [01:48<00:00, 0.35samples/s] Stats=[ 0.92 samples/s, 3466.61 tokens/s, 6.24 TPOT(ms) ]================================================
+MLPerf Results Summary
+================================================
+SUT name : PySUT
+Scenario : Server
+Mode     : PerformanceOnly
+Completed samples per second    : 4.65
+Completed tokens per second: 17654.64
+Result is : INVALID
+  Performance constraints satisfied : NO
+  Min duration satisfied : Yes
+  Min queries satisfied : Yes
+  Early stopping satisfied: NO
+Recommendations:
+ * TTFT constrain not met: Reduce target QPS to improve latency.
+TTFT Early Stopping Result:
+
+TPOT Early Stopping Result:
+ * Run unsuccessful.
+ * Processed 100 queries.
+ * Would need to run at least 359 more queries,
+ with the run being successful if every additional
+ query were under latency.
+
+================================================
+Additional Stats
+================================================
+Scheduled samples per second : 53.01
+Min latency (ns)                : 7079770089
+Max latency (ns)                : 106750262282
+Mean latency (ns)               : 26691860314
+50.00 percentile latency (ns)   : 20059250922
+90.00 percentile latency (ns)   : 53874205935
+95.00 percentile latency (ns)   : 80673791338
+97.00 percentile latency (ns)   : 98551489151
+99.00 percentile latency (ns)   : 106750262282
+99.90 percentile latency (ns)   : 106750262282
+
+Completed tokens per second                 : 17654.64
+Min First Token latency (ns)                : 4040294201
+Max First Token latency (ns)                : 7268561005
+Mean First Token latency (ns)               : 6101996981
+50.00 percentile first token latency (ns)   : 6131483240
+90.00 percentile first token latency (ns)   : 7014927690
+95.00 percentile first token latency (ns)   : 7087712989
+97.00 percentile first token latency (ns)   : 7165301753
+99.00 percentile first token latency (ns)   : 7268561005
+99.90 percentile first token latency (ns)   : 7268561005
+
+Min Time per Output Token (ns)                : 3634569
+Max Time per Output Token (ns)                : 6242442
+Mean Time per Output Token (ns)               : 5409334
+50.00 percentile time to output token (ns)   : 5477391
+90.00 percentile time to output token (ns)   : 6028894
+95.00 percentile time to output token (ns)   : 6138881
+97.00 percentile time to output token (ns)   : 6203838
+99.00 percentile time to output token (ns)   : 6242442
+99.90 percentile time to output token (ns)   : 6242442
+
+================================================
+Test Parameters Used
+================================================
+samples_per_query : 1
+target_qps : 57.96
+ttft_latency (ns): 1500000000
+tpot_latency (ns): 15000000
+max_async_queries : 0
+min_duration (ms): 0
+max_duration (ms): 0
+min_query_count : 100
+max_query_count : 0
+qsl_rng_seed : 2085463073848966840
+sample_index_rng_seed : 2747215439041700203
+schedule_rng_seed : 16159082839903944936
+accuracy_log_rng_seed : 720381539243781796
+accuracy_log_probability : 0
+accuracy_log_sampling_target : 100
+print_timestamps : 0
+performance_issue_unique : 0
+performance_issue_same : 0
+performance_issue_same_index : 0
+performance_sample_count : 4388
+accuracy_sample_count : 4388
+
+1 warning encountered. See detailed log.
+
+No errors encountered during test.
+[2026-07-27 23:29:54,571 INFO] [ llmlib/__init__.py:184 TrtllmServeClientHarnessOp.wrap_lg_test ] Test Complete. Cleaning up LLMServer...
+Processing: 100%|██████████| 100/100 [01:48<00:00, 0.35samples/s] Stats=[ 0.92 samples/s, 3466.61 tokens/s, 6.24 TPOT(ms) ]
+[2026-07-27 23:29:55,852 utils.py:442 INFO RANK=0] Harness iteration stats dumped to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_iteration_stats.log
+[2026-07-27 23:29:55,856 utils.py:391 INFO RANK=0] Harness stats saved to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_stats.log
+[2026-07-27 23:29:56,077 utils.py:421 INFO RANK=0] Harness timeline plot generated to: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive/harness_stats_timeline.png
+[2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#2 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+[2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#1 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+[2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#0 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+[2026-07-27 23:29:56,077 INFO] [ LLMServer-396151 server.py:206 LLMServer.stop_work ] Total Samples Completed: 100
+[2026-07-27 23:29:56,077 INFO] [ TrtllmEndpointCore#3 base.py:454 TrtllmEndpointCore.__del__ ] Completed 25 samples.
+/bin/dash: 1: sudo: not found
+[2026-07-27 23:29:56,081 harness.py:94 INFO RANK=0] WARNING: Failed to reset vboost slider.
+[2026-07-27 23:29:56,113 lg_logs.py:317 INFO RANK=0] Converting perf metric from Scenario.Server to Scenario.Interactive
+[2026-07-27 23:29:56,114 utils.py:55 INFO RANK=0] Running command: /usr/bin/python /work/3rdparty/mlc-inference/compliance/TEST06/run_verification.py --compliance_dir=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive --output_dir=/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/mlperf_harness/PerformanceOnly/GB200-NVL72_GB200-186GB_aarch64x72_TRT/deepseek-r1/Interactive --scenario=Interactive --dtype=int32
+First token check pass: True
+EOS check pass: True
+Sample length check pass: True
+TEST06 verification complete
+
+
+======================== Result summaries: ========================
+
+Interactive Scenario:
++----------------------------------------+-------------+-----------+--------------------+---------------------------+------------------------------------+------------------+------------------+
+| System Name                            | Benchmark   | Setting   | Valid?             | Per-query time usage      | Metric Name                        |   Measured Value | Avg. Power (W)   |
++========================================+=============+===========+====================+===========================+====================================+==================+==================+
+| GB200-NVL72_GB200-186GB_aarch64x72_TRT | deepseek-r1 | cp990     | INVALID (duration) | TTFT: 484.6%, TPOT: 41.6% | result_completed_tokens_per_second |         17654.60 | N/A              |
++----------------------------------------+-------------+-----------+--------------------+---------------------------+------------------------------------+------------------+------------------+
+  * Note: 'Per-query time usage' is the measured 99th-percentile latency divided by the requested server latency. This value should not exceed 100% for a 'VALID' result.

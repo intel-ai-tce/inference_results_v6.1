@@ -1,0 +1,23 @@
+{
+  "average_accuracy": 0.6948773298873472,
+  "accuracy_scores": [
+    {
+      "dataset_name": "wan22_vbench",
+      "extractor": null,
+      "ground_truth_column": "prompt",
+      "score": 0.6948773298873472,
+      "unit_samples": 248,
+      "num_repeats": 1,
+      "total_samples": 248,
+      "duration_s": 432.735,
+      "complete": true,
+      "dataset_type": "accuracy",
+      "response_counts": {
+        "issued": 248,
+        "scored": 248,
+        "empty": 0,
+        "missing": 0
+      }
+    }
+  ]
+}

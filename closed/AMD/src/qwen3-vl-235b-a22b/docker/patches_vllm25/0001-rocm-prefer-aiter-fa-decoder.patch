@@ -1,0 +1,23 @@
+diff --git a/vllm/platforms/rocm.py b/vllm/platforms/rocm.py
+index 6c3a0fe..3b887a8 100644
+--- a/vllm/platforms/rocm.py
++++ b/vllm/platforms/rocm.py
+@@ -427,12 +427,16 @@ def _get_backend_priorities(
+             ]
+ 
+     backends = []
++    # MLPerf Q3VL: prefer AITER ck_tile FMHA (ROCM_AITER_FA) over ROCM_ATTN for the decoder.
++    # ROCM_ATTN's prefill runs the slow bf16 Triton _fwd_kernel; ROCM_AITER_FA
++    # (aiter::mha_varlen_fwd) is ~1.77x faster on Q3VL offline. ROCM_AITER_FA is listed first
++    # (when is_mha_enabled()); ROCM_ATTN stays as the next fallback.
++    if rocm_aiter_ops.is_mha_enabled():
++        backends.append(AttentionBackendEnum.ROCM_AITER_FA)
+     # ROCM_ATTN uses (2, num_blocks, ...) KV cache layout which is
+     # incompatible with KV connectors that require blocks-first layout.
+     if not use_kv_connector:
+         backends.append(AttentionBackendEnum.ROCM_ATTN)
+-    if rocm_aiter_ops.is_mha_enabled():
+-        backends.append(AttentionBackendEnum.ROCM_AITER_FA)
+     if is_aiter_found_and_supported():
+         backends.append(AttentionBackendEnum.ROCM_AITER_UNIFIED_ATTN)
+     backends.append(AttentionBackendEnum.TRITON_ATTN)

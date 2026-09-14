@@ -1,0 +1,23 @@
+# Wan 2.2 T2V-A14B generation parameters.
+#
+# Mirrored from
+#   https://github.com/mlcommons/inference/blob/master/text_to_video/wan-2.2-t2v-a14b/inference_config.yaml
+# at MLPerf inference v6.0 / pre-v6.1. For a closed-division submission these
+# values are part of the reference contract and must not be changed.
+
+height: 720
+width: 1280
+num_frames: 81
+fps: 16
+sample_steps: 20
+seed: 42
+guidance_scale: 4.0
+guidance_scale_2: 3.0
+boundary_ratio: 0.875
+negative_prompt: |
+  vivid colors, overexposed, static, blurry details, subtitles, style,
+  work of art, painting, picture, still, overall grayish, worst quality,
+  low quality, JPEG artifacts, ugly, deformed, extra fingers, poorly drawn hands,
+  poorly drawn face, deformed, disfigured, deformed limbs, fused fingers,
+  static image, cluttered background, three legs, many people in the background,
+  walking backwards

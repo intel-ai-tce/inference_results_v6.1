@@ -1,0 +1,58 @@
+# Wan 2.2 T2V-A14B – SingleStream backend config.
+#
+# Target: minimum per-query latency on 8 GPUs.
+#   - Ulysses sequence-parallel across all 8 ranks for the DiT.
+#   - DistVAE parallel decode on the same 8 ranks (use_parallel=True,
+#     parallel_size=0 means the VAE process group == the world group).
+#
+# The harness wraps `wan-harness run --backend wan22 --scenario SingleStream`
+# in `torchrun --nproc-per-node=8`; rank 0 talks to LoadGen and ranks
+# 1..7 sit in the worker loop calling `_run_pipe` in lockstep.
+
+model:
+  path: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+  revision: 5be7df9619b54f4e2667b2755bc6a756675b5cd7
+  transformer_dtype: bfloat16
+
+parallelism:
+  mode: ulysses              # picks UlyssesDispatcher
+  ulysses_degree: 8
+  ring_degree: 1
+  tensor_parallel_degree: 1
+  pipefusion_parallel_degree: 1
+  data_parallel_degree: 1    # xfuser's own DP; not used here
+  data_parallel_workers: 1   # our custom DP; not used here
+  use_cfg_parallel: false
+
+vae:
+  use_parallel: true         # DistVAE adapters on the VAE
+  parallel_size: 0           # 0 -> VAE group == world group (8 ranks)
+  enable_tiling: false
+  enable_slicing: false
+
+generation:
+  use_fixed_latent: true
+  # Checkpoint scheduler default; matches MLPerf reference from_pretrained.
+  flow_shift: 3.0
+
+compile:
+  use_torch_compile: true    # graphs are compiled during the warmup pass below
+
+# Warmup runs BEFORE LoadGen.StartTest so torch.compile + AITER + CUDA-graph
+# first-call costs don't pollute the measured single-stream latency.
+# For Ulysses every rank participates in every dispatched prompt, so
+# num_prompts=1 already warms every rank.
+warmup:
+  enabled: true
+  num_prompts: 1
+
+# Escape hatch for any other `xfuser.xFuserArgs` keyword we have not promoted
+# to a dedicated field (hybrid attention / fp4 / FSDP knobs).
+# Keys here must match xfuser field names exactly.
+xfuser_extra:
+  cross_attention_backend: aiter
+  use_fp4_gemms: true
+  use_hybrid_attn_schedule: true
+  num_hybrid_attn_high_precision_steps: 0
+  hybrid_attn_schedule: "AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_MXFP4,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8,AITER_FP8"
+  use_fp8_comms: true

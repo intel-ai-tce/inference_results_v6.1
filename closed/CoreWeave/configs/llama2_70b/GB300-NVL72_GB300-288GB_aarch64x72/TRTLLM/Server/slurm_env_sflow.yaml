@@ -1,0 +1,73 @@
+variables:
+  CONTAINER_IMAGE:
+    description: "Container image (NGC URL or Enroot .sqsh) with TRT-LLM + nv-mlpinf. Defaults to the public MLPerf TensorRT-LLM release image below. Override for a different or latest image via --set CONTAINER_IMAGE=... (or SFLOW_BENCHMARK_OVERRIDE on the CI form)."
+    value: "nvcr.io/nvidia/mlperf/mlperf-inference:tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/NVIDIA, mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models), mounted at /home/mlperf_inference_storage."
+    value: /lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+
+  SLURM_ACCOUNT:
+    value: coreai_mlperf_inference
+  SLURM_PARTITION:
+    value: gb300
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)"
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+
+  # Server replicas: one GPU each, bound by SLURM per-task allocation. --exact
+  # (no --overlap) is what makes each replica land on a distinct GPU; cpus_per_task
+  # is the node's 144 CPUs split across the 4 replicas, NUMA-local to each GPU.
+  - name: test_container_gpu
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+    gpus_per_task: "1"
+    cpus_per_task: 36
+    mem: "200G"
+    overlap: false
+    extra_args: ["--exact"]
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--segment=${{ variables.SLURM_NODES }}"
+      - "--exclusive"

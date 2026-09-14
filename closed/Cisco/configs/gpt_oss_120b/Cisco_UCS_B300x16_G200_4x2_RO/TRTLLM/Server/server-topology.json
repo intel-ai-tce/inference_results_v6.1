@@ -1,0 +1,12 @@
+{
+  "server_type": "trtllm-ifb",
+  "model_path": "/home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b",
+  "system_name": "B300-SXM-270GBx16",
+  "gpus_per_node": 8,
+  "dp_multiplicity": 16,
+  "gpus_per_dp_rank": 1,
+  "tensor_parallel_size": 1,
+  "expert_parallel_size": 1,
+  "trtllm_yml": "configs/gpt_oss_120b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-ifb-offline-baseline.yaml",
+  "env_yml": "configs/gpt_oss_120b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-ifb-offline-baseline-env.yaml"
+}

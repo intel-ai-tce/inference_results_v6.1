@@ -1,0 +1,1799 @@
+2026-07-30 02:33:51,189 - INFO - Detected input file type: mlperf_json
+2026-07-30 02:33:51,189 - INFO - Processing: /result/mlperf_log_accuracy.json
+2026-07-30 02:33:51,189 - INFO - Processing MLPerf accuracy log JSON file
+2026-07-30 02:33:51,190 - INFO - Using default checkpoint path: deepseek-ai/DeepSeek-R1
+2026-07-30 02:33:51,190 - INFO - Processing MLPerf log: /result/mlperf_log_accuracy.json
+2026-07-30 02:33:51,190 - INFO - Using dataset: /home/mlperf_inference_storage/data/deepseek-r1/mlperf_deepseek_r1_dataset_4388_fp8_eval.pkl
+2026-07-30 02:33:51,190 - INFO - Using checkpoint: deepseek-ai/DeepSeek-R1
+2026-07-30 02:33:51,715 - INFO - Tokenizer loaded successfully
+/tmp/dsr1-eval-src/eval_accuracy.py:97: DeprecationWarning: numpy.core.numeric is deprecated and has been renamed to numpy._core.numeric. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core.numeric._frombuffer.
+  dataset_df = pickle.load(f)
+2026-07-30 02:33:52,205 - INFO - Loaded 4388 ground truth entries
+2026-07-30 02:33:52,207 - INFO - Detected JSON array format
+2026-07-30 02:33:52,362 - INFO - Loaded 4388 MLPerf results
+2026-07-30 02:33:52,420 - INFO - Processing 4388 valid predictions
+2026-07-30 02:33:55,662 - INFO - Token decoding completed
+2026-07-30 02:33:55,665 - INFO - Created DataFrame with 4388 rows
+Processing datasets:   0%|          | 0/5 [00:00<?, ?it/s]2026-07-30 02:33:55,667 - INFO - Processing 932 rows for dataset 'aime1983'
+2026-07-30 02:33:55,728 - INFO - aime1983 results: 777/893 correct (87.0% accuracy)
+2026-07-30 02:33:55,728 - INFO - Processing 198 rows for dataset 'gpqa'
+2026-07-30 02:33:55,811 - INFO - gpqa results: 141/198 correct (71.2% accuracy)
+Processing datasets:  40%|████      | 2/5 [00:00<00:00, 13.91it/s]2026-07-30 02:33:55,811 - INFO - Processing 349 rows for dataset 'livecodebench'
+2026-07-30 02:33:55,831 - INFO - Evaluating 333 LiveCodeBench items with 16 workers
+
+Evaluating LiveCodeBench:   0%|          | 0/333 [00:00<?, ?it/s][A2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,045 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:56,046 - INFO - PyTorch version 2.11.0 available.
+2026-07-30 02:33:57,467 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,469 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,470 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,474 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,474 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,475 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,477 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,477 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,478 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,479 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,481 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,482 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,482 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,485 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,487 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,489 - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,705 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,705 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,713 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,714 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,715 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,715 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,715 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,720 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,720 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,721 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,722 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,722 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,723 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,723 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,725 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,725 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,725 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,726 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,726 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,727 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,727 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,728 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,728 - INFO - HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,729 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,729 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,731 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,731 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,731 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,732 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,732 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,733 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,734 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:57,734 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,735 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,736 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,737 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,737 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,738 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,741 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,743 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,746 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,747 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,748 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,753 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,969 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,972 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,974 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,976 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,978 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,978 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,978 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,978 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,981 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,983 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,985 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,985 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,988 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,989 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,989 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,990 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,991 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,991 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,991 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:57,991 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:57,994 - INFO - HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,001 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,003 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,006 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,006 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,014 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:58,015 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:58,016 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:58,026 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,027 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,028 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:58,028 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:58,041 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,042 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 02:33:58,057 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/livecodebench/code_generation_lite/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py "HTTP/1.1 200 OK"
+2026-07-30 02:33:58,764 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,768 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,770 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,771 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,777 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,780 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,784 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,791 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,792 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,796 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,801 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,814 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,823 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,831 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,849 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:58,868 - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/livecodebench/code_generation_lite/livecodebench/code_generation_lite.py "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,009 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,011 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,012 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,012 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,013 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,027 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,033 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,040 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,043 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,048 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,060 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,251 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,252 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,254 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,254 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,254 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,263 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,276 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,277 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,282 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,286 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,296 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,339 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,340 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,341 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,341 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,352 - INFO - HTTP Request: GET https://huggingface.co/api/datasets/livecodebench/code_generation_lite/revision/0fe84c3912ea0c4d4a78037083943e8f0c4dd505 "HTTP/1.1 200 OK"
+2026-07-30 02:33:59,511 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test.jsonl "HTTP/1.1 302 Found"
+2026-07-30 02:33:59,581 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,585 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:59,585 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:59,585 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:33:59,589 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:59,589 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-30 02:33:59,593 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-07-30 02:34:08,189 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test2.jsonl "HTTP/1.1 302 Found"
+2026-07-30 02:34:12,591 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test3.jsonl "HTTP/1.1 302 Found"
+Processing datasets:  40%|████      | 2/5 [00:20<00:00, 13.91it/s]2026-07-30 02:34:16,911 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test4.jsonl "HTTP/1.1 302 Found"
+2026-07-30 02:34:22,502 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test5.jsonl "HTTP/1.1 302 Found"
+2026-07-30 02:34:26,304 - INFO - HTTP Request: HEAD https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl "HTTP/1.1 302 Found"
+
+Generating test split: 0 examples [00:00, ? examples/s][A
+Generating test split: 132 examples [00:00, 1306.69 examples/s][A
+Generating test split: 268 examples [00:00, 371.05 examples/s] [A
+Generating test split: 341 examples [00:01, 273.05 examples/s][A
+Generating test split: 395 examples [00:01, 251.66 examples/s][AGenerating test split: 400 examples [00:02, 194.30 examples/s]
+Loaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.91it/s]
+Loaded 400 problems
+Evaluating 1...
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:   0%|          | 1/333 [00:50<4:36:47, 50.02s/it][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.82it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00, 14.41it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.83it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.21it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.18it/s]
+
+Evaluating LiveCodeBench:   2%|▏         | 6/333 [00:50<33:34,  6.16s/it]  [A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.13it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.24it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.79it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][ALoaded 400 problems
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.76it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.49it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.03it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.68it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 12.04it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.94it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.49it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.13it/s]
+100%|██████████| 1/1 [00:00<00:00, 10.30it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.54it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.98it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.94it/s][A100%|██████████| 1/1 [00:00<00:00, 11.56it/s]
+
+Evaluating LiveCodeBench:   7%|▋         | 22/333 [00:50<06:24,  1.24s/it][A100%|██████████| 1/1 [00:00<00:00, 13.71it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  8.35it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.99it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.40it/s]
+100%|██████████| 1/1 [00:00<00:00, 14.12it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.69it/s][A100%|██████████| 1/1 [00:00<00:00, 10.06it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  7.28it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.39it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.92it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.78it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.44it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.80it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.58it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.30it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.82it/s]
+
+Evaluating LiveCodeBench:  11%|█         | 37/333 [00:50<02:57,  1.67it/s][A1.0
+Evaluating 1...
+100%|██████████| 1/1 [00:00<00:00,  9.64it/s]
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.54it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.52it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.61it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.85it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  6.61it/s][A100%|██████████| 1/1 [00:00<00:00, 13.38it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  6.30it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.75it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.35it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.68it/s]
+100%|██████████| 1/1 [00:00<00:00, 13.42it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 12.58it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.10it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.32it/s][A100%|██████████| 1/1 [00:00<00:00, 14.88it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.94it/s]
+
+Evaluating LiveCodeBench:  16%|█▌        | 52/333 [00:50<01:37,  2.87it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  6.04it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.97it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.56it/s][A100%|██████████| 1/1 [00:00<00:00,  4.79it/s]
+100%|██████████| 1/1 [00:00<00:00,  4.40it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.26it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.36it/s]
+100%|██████████| 1/1 [00:00<00:00, 13.27it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.97it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.29it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.49it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.30it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.46it/s][A100%|██████████| 1/1 [00:00<00:00,  4.17it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  8.86it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.52it/s][A100%|██████████| 1/1 [00:00<00:00, 12.71it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  8.04it/s]
+
+Evaluating LiveCodeBench:  20%|█▉        | 66/333 [00:50<01:00,  4.43it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.40it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.31it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.41it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.63it/s][A100%|██████████| 1/1 [00:00<00:00,  8.99it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 14.50it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.18it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.09it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.30it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.34it/s]
+100%|██████████| 1/1 [00:00<00:00,  8.74it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.34it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.09it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.05it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  4.86it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.44it/s]
+
+Evaluating LiveCodeBench:  24%|██▎       | 79/333 [00:50<00:39,  6.45it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.91it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.78it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.47it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.08it/s]
+100%|██████████| 1/1 [00:00<00:00, 14.04it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.69it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.48it/s][A100%|██████████| 1/1 [00:00<00:00,  9.47it/s]
+100%|██████████| 1/1 [00:00<00:00,  8.01it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.30it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.43it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.90it/s][A100%|██████████| 1/1 [00:00<00:00,  4.73it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.59it/s]
+
+Evaluating LiveCodeBench:  28%|██▊       | 92/333 [00:50<00:26,  9.05it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.30it/s][A100%|██████████| 1/1 [00:00<00:00,  7.86it/s]
+100%|██████████| 1/1 [00:00<00:00, 14.03it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.90it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.03it/s][A100%|██████████| 1/1 [00:00<00:00,  5.79it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.24it/s][A100%|██████████| 1/1 [00:00<00:00,  2.20it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.20it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.29it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.24it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.56it/s][A100%|██████████| 1/1 [00:00<00:00,  1.23it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.64it/s][A100%|██████████| 1/1 [00:00<00:00,  4.42it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  1.62it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.03it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  31%|███       | 103/333 [00:50<00:19, 12.09it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.32it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.81it/s][A100%|██████████| 1/1 [00:00<00:00,  9.13it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.39it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.71it/s][A100%|██████████| 1/1 [00:00<00:00,  3.61it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.49it/s][A100%|██████████| 1/1 [00:00<00:00, 10.16it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.67it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  1.47it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.21it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.44it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  7.55it/s][A100%|██████████| 1/1 [00:00<00:00,  7.16it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.49it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  34%|███▍      | 114/333 [00:51<00:13, 15.94it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.47it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.55it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.28it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.92it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.72it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.92it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.01it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.72it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.67it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.00it/s]
+
+Evaluating LiveCodeBench:  37%|███▋      | 124/333 [00:51<00:10, 20.15it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.50it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.01it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.07it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.77it/s]
+100%|██████████| 1/1 [00:00<00:00, 10.26it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.21it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.34it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  1.33it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.59it/s]
+100%|██████████| 1/1 [00:00<00:00, 12.29it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  40%|███▉      | 133/333 [00:51<00:08, 24.26it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.64it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.89it/s][A100%|██████████| 1/1 [00:00<00:00,  5.65it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.97it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.43it/s][A100%|██████████| 1/1 [00:00<00:00,  2.39it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.71it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.95it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.51it/s]
+
+Evaluating LiveCodeBench:  42%|████▏     | 141/333 [00:51<00:08, 22.13it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.12s/it][A100%|██████████| 1/1 [00:01<00:00,  1.13s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.31s/it][A100%|██████████| 1/1 [00:02<00:00,  2.32s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.86s/it][A100%|██████████| 1/1 [00:01<00:00,  1.86s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.29it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.39it/s][A100%|██████████| 1/1 [00:00<00:00,  3.31it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.08it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.05s/it][A100%|██████████| 1/1 [00:00<00:00, 14.02it/s]
+
+Evaluating LiveCodeBench:  44%|████▍     | 148/333 [00:53<00:13, 13.48it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:02<00:00,  2.06s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.76it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.63it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.75it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.91it/s]
+
+Evaluating LiveCodeBench:  46%|████▌     | 153/333 [00:53<00:12, 14.57it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.88s/it][A100%|██████████| 1/1 [00:01<00:00,  1.89s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.74it/s]
+100%|██████████| 1/1 [00:00<00:00, 13.62it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.85it/s]
+
+Evaluating LiveCodeBench:  47%|████▋     | 157/333 [00:53<00:10, 16.00it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.75s/it][A100%|██████████| 1/1 [00:02<00:00,  2.75s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.93s/it][A100%|██████████| 1/1 [00:01<00:00,  1.94s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.15s/it][A
+100%|██████████| 1/1 [00:00<00:00,  7.54it/s][A100%|██████████| 1/1 [00:03<00:00,  3.16s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  7.20it/s]
+
+Evaluating LiveCodeBench:  48%|████▊     | 161/333 [00:53<00:12, 13.70it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.05it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.94it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.63it/s][A100%|██████████| 1/1 [00:00<00:00,  6.38it/s]
+
+Evaluating LiveCodeBench:  49%|████▉     | 164/333 [00:54<00:11, 14.35it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.83s/it][A
+100%|██████████| 1/1 [00:03<00:00,  3.66s/it][A100%|██████████| 1/1 [00:02<00:00,  2.83s/it]
+100%|██████████| 1/1 [00:03<00:00,  3.67s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.43it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.96it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.46it/s]
+
+Evaluating LiveCodeBench:  51%|█████     | 169/333 [00:54<00:09, 17.93it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.65it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.16it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.70it/s][A100%|██████████| 1/1 [00:00<00:00,  7.34it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.35s/it][A100%|██████████| 1/1 [00:03<00:00,  3.36s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.11it/s][A100%|██████████| 1/1 [00:00<00:00,  1.10it/s]
+
+Evaluating LiveCodeBench:  52%|█████▏    | 174/333 [00:54<00:07, 21.58it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.11it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.98it/s][A100%|██████████| 1/1 [00:00<00:00, 12.34it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  6.62it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.93it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  1.90it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  1.02it/s][A100%|██████████| 1/1 [00:00<00:00, 13.08it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.02it/s]
+
+Evaluating LiveCodeBench:  54%|█████▍    | 179/333 [00:54<00:06, 24.58it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.77it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.10s/it][A100%|██████████| 1/1 [00:03<00:00,  3.11s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.36it/s][A100%|██████████| 1/1 [00:00<00:00,  5.18it/s]
+
+Evaluating LiveCodeBench:  55%|█████▍    | 183/333 [00:54<00:05, 26.18it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.91it/s][A100%|██████████| 1/1 [00:00<00:00,  6.59it/s]
+100%|██████████| 1/1 [00:00<00:00, 15.10it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.90it/s][A100%|██████████| 1/1 [00:00<00:00,  8.44it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.23it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A0.0
+Evaluating 1...
+
+100%|██████████| 1/1 [00:00<00:00,  3.00it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  2.94it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.03it/s]
+
+Evaluating LiveCodeBench:  57%|█████▋    | 189/333 [00:54<00:04, 30.15it/s][A100%|██████████| 1/1 [00:00<00:00,  9.65it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.97it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.26it/s][A100%|██████████| 1/1 [00:00<00:00, 16.42it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.69it/s][A100%|██████████| 1/1 [00:00<00:00,  2.23it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  1.67it/s]
+
+Evaluating LiveCodeBench:  58%|█████▊    | 194/333 [00:54<00:04, 34.12it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.42it/s][A100%|██████████| 1/1 [00:00<00:00,  2.37it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.17it/s]
+100%|██████████| 1/1 [00:00<00:00, 14.26it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.60it/s][A100%|██████████| 1/1 [00:00<00:00,  7.13it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.33it/s][A100%|██████████| 1/1 [00:00<00:00,  1.32it/s]
+
+Evaluating LiveCodeBench:  60%|█████▉    | 199/333 [00:54<00:03, 34.88it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.13it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.11it/s][A100%|██████████| 1/1 [00:00<00:00,  6.76it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.34it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.17it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.31it/s]
+
+Evaluating LiveCodeBench:  61%|██████▏   | 204/333 [00:55<00:03, 33.09it/s][A100%|██████████| 1/1 [00:00<00:00, 13.15it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  4.09it/s][A100%|██████████| 1/1 [00:00<00:00,  4.00it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.93s/it][A100%|██████████| 1/1 [00:03<00:00,  3.94s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.72it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.55it/s]
+1.0
+Evaluating 1...
+
+Evaluating LiveCodeBench:  63%|██████▎   | 209/333 [00:55<00:03, 34.89it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.11it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.26it/s][A100%|██████████| 1/1 [00:00<00:00,  5.08it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.55s/it][A100%|██████████| 1/1 [00:02<00:00,  2.56s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.69it/s]
+
+Evaluating LiveCodeBench:  64%|██████▍   | 213/333 [00:55<00:05, 23.58it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 17.14it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.03it/s][A100%|██████████| 1/1 [00:00<00:00,  2.00it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.70s/it][A100%|██████████| 1/1 [00:02<00:00,  2.70s/it]
+
+Evaluating LiveCodeBench:  65%|██████▍   | 216/333 [00:55<00:06, 17.67it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.73it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  3.65it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.07it/s][A100%|██████████| 1/1 [00:00<00:00, 17.21it/s]
+100%|██████████| 1/1 [00:00<00:00,  1.06it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.55it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.46it/s][A100%|██████████| 1/1 [00:00<00:00,  5.35it/s]
+
+Evaluating LiveCodeBench:  66%|██████▌   | 220/333 [00:56<00:06, 18.50it/s][A100%|██████████| 1/1 [00:00<00:00,  1.45it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.73it/s][A100%|██████████| 1/1 [00:00<00:00,  7.36it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.49s/it][A100%|██████████| 1/1 [00:04<00:00,  4.50s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.27s/it][A100%|██████████| 1/1 [00:04<00:00,  4.28s/it]
+
+Evaluating LiveCodeBench:  67%|██████▋   | 224/333 [00:56<00:05, 21.51it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.08s/it][A100%|██████████| 1/1 [00:01<00:00,  1.09s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.69it/s][A100%|██████████| 1/1 [00:00<00:00,  7.28it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.42it/s][A100%|██████████| 1/1 [00:00<00:00,  8.86it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.38it/s]
+
+Evaluating LiveCodeBench:  68%|██████▊   | 228/333 [00:56<00:04, 24.76it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.17it/s][A100%|██████████| 1/1 [00:00<00:00,  6.85it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.39it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.11it/s][A100%|██████████| 1/1 [00:00<00:00,  6.81it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.53it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  70%|██████▉   | 232/333 [00:56<00:04, 21.79it/s][A100%|██████████| 1/1 [00:00<00:00, 13.96it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.43it/s][A100%|██████████| 1/1 [00:00<00:00,  1.42it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.23it/s]
+
+Evaluating LiveCodeBench:  71%|███████   | 235/333 [00:56<00:04, 20.77it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.88it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.35it/s]
+
+100%|██████████| 1/1 [00:00<00:00,  5.73it/s][A100%|██████████| 1/1 [00:00<00:00,  5.53it/s]
+
+Evaluating LiveCodeBench:  71%|███████▏  | 238/333 [00:56<00:04, 19.99it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.66s/it][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:04<00:00,  4.67s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  6.84it/s][A100%|██████████| 1/1 [00:00<00:00,  6.52it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.57s/it][A
+100%|██████████| 1/1 [00:02<00:00,  2.41s/it][A100%|██████████| 1/1 [00:02<00:00,  2.58s/it]
+
+Evaluating LiveCodeBench:  72%|███████▏  | 241/333 [00:57<00:06, 14.72it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.67it/s][A100%|██████████| 1/1 [00:02<00:00,  2.41s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  8.25it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.65it/s]
+
+Evaluating LiveCodeBench:  73%|███████▎  | 244/333 [00:57<00:05, 16.93it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.86it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.81s/it][A100%|██████████| 1/1 [00:02<00:00,  2.81s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.59it/s]
+
+Evaluating LiveCodeBench:  74%|███████▍  | 247/333 [00:57<00:05, 17.02it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.14it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.43it/s][A100%|██████████| 1/1 [00:00<00:00,  4.32it/s]
+
+Evaluating LiveCodeBench:  75%|███████▍  | 249/333 [00:57<00:06, 14.00it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.16it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.70it/s][A100%|██████████| 1/1 [00:00<00:00,  1.68it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  75%|███████▌  | 251/333 [00:58<00:08,  9.94it/s][A100%|██████████| 1/1 [00:00<00:00, 15.62it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.53s/it][A100%|██████████| 1/1 [00:03<00:00,  3.53s/it]
+
+Evaluating LiveCodeBench:  76%|███████▌  | 253/333 [00:58<00:09,  8.28it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.29it/s]
+
+100%|██████████| 1/1 [00:02<00:00,  2.20s/it][A100%|██████████| 1/1 [00:02<00:00,  2.21s/it]
+
+Evaluating LiveCodeBench:  77%|███████▋  | 255/333 [00:58<00:08,  9.28it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:07<00:00,  7.23s/it][A100%|██████████| 1/1 [00:07<00:00,  7.23s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.58it/s]
+
+Evaluating LiveCodeBench:  77%|███████▋  | 257/333 [00:58<00:08,  8.83it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.71s/it][A100%|██████████| 1/1 [00:01<00:00,  1.71s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.72it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.14it/s]
+
+Evaluating LiveCodeBench:  78%|███████▊  | 260/333 [00:58<00:06, 11.38it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.00it/s][A100%|██████████| 1/1 [00:00<00:00,  3.90it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.01it/s]
+
+Evaluating LiveCodeBench:  79%|███████▊  | 262/333 [00:59<00:07,  9.02it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.27it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.25s/it][A100%|██████████| 1/1 [00:03<00:00,  3.26s/it]
+
+Evaluating LiveCodeBench:  79%|███████▉  | 264/333 [00:59<00:06, 10.38it/s][A100%|██████████| 1/1 [00:00<00:00, 16.13it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.75s/it][A100%|██████████| 1/1 [00:04<00:00,  4.76s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.81it/s][A100%|██████████| 1/1 [00:00<00:00,  7.45it/s]
+
+Evaluating LiveCodeBench:  80%|████████  | 267/333 [00:59<00:05, 12.64it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.82s/it][A100%|██████████| 1/1 [00:01<00:00,  1.83s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.10it/s][A100%|██████████| 1/1 [00:00<00:00,  1.09it/s]
+
+Evaluating LiveCodeBench:  81%|████████  | 269/333 [01:00<00:10,  6.13it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.71s/it][A100%|██████████| 1/1 [00:04<00:00,  4.72s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  9.78it/s][A100%|██████████| 1/1 [00:00<00:00,  9.15it/s]
+
+Evaluating LiveCodeBench:  81%|████████▏ | 271/333 [01:00<00:08,  7.45it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.72it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.11it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.06it/s][A100%|██████████| 1/1 [00:00<00:00,  2.03it/s]
+
+Evaluating LiveCodeBench:  82%|████████▏ | 274/333 [01:01<00:09,  6.37it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.43it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.81s/it][A100%|██████████| 1/1 [00:01<00:00,  1.82s/it]
+
+Evaluating LiveCodeBench:  83%|████████▎ | 276/333 [01:01<00:09,  6.29it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.64it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.62s/it][A100%|██████████| 1/1 [00:04<00:00,  4.63s/it]
+
+Evaluating LiveCodeBench:  83%|████████▎ | 278/333 [01:01<00:07,  7.67it/s][A
+100%|██████████| 1/1 [00:00<00:00,  2.24it/s][A100%|██████████| 1/1 [00:00<00:00,  2.21it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.71it/s]
+1.0
+Evaluating 1...
+
+Evaluating LiveCodeBench:  84%|████████▍ | 280/333 [01:01<00:06,  8.49it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.26s/it][A100%|██████████| 1/1 [00:02<00:00,  2.26s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.13it/s][A100%|██████████| 1/1 [00:00<00:00,  6.82it/s]
+
+Evaluating LiveCodeBench:  85%|████████▍ | 282/333 [01:01<00:05,  9.50it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:03<00:00,  3.25s/it][A100%|██████████| 1/1 [00:03<00:00,  3.25s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.10it/s]
+1.0
+Evaluating 1...
+
+Evaluating LiveCodeBench:  85%|████████▌ | 284/333 [01:02<00:06,  7.57it/s][A
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.42it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.81it/s][A100%|██████████| 1/1 [00:00<00:00,  8.32it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  86%|████████▌ | 286/333 [01:02<00:06,  7.69it/s][A100%|██████████| 1/1 [00:00<00:00, 15.19it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:04<00:00,  4.99s/it][A100%|██████████| 1/1 [00:05<00:00,  5.00s/it]
+
+Evaluating LiveCodeBench:  86%|████████▋ | 288/333 [01:02<00:06,  6.62it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:06<00:00,  6.95s/it][A100%|██████████| 1/1 [00:06<00:00,  6.95s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+Evaluating LiveCodeBench:  87%|████████▋ | 289/333 [01:03<00:06,  6.98it/s][A100%|██████████| 1/1 [00:00<00:00, 10.11it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.47it/s][A100%|██████████| 1/1 [00:00<00:00,  3.40it/s]
+
+Evaluating LiveCodeBench:  87%|████████▋ | 291/333 [01:03<00:05,  7.84it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.92it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.24it/s][A100%|██████████| 1/1 [00:00<00:00,  6.96it/s]
+
+Evaluating LiveCodeBench:  88%|████████▊ | 293/333 [01:03<00:04,  8.27it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  5.63it/s][A100%|██████████| 1/1 [00:00<00:00,  5.46it/s]
+
+Evaluating LiveCodeBench:  88%|████████▊ | 294/333 [01:03<00:05,  7.50it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  1.75it/s][A100%|██████████| 1/1 [00:00<00:00,  1.73it/s]
+100%|██████████| 1/1 [00:00<00:00, 11.79it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.02it/s]
+
+Evaluating LiveCodeBench:  89%|████████▉ | 297/333 [01:03<00:03, 10.10it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 11.05it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.01it/s]
+
+Evaluating LiveCodeBench:  90%|████████▉ | 299/333 [01:03<00:03, 10.65it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.89it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 13.83it/s]
+
+Evaluating LiveCodeBench:  90%|█████████ | 301/333 [01:04<00:02, 11.33it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 16.60it/s]
+
+100%|██████████| 1/1 [00:04<00:00,  4.10s/it][A100%|██████████| 1/1 [00:04<00:00,  4.10s/it]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.67it/s][A100%|██████████| 1/1 [00:00<00:00,  8.17it/s]
+
+Evaluating LiveCodeBench:  91%|█████████▏| 304/333 [01:04<00:02, 11.84it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:07<00:00,  7.86s/it][A100%|██████████| 1/1 [00:07<00:00,  7.87s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  7.09it/s][A100%|██████████| 1/1 [00:00<00:00,  6.78it/s]
+
+Evaluating LiveCodeBench:  92%|█████████▏| 306/333 [01:04<00:03,  6.92it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.63s/it][A100%|██████████| 1/1 [00:01<00:00,  1.63s/it]
+
+Evaluating LiveCodeBench:  92%|█████████▏| 307/333 [01:05<00:07,  3.47it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:08<00:00,  8.80s/it][A100%|██████████| 1/1 [00:08<00:00,  8.80s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 12.04it/s]
+
+Evaluating LiveCodeBench:  93%|█████████▎| 309/333 [01:06<00:05,  4.46it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:02<00:00,  2.52s/it][A100%|██████████| 1/1 [00:02<00:00,  2.52s/it]
+
+Evaluating LiveCodeBench:  93%|█████████▎| 310/333 [01:06<00:04,  4.94it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  3.25it/s][A100%|██████████| 1/1 [00:00<00:00,  3.18it/s]
+
+Evaluating LiveCodeBench:  93%|█████████▎| 311/333 [01:06<00:04,  4.90it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  4.78it/s][A100%|██████████| 1/1 [00:00<00:00,  4.65it/s]
+
+Evaluating LiveCodeBench:  94%|█████████▎| 312/333 [01:06<00:04,  4.83it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 15.76it/s]
+0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 14.20it/s]
+
+Evaluating LiveCodeBench:  94%|█████████▍| 314/333 [01:06<00:02,  6.53it/s][A
+100%|██████████| 1/1 [00:05<00:00,  5.19s/it][A100%|██████████| 1/1 [00:05<00:00,  5.20s/it]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 10.11it/s]
+
+Evaluating LiveCodeBench:  95%|█████████▍| 316/333 [01:06<00:02,  8.22it/s][A0.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+100%|██████████| 1/1 [00:00<00:00,  8.88it/s][A100%|██████████| 1/1 [00:00<00:00,  8.43it/s]
+1.0
+Evaluating 1...
+
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00,  9.48it/s]
+
+Evaluating LiveCodeBench:  95%|█████████▌| 318/333 [01:07<00:01,  9.31it/s][A
+100%|██████████| 1/1 [00:01<00:00,  1.98s/it][A100%|██████████| 1/1 [00:01<00:00,  1.98s/it]
+
+100%|██████████| 1/1 [00:10<00:00, 10.35s/it][A100%|██████████| 1/1 [00:10<00:00, 10.36s/it]
+
+Evaluating LiveCodeBench:  96%|█████████▌| 320/333 [01:08<00:04,  2.63it/s][A
+100%|██████████| 1/1 [00:13<00:00, 13.86s/it][A100%|██████████| 1/1 [00:13<00:00, 13.87s/it]
+
+100%|██████████| 1/1 [00:08<00:00,  8.54s/it][A100%|██████████| 1/1 [00:08<00:00,  8.55s/it]
+
+Evaluating LiveCodeBench:  97%|█████████▋| 322/333 [01:09<00:03,  3.52it/s][A
+100%|██████████| 1/1 [00:05<00:00,  5.25s/it][A100%|██████████| 1/1 [00:05<00:00,  5.26s/it]
+
+Evaluating LiveCodeBench:  97%|█████████▋| 323/333 [01:09<00:03,  3.33it/s][A
+100%|██████████| 1/1 [00:12<00:00, 12.36s/it][A100%|██████████| 1/1 [00:12<00:00, 12.37s/it]
+
+Evaluating LiveCodeBench:  97%|█████████▋| 324/333 [01:11<00:05,  1.74it/s][A
+100%|██████████| 1/1 [00:13<00:00, 13.44s/it][A100%|██████████| 1/1 [00:13<00:00, 13.44s/it]
+
+Evaluating LiveCodeBench:  98%|█████████▊| 325/333 [01:15<00:11,  1.41s/it][A
+100%|██████████| 1/1 [00:11<00:00, 11.06s/it][A100%|██████████| 1/1 [00:11<00:00, 11.07s/it]
+
+Evaluating LiveCodeBench:  98%|█████████▊| 326/333 [01:16<00:08,  1.23s/it][A
+100%|██████████| 1/1 [00:29<00:00, 29.41s/it][A100%|██████████| 1/1 [00:29<00:00, 29.41s/it]
+
+Evaluating LiveCodeBench:  98%|█████████▊| 327/333 [01:25<00:20,  3.42s/it][A
+100%|██████████| 1/1 [00:25<00:00, 25.09s/it][A100%|██████████| 1/1 [00:25<00:00, 25.10s/it]
+
+Evaluating LiveCodeBench:  98%|█████████▊| 328/333 [01:27<00:15,  3.05s/it][A
+100%|██████████| 1/1 [00:31<00:00, 31.83s/it][A100%|██████████| 1/1 [00:31<00:00, 31.83s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 329/333 [01:33<00:15,  3.87s/it][A
+100%|██████████| 1/1 [01:03<00:00, 63.94s/it][A100%|██████████| 1/1 [01:03<00:00, 63.94s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 330/333 [02:00<00:30, 10.31s/it][Atimeout occured: alarm went off
+
+100%|██████████| 1/1 [01:00<00:00, 60.06s/it][A100%|██████████| 1/1 [01:00<00:00, 60.06s/it]
+
+Evaluating LiveCodeBench:  99%|█████████▉| 331/333 [02:01<00:15,  7.75s/it][A
+100%|██████████| 1/1 [01:01<00:00, 61.51s/it][A100%|██████████| 1/1 [01:01<00:00, 61.52s/it]
+
+Evaluating LiveCodeBench: 100%|█████████▉| 332/333 [02:07<00:07,  7.36s/it][A
+100%|██████████| 1/1 [01:12<00:00, 72.53s/it][A100%|██████████| 1/1 [01:12<00:00, 72.54s/it]
+
+Evaluating LiveCodeBench: 100%|██████████| 333/333 [02:18<00:00,  8.30s/it][AEvaluating LiveCodeBench: 100%|██████████| 333/333 [02:18<00:00,  2.40it/s]
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+0.0
+0.0
+0.0
+0.0
+2026-07-30 02:36:14,572 - INFO - livecodebench results: 303/333 correct (91.0% accuracy)
+Processing datasets:  60%|██████    | 3/5 [02:18<01:55, 57.86s/it]2026-07-30 02:36:14,572 - INFO - Processing 499 rows for dataset 'math500'
+2026-07-30 02:36:14,765 - INFO - math500 results: 471/498 correct (94.6% accuracy)
+Processing datasets:  80%|████████  | 4/5 [02:19<00:36, 36.34s/it]2026-07-30 02:36:14,765 - INFO - Processing 2410 rows for dataset 'mmlu_pro'
+2026-07-30 02:36:15,467 - INFO - mmlu_pro results: 1875/2410 correct (77.8% accuracy)
+Processing datasets: 100%|██████████| 5/5 [02:19<00:00, 23.95s/it]Processing datasets: 100%|██████████| 5/5 [02:19<00:00, 27.96s/it]
+2026-07-30 02:36:15,594 - INFO - Evaluated results saved to: /result/deepseek-r1-accuracy_evaluated.pkl
+2026-07-30 02:36:15,833 - INFO - Done!
+
+Results
+
+{'exact_match': 81.28988149498633, 'tokens_per_sample': 3770.5820419325432, 'num-samples': 4388}
+
+hash=aeb1e92f4c14d884cb23966a5c8acef637373a26d32ec5ae258f6ed830aed748

@@ -1,0 +1,68 @@
+2026-07-27 23:27:18,002 - sflow.task.frontend_server_1 - INFO - 0: rm: cannot remove '/usr/local/cuda/compat/lib': Read-only file system
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: Written: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/frontend_server_1/server_config_1.yaml
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: hostname: 10.128.0.111
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: port: 8001
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: backend: pytorch
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: context_servers:
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   num_instances: 2
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   urls:
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.106:8336
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.111:8337
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: generation_servers:
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   num_instances: 4
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   urls:
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.42:8340
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.38:8339
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.35:8338
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:   - 10.128.0.99:8341
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0:
+2026-07-27 23:27:18,563 - sflow.task.frontend_server_1 - INFO - 0: Registered URL: 10.128.0.111:8001 → /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_interactive_qps61_test06_20260727T223102Z/170718-trtllm_disagg-20260727-231306-9a8cbc/frontend_urls.txt
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0: /usr/local/lib/python3.12/dist-packages/torch/library.py:356: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:   Overriding a previously registered kernel for the same operator and the same dispatch key
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:   operator: flash_attn::_flash_attn_backward(Tensor dout, Tensor q, Tensor k, Tensor v, Tensor out, Tensor softmax_lse, Tensor(a6!)? dq, Tensor(a7!)? dk, Tensor(a8!)? dv, float dropout_p, float softmax_scale, bool causal, SymInt window_size_left, SymInt window_size_right, float softcap, Tensor? alibi_slopes, bool deterministic, Tensor? rng_state=None) -> Tensor
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:     registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:   dispatch key: ADInplaceOrView
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:   previous kernel: no debug info
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:        new kernel: registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922 (Triggered internally at /opt/pytorch/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+2026-07-27 23:27:21,869 - sflow.task.frontend_server_1 - INFO - 0:   self.m.impl(
+2026-07-27 23:27:26,389 - sflow.task.frontend_server_1 - INFO - 0: /usr/local/lib/python3.12/dist-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.1 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+2026-07-27 23:27:26,389 - sflow.task.frontend_server_1 - INFO - 0:   _warnings.warn(
+2026-07-27 23:27:29,335 - sflow.task.frontend_server_1 - INFO - 0: [TensorRT-LLM] TensorRT LLM version: 1.3.0rc0
+2026-07-27 23:27:30,049 - sflow.task.frontend_server_1 - INFO - 0: /usr/local/lib/python3.12/dist-packages/tensorrt_llm/serve/openai_protocol.py:104: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+2026-07-27 23:27:30,049 - sflow.task.frontend_server_1 - INFO - 0:   class ResponseFormat(OpenAIBaseModel):
+2026-07-27 23:27:30,151 - sflow.task.frontend_server_1 - INFO - 0: INFO:     Started server process [293080]
+2026-07-27 23:27:30,151 - sflow.task.frontend_server_1 - INFO - 0: INFO:     Waiting for application startup.
+2026-07-27 23:27:30,355 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:30] [TRT-LLM] [I] Server: http://10.128.0.106:8336/steady_clock_offset, delay: 0.001500000013038516 second, offset: -1.8574479999952018 second
+2026-07-27 23:27:30,559 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:30] [TRT-LLM] [I] Server: http://10.128.0.111:8337/steady_clock_offset, delay: 0.0009109999518841505 second, offset: 0.00012550002429634333 second
+2026-07-27 23:27:30,764 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:30] [TRT-LLM] [I] Server: http://10.128.0.42:8340/steady_clock_offset, delay: 0.001026999787427485 second, offset: 1030414.0375665 second
+2026-07-27 23:27:30,969 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:30] [TRT-LLM] [I] Server: http://10.128.0.38:8339/steady_clock_offset, delay: 0.000851999968290329 second, offset: 1030413.983384 second
+2026-07-27 23:27:31,174 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:31] [TRT-LLM] [I] Server: http://10.128.0.35:8338/steady_clock_offset, delay: 0.000738999922759831 second, offset: 1030416.9738405 second
+2026-07-27 23:27:31,378 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:31] [TRT-LLM] [I] Server: http://10.128.0.99:8341/steady_clock_offset, delay: 0.0009809997864067554 second, offset: 1030315.1408025 second
+2026-07-27 23:27:31,378 - sflow.task.frontend_server_1 - INFO - 0: [07/27/2026-23:27:31] [TRT-LLM] [I] All servers are ready
+2026-07-27 23:27:31,378 - sflow.task.frontend_server_1 - INFO - 0: INFO:     Application startup complete.
+2026-07-27 23:28:05,906 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54362 - "GET /health HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54494 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54588 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54484 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54434 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54622 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54536 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54394 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54512 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54406 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54366 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54454 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54562 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,786 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54600 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54440 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54590 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54490 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54546 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54396 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54468 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54576 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54616 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54526 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54380 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54420 - "POST /v1/completions HTTP/1.1" 200 OK
+2026-07-27 23:28:11,941 - sflow.task.frontend_server_1 - INFO - 0: INFO:     10.128.0.106:54506 - "POST /v1/completions HTTP/1.1" 200 OK

@@ -1,0 +1,52 @@
+variables:
+  CONTAINER_IMAGE:
+    description: "Container image (NGC URL or Enroot .sqsh) with TRT-LLM + nv-mlpinf. Defaults to the public MLPerf TensorRT-LLM release image below. Override for a different or latest image via --set CONTAINER_IMAGE=... (or SFLOW_BENCHMARK_OVERRIDE on the CI form)."
+    value: "/share/mgitau/mlperf/tensorrt_llm_mlperf_aarch64.sqsh"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/NVIDIA, mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models), mounted at /home/mlperf_inference_storage."
+    value: /lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+
+  SLURM_ACCOUNT:
+    value: coreai_mlperf_inference
+  SLURM_PARTITION:
+    value: gb200
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)"
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    mpi: pmi2
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--exclusive"
+      - "--nodelist=MKE030118500101,MKE030118500102,MKE030118500103,MKE030118500104,MKE030118500105,MKE030118500106,MKE030118500111,MKE030118500112,MKE030118500113,MKE030118500114,MKE030118500121,MKE030118500122,MKE030118500127,MKE030118500128,MKE030118500129,MKE030118500130,MKE030118500131,MKE030118500132,MKE030118510101,MKE030118510102,MKE030118510103,MKE030118510104,MKE030118510105,MKE030118510106,MKE030118510111,MKE030118510112,MKE030118510113,MKE030118510114,MKE030118510121,MKE030118510122,MKE030118510127,MKE030118510128,MKE030118510129,MKE030118510130,MKE030118510131,MKE030118510132,MKE030118620101,MKE030118620102,MKE030118620103,MKE030118620104,MKE030118620105,MKE030118620106,MKE030118620111,MKE030118620112,MKE030118620113,MKE030118620114,MKE030118620121,MKE030118620122,MKE030118620127,MKE030118620128,MKE030118620129,MKE030118620130,MKE030118620131,MKE030118620132,MKE030118690101,MKE030118690102,MKE030118690103,MKE030118690104,MKE030118690105,MKE030118690106,MKE030118690111,MKE030118690112,MKE030118690113,MKE030118690114,MKE030118690121,MKE030118690122,MKE030118690127,MKE030118690128,MKE030118690129,MKE030118690130,MKE030118690131,MKE030118690132"

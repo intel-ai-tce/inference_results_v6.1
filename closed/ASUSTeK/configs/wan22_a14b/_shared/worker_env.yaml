@@ -1,0 +1,19 @@
+# Wan 2.2 VisualGen server env — exported into every videogen_server replica
+# via scaleout/sflow/tools/run_with_env.py.
+
+# MLPerf-deterministic fixed latent.
+# TLLM_VISUAL_GEN_FIXED_LATENT_PATH: upstream (PR #15229) name read by container's built-in code.
+# TRTLLM_VIDEO_FIXED_LATENT_PATH: name used by our PR branch's pipeline_wan.py overlay.
+TLLM_VISUAL_GEN_FIXED_LATENT_PATH: /home/mlperf_inference_storage/preprocessed_data/wan22-a14b/fixed_latent.pt
+TRTLLM_VIDEO_FIXED_LATENT_PATH: /home/mlperf_inference_storage/preprocessed_data/wan22-a14b/fixed_latent.pt
+
+# Where the server writes generated videos. Must be a WRITABLE mount — the scratch
+# mount is read-only inside the container, so use the /work mount (closed/NVIDIA).
+TRTLLM_MEDIA_STORAGE_PATH: /work/results/wan22-a14b/videos
+
+# HuggingFace cache (dynamic modules). Points at the shared scratch mount so the
+# model + any cached modules live alongside the pre-staged checkpoint under
+# /home/mlperf_inference_storage/models. Offline: the server loads the local
+# diffusers checkpoint via MODEL_PATH, so no runtime HF download is needed.
+HF_HOME: /home/mlperf_inference_storage/models/wan22-a14b/.hf_cache
+HF_HUB_OFFLINE: '1'

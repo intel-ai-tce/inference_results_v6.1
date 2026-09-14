@@ -1,0 +1,23 @@
+============================================================
+VBench Evaluation Results
+============================================================
+
+Dimension Scores:
+------------------------------------------------------------
+  appearance_style              : 0.2074
+  background_consistency        : 0.9244
+  dynamic_degree                : 0.9444
+  motion_smoothness             : 0.9330
+  scene                         : 0.2703
+  subject_consistency           : 0.9138
+'vbench_score': 69.8899
+------------------------------------------------------------
+  Overall Average               : 0.6989 (69.89%)
+
+Threshold: 69.7752%
+Pass: Yes
+============================================================
+Detailed results: runs/wan22/2026-07-30T12-48-59Z_g3388821-submission5/Offline/accuracy/vbench/results_2026-07-30-15:19:24_eval_results.json
+============================================================
+
+hash=de2e5da91d99e57efbf0145127e4cfa22d1c1c238e75b13356a27a3bbac9f0c5

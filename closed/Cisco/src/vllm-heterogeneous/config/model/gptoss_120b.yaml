@@ -1,0 +1,1744 @@
+benchmark_name: gpt-oss-120b
+profiles:
+  standalone_h200:
+    offline:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing, rocm_unified_kv_scale_override, nhd_mode]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:H200_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: auto
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          block_size: 64
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 16
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 64
+          attention_backend: ROCM_AITER_UNIFIED_ATTN
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1792
+          max_num_batched_tokens: 65536
+          block_size: 64
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          enforce_eager: false
+          async_scheduling: true
+        mi350x:
+          suffix: model
+          dtype: auto
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_UNIFIED_ATTN
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_USE_AITER_RMSNORM: '1'
+          VLLM_ROCM_USE_AITER_TRITON_ROPE: '0'
+          VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: '1'
+          VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: '1'
+          VLLM_TRITON_FP4_GEMM_USE_ASM: '0'
+          VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: '0'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_KV_CACHE_LAYOUT: NHD
+          VLLM_NHD_SHUFFLE_FUSED: '1'
+          VLLM_NHD_SHUFFLE_ASYNC: '1'
+          VLLM_NHD_SHUFFLE_PERLAYER: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      harness_config:
+        target_qps: 45
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+    server:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing, rocm_unified_kv_scale_override, nhd_mode]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:H200_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: auto
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          block_size: 64
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 16
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 64
+          attention_backend: ROCM_AITER_UNIFIED_ATTN
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1792
+          max_num_batched_tokens: 65536
+          block_size: 64
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          skip_dp_allreduce: false
+          enforce_eager: false
+          async_scheduling: false
+        mi350x:
+          suffix: model
+          dtype: auto
+          kv_cache_dtype: auto
+          interactive:
+            max_num_batched_tokens: 8192
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          server:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '16'
+          PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+          WARMUP_LARGE_BATCH: '8'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_UNIFIED_ATTN
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          interactive:
+            VLLM_MIN_REQUEST_DECODE_STEP: '0'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+            GPU_MAX_HW_QUEUES: '2'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_USE_AITER_RMSNORM: '1'
+          VLLM_ROCM_USE_AITER_TRITON_ROPE: '0'
+          VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: '1'
+          VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: '1'
+          VLLM_TRITON_FP4_GEMM_USE_ASM: '0'
+          VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: '0'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_KV_CACHE_LAYOUT: NHD
+          VLLM_NHD_SHUFFLE_FUSED: '1'
+          VLLM_NHD_SHUFFLE_ASYNC: '1'
+          VLLM_NHD_SHUFFLE_PERLAYER: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 21
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+    interactive:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing, rocm_unified_kv_scale_override, nhd_mode]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:H200_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: auto
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          max_num_batched_tokens: 131072
+          server:
+            max_num_batched_tokens: 49152
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          block_size: 64
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 16
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 64
+          attention_backend: ROCM_AITER_UNIFIED_ATTN
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          server:
+            max_num_batched_tokens: 65536
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          suffix: model
+          tp_size: 1
+          dp_size: 8
+          kv_cache_dtype: fp8
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1792
+          max_num_batched_tokens: 65536
+          block_size: 64
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: true
+          skip_dp_allreduce: false
+          enforce_eager: false
+          async_scheduling: false
+          interactive:
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            tp_size: 1
+            dp_size: 1
+            enable_expert_parallel: false
+            max_num_batched_tokens: 8192
+            max_num_seqs: 40
+            async_scheduling: true
+            compile_sizes: [4, 8, 16, 32, 64]
+            cudagraph_capture_range: [4, 8, 16, 32, 64]
+        mi350x:
+          suffix: model
+          dtype: auto
+          kv_cache_dtype: auto
+          interactive:
+            max_num_batched_tokens: 8192
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          server:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+          interactive:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '12'
+          PYTORCH_CUDA_ALLOC_CONF: ''
+          WARMUP_LARGE_BATCH: '8'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_UNIFIED_ATTN
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          server:
+            VLLM_MIN_REQUEST_DECODE_STEP: '1216'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '2'
+          interactive:
+            VLLM_MIN_REQUEST_DECODE_STEP: '0'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+            GPU_MAX_HW_QUEUES: '2'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_USE_AITER_RMSNORM: '1'
+          VLLM_ROCM_USE_AITER_TRITON_ROPE: '0'
+          VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: '1'
+          VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: '1'
+          VLLM_TRITON_FP4_GEMM_USE_ASM: '0'
+          VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: '0'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_KV_CACHE_LAYOUT: NHD
+          VLLM_NHD_SHUFFLE_FUSED: '1'
+          VLLM_NHD_SHUFFLE_ASYNC: '1'
+          VLLM_NHD_SHUFFLE_PERLAYER: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        service:
+          min_tokens: 1
+          max_tokens: 10000
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 11
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+  standalone_mi350x:
+    offline:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:MI350X_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 32
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          max_num_batched_tokens: 131072
+          server:
+            max_num_batched_tokens: 49152
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: fp8
+          gpu_memory_utilization: 0.95
+          block_size: 32
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 32
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          attention_backend: ROCM_AITER_FA
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        dtype: auto
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          dp_size: 8
+          enable_expert_parallel: true
+          skip_dp_allreduce: false
+          async_scheduling: false
+          offline:
+            suffix: model
+            tp_size: 1
+            dp_size: 1
+            kv_cache_dtype: auto
+            gpu_memory_utilization: 0.95
+            max_model_len: 32768
+            max_num_seqs: 1792
+            max_num_batched_tokens: 65536
+            block_size: 64
+            enable_prefix_caching: false
+            enable_chunked_prefill: true
+            enable_expert_parallel: false
+            enforce_eager: false
+            async_scheduling: true
+          interactive:
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            dp_size: 1
+            enable_expert_parallel: false
+            max_num_batched_tokens: 8192
+            max_num_seqs: 40
+            async_scheduling: true
+            compile_sizes: [4, 8, 16, 32, 64]
+            cudagraph_capture_range: [4, 8, 16, 32, 64]
+        mi350x:
+          offline:
+            gpu_memory_utilization: 0.96
+          kv_cache_dtype: fp8
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+          interactive:
+            max_num_batched_tokens: 8192
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            compile_sizes: [4, 8, 16, 32, 64]
+            cudagraph_capture_range: [4, 8, 16, 32, 64]
+            max_num_seqs: 40
+            async_scheduling: true
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          server:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+          interactive:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '12'
+          PYTORCH_CUDA_ALLOC_CONF: ''
+          WARMUP_LARGE_BATCH: '8'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '0'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          offline:
+            VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+            VLLM_ROCM_USE_AITER_MHA: '0'
+            VLLM_MIN_REQUEST_DECODE_STEP: '256'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '5'
+          interactive:
+            VLLM_MIN_REQUEST_DECODE_STEP: '0'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+            GPU_MAX_HW_QUEUES: '2'
+            VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '0'
+            VLLM_ATTENTION_BACKEND: ROCM_AITER_FA
+          HSA_KERNARG_POOL_SIZE: '4000000'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        service:
+          min_tokens: 1
+          max_tokens: 10000
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 60
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+    server:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing, rocm_unified_kv_scale_override, nhd_mode]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:MI350X_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: auto
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          block_size: 64
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 16
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 64
+          attention_backend: ROCM_AITER_UNIFIED_ATTN
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: auto
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1792
+          max_num_batched_tokens: 65536
+          block_size: 64
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          enforce_eager: false
+          async_scheduling: true
+        mi350x:
+          suffix: model
+          dtype: auto
+          kv_cache_dtype: auto
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_UNIFIED_ATTN
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_USE_AITER_RMSNORM: '1'
+          VLLM_ROCM_USE_AITER_TRITON_ROPE: '0'
+          VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: '1'
+          VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: '1'
+          VLLM_TRITON_FP4_GEMM_USE_ASM: '0'
+          VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: '0'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_KV_CACHE_LAYOUT: NHD
+          VLLM_NHD_SHUFFLE_FUSED: '1'
+          VLLM_NHD_SHUFFLE_ASYNC: '1'
+          VLLM_NHD_SHUFFLE_PERLAYER: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 38
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+    interactive:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:MI350X_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 32
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          max_num_batched_tokens: 131072
+          server:
+            max_num_batched_tokens: 49152
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: fp8
+          gpu_memory_utilization: 0.95
+          block_size: 32
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 32
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          attention_backend: ROCM_AITER_FA
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        dtype: auto
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        quantization: quark
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          dp_size: 8
+          enable_expert_parallel: true
+          skip_dp_allreduce: false
+          async_scheduling: false
+          interactive:
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            dp_size: 1
+            enable_expert_parallel: false
+            max_num_batched_tokens: 8192
+            max_num_seqs: 1024
+            async_scheduling: true
+            compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+            cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+        mi350x:
+          kv_cache_dtype: fp8
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+          interactive:
+            max_num_batched_tokens: 65536
+            compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+            cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+            max_num_seqs: 1024
+            async_scheduling: true
+      vllm_env_config:
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          server:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+          interactive:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '12'
+          PYTORCH_CUDA_ALLOC_CONF: ''
+          WARMUP_LARGE_BATCH: '8'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+          VLLM_ROCM_USE_AITER_MHA: '0'
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '128'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '10'
+          GPU_MAX_HW_QUEUES: '3'
+          interactive:
+            VLLM_MIN_REQUEST_DECODE_STEP: '0'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+            GPU_MAX_HW_QUEUES: '2'
+            VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '1'
+            VLLM_ROCM_USE_AITER_MHA: '0'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_AND_PIECEWISE
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10240
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        service:
+          min_tokens: 1
+          max_tokens: 10000
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 24
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+  dp:
+    offline:
+      benchmark_name: gpt-oss-120b
+      backend: standalone
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      servers:
+        standalone: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207', '${oc.env:MI350X_HOST}:8200', '${oc.env:MI350X_HOST}:8201', '${oc.env:MI350X_HOST}:8202', '${oc.env:MI350X_HOST}:8203', '${oc.env:MI350X_HOST}:8204', '${oc.env:MI350X_HOST}:8205', '${oc.env:MI350X_HOST}:8206', '${oc.env:MI350X_HOST}:8207']
+      pd_config:
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        service:
+          min_tokens: 1
+          max_tokens: 10000
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 105
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 16
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+        transport: threaded
+        transport_threads: 16
+        endpoint_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2]
+      sample_count: 6396
+  pd:
+    server:
+      benchmark_name: gpt-oss-120b
+      backend: pd
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing, rocm_unified_kv_scale_override, nhd_mode]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:STANDALONE_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 32
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          max_num_batched_tokens: 131072
+          server:
+            max_num_batched_tokens: 49152
+        mi350x:
+          suffix: model
+          quantization: quark
+          tp_size: 1
+          dp_size: 1
+          kv_cache_dtype: fp8
+          gpu_memory_utilization: 0.95
+          block_size: 32
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 32
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        h200:
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 32
+          attention_backend: ROCM_AITER_FA
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          server:
+            max_num_batched_tokens: 65536
+          compile_sizes: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 256, 512, 1024, 2048, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 392, 400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 2048, 4096, 8192]
+      standalone:
+        suffix: model
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1792
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 64
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        enforce_eager: false
+        async_scheduling: true
+        kv_cache_dtype: fp8
+        decode_temperature: 1.0
+        decode_top_k: -1
+        decode_top_p: 1.0
+        decode_max_tokens: 10000
+        h200:
+          suffix: model
+          tp_size: 1
+          dp_size: 8
+          kv_cache_dtype: fp8
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1792
+          max_num_batched_tokens: 65536
+          block_size: 64
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enable_expert_parallel: true
+          skip_dp_allreduce: false
+          enforce_eager: false
+          async_scheduling: false
+          interactive:
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            tp_size: 1
+            dp_size: 1
+            enable_expert_parallel: false
+            max_num_batched_tokens: 8192
+            max_num_seqs: 40
+            async_scheduling: true
+            compile_sizes: [4, 8, 16, 32, 64]
+            cudagraph_capture_range: [4, 8, 16, 32, 64]
+        mi350x:
+          suffix: model
+          dtype: auto
+          kv_cache_dtype: fp8
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 2048, 4096, 8192]
+          cudagraph_capture_range: [1, 2, 4, 6, 8, 16, 32, 48, 64, 80, 96, 112, 128, 256, 512, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440, 65536]
+          interactive:
+            max_num_batched_tokens: 8192
+            speculative_method: eagle3
+            speculative_model: ${oc.env:MODEL_ROOT}/gptoss/eagle3
+            speculative_model_reference: nvidia/gpt-oss-120b-Eagle3-long-context
+            speculative_num_tokens: 3
+            speculative_eagle_topk: 1.0
+            speculative_draft_sample_method: greedy
+            compile_sizes: [4, 8, 16, 32, 64]
+            cudagraph_capture_range: [4, 8, 16, 32, 64]
+            max_num_seqs: 40
+            async_scheduling: true
+      vllm_env_config:
+        MINIMAL_PATCHES: '1'
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          server:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+          interactive:
+            VLLM_SUBSEQUENT_DECODE_STEPS: '12'
+          PYTORCH_CUDA_ALLOC_CONF: ''
+          WARMUP_LARGE_BATCH: '8'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '0'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_FA
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          interactive:
+            VLLM_MIN_REQUEST_DECODE_STEP: '0'
+            VLLM_SUBSEQUENT_DECODE_STEPS: '6'
+            GPU_MAX_HW_QUEUES: '2'
+            VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '0'
+            VLLM_ATTENTION_BACKEND: ROCM_AITER_FA
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_USE_AITER_RMSNORM: '1'
+          VLLM_ROCM_USE_AITER_TRITON_ROPE: '0'
+          VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: '1'
+          VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: '1'
+          VLLM_TRITON_FP4_GEMM_USE_ASM: '0'
+          VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: '0'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_KV_CACHE_LAYOUT: NHD
+          VLLM_NHD_SHUFFLE_FUSED: '1'
+          VLLM_NHD_SHUFFLE_ASYNC: '1'
+          VLLM_NHD_SHUFFLE_PERLAYER: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      sampling_mode_overrides:
+        service:
+          min_tokens: 1
+          max_tokens: 10000
+        performance:
+          min_tokens: 1
+          max_tokens: 10000
+        accuracy:
+          min_tokens: 1
+          max_tokens: 32768
+      harness_config:
+        target_qps: 58
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_pd_h200_mi350x.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        standalone_warmup_count: 8
+        standalone_warmup_max_tokens: 8
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396
+    interactive:
+      benchmark_name: gpt-oss-120b
+      backend: pd
+      engine_version: async
+      model_base: ${oc.env:MODEL_ROOT}/gptoss
+      runtime_patches: [gc_gen2, allreduce_interval, input_queue_limit]
+      runtime_patches_by_hardware:
+        h200: [decode_step_pacing]
+        mi350x: [decode_step_pacing]
+      servers:
+        prefill: ['${oc.env:H200_HOST}:8200', '${oc.env:H200_HOST}:8201', '${oc.env:H200_HOST}:8202', '${oc.env:H200_HOST}:8203', '${oc.env:H200_HOST}:8204', '${oc.env:H200_HOST}:8205', '${oc.env:H200_HOST}:8206', '${oc.env:H200_HOST}:8207']
+        decode: ['${oc.env:MI350X_HOST}:8300', '${oc.env:MI350X_HOST}:8301', '${oc.env:MI350X_HOST}:8302', '${oc.env:MI350X_HOST}:8303', '${oc.env:MI350X_HOST}:8304', '${oc.env:MI350X_HOST}:8305', '${oc.env:MI350X_HOST}:8306', '${oc.env:MI350X_HOST}:8307']
+        standalone: ['${oc.env:STANDALONE_HOST}:8200']
+      pd_config:
+        model_name: gpt-oss-120b
+        tokenizer_path: ${oc.env:MODEL_ROOT}/gptoss/model
+      prefiller:
+        suffix: model
+        kv_cache_dtype: auto
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 32768
+        max_num_seqs: 1024
+        max_num_batched_tokens: 65536
+        gpu_memory_utilization: 0.95
+        block_size: 32
+        enable_prefix_caching: false
+        enable_chunked_prefill: true
+        enable_expert_parallel: false
+        async_scheduling: true
+      decoder:
+        suffix: model
+        kv_cache_dtype: fp8
+        tp_size: 1
+        dp_size: 1
+        max_model_len: 36864
+        max_num_seqs: 2048
+        max_num_batched_tokens: 16384
+        gpu_memory_utilization: 0.9
+        block_size: 32
+        enable_prefix_caching: false
+        enable_expert_parallel: false
+        mi350x:
+          suffix: model
+          tp_size: 1
+          dp_size: 1
+          enable_expert_parallel: false
+          gpu_memory_utilization: 0.95
+          max_model_len: 32768
+          max_num_seqs: 1024
+          max_num_batched_tokens: 65536
+          block_size: 32
+          attention_backend: ROCM_AITER_FA
+          kv_cache_dtype: auto
+          kv_scale_source: ''
+          enable_prefix_caching: false
+          enable_chunked_prefill: true
+          enforce_eager: false
+          async_scheduling: true
+          cudagraph_mode: FULL_AND_PIECEWISE
+          compile_sizes: [1, 2, 4, 8, 16, 32, 64, 128, 256]
+          cudagraph_capture_range:
+          - [1024, 0, -8]
+          - 4
+          - 2
+          - 1
+      vllm_env_config:
+        MINIMAL_PATCHES: '1'
+        VLLM_LOGGING_LEVEL: WARNING
+        h200:
+          VLLM_MIN_REQUEST_DECODE_STEP: '1'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '64'
+          PD_APPEND_FIRST_TOKEN_TO_DECODE_PROMPT: '0'
+        mi350x:
+          VLLM_LOGGING_LEVEL: ERROR
+          HARNESS_GC_LIMIT: '100000'
+          NCCL_MIN_NCHANNELS: '112'
+          VLLM_USE_V1: '1'
+          VLLM_USE_TRITON_FLASH_ATTN: '0'
+          VLLM_ROCM_USE_AITER: '1'
+          VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION: '0'
+          VLLM_ROCM_USE_AITER_MHA: '1'
+          VLLM_ATTENTION_BACKEND: ROCM_AITER_FA
+          VLLM_ROCM_USE_AITER_FUSED_MOE_A16W4: '0'
+          USE_FASTSAFETENSOR: '1'
+          SAFETENSORS_FAST_GPU: '1'
+          AITER_LOG_LEVEL: ERROR
+          AMDGCN_USE_BUFFER_OPS: '0'
+          VLLM_MIN_REQUEST_DECODE_STEP: '64'
+          VLLM_SUBSEQUENT_DECODE_STEPS: '32'
+          GPU_MAX_HW_QUEUES: '3'
+          HSA_KERNARG_POOL_SIZE: '4000000'
+          VLLM_ROCM_SHUFFLE_LAYOUT: '0'
+          VLLM_NHD_TO_SHUFFLE: '0'
+          VLLM_FP8_KV_CROSS_PLATFORM: '0'
+      vllm_engine_config:
+        model: ${oc.env:MODEL_ROOT}/gptoss/model
+        dtype: auto
+        disable_log_stats: true
+        cudagraph_mode: FULL_DECODE_ONLY
+      vllm_sampling_config:
+        temperature: 1.0
+        min_tokens: 1
+        max_tokens: 10000
+        ignore_eos: false
+        detokenize: false
+        top_k: -1
+        top_p: 1.0
+      harness_config:
+        target_qps: 23.3
+        dataset_path: ${oc.env:DATA_ROOT}/gptoss/perf
+        strip_output_special_tokens: false
+        accuracy_dataset_path: ${oc.env:DATA_ROOT}/gptoss/acc
+        mlperf_conf_path: ${oc.env:WORK_DIR}/mlperf_inference/mlperf.conf
+        user_conf_path: ${oc.env:WORK_DIR}/mlperf/mlperf_combined.conf
+        total_sample_count: 6396
+        accuracy_sample_count: 4395
+        output_log_dir: ${oc.env:WORK_DIR}/logs
+        enable_log_trace: false
+        enable_warmup: true
+        pd_warmup_decode_max_tokens: 8
+        warmup_poll_timeout_ms: 600000
+        device_count: 8
+        schedule_algo: shortest_queue_with_tokens
+        load_balance_token_weight: 0.02
+        load_balance_window_size: 10
+      sample_count: 6396

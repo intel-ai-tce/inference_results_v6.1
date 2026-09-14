@@ -1,0 +1,89 @@
+diff --git a/vllm/v1/attention/ops/vit_attn_wrappers.py b/vllm/v1/attention/ops/vit_attn_wrappers.py
+index 726bbc6..2140ac1 100644
+--- a/vllm/v1/attention/ops/vit_attn_wrappers.py
++++ b/vllm/v1/attention/ops/vit_attn_wrappers.py
+@@ -21,6 +21,67 @@ import torch.nn.functional as F
+ from vllm.platforms import current_platform
+ from vllm.utils.torch_utils import direct_register_custom_op
+ 
++# --- Q3VL per-segment binned ViT FMHA (env-gated VLLM_Q3VL_VIT_FMHA_BINNED). Route each huge
++#     segment (>=MIN) to the hd128 ASM kernel (pad 72->128) individually, and the rest to one
++#     ck_tile call; scatter back. cu_seqlens is constant across ViT layers, so the partition is
++#     cached (single entry, torch.equal check) to amortize host cost across the ~27 layers. ---
++import os as _q3os
++_Q3_BIN_CU = None
++_Q3_BIN_PLAN = None
++def _q3vl_bin_plan(cu_seqlens):
++    global _Q3_BIN_CU, _Q3_BIN_PLAN
++    if (_Q3_BIN_CU is not None and _Q3_BIN_CU.numel() == cu_seqlens.numel()
++            and bool(torch.equal(_Q3_BIN_CU, cu_seqlens))):
++        return _Q3_BIN_PLAN
++    HUGE = int(_q3os.environ.get("VLLM_Q3VL_VIT_FMHA_BINNED_MIN", "8192"))
++    seg = (cu_seqlens[1:] - cu_seqlens[:-1]).tolist()
++    cul = cu_seqlens.tolist()
++    dev = cu_seqlens.device
++    huge, rest = [], []
++    for i, L in enumerate(seg):
++        (huge if L >= HUGE else rest).append(i)
++    huge_plan = [(cul[i], cul[i + 1],
++                  torch.tensor([0, seg[i]], dtype=torch.int32, device=dev), seg[i]) for i in huge]
++    if rest:
++        ridx = torch.cat([torch.arange(cul[i], cul[i + 1], device=dev) for i in rest])
++        rcu = [0]
++        for i in rest:
++            rcu.append(rcu[-1] + seg[i])
++        rest_plan = (ridx, torch.tensor(rcu, dtype=torch.int32, device=dev), max(seg[i] for i in rest))
++    else:
++        rest_plan = None
++    _Q3_BIN_CU = cu_seqlens.clone()
++    _Q3_BIN_PLAN = (huge_plan, rest_plan)
++    return _Q3_BIN_PLAN
++def _q3vl_binned_fmha(q, k, v, cu_seqlens, max_seqlen, scale, varlen_fn, kwargs):
++    huge_plan, rest_plan = _q3vl_bin_plan(cu_seqlens)
++    if not huge_plan:  # guard: no huge seg -> plain ck_tile (no-op)
++        o = varlen_fn(q, k, v, cu_seqlens_q=cu_seqlens, cu_seqlens_k=cu_seqlens,
++                      max_seqlen_q=max_seqlen, max_seqlen_k=max_seqlen,
++                      dropout_p=0.0, causal=False, softmax_scale=scale, **kwargs)
++        return o[0] if isinstance(o, (tuple, list)) else o
++    _h = q.shape[1]
++    def _pad128(x, n):
++        p = torch.zeros(n, _h, 128, dtype=x.dtype, device=x.device)
++        p[:, :, :72] = x
++        return p
++    out = torch.empty_like(q)
++    for (s, e, cs, L) in huge_plan:
++        o = varlen_fn(_pad128(q[s:e], e - s), _pad128(k[s:e], e - s), _pad128(v[s:e], e - s),
++                      cu_seqlens_q=cs, cu_seqlens_k=cs, max_seqlen_q=L, max_seqlen_k=L,
++                      dropout_p=0.0, causal=False, softmax_scale=scale, **kwargs)
++        o = o[0] if isinstance(o, (tuple, list)) else o
++        out[s:e] = o[:, :, :72]
++    if rest_plan is not None:
++        ridx, rcu, rms = rest_plan
++        o = varlen_fn(q[ridx], k[ridx], v[ridx], cu_seqlens_q=rcu, cu_seqlens_k=rcu,
++                      max_seqlen_q=rms, max_seqlen_k=rms,
++                      dropout_p=0.0, causal=False, softmax_scale=scale, **kwargs)
++        o = o[0] if isinstance(o, (tuple, list)) else o
++        out[ridx] = o
++    return out
++
++
+ 
+ def flash_attn_maxseqlen_wrapper(
+     q: torch.Tensor,
+@@ -56,6 +117,16 @@ def flash_attn_maxseqlen_wrapper(
+     # already 1/sqrt(72) so padded dims contribute 0). Faster than ck_tile on large-S (~1.31-1.33x).
+     # VLLM_Q3VL_VIT_FMHA_ASM=1 enables; only for max_seqlen>=VLLM_Q3VL_VIT_FMHA_ASM_MIN (default 8192).
+     import os as _os
++    _binned = (
++        is_rocm_aiter
++        and q.shape[-1] == 72
++        and _os.environ.get("VLLM_Q3VL_VIT_FMHA_BINNED", "0") == "1"
++    )
++    if _binned:
++        output = _q3vl_binned_fmha(
++            q, k, v, cu_seqlens, max_seqlen, scale, flash_attn_varlen_func, kwargs
++        )
++        return einops.rearrange(output, "(b s) h d -> b s h d", b=batch_size)
+     _asm = (
+         is_rocm_aiter
+         and q.shape[-1] == 72

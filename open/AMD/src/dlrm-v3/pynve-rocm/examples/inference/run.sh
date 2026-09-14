@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# run.sh — run the minimal NVE inference example inside the ROCm container with the
+# native NVE logger turned up (NVE_LOG_LEVEL=VERBOSE), capturing both the [NVE] C++
+# trace lines and the per-op JSONL trace into this directory.
+#
+#   bash run.sh
+#
+# Env overrides:
+#   CONTAINER      docker container with the built pynve  [dlrmv3-e2e723]
+#   REPO_C         pynve-rocm path INSIDE the container    [/work/pynve-rocm]
+#   NVE_LOG_LEVEL  native log verbosity                    [VERBOSE]
+set -euo pipefail
+
+CONTAINER="${CONTAINER:-dlrmv3-e2e723}"
+REPO_C="${REPO_C:-/work/pynve-rocm}"
+NVE_LOG_LEVEL="${NVE_LOG_LEVEL:-VERBOSE}"
+
+SELF_HOST="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+C_DIR="${REPO_C}/examples/inference"
+LOG="${SELF_HOST}/minimal_nve_example.log"
+
+echo "[run-nve] container=${CONTAINER} repo=${REPO_C} NVE_LOG_LEVEL=${NVE_LOG_LEVEL}"
+echo "[run-nve] log -> ${LOG}"
+
+docker exec \
+  -e PYTHONPATH="${REPO_C}/python" \
+  -e LD_LIBRARY_PATH="${REPO_C}/build_rocm/lib" \
+  -e NVE_LOG_LEVEL="${NVE_LOG_LEVEL}" \
+  -e HIP_VISIBLE_DEVICES="${HIP_VISIBLE_DEVICES:-0}" \
+  -e NVE_TRACE_OUT="${C_DIR}/nve_trace.jsonl" \
+  -w "${C_DIR}" \
+  "${CONTAINER}" \
+  python3 "${C_DIR}/minimal_nve_example.py" 2>&1 | tee "${LOG}"

@@ -1,0 +1,21 @@
+set pagination off
+set breakpoint pending on
+break ec_set_associative_modify.cuh:479
+run
+echo \n==BEFORE RLE READBACK==\n
+p num_keys
+p num_sets
+p sets
+p sets_sorted
+echo \n==sets (unsorted input) [0..16]==\n
+x/16du sets
+echo \n==sets_sorted [0..16] (should be ascending)==\n
+x/16du sets_sorted
+echo \n==sets_sorted [num_keys-16 .. ] tail==\n
+p sets_sorted
+p num_keys
+echo \n==step past num_represented_sets readback==\n
+tbreak ec_set_associative_modify.cuh:489
+continue
+p num_represented_sets
+echo \n==done==\n

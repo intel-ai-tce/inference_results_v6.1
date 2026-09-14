@@ -1,0 +1,61 @@
+# NVIDIA H200 hardware profile. Cluster/vendor-invariant settings only; all
+# model-tunable kernel/numeric/weight-format knobs live in config/model/*.yaml.
+
+platform: nvidia
+
+nccl:
+  NCCL_IB_HCA: ${oc.env:NCCL_IB_HCA}
+  NCCL_IB_GID_INDEX: 3
+  NCCL_NVLS_ENABLE: 0
+  NCCL_SHM_DISABLE: 1
+  NCCL_IB_ADAPTIVE_ROUTING: 1
+  NCCL_DEBUG: WARN
+
+uccl:
+  UCCL_RCMODE: 1
+  UCCL_P2P_RDMA_GID_INDEX: 3
+  UCCL_P2P_RDMA_SL: 0
+  UCCL_P2P_RDMA_TC: 106
+  UCCL_P2P_RDMA_DEVICE_FILTER: ${oc.env:UCCL_P2P_RDMA_DEVICE_FILTER}
+  UCCL_P2P_NUM_QPS: 4
+  UCCL_P2P_MAX_CONCURRENT: 128
+  UCCL_P2P_MTU: 4096
+  UCCL_P2P_MAX_RD_ATOMIC: 16
+  UCCL_P2P_MAX_DEST_RD_ATOMIC: 16
+  UCCL_P2P_MAX_INFLIGHT_OPS: 8
+
+ucx:
+  UCX_TLS: rc,cuda_copy,self,sm
+  UCX_NET_DEVICES: ${oc.env:UCX_NET_DEVICES}
+  UCX_IB_GID_INDEX: 3
+  UCX_LOG_LEVEL: warn
+  UCX_WARN_UNUSED_ENV_VARS: "n"
+
+network:
+  nixl_side_channel_port: 5600
+
+cuda:
+  CUDA_MODULE_LOADING: LAZY
+  CUDA_DEVICE_MAX_CONNECTIONS: 1
+
+vllm:
+  VLLM_ENABLE_INDUCTOR_MAX_AUTOTUNE: 0
+  VLLM_USE_V1: 1
+  VLLM_ATTENTION_BACKEND: FLASH_ATTN
+  VLLM_FLASH_ATTN_VERSION: 3
+  VLLM_KV_CACHE_LAYOUT: NHD
+
+gpu:
+  visible_devices: "0,1,2,3,4,5,6,7"
+  device_env: CUDA_VISIBLE_DEVICES
+
+server:
+  port: 8100
+  kv_role: kv_producer
+
+# Applied only when --role decode/prefill AND --remote-hardware is a different vendor.
+cross_platform_decode_patches:
+  - shuffle_to_nhd
+  - kv_scale_override_nvidia
+cross_platform_prefill_patches:
+  - dp_engine_id

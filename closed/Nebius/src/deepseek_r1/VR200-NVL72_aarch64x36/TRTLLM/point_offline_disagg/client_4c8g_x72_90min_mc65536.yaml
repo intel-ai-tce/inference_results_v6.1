@@ -1,0 +1,55 @@
+# DSR1 OFFLINE-DISAGG 4c8g x72 (4 ctx dep2 + 8 gen dep8 + 8 frontends = 72 GPU / 18 nodes, single nvlblk) — SUBMISSION client. Scaled 2x from 302575 (x36 2c4g).
+# Disaggregated Offline: same server_disagg stack as 4c8g x72, but Offline (max_throughput, streaming off).
+name: dsr1-gr100-offline-disagg-4c8g-x72-submission
+version: "1.0"
+type: submission
+benchmark_mode: offline
+
+model_params:
+  name: DeepSeek-R1-NVFP4-v2-mlpinf
+  tokenizer_name: /model
+  temperature: 0.0
+  max_new_tokens: 20000
+  top_k: 1
+  top_p: 1.0
+  streaming: 'off'
+
+datasets:
+  - name: dsr1-perf
+    type: performance
+    path: /work/dataset/ds-r1/deepseek_r1_eval.parquet
+  - name: deepseek_r1_accuracy
+    type: accuracy
+    path: /work/dataset/ds-r1/deepseek_r1_eval.parquet
+    accuracy_config:
+      eval_method: legacy_mlperf_deepseek_r1
+      ground_truth: ground_truth
+      num_repeats: 1
+      extras:
+        subset_column: dataset
+        question_column: question
+        tokenizer_path: /model
+
+settings:
+  runtime:
+    min_duration_ms: 5400000
+    max_duration_ms: 9540000
+    n_samples_to_issue: 800000
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: max_throughput          # offline: flood all samples, no target_qps
+  drain:
+    performance_timeout_s: null    # complete the long-OSL tail (correct offline throughput)
+  client:
+    num_workers: 32                # multiple of 8 gen servers / 8 frontends (x72)
+    max_connections: 42000         # 2x of x36 (32000)
+    warmup_connections: -1
+    worker_initialization_timeout: 300.0
+
+endpoint_config:
+  endpoints: []
+  api_type: openai_completions
+  api_key: null
+
+report_dir: ${SFLOW_TASK_OUTPUT_DIR}

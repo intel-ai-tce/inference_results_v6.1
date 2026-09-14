@@ -1,0 +1,9 @@
+{
+  "os_version": "Linux-6.8.0-124-generic-x86_64-with-glibc2.39",
+  "cpu_version": "x86_64",
+  "python_version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "os_version_sys": "ubuntu 24.04",
+  "system_name": "r10-bm-03.houcbglr1.hpecorp.net",
+  "mlc_repo_name": "mlcommons@mlperf-automations",
+  "mlc_repo_git_hash": "66ee3bb5fa259d1c4c915d5c8dcf34b5f23d9704"
+}

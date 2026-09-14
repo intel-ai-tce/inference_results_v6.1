@@ -1,0 +1,32 @@
+variables:
+  DP_MULTIPLICITY:
+    type: integer
+    value: 8
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+
+  BASE_PORT:
+    value: 8336
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b
+  TRTLLM_YAML:
+    value: /work/configs/gpt_oss_120b/B300-SXM-270GBx8/TRTLLM/Server/trtllm-serve-ifb-1gpu.yaml
+  TRTLLM_ENV_YAML:
+    value: /work/configs/gpt_oss_120b/B300-SXM-270GBx8/TRTLLM/Server/trtllm-serve-ifb-1gpu-env.yaml
+
+  BENCHMARK:
+    value: gpt-oss-120b
+  SCENARIO:
+    value: Server
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx8
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    value: ""

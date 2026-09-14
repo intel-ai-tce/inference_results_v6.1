@@ -1,0 +1,151 @@
+name: wan22-a14b-gb300x72-offline-accuracy-vbench
+version: '1.0'
+type: offline
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  min_new_tokens: 1
+  skip_special_tokens: true
+  streaming: 'off'
+datasets:
+- name: wan22_perf
+  type: performance
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 144
+- name: wan22_vbench
+  type: accuracy
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 248
+  accuracy_config:
+    eval_method: vbench
+    ground_truth: prompt
+    num_repeats: 1
+    extras:
+      vbench_project_path: /opt/vbench_accuracy
+      subprocess_timeout_s: 3600
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 0
+    n_samples_to_issue: 144
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: max_throughput
+  client:
+    num_workers: 72
+    log_level: INFO
+    warmup_connections: 0
+    auto_warmup_budget_fraction: 0.25
+    max_concurrent_warmup_connects: 128
+    max_connections: -1
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+      io_threads: 4
+      worker_io_threads: 1
+      high_water_mark: 0
+      linger: -1
+      immediate: 1
+    stream_all_chunks: false
+    worker_initialization_timeout: 300.0
+    worker_graceful_shutdown_wait: 0.5
+    worker_force_kill_timeout: 0.5
+    insecure: false
+    max_idle_time: 4.0
+    min_required_connections: -1
+    worker_gc_mode: relaxed
+  drain:
+    warmup_timeout_s: 3600.0
+    performance_timeout_s: 3600.0
+    metrics_drain_timeout_s: 0.0
+    metrics_tokenizer_workers: 2
+  warmup:
+    enabled: true
+    n_requests: 10
+    salt: true
+    drain: true
+    warmup_random_seed: 42
+  profiling: {}
+  early_stopping:
+    enabled: true
+  service_ready_timeout_s: 30.0
+endpoint_config:
+  endpoints:
+  - http://10.66.5.120:8012
+  - http://10.66.5.120:8014
+  - http://10.66.5.120:8013
+  - http://10.66.5.131:8025
+  - http://10.66.5.131:8027
+  - http://10.66.5.131:8026
+  - http://10.66.5.131:8024
+  - http://10.66.5.121:8017
+  - http://10.66.5.120:8015
+  - http://10.66.5.121:8019
+  - http://10.66.5.121:8016
+  - http://10.66.5.121:8018
+  - http://10.66.5.248:8034
+  - http://10.66.5.119:8011
+  - http://10.66.5.130:8021
+  - http://10.66.5.119:8010
+  - http://10.66.5.130:8023
+  - http://10.66.5.248:8035
+  - http://10.66.5.119:8008
+  - http://10.66.5.130:8020
+  - http://10.66.6.23:8061
+  - http://10.66.5.248:8033
+  - http://10.66.5.119:8009
+  - http://10.66.5.130:8022
+  - http://10.66.6.23:8062
+  - http://10.66.5.248:8032
+  - http://10.66.6.2:8040
+  - http://10.66.6.23:8063
+  - http://10.66.6.2:8041
+  - http://10.66.6.2:8043
+  - http://10.66.6.23:8060
+  - http://10.66.6.21:8055
+  - http://10.66.6.2:8042
+  - http://10.66.6.21:8054
+  - http://10.66.6.21:8052
+  - http://10.66.6.21:8053
+  - http://10.66.5.109:8007
+  - http://10.66.5.109:8004
+  - http://10.66.4.217:8003
+  - http://10.66.5.109:8006
+  - http://10.66.4.217:8000
+  - http://10.66.5.109:8005
+  - http://10.66.6.7:8046
+  - http://10.66.4.217:8002
+  - http://10.66.4.217:8001
+  - http://10.66.6.7:8044
+  - http://10.66.6.7:8045
+  - http://10.66.6.20:8050
+  - http://10.66.6.20:8048
+  - http://10.66.6.7:8047
+  - http://10.66.6.20:8051
+  - http://10.66.6.20:8049
+  - http://10.66.5.249:8036
+  - http://10.66.5.249:8037
+  - http://10.66.5.249:8039
+  - http://10.66.5.249:8038
+  - http://10.66.5.134:8028
+  - http://10.66.5.134:8031
+  - http://10.66.5.134:8030
+  - http://10.66.6.22:8058
+  - http://10.66.6.22:8059
+  - http://10.66.6.22:8056
+  - http://10.66.5.134:8029
+  - http://10.66.6.22:8057
+  - http://10.66.6.25:8068
+  - http://10.66.6.25:8070
+  - http://10.66.6.25:8071
+  - http://10.66.6.25:8069
+  - http://10.66.6.24:8065
+  - http://10.66.6.24:8067
+  - http://10.66.6.24:8064
+  - http://10.66.6.24:8066
+  api_type: videogen
+report_dir: /lustre/fsw/coreai_mlperf_inference/tinyinl/61_mlperf/0720/mlperf/closed/NVIDIA/build/logs/smoke_wan22_gb300_x72_offline_accperf_1784750516/2464384-wan22_videogen_accuracy-20260722-130635-67db49/endpoint_benchmark
+verbose: false
+enable_cpu_affinity: true

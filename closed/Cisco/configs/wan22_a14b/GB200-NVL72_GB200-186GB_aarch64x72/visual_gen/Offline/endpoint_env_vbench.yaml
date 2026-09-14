@@ -1,0 +1,18 @@
+# VBench accuracy-run env: the videogen client vars plus the VBench scorer
+# vars below (uv .venv + model caches).
+PATH: /opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HF_HOME: /home/mlperf_inference_storage/models/wan22-a14b/.hf_cache
+HF_HUB_OFFLINE: '1'
+# Force `uv run` (VBench scorer) to use the prebuilt aarch64 vbench .venv as-is
+# instead of re-syncing (a fresh sync builds tokenizers 0.13.3 from source and
+# needs a Rust toolchain not present in the client image).
+UV_NO_SYNC: '1'
+# VBench downloads ~5 GB of per-dimension model weights on first use; keep their
+# caches under the wan22-a14b scratch folder (pre-staged; offline read).
+TORCH_HOME: /home/mlperf_inference_storage/models/wan22-a14b/.torch_cache
+HF_HUB_CACHE: /home/mlperf_inference_storage/models/wan22-a14b/.hf_cache/hub
+
+# Fallback dir for the videogen adapter: if trtllm-serve returns raw video/mp4
+# bytes despite response_format=video_path, the client persists them here as
+# <query_id>.mp4 (the adapter fails loudly if this is unset). Must be writable.
+INFERENCE_ENDPOINT_VIDEOGEN_FALLBACK_DIR: /work/results/wan22-a14b/videos_fallback

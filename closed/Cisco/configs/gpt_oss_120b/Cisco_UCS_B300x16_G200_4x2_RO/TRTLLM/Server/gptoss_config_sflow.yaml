@@ -1,0 +1,45 @@
+variables:
+  DP_MULTIPLICITY:
+    type: integer
+    value: 16
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+  BASE_PORT:
+    value: 8336
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b
+  TRTLLM_YAML:
+    value: /work/configs/gpt_oss_120b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-ifb-offline-baseline.yaml
+  TRTLLM_ENV_EXPORTS:
+    value: |
+      export TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER='1'
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export OMP_NUM_THREADS='4'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+  HTTP_INTERFACE:
+    value: ""
+  HARNESS_CONFIG_DIR:
+    value: /work/configs/gpt_oss_120b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server
+  BENCHMARK:
+    value: gpt-oss-120b
+  SCENARIO:
+    value: Server
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx16
+  TEST_MODE:
+    value: PerformanceOnly
+  LOADGEN_MODE:
+    value: full
+  HARNESS_EXTRA_ARGS:
+    value: ""

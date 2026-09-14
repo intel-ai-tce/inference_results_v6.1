@@ -1,0 +1,2 @@
+[console_scripts]
+nv-mlpinf = nv_mlpinf.main:main

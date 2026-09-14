@@ -1,0 +1,35 @@
+# Llama2-70B disagg CONTEXT (prefill) worker — TP1, B300 x16 Server.
+# Batch and token limits match the selected 6:10 PD topology.
+backend: pytorch
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+max_batch_size: 24
+max_num_tokens: 16384
+max_seq_len: 2048
+print_iter_log: false
+enable_iter_perf_stats: false
+return_perf_metrics: false
+enable_layerwise_nvtx_marker: false
+stream_interval: 50
+disable_overlap_scheduler: true
+enable_chunked_prefill: true
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+kv_cache_config:
+  dtype: fp8
+  free_gpu_memory_fraction: 0.90
+  enable_block_reuse: false
+# Selected postprocess worker count.
+num_postprocess_workers: 4
+torch_compile_config:
+  enable_fullgraph: true
+  enable_inductor: false
+  enable_piecewise_cuda_graph: true
+  enable_userbuffers: true
+  capture_num_tokens: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384]
+cache_transceiver_config:
+  max_tokens_in_buffer: 16384
+  # B300 KV transfer uses the UCX transport pinned by the environment file.
+  backend: UCX
+sampler_type: TRTLLMSampler

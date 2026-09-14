@@ -1,0 +1,23 @@
+{
+  "data_fetch": {
+    "pinned_commit": "175ea7ba24a826946458f72ec4a2221215f52802",
+    "tool": "python3 -m tools.fetch_data"
+  },
+  "docker_base_image": "amdsiloai/pytorch-xdit:v26.6",
+  "docker_build_args": {
+    "AITER_COMMIT": "039f6fe8c128bafa0bce6cc81818b68846c974e3",
+    "MLPERF_INFERENCE_COMMIT": "2a3cb460f5edb9e3b173739c2937f081b4c861e9",
+    "ROCM_VERSION": "7.13.0a20260515",
+    "VBENCH_COMMIT": "45e79ec14e69a2187202c675d2dbce1a71843d53",
+    "XDIT_COMMIT": "efa43ba0c1f9c696b0fc7a0a04b62ef1fade29f4"
+  },
+  "experiment_root": "/workspace/wan-harness/runs/wan22/2026-07-30T12-48-59Z_g3388821-submission5",
+  "experiment_started_at_utc": "2026-07-30T12-48-59Z",
+  "harness_git_branch": "mlperf-61-wan22/submission-5",
+  "harness_git_commit_subject": "Select fmha_v3 kernels per scenario",
+  "harness_git_sha": "3388821ec7e683ba5b79e15cbf4dba3183dd80d6",
+  "model": {
+    "repo_id": "Wan-AI/Wan2.2-T2V-A14B-Diffusers",
+    "revision": "5be7df9619b54f4e2667b2755bc6a756675b5cd7"
+  }
+}

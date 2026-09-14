@@ -1,0 +1,7 @@
+numpy==2.2.6
+datasets==3.6.0
+pylatexenc==2.10
+anthropic>=0.42.0
+
+-e /work/3rdparty/mlc-inference/language/deepseek-r1/submodules/LiveCodeBench
+-e /work/3rdparty/mlc-inference/language/deepseek-r1/submodules/prm800k

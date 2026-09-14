@@ -1,0 +1,37 @@
+# DSR1 disagg-OFFLINE (x72 4c8g) — GEN (decode) engine (OFFLINE, bs1024 KV-pressure test: no stream_interval, +attention_dp_config balance). dep8 (TP=EP=8), bs1280, MTP-0, bigbuf.
+# Mirror of harness scaleout/shmoo/gen/gen-dep8-bs1280-mtp0-bigbuf-noperf.yaml.
+backend: pytorch
+tensor_parallel_size: 8
+moe_expert_parallel_size: 8
+enable_attention_dp: true
+enable_lm_head_tp_in_adp: true
+attention_dp_config:            # offline decode-batch balancing across ADP ranks
+  enable_balance: false
+  batching_wait_iters: 10
+  timeout_iters: 500
+pipeline_parallel_size: 1
+max_batch_size: 1024
+max_num_tokens: 8192   # raised from 5120: offline gen context-compute chunk hit 5788 > 5120 -> rank crash (267295). agg offline uses 6144.
+max_seq_len: 23200
+kv_cache_config:
+  enable_block_reuse: false
+  free_gpu_memory_fraction: 0.9
+  dtype: fp8
+moe_config:
+  backend: CUTEDSL
+  use_low_precision_moe_combine: false
+nvfp4_gemm_config:
+  allowed_backends: [cutlass, cublaslt, cutedsl, cuda_core]
+cache_transceiver_config:
+  max_tokens_in_buffer: 36864
+  backend: UCX
+num_postprocess_workers: 4
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes: [1,2,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,72,80,88,96,104,112,120,128,160,192,224,256,288,320,352,384,416,448,480,512,544,576,608,640,672,704,736,768,800,832,864,896,928,960,992,1024]
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+speculative_config: null          # MTP-0
+print_iter_log: true
+enable_iter_perf_stats: true

@@ -1,0 +1,13 @@
+{"op": "create_linearuvm", "table_mb": 488, "gpu_cache_mb": 64, "auto_insert_threshold": 65536}
+{"op": "lookup_cold", "n_keys": 65536, "ms": 74.357, "hit_gpu": 0.0, "hit_host": 0.0, "verified": true}
+{"op": "lookup_warm", "iter": 0, "n_keys": 65536, "ms": 1.445, "hit_gpu": 0.062, "hit_host": 0.0, "Mlookups_per_s": 45.35, "verified": true}
+{"op": "lookup_warm", "iter": 1, "n_keys": 65536, "ms": 0.838, "hit_gpu": 0.8162, "hit_host": 0.0, "Mlookups_per_s": 78.16, "verified": true}
+{"op": "lookup_warm", "iter": 2, "n_keys": 65536, "ms": 0.558, "hit_gpu": 0.8193, "hit_host": 0.0, "Mlookups_per_s": 117.54, "verified": true}
+{"op": "lookup_warm", "iter": 4, "n_keys": 65536, "ms": 0.414, "hit_gpu": 0.8173, "hit_host": 0.0, "Mlookups_per_s": 158.29, "verified": true}
+{"op": "lookup_warm", "iter": 8, "n_keys": 65536, "ms": 0.347, "hit_gpu": 0.8214, "hit_host": 0.0, "Mlookups_per_s": 188.95, "verified": true}
+{"op": "lookup_warm", "iter": 16, "n_keys": 65536, "ms": 0.352, "hit_gpu": 0.8187, "hit_host": 0.0, "Mlookups_per_s": 185.97, "verified": true}
+{"op": "lookup_warm", "iter": 23, "n_keys": 65536, "ms": 0.356, "hit_gpu": 0.8182, "hit_host": 0.0, "Mlookups_per_s": 184.32, "verified": true}
+{"op": "hitrate_summary", "cold": 0.062, "warm": 0.8182, "climbed": true}
+{"op": "update+readback", "n_keys": 4, "verified": true, "sample": [-7.0, -7.0, -7.0]}
+{"op": "create_nocache", "table_mb": 97}
+{"op": "lookup_gpu_resident", "n_keys": 8192, "ms": 0.257, "hit_gpu": 1.0, "verified": true}

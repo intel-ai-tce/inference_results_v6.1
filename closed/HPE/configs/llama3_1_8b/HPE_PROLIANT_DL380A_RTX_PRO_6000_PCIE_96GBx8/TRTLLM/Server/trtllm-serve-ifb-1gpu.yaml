@@ -1,0 +1,24 @@
+backend: pytorch
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+max_num_tokens: 2784 #2656 #3072
+max_seq_len: 2560 #2656 #2048
+max_batch_size: 1280
+max_input_len: 2540 #2304
+print_iter_log: false
+enable_iter_perf_stats: false
+return_perf_metrics: false
+enable_layerwise_nvtx_marker: false
+stream_interval: 4 #50
+enable_chunked_prefill: true
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+kv_cache_config:
+  dtype: fp8
+  free_gpu_memory_fraction: 0.97
+  enable_block_reuse: false
+num_postprocess_workers: 4
+moe_config:
+  backend: CUTLASS
+sampler_type: TRTLLMSampler

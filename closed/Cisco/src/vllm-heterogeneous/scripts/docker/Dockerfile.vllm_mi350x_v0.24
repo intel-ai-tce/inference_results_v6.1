@@ -1,0 +1,73 @@
+FROM rocm/dev-ubuntu-24.04@sha256:92f309c51b52cef8762867848f1529dee821624f23cd5df38455e819538f762f
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+
+ARG AITER_SHA256=8881b0a79bcddec6a9688998167713b5338831f35bb8740f9babb1f83d992ed7
+ARG FLYDSL_SHA256=5b52f9dfe60bd549fcffe9aada576d8295a71c45b792cf1fee9dddb96a25ec56
+ARG VLLM_WHEEL_SHA256=0c30d6eb119c9883d9c43cd3b31e792b39666648df09bf458f00e60918d1feb6
+ARG PYTORCH_INDEX=https://download.pytorch.org/whl/rocm7.2
+ARG AMDSMI_VERSION=26.2.2+97f5574fe2
+ARG OMEGACONF_VERSION=2.3.1
+ARG PYBIND11_VERSION=3.0.1
+ARG MLPERF_LOADGEN_REPOSITORY=https://github.com/mlcommons/inference.git
+ARG MLPERF_LOADGEN_TAG=v5.1.1
+ARG MLPERF_LOADGEN_VERSION=5.1.1
+ARG MLPERF_LOADGEN_REVISION=6776245e99dce0600cfc9a6fb61efd310f87de3d
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    VLLM_TARGET_DEVICE=rocm \
+    VIRTUAL_ENV=/opt/vllm-venv \
+    PATH=/opt/vllm-venv/bin:${PATH}
+
+USER root
+WORKDIR /opt/mlperf-rebuild
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      build-essential cmake curl git libnuma-dev numactl ninja-build pkg-config \
+      python3-dev python3-pip python3-venv \
+ && python3 -m venv "${VIRTUAL_ENV}" \
+ && python -m pip install --no-cache-dir --upgrade \
+      "pip<27" "setuptools==80.10.2" "wheel==0.47.0" \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY artifacts/src/vllm-v0.24.0.tar.gz /tmp/source-archives/vllm-v0.24.0.tar.gz
+COPY artifacts/recovered/vllm-0.24.0+rocm723-cp312-cp312-linux_x86_64.whl /tmp/vllm-0.24.0+rocm723-cp312-cp312-linux_x86_64.whl
+COPY artifacts/src/amd_aiter-0.1.17rc0+rocm7.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl /tmp/amd_aiter-0.1.17rc0+rocm7.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+COPY artifacts/wheels/flydsl/flydsl-0.2.2-cp312-cp312-manylinux_2_27_x86_64.whl /tmp/flydsl-0.2.2-cp312-cp312-manylinux_2_27_x86_64.whl
+RUN echo "${VLLM_WHEEL_SHA256}  /tmp/vllm-0.24.0+rocm723-cp312-cp312-linux_x86_64.whl" | sha256sum -c - \
+ && echo "${AITER_SHA256}  /tmp/amd_aiter-0.1.17rc0+rocm7.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" | sha256sum -c - \
+ && echo "${FLYDSL_SHA256}  /tmp/flydsl-0.2.2-cp312-cp312-manylinux_2_27_x86_64.whl" | sha256sum -c - \
+ && mkdir -p /opt/mlperf-rebuild/vllm \
+ && tar -xzf /tmp/source-archives/vllm-v0.24.0.tar.gz --strip-components=1 -C /opt/mlperf-rebuild/vllm
+
+RUN printf "%s\n" "torch==2.11.0+rocm7.2" > /tmp/pip-constraints.txt \
+ && python -m pip install --no-cache-dir --extra-index-url "${PYTORCH_INDEX}" \
+      "torch==2.11.0+rocm7.2" \
+ && cd /opt/mlperf-rebuild/vllm \
+ && python -m pip install --no-cache-dir --extra-index-url "${PYTORCH_INDEX}" --constraint /tmp/pip-constraints.txt -r requirements/rocm.txt \
+ && python -m pip install --no-cache-dir --extra-index-url "${PYTORCH_INDEX}" --constraint /tmp/pip-constraints.txt \
+      "compressed-tensors==0.17.0" "msgpack==1.2.1" "nixl-cu12==0.9.0" \
+      "nltk==3.9.4" "omegaconf==2.3.1" "pandas==3.0.3" "rouge-score==0.1.2" \
+      "transformers==5.12.1" "triton==3.6.0" \
+ && python -m pip install --force-reinstall --no-deps --no-cache-dir \
+      /tmp/vllm-0.24.0+rocm723-cp312-cp312-linux_x86_64.whl \
+      /tmp/amd_aiter-0.1.17rc0+rocm7.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
+      /tmp/flydsl-0.2.2-cp312-cp312-manylinux_2_27_x86_64.whl
+
+RUN python -m pip install --no-cache-dir "pybind11==${PYBIND11_VERSION}" \
+ && python -m pip install --no-cache-dir --no-build-isolation /opt/rocm/share/amd_smi \
+ && git clone --depth=1 --branch "${MLPERF_LOADGEN_TAG}" "${MLPERF_LOADGEN_REPOSITORY}" /opt/mlperf-rebuild/mlperf-inference \
+ && test "$(git -C /opt/mlperf-rebuild/mlperf-inference rev-parse HEAD)" = "${MLPERF_LOADGEN_REVISION}" \
+ && python -m pip install --no-cache-dir --no-build-isolation /opt/mlperf-rebuild/mlperf-inference/loadgen \
+ && rm -rf /opt/mlperf-rebuild/mlperf-inference
+
+RUN AMDSMI_EXPECT="${AMDSMI_VERSION}" OMEGACONF_EXPECT="${OMEGACONF_VERSION}" PYBIND11_EXPECT="${PYBIND11_VERSION}" LOADGEN_EXPECT="${MLPERF_LOADGEN_VERSION}" python -c 'import importlib.metadata as m, os; expected={"amdsmi":os.environ["AMDSMI_EXPECT"], "pybind11":os.environ["PYBIND11_EXPECT"], "mlcommons_loadgen":os.environ["LOADGEN_EXPECT"], "omegaconf":os.environ["OMEGACONF_EXPECT"], "amd-aiter":"0.1.17rc0+rocm7.2.manylinux.2.28", "flydsl":"0.2.2", "vllm":"0.24.0+rocm723", "transformers":"5.12.1", "triton":"3.6.0", "nixl-cu12":"0.9.0", "torch":"2.11.0+rocm7.2"}; actual={k:m.version(k) for k in expected}; print(actual); assert actual == expected, (actual, expected)' \
+ && python -c 'import amdsmi, mlperf_loadgen, omegaconf, pybind11, torch, vllm; assert torch.version.hip.startswith("7.2"), torch.version.hip; assert vllm.__version__ == "0.24.0", vllm.__version__'
+
+ENV HTTP_PROXY= HTTPS_PROXY= ALL_PROXY= http_proxy= https_proxy= all_proxy=
+
+WORKDIR /inference
+ENTRYPOINT []
+CMD ["sleep", "infinity"]

@@ -1,0 +1,11 @@
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package punkt_tab to /root/nltk_data...
+[nltk_data]   Package punkt_tab is already up-to-date!
+INFO:absl:Using default tokenizer.
+
+Results
+
+{'rouge1': '38.8436', 'rouge2': '16.0905', 'rougeL': '24.6447', 'rougeLsum': '35.9462', 'gen_len': 8127418, 'gen_num': 13368}
+
+hash=297ee8e9ad41b0b97f76d61f1ad23ae5fb8fbccbfc078dfad0ab43b50b6e7e81

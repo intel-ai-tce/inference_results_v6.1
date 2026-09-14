@@ -1,0 +1,70 @@
+# Device-specific overrides for this system (gitignored).
+#
+# Generic defaults live in config.default.sh. Scripts source THIS file first,
+# then the template, and every assignment is guarded with ${VAR:-...}, so the
+# resolution order per variable is (first wins):
+#   1. Exported shell env var   2. This file   3. config.default.sh
+#
+# To override a value: copy the line you care about from config.default.sh to
+# here and edit it (keep the ${VAR:-...} guard), or just export it in your shell.
+
+# ── Filesystem paths (this host) ─────────────────────────────────────────────
+RUN_DATA_DIR="${RUN_DATA_DIR:-/data/datasets/e2e-rag}"
+RUN_DB_NAME="${RUN_DB_NAME:-vector_html_hnsw_len768_ov32_word_reference.db}"
+EMBEDDING_MODEL="${EMBEDDING_MODEL:-/data/models/intfloat_e5-base-v2/e5-base-v2}"
+INFERENCE_RERANKER_MODEL="${INFERENCE_RERANKER_MODEL:-/data/models/colbert-ir_colbertv2.0/colbertv2.0}"
+
+# ── Device (all CPU-served on this host) ─────────────────────────────────────
+INGESTION_DEVICE="${INGESTION_DEVICE:-cpu}"
+INFERENCE_DEVICE="${INFERENCE_DEVICE:-cpu}"
+
+# ── LLM endpoints / served model ids (as launched by scripts/servers/) ───────
+# 20B grader on 8192, 120B query/sufficiency on 8123, 8B judge on 8125.
+INFERENCE_LLM_URL="${INFERENCE_LLM_URL:-http://127.0.0.1:8192/v1/chat/completions}"
+INFERENCE_MODEL="${INFERENCE_MODEL:-/data/gpt-oss-20b-mxfp4}"
+INFERENCE_QUERY_URL="${INFERENCE_QUERY_URL:-http://127.0.0.1:8123/v1/chat/completions}"
+INFERENCE_QUERY_MODEL="${INFERENCE_QUERY_MODEL:-/data/gpt-oss-120b-mxfp4}"
+INFERENCE_SUFFICIENCY_URL="${INFERENCE_SUFFICIENCY_URL:-http://127.0.0.1:8123/v1/chat/completions}"
+INFERENCE_SUFFICIENCY_MODEL="${INFERENCE_SUFFICIENCY_MODEL:-/data/gpt-oss-120b-mxfp4}"
+INFERENCE_JUDGE_URL="${INFERENCE_JUDGE_URL:-http://127.0.0.1:8125/v1/chat/completions}"
+INFERENCE_JUDGE_MODEL="${INFERENCE_JUDGE_MODEL:-meta-llama/Llama-3.1-8B-Instruct}"
+
+# ── vLLM server launchers (this host: CPU-served, tuned core bindings) ───────
+SERVER_20B_MODEL="${SERVER_20B_MODEL:-/data/gpt-oss-20b-mxfp4}"
+SERVER_120B_MODEL="${SERVER_120B_MODEL:-/data/gpt-oss-120b-mxfp4}"
+SERVER_JUDGE_MODEL="${SERVER_JUDGE_MODEL:-/data/models/Llama-3.1-8B-Instruct}"
+
+# ── Retrieval services (absolute model paths for this host) ──────────────────
+SERVER_EMBED_MODEL="${SERVER_EMBED_MODEL:-/data/models/intfloat_e5-base-v2/e5-base-v2}"
+SERVER_EMBED_DB="${SERVER_EMBED_DB:-/data/datasets/e2e-rag/vector_html_hnsw_len768_ov32_word_reference.db}"
+SERVER_RERANK_MODEL="${SERVER_RERANK_MODEL:-/data/models/colbert-ir_colbertv2.0/colbertv2.0}"
+
+# ── DB verification (scripts/db/) ────────────────────────────────────────────
+# REFERENCE_DATABASE: reference DB for compare_dbs.sh (on-disk comparison).
+# DB_MANIFEST_V2 / DB_MANIFEST: default manifest path for the v2/v1 verify scripts.
+REFERENCE_DATABASE="${REFERENCE_DATABASE:-/data/datasets/e2e-rag/vector_html_hnsw_len768_ov32_word_reference.db}"
+DB_MANIFEST_V2="${DB_MANIFEST_V2:-db_manifest_v2_reference.json.gz}"
+DB_MANIFEST="${DB_MANIFEST:-db_manifest_reference.json.gz}"
+
+# ── Secrets (export from your shell instead of committing) ───────────────────
+# export OPENROUTER_API_KEY=sk-or-...
+
+# ── A/B gate: rerank fix (TEMPORARY, for accuracy-impact comparison) ─────────
+# RERANK_FIX=1 (default): fixed config — 6 rerank workers / 21 cores, 20B @36/node.
+# RERANK_FIX=0          : OLD pre-fix config — 2 workers / 6 cores, 20B @40/node
+#                         (rerank floods; some rerank calls timed out under load).
+# Set at launch time: RERANK_FIX=0 bash scripts/servers/launch_server_20b.sh ...
+# Remove this whole block once the A/B is done.
+if [ "${RERANK_FIX:-1}" = "0" ]; then
+    SERVER_20B_CORES_PER_NODE="${SERVER_20B_CORES_PER_NODE:-40}"
+    SERVER_120B_HOST_CORES="${SERVER_120B_HOST_CORES:-40-42,83}"
+    SERVER_EMBED_CORES="${SERVER_EMBED_CORES:-84-85}"
+    SERVER_RERANK_NUM_WORKERS="${SERVER_RERANK_NUM_WORKERS:-2}"
+    SERVER_RERANK_WORKER_CORES="${SERVER_RERANK_WORKER_CORES:-126-128;169-171}"
+else
+    SERVER_20B_CORES_PER_NODE="${SERVER_20B_CORES_PER_NODE:-36}"
+    SERVER_120B_HOST_CORES="${SERVER_120B_HOST_CORES:-36-38,79}"
+    SERVER_EMBED_CORES="${SERVER_EMBED_CORES:-80-82}"
+    SERVER_RERANK_NUM_WORKERS="${SERVER_RERANK_NUM_WORKERS:-6}"
+    SERVER_RERANK_WORKER_CORES="${SERVER_RERANK_WORKER_CORES:-39-42;83-85;122-124;125-128;165-167;168-171}"
+fi

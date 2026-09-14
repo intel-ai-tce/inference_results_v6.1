@@ -1,0 +1,10 @@
+--- a/vllm/_aiter_ops.py
++++ b/vllm/_aiter_ops.py
+@@ -2491,6 +2491,7 @@
+             V_QScale_asm=V_QScale_asm,
+             out_=out_,
+             kv_cache_dtype=kv_cache_dtype,
++            high_precision=0,  # TUNE: non-hp ASM PA kernel (pa_..._2tg_4w), fastest + ROUGE-validated MLPerf-legal
+         )
+ 
+     @staticmethod

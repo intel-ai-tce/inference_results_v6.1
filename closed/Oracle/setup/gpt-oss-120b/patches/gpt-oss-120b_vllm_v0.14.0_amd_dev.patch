@@ -1,0 +1,173 @@
+diff --git a/vllm/config/profiler.py b/vllm/config/profiler.py
+index 76cc546f3..e489ec6d8 100644
+--- a/vllm/config/profiler.py
++++ b/vllm/config/profiler.py
+@@ -15,7 +15,7 @@ from vllm.utils.hashing import safe_hash
+ 
+ logger = init_logger(__name__)
+ 
+-ProfilerKind = Literal["torch", "cuda"]
++ProfilerKind = Literal["torch", "cuda", "rpd"]
+ 
+ 
+ @config
+@@ -27,7 +27,8 @@ class ProfilerConfig:
+     """Which profiler to use. Defaults to None. Options are:
+ 
+     - 'torch': Use PyTorch profiler.\n
+-    - 'cuda': Use CUDA profiler."""
++    - 'cuda': Use CUDA profiler.\n
++    - 'rpd': Use RPD profiler."""
+ 
+     torch_profiler_dir: str = ""
+     """Directory to save torch profiler traces. Both AsyncLLM's CPU traces and
+diff --git a/vllm/envs.py b/vllm/envs.py
+index ce5ef4c16..63d754a39 100755
+--- a/vllm/envs.py
++++ b/vllm/envs.py
+@@ -103,6 +103,10 @@ if TYPE_CHECKING:
+     VLLM_PROFILER_DELAY_ITERS: str | None = None
+     VLLM_PROFILER_MAX_ITERS: str | None = None
+     # End of deprecated env variables for profiling
++    ENABLE_TRACING_RPD: bool = False
++    VLLM_SUBSEQUENT_DECODE_STEPS: int = 0
++    VLLM_MIN_REQUEST_DECODE_STEP: int = 0
++    VLLM_LOG_PREEMPTIONS: bool = False
+     VLLM_USE_AOT_COMPILE: bool = False
+     VLLM_USE_BYTECODE_HOOK: bool = False
+     VLLM_FORCE_AOT_LOAD: bool = False
+@@ -475,6 +479,18 @@ def get_vllm_port() -> int | None:
+ logger = logging.getLogger(__name__)
+ 
+ environment_variables: dict[str, Callable[[], Any]] = {
++    "ENABLE_TRACING_RPD": lambda: bool(
++        int(os.getenv("ENABLE_TRACING_RPD", "0"))
++    ),
++    "VLLM_SUBSEQUENT_DECODE_STEPS": lambda: int(
++        os.getenv("VLLM_SUBSEQUENT_DECODE_STEPS", "0")
++    ),
++    "VLLM_MIN_REQUEST_DECODE_STEP": lambda: int(
++        os.getenv("VLLM_MIN_REQUEST_DECODE_STEP", "0")
++    ),
++    "VLLM_LOG_PREEMPTIONS": lambda: bool(
++        int(os.getenv("VLLM_LOG_PREEMPTIONS", "0"))
++    ),
+     # ================== Installation Time Env Vars ==================
+     # Target device of vLLM, supporting [cuda (by default),
+     # rocm, cpu]
+diff --git a/vllm/v1/core/sched/scheduler.py b/vllm/v1/core/sched/scheduler.py
+index bdd6d2a3c..a23e0a29a 100644
+--- a/vllm/v1/core/sched/scheduler.py
++++ b/vllm/v1/core/sched/scheduler.py
+@@ -224,6 +224,10 @@ class Scheduler(SchedulerInterface):
+         )
+         self.use_pp = self.parallel_config.pipeline_parallel_size > 1
+         self.use_v2_model_runner = envs.VLLM_USE_V2_MODEL_RUNNER
++        self.max_decode_step = envs.VLLM_SUBSEQUENT_DECODE_STEPS
++        self.min_request_for_decode = envs.VLLM_MIN_REQUEST_DECODE_STEP
++        self.current_step = 0
++        self.preemption_count = 0
+         self.perf_metrics: ModelMetrics | None = None
+         if self.log_stats and vllm_config.observability_config.enable_mfu_metrics:
+             self.perf_metrics = ModelMetrics(vllm_config)
+@@ -360,6 +364,9 @@ class Scheduler(SchedulerInterface):
+                     if new_blocks is not None:
+                         # The request can be scheduled.
+                         break
++                    elif envs.VLLM_LOG_PREEMPTIONS:
++                        self.preemption_count = self.preemption_count + 1
++                        print(f"preemptions: {self.preemption_count}\n", flush=True)
+ 
+                     # The request cannot be scheduled.
+                     # Preempt the lowest-priority request.
+@@ -461,6 +468,10 @@ class Scheduler(SchedulerInterface):
+         # Next, schedule the WAITING requests.
+         if not preempted_reqs:
+             while self.waiting and token_budget > 0:
++                if (self.max_decode_step
++                        and self.current_step != 0
++                        and (len(self.running) >= self.min_request_for_decode)):
++                    break
+                 if len(self.running) == self.max_num_running_reqs:
+                     break
+ 
+@@ -795,6 +806,12 @@ class Scheduler(SchedulerInterface):
+ 
+         with record_function_or_nullcontext("schedule: update_after_schedule"):
+             self._update_after_schedule(scheduler_output)
++        
++        if self.max_decode_step:
++            if self.current_step >= self.max_decode_step:
++                self.current_step = 0
++            else:
++                self.current_step = self.current_step + 1
+         return scheduler_output
+ 
+     def _preempt_request(self, request: Request, timestamp: float) -> None:
+diff --git a/vllm/v1/worker/gpu_worker.py b/vllm/v1/worker/gpu_worker.py
+index 562664524..b12256c0c 100644
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -101,6 +101,10 @@ class Worker(WorkerBase):
+             )
+         elif profiler_config.profiler == "cuda":
+             self.profiler = CudaProfilerWrapper(profiler_config)
++        elif envs.ENABLE_TRACING_RPD:
++            from rpdTracerControl import rpdTracerControl
++            rpdTracerControl.setFilename(name=os.environ["RPDT_FILENAME"], append=True)
++            self.profiler = rpdTracerControl()
+         else:
+             self.profiler = None
+ 
+@@ -549,7 +553,7 @@ class Worker(WorkerBase):
+         # add trace annotation so that we can easily distinguish
+         # context/generation request numbers in each iteration.
+         # A context request is a request that has not yet generated any tokens
+-        if not self.profiler:
++        if not self.profiler or envs.ENABLE_TRACING_RPD:
+             return nullcontext()
+ 
+         self.profiler.step()
+@@ -626,9 +630,15 @@ class Worker(WorkerBase):
+             intermediate_tensors = IntermediateTensors(tensor_dict)
+ 
+         with self.annotate_profile(scheduler_output):
++            if envs.ENABLE_TRACING_RPD:
++                num_new = len(scheduler_output.scheduled_new_reqs)
++                num_cached = len(scheduler_output.scheduled_cached_reqs.req_ids)
++                self.profiler.rangePush("python",  f"execute_new_{num_new}_cached_{num_cached}", f"")
+             output = self.model_runner.execute_model(
+                 scheduler_output, intermediate_tensors
+             )
++            if envs.ENABLE_TRACING_RPD:
++                self.profiler.rangePop()
+             if isinstance(
+                 output, ModelRunnerOutput | AsyncModelRunnerOutput | NoneType
+             ):
+@@ -662,8 +672,14 @@ class Worker(WorkerBase):
+             )
+         if is_start:
+             self.profiler.start()
++            if envs.ENABLE_TRACING_RPD:
++                self.profiler.rangePush("python", f"profile", f"")
+         else:
++            if envs.ENABLE_TRACING_RPD:
++                self.profiler.rangePop()
+             self.profiler.stop()
++            if envs.ENABLE_TRACING_RPD:
++                self.profiler.flush()
+ 
+     def execute_dummy_batch(self) -> None:
+         if self.use_v2_model_runner:
+@@ -933,7 +949,10 @@ class Worker(WorkerBase):
+         if runner := getattr(self, "model_runner", None):
+             runner.ensure_kv_transfer_shutdown()
+         if self.profiler is not None:
+-            self.profiler.shutdown()
++            if envs.ENABLE_TRACING_RPD:
++                self.profiler.flush()
++            else:
++                self.profiler.shutdown()
+ 
+ 
+ def init_worker_distributed_environment(

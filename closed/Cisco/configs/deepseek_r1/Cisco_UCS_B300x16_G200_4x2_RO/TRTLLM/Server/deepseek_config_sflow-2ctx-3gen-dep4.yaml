@@ -1,0 +1,90 @@
+# DeepSeek-R1 B300x16 Server PD: 2x DEP2 context, 3x DEP4 generation, 2 frontends.
+variables:
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 2
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 2
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 3
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 4
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 2
+  TOTAL_GPUS:
+    description: "Worker GPU count: ctx + gen (= 2*2 + 3*4 = 16)"
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  # Both stay round_robin. See the header: routing cannot affect a TPOT-bound
+  # workload, and this run is testing decode width.
+  CTX_ROUTER_TYPE:
+    value: "round_robin"
+  GEN_ROUTER_TYPE:
+    value: "round_robin"
+
+  BASE_PORT:
+    value: 8336
+  FRONTEND_PORT:
+    value: 8000
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/deepseek-r1/official/centml-DeepSeek-R1-NVFP4-v2-mlpinf/93947a0d7bd04f73ff98636f6b18ff5839e7aaf9
+  TRTLLM_YAML_CTX:
+    value: /work/configs/deepseek_r1/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-disagg-ctx-dep2.yaml
+  TRTLLM_ENV_EXPORTS_CTX:
+    value: |
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export TRTLLM_ENABLE_PDL='1'
+      export NCCL_GRAPH_MIXING_SUPPORT='0'
+      export NCCL_IB_GID_INDEX='3'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+      export TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER='1'
+  TRTLLM_YAML_GEN:
+    value: /work/configs/deepseek_r1/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-disagg-gen-dep4.yaml
+  TRTLLM_ENV_EXPORTS_GEN:
+    value: |
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export TRTLLM_ENABLE_PDL='1'
+      export NCCL_GRAPH_MIXING_SUPPORT='0'
+      export TLLM_PROFILE_START_STOP='8000-8100'
+      export NCCL_IB_GID_INDEX='3'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+      export TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER='1'
+  HTTP_INTERFACE:
+    value: ""
+  HARNESS_CONFIG_DIR:
+    value: /work/configs/deepseek_r1/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server
+
+  BENCHMARK:
+    value: deepseek-r1
+  SCENARIO:
+    value: Server
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx16
+  TEST_MODE:
+    value: PerformanceOnly
+  LOADGEN_MODE:
+    value: full
+  HARNESS_EXTRA_ARGS:
+    value: ""

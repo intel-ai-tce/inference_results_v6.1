@@ -1,0 +1,11 @@
+TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER: '1'
+TRTLLM_SERVER_DISABLE_GC: '1'
+# TRTLLM WARNING (required on Lyris)
+OMPI_MCA_coll_ucc_enable: '0'
+TRTLLM_ENABLE_PDL: '0'
+TLLM_PROFILE_START_STOP: '12000-12100'
+# UCX: exclude backend NVLink interfaces that lack IPv4
+UCX_NET_DEVICES: 'enP22p1s0f1'
+UCX_TLS: 'tcp,cuda_copy,cuda_ipc'
+OMPI_MCA_btl_tcp_if_include: 'enP22p1s0f1'
+OMPI_MCA_pml: 'ucx'

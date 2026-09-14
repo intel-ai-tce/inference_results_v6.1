@@ -1,0 +1,86 @@
+2026-07-30 07:31:37,610 - INFO - Loading MLPerf log from /home/mlperf_inference_storage/nv-mlpinf-partner/closed/NVIDIA/sflow_output/225-trtllm_ifb-20260730-072124-1a62ee/mlperf_harness/PerformanceOnly/B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/mlperf_log_accuracy.json
+2026-07-30 07:31:37,686 - INFO - Loaded 990 log entries
+2026-07-30 07:31:37,686 - INFO - Loading reference data from /home/mlperf_inference_storage/data/gpt-oss/v4/acc/acc_eval_compliance_gpqa.parquet
+2026-07-30 07:31:37,706 - INFO - Loaded reference data from Parquet file
+2026-07-30 07:31:37,717 - INFO - Reference data shape: (990, 6)
+2026-07-30 07:31:37,717 - INFO - Reference columns: ['input_tokens', 'num_tokens', 'text_input', 'original_messages', 'ground_truth', 'dataset']
+2026-07-30 07:31:37,718 - INFO - Unique datasets in reference data (1 total):
+2026-07-30 07:31:37,718 - INFO -   'gpqa_diamond' (990 samples)
+2026-07-30 07:31:37,718 - INFO - 
+Sample rows from reference data:
+2026-07-30 07:31:37,718 - INFO -   Row 0: dataset='gpqa_diamond'
+2026-07-30 07:31:37,718 - INFO -   Row 1: dataset='gpqa_diamond'
+2026-07-30 07:31:37,718 - INFO -   Row 2: dataset='gpqa_diamond'
+2026-07-30 07:31:37,718 - INFO - 
+Expected Dataset → Evaluator mapping:
+2026-07-30 07:31:37,718 - INFO -   'gpqa_diamond' (normalized: 'gpqa_diamond') → 'gpqa'
+2026-07-30 07:31:37,718 - INFO - Loading tokenizer: openai/gpt-oss-120b
+2026-07-30 07:31:37,928 - INFO - HTTP Request: HEAD https://huggingface.co/openai/gpt-oss-120b/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 07:31:37,964 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/openai/gpt-oss-120b/b5c939de8f754692c1647ca79fbf85e8c1e70f8a/config.json "HTTP/1.1 200 OK"
+2026-07-30 07:31:38,088 - INFO - HTTP Request: HEAD https://huggingface.co/openai/gpt-oss-120b/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-30 07:31:38,128 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/openai/gpt-oss-120b/b5c939de8f754692c1647ca79fbf85e8c1e70f8a/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-30 07:31:38,260 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-07-30 07:31:38,365 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-07-30 07:31:39,760 - INFO - HTTP Request: GET https://huggingface.co/api/models/openai/gpt-oss-120b "HTTP/1.1 200 OK"
+2026-07-30 07:31:39,788 - INFO - Grouping MLPerf log entries by dataset...
+2026-07-30 07:31:39,825 - INFO - Grouped entries by dataset:
+2026-07-30 07:31:39,825 - INFO -   gpqa_diamond: 990 entries
+2026-07-30 07:31:39,825 - INFO - Total entries: 990
+2026-07-30 07:31:39,825 - INFO - 
+Processing MLPerf log entries by dataset...
+2026-07-30 07:31:39,825 - INFO - 
+================================================================================
+2026-07-30 07:31:39,825 - INFO - Processing gpqa_diamond: 990 samples
+2026-07-30 07:31:39,825 - INFO - ================================================================================
+
+Evaluating gpqa_diamond:   0%|          | 0/990 [00:00<?, ?entry/s]
+Evaluating gpqa_diamond:  26%|██▌       | 259/990 [00:00<00:00, 2583.36entry/s]
+Evaluating gpqa_diamond:  52%|█████▏    | 518/990 [00:00<00:00, 1287.25entry/s]
+Evaluating gpqa_diamond:  69%|██████▉   | 681/990 [00:00<00:00, 667.90entry/s] 
+Evaluating gpqa_diamond:  79%|███████▉  | 786/990 [00:01<00:00, 500.17entry/s]
+Evaluating gpqa_diamond:  87%|████████▋ | 861/990 [00:01<00:00, 432.85entry/s]
+Evaluating gpqa_diamond:  93%|█████████▎| 919/990 [00:01<00:00, 394.84entry/s]
+Evaluating gpqa_diamond:  98%|█████████▊| 967/990 [00:01<00:00, 370.44entry/s]
+Evaluating gpqa_diamond: 100%|██████████| 990/990 [00:01<00:00, 510.74entry/s]
+2026-07-30 07:31:41,764 - INFO - 
+Calculating final scores...
+
+================================================================================
+MLPerf Accuracy Evaluation Results
+================================================================================
+Total samples evaluated: 990
+Overall raw accuracy: 61.21% (606/990)
+================================================================================
+
+Per-Dataset Breakdown:
+--------------------------------------------------------------------------------
+Dataset                    Correct    Total  Repeats      Score   Accuracy
+--------------------------------------------------------------------------------
+gpqa_diamond                   606      990        5     121.20     61.21%
+================================================================================
+
+Final Score Calculation:
+--------------------------------------------------------------------------------
+Formula: gpqa_diamond/5
+Score:   = 606/5
+         = 121.20
+         = 121.20
+Max:     = 990/5
+         = 198.00
+
+FINAL SCORE: 61.21% (121.20/198.00)
+================================================================================
+
+
+Printing for submission_checker:
+
+'exact_match': 61.212
+2026-07-30 07:31:41,764 - INFO - Evaluation complete!
+
+================================================================================
+TEST07 Verification Summary
+================================================================================
+Accuracy score: 61.212
+Accuracy threshold: 60.698
+Accuracy check pass: True
+TEST PASS

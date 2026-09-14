@@ -1,0 +1,100 @@
+variables:
+  # Dynamo disagg, validated GB200 x72 topology (Kris Hung's dynamo gpt-oss
+  # patch 645c8c4f: configs/GB200.../Interactive/gpt-oss-120b.py dynamo_cluster):
+  # 24 CTX x DEP1 + 12 GEN x DEP4 + 24 distributed KV-router frontends (w=0)
+  # = 72 GPUs / 18 nodes; 24 frontends spread over all 18 worker nodes with a
+  # 2-per-node cap (srun block distribution doubles the first 6 = CTX nodes,
+  # matching the submission launcher's CTX-first overflow placement).
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 24
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 1
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 12
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 4
+  # Seconds to delay each extra CTX replica sharing a node, so co-located
+  # replicas do not materialise weights simultaneously. 0 = not needed here
+  # (one CTX replica per node, or a checkpoint small next to host RAM).
+  # Must be declared in every config: the template merges LAST, so a default
+  # there would override this. See prefill_worker in dynamo_disagg_loadgen.yaml.
+  CTX_LOAD_STAGGER_S:
+    type: integer
+    value: 0
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 24
+  # Distributed frontends: NUM_FRONTEND_SERVERS ranks spread over
+  # NUM_FRONTEND_NODES nodes (FRONTENDS_PER_NODE each; ports 8000+local_rank).
+  NUM_FRONTEND_NODES:
+    type: integer
+    value: 18
+  FRONTENDS_PER_NODE:
+    type: integer
+    value: 2
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  FRONTEND_PORT:
+    value: 8000
+
+  # Model resolution for the dynamo.trtllm workers. Passed straight to
+  # --model-path / --served-model-name (no nv_mlpinf config lookup).
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b
+  SERVED_MODEL_NAME:
+    value: openai/gpt-oss-120b
+
+  TRTLLM_YAML_CTX:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-ctx-dep1.yaml
+  TRTLLM_ENV_YAML_CTX:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-ctx-dep1-env.yaml
+  TRTLLM_YAML_GEN:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-gen-dep4.yaml
+  TRTLLM_ENV_YAML_GEN:
+    value: /work/configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/DYNAMO/Interactive/dynamo-disagg-gen-dep4-env.yaml
+
+  FRONTEND_ROUTER_ARGS:
+    description: "KV-router flags passed verbatim to python3 -m dynamo.frontend."
+    value: "--router-mode kv --kv-overlap-score-weight 0 --router-replica-sync"
+
+  BENCHMARK:
+    value: gpt-oss-120b
+  SCENARIO:
+    value: Interactive
+  SYSTEM_NAME:
+    value: GB200-NVL72_GB200-186GB_aarch64x72
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_USE_DYNAMO:
+    description: >-
+      MLPINF_USE_DYNAMO for the harness. 0 for BOTH benchmarks now.
+
+      It used to be 1 for gpt-oss, purely to get the FirstTokenComplete WAR on
+      1-token final chunks (without it loadgen logged "record sample latency
+      before first token", 73k errors, INVALID). That is now handled by
+      MLPINF_FIRST_TOKEN_ALWAYS, which the template exports unconditionally and
+      which does not touch stream draining.
+
+      Keeping it at 1 was actively harmful: it also sets NOSKIP_FINAL_CHUNK, so
+      the client does not break on finish_reason and instead waits for a
+      terminating `data: [DONE]` from an endpoint the code itself notes does not
+      handle connection cleanup properly. When that chunk never arrives the read
+      blocks forever -- job 372979108 reached 99% (1,290,887/1,298,388) in 45
+      min, then sat silent for 233 min with 7,501 samples outstanding and died
+      at walltime with no summary.
+
+      At 0 the client closes as soon as the answer is complete, exactly like the
+      trtllm-serve path, so the stall is unreachable. It also recovers the ~5%
+      that draining to [DONE] costs. DSR1 has always run at 0 against Dynamo
+      without issue, including the 244k VALID submission.
+    value: "0"
+  HARNESS_EXTRA_ARGS:
+    description: "Full submission-length run to reproduce the validated 625,161 number: server_target_qps=480 (same as harness.py) + min_query_count=1296000 (~45 min). A shorter 6396/min_duration-bound run is equally MLPerf-compliant (~617k) but reads ~1% lower due to the end-of-run in-flight-query drain being a larger fraction of a 10-min window; the full length matches the submission. GB200 holds TPOT at full length (14.6ms) so it stays VALID (unlike GB300, which develops a decode-batch tail at full length -> kept short there)."
+    value: "--server_target_qps=480 --min_query_count=1296000"

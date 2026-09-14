@@ -1,0 +1,23 @@
+{
+  "gpt-oss-120b": {
+    "model_name": "gpt-oss-120b",
+    "source": "openai/gpt-oss-120b",
+    "checkpoint_commit": "b5c939d",
+    "weight_precision": "OCP MXFP4 (native checkpoint)",
+    "kv_cache_precision": "OCP FP8-e4m3",
+    "quantization": "native MXFP4 checkpoint; no Crusoe re-quantization",
+    "framework": "vLLM 0.22.1 (ROCm 7.2.2)",
+    "division": "closed",
+    "license": "Apache-2.0"
+  },
+  "deepseek-r1": {
+    "model_name": "DeepSeek-R1",
+    "source": "amd/Deepseek-S3_sq_a05_v2_mlperf6_1",
+    "weight_precision": "OCP MXFP4 (experts) / BF16 MLA-absorb",
+    "kv_cache_precision": "OCP FP8-e4m3",
+    "quantization": "AMD Quark (AutoSmoothQuant + GPTQ)",
+    "framework": "SGLang 0.5.15.post1 (ROCm 7.2.0)",
+    "division": "closed",
+    "license": "MIT"
+  }
+}

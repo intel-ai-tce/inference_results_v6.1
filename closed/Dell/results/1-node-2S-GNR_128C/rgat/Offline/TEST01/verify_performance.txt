@@ -1,0 +1,6 @@
+[2026-07-31 18:40:05,420 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /logs/results/1-node-2S-GNR_128C/rgat/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-31 18:40:05,468 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /workspace/run_output/mlperf_log_detail.txt.
+Verifying performance.
+Reference score = 21835.4
+Test score = 21997.2
+TEST PASS

@@ -1,0 +1,86 @@
+variables:
+  LCB_CONTAINER_IMAGE:
+    description: "lcb-service release_v6 sqsh for accuracy LiveCodeBench scorer"
+    value: /PATH/TO/IMAGES/lcb-service_release_v6.sqsh
+
+  CONTAINER_IMAGE:
+    description: "Enroot .sqsh: GR100 (Rubin) bringup TRT-LLM b01e432 stack."
+    value: /PATH/TO/IMAGES/mlperf-7-28-baked-stable.sqsh
+  ENDPOINT_CONTAINER_IMAGE:
+    description: "inference-endpoint client image (mlcommons/endpoints, commit-pinned). Must provide the /opt/venv layout the templates require and LoadGen-parity QPS/TPS metrics (required for the Poisson server/disagg metric). Override per run with --set ENDPOINT_CONTAINER_IMAGE=<path>."
+    value: /PATH/TO/IMAGES/endpoints_mlcommons_598dbfde.sqsh
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to repo root (endpoints-launch); mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    value: /PATH/TO/SCRATCH
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,/model:/model"
+
+  SLURM_ACCOUNT:
+    value: REPLACE_ACCOUNT
+  SLURM_PARTITION:
+    description: "GR100 / Hecate partition."
+    value: REPLACE_PARTITION
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)."
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    # container_remap_root: true
+    container_remap_root: false
+    cpus_per_task: 88
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+
+  - name: endpoint_sqsh
+    type: srun
+    container_image: ${{ variables.ENDPOINT_CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    # container_remap_root: true
+    container_remap_root: false
+    cpus_per_task: 176
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+
+  - name: lcb_sqsh
+    type: srun
+    container_image: ${{ variables.LCB_CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: false
+    # container_remap_root: false
+    container_remap_root: false
+    cpus_per_task: 44
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /app
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--exclusive"
+      - "--gpus-per-node=${{ variables.GPUS_PER_NODE }}"

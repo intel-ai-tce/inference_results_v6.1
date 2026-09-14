@@ -1,0 +1,140 @@
+name: wan22-a14b-offline-audit-test04-x72
+version: '1.0'
+type: offline
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  min_new_tokens: 1
+  skip_special_tokens: true
+  streaming: 'off'
+datasets:
+- name: wan22_perf
+  type: performance
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 144
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 0
+    n_samples_to_issue: 144
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: max_throughput
+  client:
+    num_workers: 72
+    log_level: INFO
+    warmup_connections: 0
+    auto_warmup_budget_fraction: 0.25
+    max_concurrent_warmup_connects: 128
+    max_connections: -1
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+      io_threads: 4
+      worker_io_threads: 1
+      high_water_mark: 0
+      linger: -1
+      immediate: 1
+    stream_all_chunks: false
+    worker_initialization_timeout: 600.0
+    worker_graceful_shutdown_wait: 0.5
+    worker_force_kill_timeout: 0.5
+    insecure: false
+    max_idle_time: 4.0
+    min_required_connections: -1
+    worker_gc_mode: relaxed
+  drain:
+    warmup_timeout_s: 3600.0
+    performance_timeout_s: 3600.0
+    metrics_drain_timeout_s: 0.0
+    metrics_tokenizer_workers: 2
+  warmup:
+    enabled: true
+    n_requests: 10
+    salt: true
+    drain: true
+    warmup_random_seed: 42
+  profiling: {}
+  early_stopping:
+    enabled: true
+  service_ready_timeout_s: 30.0
+endpoint_config:
+  endpoints:
+  - http://10.66.3.199:8022
+  - http://10.66.3.195:8004
+  - http://10.66.3.199:8021
+  - http://10.66.3.195:8007
+  - http://10.66.3.199:8020
+  - http://10.66.3.195:8005
+  - http://10.66.3.199:8023
+  - http://10.66.3.195:8006
+  - http://10.66.3.197:8012
+  - http://10.66.3.197:8015
+  - http://10.66.3.197:8013
+  - http://10.66.3.196:8011
+  - http://10.66.3.197:8014
+  - http://10.66.3.196:8009
+  - http://10.66.3.206:8049
+  - http://10.66.3.196:8010
+  - http://10.66.3.194:8001
+  - http://10.66.3.205:8047
+  - http://10.66.3.194:8002
+  - http://10.66.3.196:8008
+  - http://10.66.3.205:8046
+  - http://10.66.3.201:8030
+  - http://10.66.3.206:8051
+  - http://10.66.3.194:8003
+  - http://10.66.3.202:8034
+  - http://10.66.3.198:8016
+  - http://10.66.3.208:8059
+  - http://10.66.3.201:8029
+  - http://10.66.3.205:8045
+  - http://10.66.3.204:8042
+  - http://10.66.3.200:8027
+  - http://10.66.3.194:8000
+  - http://10.66.3.209:8062
+  - http://10.66.3.206:8050
+  - http://10.66.3.203:8036
+  - http://10.66.3.202:8033
+  - http://10.66.3.198:8018
+  - http://10.66.3.208:8057
+  - http://10.66.3.201:8031
+  - http://10.66.3.205:8044
+  - http://10.66.3.207:8053
+  - http://10.66.3.200:8024
+  - http://10.66.3.210:8065
+  - http://10.66.3.209:8063
+  - http://10.66.3.206:8048
+  - http://10.66.3.203:8037
+  - http://10.66.3.202:8035
+  - http://10.66.3.204:8041
+  - http://10.66.3.198:8019
+  - http://10.66.3.208:8058
+  - http://10.66.3.201:8028
+  - http://10.66.3.207:8055
+  - http://10.66.3.200:8026
+  - http://10.66.3.211:8070
+  - http://10.66.3.210:8064
+  - http://10.66.3.209:8061
+  - http://10.66.3.203:8039
+  - http://10.66.3.202:8032
+  - http://10.66.3.204:8040
+  - http://10.66.3.198:8017
+  - http://10.66.3.208:8056
+  - http://10.66.3.207:8052
+  - http://10.66.3.200:8025
+  - http://10.66.3.211:8069
+  - http://10.66.3.210:8066
+  - http://10.66.3.209:8060
+  - http://10.66.3.203:8038
+  - http://10.66.3.204:8043
+  - http://10.66.3.207:8054
+  - http://10.66.3.211:8068
+  - http://10.66.3.210:8067
+  - http://10.66.3.211:8071
+  api_type: videogen
+report_dir: /lustre/fsw/coreai_mlperf_inference/tinyinl/61_mlperf/0720/mlperf/closed/NVIDIA/build/logs/gb200_offline_audit_portfix_1785093711/2501226-wan22_videogen-20260726-131944-9066af/endpoint_benchmark/audit/output_caching
+verbose: false
+enable_cpu_affinity: true

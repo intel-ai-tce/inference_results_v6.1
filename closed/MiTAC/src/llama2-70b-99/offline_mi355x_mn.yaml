@@ -1,0 +1,68 @@
+# benchmark details
+benchmark_name: llama2-70b
+scenario: offline
+test_mode: performance
+engine_version: sync
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "ERROR"
+  AITER_LOG_LEVEL: "ERROR"
+  HARNESS_GC_LIMIT: 100000
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  VLLM_USE_V1: 1
+  VLLM_ROCM_USE_AITER: 1
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_ROCM_USE_AITER_MHA: 1
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1
+  VLLM_MIN_REQUEST_DECODE_STEP: 2560
+  VLLM_SUBSEQUENT_DECODE_STEPS: 19
+  VLLM_ROCM_USE_AITER_TRITON_ROPE: 1
+  GPU_MAX_HW_QUEUES: 2
+  HSA_KERNARG_POOL_SIZE: 4000000
+
+vllm_engine_config:
+  model: /model/llama2-70b-chat-hf/fp4_quantized_gptq
+  tensor_parallel_size: 1
+  quantization: quark
+  max_model_len: 2048
+  gpu_memory_utilization: 0.94
+  compilation_config:
+    cudagraph_mode: FULL_AND_PIECEWISE
+    compile_sizes: [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
+    # cudagraph_capture_sizes is generated from cudagraph_capture_range
+    cudagraph_capture_range: [[4096, 0, -8], 4, 2, 1]
+  enforce_eager: False
+  disable_custom_all_reduce: True
+  max_num_batched_tokens: 65536
+  max_num_seqs: 3392
+  enable_chunked_prefill: True
+  block_size: 16
+  kv_cache_dtype: fp8
+  enable_prefix_caching: False
+  disable_log_stats: True
+  dtype: bfloat16
+  async_scheduling: True
+
+# configuration related to the sampling params
+vllm_sampling_config:
+  temperature: 0.0
+  min_tokens: 1
+  max_tokens: 1024
+  ignore_eos: False
+  detokenize: False
+  top_k: 1
+  top_p: 0.001
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/processed-openorca/open_orca_gpt4_tokenized_llama.sampled_24576.pkl
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama2-70b-99/user_mi355x_mn.conf
+  target_qps: -1
+  total_sample_count: 24576
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  enable_warmup: True
+  device_count: 8

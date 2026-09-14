@@ -1,0 +1,152 @@
+Subject: [PATCH] vLLM 0.25: native W4A16 (Q3VL) via MXFP4_MXFP4 fp4-activation path
+
+Companion to patch 0024 (native W4A8). This is the vLLM-0.25 port of patch 0005
+(which fixed W4A16 on vLLM 0.22). It makes the "W4A16 + FP8-last-N" recipe run
+natively on vLLM 0.25 + AITER main, instead of crashing at cudagraph capture with
+"RuntimeError: Unsupported kernel config for moe heuristic dispatch".
+
+Root cause (verified by git-diffing AITER 883aff7 vs main AND by isolation testing
+vLLM 0.22 + AITER main): the AITER a16w4 kernel + its Swiglu-only gate are
+byte-identical between 883aff7 and main, so this is NOT an AITER regression. The
+discrepancy is entirely on the vLLM side:
+  * vLLM 0.22 + patch 0005 reroutes the w_mxfp4 (W4A16) MoE through the MXFP4_MXFP4
+    preshuffle layout (rocm_aiter_ops.shuffle_weights + e8m0_shuffle, SEPARATED
+    gate/up). With SILU + per_1x32 + SEPARATED, AITER's fused_moe picks FP4
+    activations -> the afp4_wfp4 FlyDSL/CK kernel. Fast (fp4 is ~2x fp8 on CDNA4)
+    and SILU-native. (So "W4A16" is really fp4-activation at runtime.)
+  * vLLM 0.25's rewritten oracle instead lays w_mxfp4 out with shuffle_weight_a16w4
+    (gate/up-INTERLEAVED, a16w4) and passes gate_mode=INTERLEAVE. INTERLEAVE + SILU
+    routes small-M decode to the bf16 a16w4 kernel, which does NOT exist in the
+    ck2stages codegen on gfx950 -> the crash. Patch 0005's fp4-rerouting was never
+    upstreamed into 0.25's dispatch.
+
+This patch ports patch 0005 to 0.25:
+  * oracle/mxfp4.py AITER_MXFP4_BF16 weight prep: replace the a16w4 interleave
+    shuffle (shuffle_weight_a16w4 / shuffle_scale_a16w4 + gpt-oss de-interleave)
+    with the MXFP4_MXFP4 preshuffle (e8m0_shuffle + rocm_aiter_ops.shuffle_weights,
+    SEPARATED, is_shuffled=True; de-interleave skipped since quark Q3VL stores
+    gate/up contiguously).
+  * rocm_aiter_moe.py rocm_aiter_fused_experts: drop use_mxfp4_w4a16 from the
+    gate_mode=INTERLEAVE condition so W4A16 uses SEPARATED -> SILU picks fp4
+    activation (afp4_wfp4), matching the weight layout above. (Leaving it INTERLEAVE
+    routes small-M decode to the missing bf16 a16w4 kernel -> crash.)
+  * quark_moe.py _setup_kernel: add AITER_MXFP4_BF16 to the is_shuffled=True set.
+
+CAVEAT: like patch 0005, this makes the W4A16 path Q3VL-specific (SEPARATED /
+fp4-activation), NOT gpt-oss-interleaved. Serve gpt-oss W4A16 from an unpatched image.
+
+Apply AFTER patch 0024 (both edit the quark_moe is_shuffled block and the
+rocm_aiter_moe gate_mode block).
+
+Result (Qwen3-VL-235B, W4A16-base + FP8-last-16, 0.25 + AITER main + 0023+0024+0025):
+accuracy_verification_8k Category-F1 = 0.7821 (vs 0.7842 on vLLM 0.22; within 8k
+single-run noise; marginal at the 0.7824 gate for N=16 -- use higher N for margin),
+offline 7.45 QPS (1xMI350) -- vs 6.64 for native W4A8 (fp8 activations). Serves
+natively via afp4_wfp4 (no EMULATION, no crash). See docs/fp8-last-n-runbook.md.
+
+--- a/vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
++++ b/vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
+@@ -1017,40 +1017,38 @@
+ 
+         e, n, k = w13_weight.shape
+ 
+-        # De-interleave w13 rows: gate/up pairs -> contiguous gate, up blocks
+-        w13_weight.view(torch.uint8).copy_(
+-            w13_weight.data.view(torch.uint8)
+-            .view(e, n // 2, 2, k)
+-            .permute(0, 2, 1, 3)
+-            .contiguous()
+-            .view(e, n, k)
++        # F2-patch (0005 port to vLLM 0.25): Q3VL native MXFP4 W4A16 fix (gfx950).
++        # The AITER_MXFP4_BF16 (W4A16) path dispatches SILU + per_1x32 to the
++        # fp4x2_fp4x2 (W4A4) FlyDSL/CK kernel, which expects the MXFP4_MXFP4
++        # preshuffle layout (shuffle_weights + e8m0_shuffle, SEPARATED gate/up) --
++        # NOT the a16w4 interleave layout the stock convert produces. The stock
++        # a16w4 layout routes to the Swiglu-gated cktile a16w4 kernel, which
++        # rejects Qwen's SILU -> "Unsupported kernel config for moe heuristic
++        # dispatch". Quark Qwen3-VL stores gate/up CONTIGUOUSLY, so the gpt-oss
++        # w13 de-interleave is skipped. (cos ~0.995 vs bf16 ref on 0.22.)
++        logger.warning_once(
++            "Q3VL native MXFP4 MoE layout fix active: MXFP4_MXFP4 preshuffle "
++            "(e8m0_shuffle + shuffle_weights), gpt-oss de-interleave skipped."
+         )
+-        w13_weight_scale.data = (
+-            w13_weight_scale.data.view(e, n // 2, 2, -1)
+-            .permute(0, 2, 1, 3)
+-            .contiguous()
+-            .view(e, n, -1)
+-        )
+-
+-        # View as native FP4 dtype for AITER shuffle
+-        w13_weight.data = w13_weight.data.view(torch.float4_e2m1fn_x2)
+-        w2_weight.data = w2_weight.data.view(torch.float4_e2m1fn_x2)
++        from aiter.utility.fp4_utils import e8m0_shuffle
+ 
+-        # Shuffle weights and scales for AITER CK kernel layout
+-        w13_weight.data = rocm_aiter_ops.shuffle_weight_a16w4(w13_weight, 16, True)
+-        shuffled_w13_scale = rocm_aiter_ops.shuffle_scale_a16w4(
+-            w13_weight_scale.view(-1, w13_weight_scale.shape[-1]),
+-            num_experts,
+-            True,
++        s0, s1, _ = w13_weight_scale.shape
++        shuffled_w13_scale = e8m0_shuffle(w13_weight_scale.view(s0 * s1, -1)).view(
++            s0, s1, -1
+         )
+-
+-        w2_weight.data = rocm_aiter_ops.shuffle_weight_a16w4(w2_weight, 16, False)
+-        shuffled_w2_scale = rocm_aiter_ops.shuffle_scale_a16w4(
+-            w2_weight_scale.view(-1, w2_weight_scale.shape[-1]),
+-            num_experts,
+-            False,
++        s0, s1, _ = w2_weight_scale.shape
++        shuffled_w2_scale = e8m0_shuffle(w2_weight_scale.view(s0 * s1, -1)).view(
++            s0, s1, -1
+         )
+ 
++        w13f = w13_weight.data.view(torch.float4_e2m1fn_x2)
++        w2f = w2_weight.data.view(torch.float4_e2m1fn_x2)
++        sh13, sh2 = rocm_aiter_ops.shuffle_weights(w13f, w2f)
++        w13_weight.data = sh13
++        w2_weight.data = sh2
++        w13_weight.is_shuffled = True
++        w2_weight.is_shuffled = True
++
+         # Permute bias to match de-interleaved weight layout
+         if w13_bias is not None:
+             w13_bias = (
+--- a/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
++++ b/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
+@@ -374,9 +374,16 @@
+         from aiter.ops.flydsl.moe_common import GateMode
+ 
+         gate_mode = ""
+-        if quant_config.use_mxfp4_w4a16 or quant_config.use_mxfp4_w4a8:
++        if quant_config.use_mxfp4_w4a8:
+             # F-patch: W4A8 uses the gate/up-interleaved FlyDSL afp8_wfp4 path.
+             gate_mode = GateMode.INTERLEAVE.value
++        # F2-patch: W4A16 (Q3VL) is prepped with the MXFP4_MXFP4 preshuffle
++        # (shuffle_weights, SEPARATED) in oracle/mxfp4.py, so it must use the
++        # SEPARATED gate_mode -> SILU picks fp4 activation (afp4_wfp4), matching
++        # the working vLLM-0.22 + patch-0005 path. Leaving W4A16 on INTERLEAVE
++        # routes small-M decode to the missing bf16 a16w4 ck2stages kernel
++        # ("Unsupported kernel config"). NOTE: this makes the W4A16 path
++        # Q3VL-specific (not gpt-oss-interleaved), same caveat as patch 0005.
+         elif activation_interleave is not None:
+             gate_mode = (
+                 GateMode.INTERLEAVE.value
+--- a/vllm/model_executor/layers/quantization/quark/quark_moe.py
++++ b/vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1240,9 +1240,11 @@
+         if self.mxfp4_backend in (
+             Mxfp4MoeBackend.AITER_MXFP4_MXFP4,
+             Mxfp4MoeBackend.AITER_MXFP4_FP8,
++            Mxfp4MoeBackend.AITER_MXFP4_BF16,
+         ):
+-            # F-patch: FlyDSL afp8_wfp4 (W4A8) requires is_shuffled=True to take
+-            # the native path (aiter fused_moe.py use_mxfp4_flydsl gate).
++            # F-patch: FlyDSL afp8_wfp4 (W4A8) / afp4_wfp4 (W4A16->MXFP4_MXFP4)
++            # require is_shuffled=True to take the native path (aiter
++            # fused_moe.py use_mxfp4_flydsl gate).
+             layer.w13_weight.is_shuffled = True
+             layer.w2_weight.is_shuffled = True
+ 

@@ -1,0 +1,53 @@
+variables:
+  CONTAINER_IMAGE:
+    description: "Container image (NGC URL or Enroot .sqsh) with TRT-LLM + nv-mlpinf. Defaults to the public MLPerf TensorRT-LLM release image below. Override for a different or latest image via --set CONTAINER_IMAGE=... (or SFLOW_BENCHMARK_OVERRIDE on the CI form)."
+    value: "/share/mlperf/tensorrt_llm_mlperf_aarch64.sqsh"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/NVIDIA, mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models), mounted at /home/mlperf_inference_storage."
+    value: /share/mlperf
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+
+  SLURM_ACCOUNT:
+    value: root
+  SLURM_PARTITION:
+    value: quarantine
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)"
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmi2
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--exclusive"
+      - "--nodelist=LVL101052101020,LVL101052101021,LVL101052101028,LVL101052101030,LVL101052101031,LVL101052101032,LVL101052102002,LVL101052102003,LVL101052102005,LVL101052102006,LVL101052102013,LVL101052201021,LVL101052201027,LVL101052201028,LVL101052201032,LVL101052202002,LVL101052202005,LVL101052202006"

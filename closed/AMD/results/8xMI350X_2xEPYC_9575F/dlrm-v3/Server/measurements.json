@@ -1,0 +1,7 @@
+{
+    "input_data_types": "int64,fp16,bf16,fp8",
+    "retraining": "No",
+    "starting_weights_filename": "MLCommons DLRM-v3 checkpoint",
+    "weight_data_types": "fp16,bf16,fp8",
+    "weight_transformations": "quantization, fusion"
+}

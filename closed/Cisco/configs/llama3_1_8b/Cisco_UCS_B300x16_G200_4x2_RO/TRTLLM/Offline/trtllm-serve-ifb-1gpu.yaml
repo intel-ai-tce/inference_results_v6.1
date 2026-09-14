@@ -1,0 +1,36 @@
+build_config:
+  # Matches NVIDIA's published Llama 3.1 8B TensorRT baseline. Keep the
+  # MLPerf 2,540-token input plus 128-token output envelope exact.
+  max_batch_size: 6000
+  # The selected token budget retains the measured throughput setting without
+  # changing generation or accuracy semantics.
+  max_num_tokens: 32000
+  max_input_len: 2540
+  max_seq_len: 2668
+max_batch_size: 6000
+max_num_tokens: 32000
+max_input_len: 2540
+max_seq_len: 2668
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+enable_attention_dp: false
+enable_chunked_prefill: true
+disable_overlap_scheduler: false
+print_iter_log: true
+enable_iter_perf_stats: false
+kv_cache_config:
+  enable_block_reuse: false
+  free_gpu_memory_fraction: 0.9
+  dtype: fp8
+sampler_type: TRTLLMSampler
+# Two postprocess workers provide the selected stability/throughput balance.
+num_postprocess_workers: 2
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 6000]
+cache_transceiver_config:
+  backend: DEFAULT

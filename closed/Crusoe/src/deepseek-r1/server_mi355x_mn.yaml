@@ -1,0 +1,115 @@
+benchmark_name: deepseek-r1
+scenario: server
+test_mode: performance
+engine_version: async
+
+# ZMQ multi-node harness knob (see offline_mi355x_mn.yaml). deepseek-r1 has no
+# WarmUp.ENCODED_SAMPLES entry, so any perf-based balancing sample is disabled.
+env_config:
+  HARNESS_ZMQ_PERF_SAMPLE_COUNT: 0
+
+sglang_env_config:
+  AITER_CONFIG_GEMM_BF16: /lab-mlperf-inference/code/deepseek-r1/bf16_tuned_gemm_withhip.csv
+  HIPBLASLT_TUNING_OVERRIDE_FILE: /lab-mlperf-inference/code/deepseek-r1/hipblaslt.txt
+
+  SGLANG_AITER_MOE: 1
+  TORCH_NCCL_BLOCKING_WAIT: 1
+  TRITON_ENABLE_PRELOAD_KERNELS: 0
+  SGLANG_USE_ROCM700A: 1
+  SGLANG_ROCM_FUSED_DECODE_MLA: 1
+  SGLANG_AITER_AR: 1
+  ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 512
+  SGLANG_AITER_MLA_PERSIST: 1
+  SGLANG_MLA_MAX_SPLIT: 1
+  SGLANG_USE_AITER: 1
+  SGLANG_MORI_LEC_IN_GRAPH: 0
+  TORCH_BLAS_PREFER_HIPBLASLT: 1
+  PYTORCH_ALLOC_CONF: expandable_segments:True
+
+  # --- gemm-fusion / concat-cache ---
+  SGLANG_AITER_FUSED_MLA_CONCAT_CACHE: 1
+  SGLANG_AITER_FUSED_KVB_SPLIT_CAT: 1
+
+  # --- MoRI-EP env ---
+  MORI_SHMEM_MODE: ISOLATION
+  MORI_SHMEM_HEAP_SIZE: 16G
+  SGLANG_MORI_DISPATCH_DTYPE: auto
+  SGLANG_MORI_COMBINE_DTYPE: fp8                     # fp8 blockwise combine
+  SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK: 2048 # server: max decode batch ~350/rank << 2048 (frees VRAM->KV, TPOT headroom)
+  SGLANG_MORI_NO_PAD_MASK: 1
+  SGLANG_MLA_ABSORB_BF16: 1
+  # --- prefill-delayer debug logging ---
+  SGLANG_PREFILL_DELAYER_DEBUG_LOG: 1
+  # --- MXFP4 ASM o_proj + q_b_proj (HW per-1x32 quant; both q_b flags required together) ---
+  SGLANG_DSR_OPROJ_MXFP4_ASM: 1
+  #ENABLE_DYNAMIC_MXFP4_QUANT_Q_B_PROJ: 1
+  #ENABLE_Q_B_PROJ_MXFP4: 1
+
+sglang_engine_config:
+  model_path: /model/S3_sq_a05_v2/
+  tp_size: 8
+  port: 32000
+
+  # --- MoRI-EP launch flags ---
+  moe_a2a_backend: mori
+  ep_size: 8
+  deepep_mode: normal
+  moe_dense_tp_size: 1
+  enable_dp_attention: True
+  dp_size: 8
+  stream_interval: 16
+  enable_dp_lm_head: true
+  enable_dp_attention_local_control_broadcast: true
+
+  # --- shared-experts fusion ---
+  enforce_shared_experts_fusion: true
+  disable_shared_experts_fusion: false
+
+  # --- memory budget ---
+  mem_fraction_static: 0.9                        # -> ~0.765 effective after aiter x0.85
+
+  # ---- prefill / concurrency operating point ----
+  max_prefill_tokens: 400000
+  chunked_prefill_size: 16384                     # /dp8 -> 2048/rank (DP-attention adjusted)
+  max_running_requests: 3840                      
+  cuda_graph_max_bs_decode: 512
+  cuda_graph_bs_decode: [1, 2, 4, 8, 16, 32, 64, 96, 128, 160, 192, 224, 256, 272, 288, 304, 312, 320, 328, 336, 344, 352, 360, 368, 376, 384, 432, 448, 464, 480, 496, 512]   # cliff-skip (384 sweet, skip 392-424, 432/448 sweet)
+  schedule_conservativeness: 1.9  
+  scheduler_recv_interval: 12
+  enable_decode_graph_preserving: false
+  enable_prefill_delayer: true
+  prefill_delayer_max_delay_ms: 240              # reverted to the QPS 10.54 VALID-run value
+  prefill_delayer_token_usage_low_watermark: 0.31
+  trust_remote_code: True
+  skip_tokenizer_init: True
+  disable_chunked_prefix_cache: True
+  disable_cuda_graph: False
+  disable_radix_cache: True
+  kv_cache_dtype: fp8_e4m3
+  page_size: 64
+  watchdog_timeout: 6000
+  preferred_sampling_params:
+     temperature: 0.0
+     top_p: 1.0
+     top_k: 1.0
+     sampling_seed: 42
+     max_new_tokens: 20000
+
+sglang_sampling_config:
+  max_new_tokens: 20000
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 1.0
+  sampling_seed: 42
+
+harness_config:
+  dataset_path: /data/deepseek-r1/mlperf_deepseek_r1_dataset_4388_fp8_eval.pkl
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/deepseek-r1/user_mi355x_mn.conf
+  target_qps: -1
+  total_sample_count: 4388
+  output_log_dir: /lab-mlperf-inference/code/results/deepseek_server_zmq
+  enable_log_trace: False
+  enable_warmup: False
+  device_count: 8

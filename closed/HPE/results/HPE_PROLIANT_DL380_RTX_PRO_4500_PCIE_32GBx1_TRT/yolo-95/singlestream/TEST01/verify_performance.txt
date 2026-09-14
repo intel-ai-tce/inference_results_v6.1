@@ -1,0 +1,6 @@
+[2026-07-30 14:55:02,152 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /mnt/md0/madhav/MLC/repos/local/cache/get-mlperf-inference-results-dir_1b62e8d6/valid_results/r14_bm_03.houcbglr1.hpecorp.net-reference-gpu-pytorch-v2.13.0-cu133/yolo-95/singlestream/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 14:55:02,152 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /mnt/md0/madhav/MLC/repos/local/cache/get-mlperf-inference-results-dir_1b62e8d6/valid_results/r14_bm_03.houcbglr1.hpecorp.net-reference-gpu-pytorch-v2.13.0-cu133/yolo-95/singlestream/TEST01/mlperf_log_detail.txt.
+Verifying performance.
+Reference score = 14136709.0
+Test score = 14657694.0
+TEST PASS

@@ -1,0 +1,990 @@
+rm: cannot remove '/usr/local/cuda/compat/lib': Read-only file system
+[33mmpi_rank: 0[0m
+[33mtllm_mpi_size: 8[0m
+[33mTLLM_SPAWN_PROXY_PROCESS_IPC_ADDR: ipc:///tmp/rpc_test_c0bf1e18-18fb-4dfc-a029-5eaa399bea28[0m
+[33mRank0 run trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host 0.0.0.0 --port 8339 --extra_llm_api_options /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Server/trtllm-serve-ifb-dep8.yaml in background[0m
+[33mRank0 Subshell PID: 479277[0m
+[33mRank0 run mgmn leader node with mpi_world_size: 8 ...[0m
+[33mRank0 host: a4xlustref-a4xnodeset3-0[0m
+/usr/local/lib/python3.12/dist-packages/torch/library.py:356: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+  Overriding a previously registered kernel for the same operator and the same dispatch key
+  operator: flash_attn::_flash_attn_backward(Tensor dout, Tensor q, Tensor k, Tensor v, Tensor out, Tensor softmax_lse, Tensor(a6!)? dq, Tensor(a7!)? dk, Tensor(a8!)? dv, float dropout_p, float softmax_scale, bool causal, SymInt window_size_left, SymInt window_size_right, float softcap, Tensor? alibi_slopes, bool deterministic, Tensor? rng_state=None) -> Tensor
+    registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922
+  dispatch key: ADInplaceOrView
+  previous kernel: no debug info
+       new kernel: registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922 (Triggered internally at /opt/pytorch/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+  self.m.impl(
+/usr/local/lib/python3.12/dist-packages/torch/library.py:356: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+  Overriding a previously registered kernel for the same operator and the same dispatch key
+  operator: flash_attn::_flash_attn_backward(Tensor dout, Tensor q, Tensor k, Tensor v, Tensor out, Tensor softmax_lse, Tensor(a6!)? dq, Tensor(a7!)? dk, Tensor(a8!)? dv, float dropout_p, float softmax_scale, bool causal, SymInt window_size_left, SymInt window_size_right, float softcap, Tensor? alibi_slopes, bool deterministic, Tensor? rng_state=None) -> Tensor
+    registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922
+  dispatch key: ADInplaceOrView
+  previous kernel: no debug info
+       new kernel: registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:922 (Triggered internally at /opt/pytorch/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+  self.m.impl(
+/usr/local/lib/python3.12/dist-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.1 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+  _warnings.warn(
+[TensorRT-LLM] TensorRT LLM version: 1.3.0rc0
+/usr/local/lib/python3.12/dist-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.1 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+  _warnings.warn(
+/usr/local/lib/python3.12/dist-packages/tensorrt_llm/serve/openai_protocol.py:104: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[07/24/2026-18:53:30] [TRT-LLM] [W] Overriding moe_config 
+[07/24/2026-18:53:30] [TRT-LLM] [W] Overriding attention_dp_config 
+[07/24/2026-18:53:30] [TRT-LLM] [W] Overriding kv_cache_config 
+[07/24/2026-18:53:30] [TRT-LLM] [I] Overriding max_batch_size from build_config to 512
+[07/24/2026-18:53:30] [TRT-LLM] [I] Overriding max_num_tokens from build_config to 3456
+[07/24/2026-18:53:30] [TRT-LLM] [I] Overriding max_seq_len from build_config to 23140
+[07/24/2026-18:53:30] [TRT-LLM] [I] Using LLM with PyTorch backend
+[07/24/2026-18:53:30] [TRT-LLM] [I] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+[07/24/2026-18:53:30] [TRT-LLM] [I] start MpiSession with 8 workers
+[07/24/2026-18:53:30] [TRT-LLM] [I] Found /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/hf_quant_config.json, pre-quantized checkpoint is used.
+[07/24/2026-18:53:30] [TRT-LLM] [I] Setting quant_algo=NVFP4 form HF quant config.
+[07/24/2026-18:53:30] [TRT-LLM] [I] Setting group_size=16 from HF quant config.
+[07/24/2026-18:53:30] [TRT-LLM] [I] Setting exclude_modules=['lm_head', 'model.layers.0.self_attn.kv_a_proj_with_mqa', 'model.layers.0.self_attn.kv_b_proj', 'mo... from HF quant config.
+The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+You are using a model of type deepseek_v3 to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[07/24/2026-18:53:30] [TRT-LLM] [W] Orchestrator is creating IPC executor
+[33;20mrank 0 using MpiCommSession to bind to external MPI processes
+[0m[07/24/2026-18:53:30] [TRT-LLM] [I] Generating a new HMAC key for server proxy_request_queue
+[07/24/2026-18:53:30] [TRT-LLM] [I] Generating a new HMAC key for server worker_init_status_queue
+[07/24/2026-18:53:30] [TRT-LLM] [I] Generating a new HMAC key for server proxy_result_queue
+[TensorRT-LLM] TensorRT LLM version: 1.3.0rc0
+[TensorRT-LLM][INFO] Refreshed the MPI local session
+[07/24/2026-18:53:39] [TRT-LLM] [RANK 0] [I] Worker process 479280 CPU affinity set to [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69] for optimal NUMA-aware scheduling.
+/usr/local/lib/python3.12/dist-packages/tensorrt_llm/serve/openai_protocol.py:104: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[07/24/2026-18:53:40] [TRT-LLM] [RANK 0] [I] ATTENTION RUNTIME FEATURES:  AttentionRuntimeFeatures(chunked_prefill=False, cache_reuse=False, has_speculative_draft_tokens=False, chunk_size=3456, chunked_prefill_buffer_batch_size=4)
+`torch_dtype` is deprecated! Use `dtype` instead!
+[07/24/2026-18:53:40] [TRT-LLM] [RANK 0] [I] Validating KV Cache config against kv_cache_dtype="fp8"
+[07/24/2026-18:53:40] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:41] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:41] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:41] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:41] [TRT-LLM] [RANK 0] [I] NVLinkOneSided: Allocating workspace with size 795101568 bytes.ep_rank: 0, ep_size: 8, top_k: 8, max_num_tokens_per_rank: 3456
+[07/24/2026-18:53:41] [TRT-LLM] [RANK 0] [I] [MnnvlMemory] creating address with stride=1073741824
+[07/24/2026-18:53:42] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:42] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:42] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:42] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:43] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:43] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:44] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:44] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:45] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:45] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:46] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:46] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:47] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:47] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:48] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:48] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:49] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:49] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:50] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:50] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:51] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:51] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:52] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:52] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:53] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:53] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:54] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:54] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:55] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:55] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:56] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:56] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:56] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:56] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:57] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:57] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:58] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:58] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:53:59] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:53:59] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:00] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:00] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:01] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:01] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:02] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:02] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:02] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:02] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:03] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:03] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:03] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:03] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:04] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:04] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:05] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:05] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:05] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:05] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:06] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:06] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:06] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:06] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:07] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:07] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:08] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:08] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:08] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:08] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:09] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:09] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:10] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:11] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:12] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:13] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:14] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:15] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:16] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:16] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:16] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:16] [TRT-LLM] [RANK 0] [I] Detect inter-node TP between rank 0 and rank 1, fail to access peer GPU memory
+[07/24/2026-18:54:16] [TRT-LLM] [RANK 0] [I] Selected communication strategy: NVLinkOneSided
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Use 62.01 GB for model weights.
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching 384.94GB checkpoint files.
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00046-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00087-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00081-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00110-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00150-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00148-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00060-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00065-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00045-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00070-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00043-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00119-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00014-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00086-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00128-of-000163.safetensors to memory...
+[07/24/2026-18:54:36] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00102-of-000163.safetensors to memory...
+[07/24/2026-18:54:57] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00087-of-000163.safetensors.
+[07/24/2026-18:54:57] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00156-of-000163.safetensors to memory...
+[07/24/2026-18:54:57] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00110-of-000163.safetensors.
+[07/24/2026-18:54:57] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00067-of-000163.safetensors to memory...
+[07/24/2026-18:54:58] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00081-of-000163.safetensors.
+[07/24/2026-18:54:58] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00046-of-000163.safetensors.
+[07/24/2026-18:54:58] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00088-of-000163.safetensors to memory...
+[07/24/2026-18:54:58] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00012-of-000163.safetensors to memory...
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00060-of-000163.safetensors.
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00039-of-000163.safetensors to memory...
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00045-of-000163.safetensors.
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00127-of-000163.safetensors to memory...
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00065-of-000163.safetensors.
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00024-of-000163.safetensors to memory...
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00150-of-000163.safetensors.
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00157-of-000163.safetensors to memory...
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00086-of-000163.safetensors.
+[07/24/2026-18:54:59] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00056-of-000163.safetensors to memory...
+[07/24/2026-18:55:00] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00070-of-000163.safetensors.
+[07/24/2026-18:55:00] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00041-of-000163.safetensors to memory...
+[07/24/2026-18:55:00] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00148-of-000163.safetensors.
+[07/24/2026-18:55:00] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00097-of-000163.safetensors to memory...
+[07/24/2026-18:55:01] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00119-of-000163.safetensors.
+[07/24/2026-18:55:01] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00021-of-000163.safetensors to memory...
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00128-of-000163.safetensors.
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00082-of-000163.safetensors to memory...
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00102-of-000163.safetensors.
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00112-of-000163.safetensors to memory...
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00014-of-000163.safetensors.
+[07/24/2026-18:55:02] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00023-of-000163.safetensors to memory...
+[07/24/2026-18:55:04] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00043-of-000163.safetensors.
+[07/24/2026-18:55:04] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00113-of-000163.safetensors to memory...
+[07/24/2026-18:55:06] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00012-of-000163.safetensors.
+[07/24/2026-18:55:06] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00163-of-000163.safetensors to memory...
+[07/24/2026-18:55:06] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00056-of-000163.safetensors.
+[07/24/2026-18:55:06] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00120-of-000163.safetensors to memory...
+[07/24/2026-18:55:15] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00157-of-000163.safetensors.
+[07/24/2026-18:55:15] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00005-of-000163.safetensors to memory...
+[07/24/2026-18:55:19] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00156-of-000163.safetensors.
+[07/24/2026-18:55:19] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00121-of-000163.safetensors to memory...
+[07/24/2026-18:55:20] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00113-of-000163.safetensors.
+[07/24/2026-18:55:20] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00122-of-000163.safetensors to memory...
+[07/24/2026-18:55:20] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00041-of-000163.safetensors.
+[07/24/2026-18:55:20] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00107-of-000163.safetensors to memory...
+[07/24/2026-18:55:21] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00127-of-000163.safetensors.
+[07/24/2026-18:55:21] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00149-of-000163.safetensors to memory...
+[07/24/2026-18:55:21] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00067-of-000163.safetensors.
+[07/24/2026-18:55:21] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00030-of-000163.safetensors to memory...
+[07/24/2026-18:55:22] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00112-of-000163.safetensors.
+[07/24/2026-18:55:22] [TRT-LLM] [RANK 0] [I] Prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00139-of-000163.safetensors to memory...
+[07/24/2026-18:55:22] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00088-of-000163.safetensors.
+[07/24/2026-18:55:23] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00039-of-000163.safetensors.
+[07/24/2026-18:55:24] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00024-of-000163.safetensors.
+[07/24/2026-18:55:24] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00097-of-000163.safetensors.
+[07/24/2026-18:55:24] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00122-of-000163.safetensors.
+[07/24/2026-18:55:25] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00082-of-000163.safetensors.
+[07/24/2026-18:55:25] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00021-of-000163.safetensors.
+[07/24/2026-18:55:25] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00023-of-000163.safetensors.
+[07/24/2026-18:55:27] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00120-of-000163.safetensors.
+[07/24/2026-18:55:28] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00121-of-000163.safetensors.
+[07/24/2026-18:55:31] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00107-of-000163.safetensors.
+[07/24/2026-18:55:31] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00005-of-000163.safetensors.
+[07/24/2026-18:55:31] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00149-of-000163.safetensors.
+[07/24/2026-18:55:32] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00139-of-000163.safetensors.
+[07/24/2026-18:55:32] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00030-of-000163.safetensors.
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Finished prefetching /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00163-of-000163.safetensors.
+Loading safetensors weights in parallel:   0%|          | 0/163 [00:00<?, ?it/s][07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00046-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00066-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00028-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00126-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00087-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00044-of-000163.safetensors
+[07/24/2026-18:55:33] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00132-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00001-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00081-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00054-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00147-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00074-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00110-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00017-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00091-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00123-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00150-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00146-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00036-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00125-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00148-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00002-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00029-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00052-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00060-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00038-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00033-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00155-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00065-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00103-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00061-of-000163.safetensors
+[07/24/2026-18:55:34] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00034-of-000163.safetensors
+[07/24/2026-18:55:36] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00045-of-000163.safetensors
+Loading safetensors weights in parallel:   1%|          | 1/163 [00:03<08:11,  3.03s/it][07/24/2026-18:55:36] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00048-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00159-of-000163.safetensors
+Loading safetensors weights in parallel:   2%|▏         | 3/163 [00:05<04:19,  1.62s/it][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00141-of-000163.safetensors
+Loading safetensors weights in parallel:   2%|▏         | 4/163 [00:05<03:00,  1.13s/it][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00070-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00085-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00025-of-000163.safetensors
+Loading safetensors weights in parallel:   4%|▍         | 7/163 [00:05<01:14,  2.10it/s][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00031-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00043-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00042-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00057-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00022-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00119-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00152-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00015-of-000163.safetensors
+Loading safetensors weights in parallel:   9%|▉         | 15/163 [00:05<00:22,  6.45it/s][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00059-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00014-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00004-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00100-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00096-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00086-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00006-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00136-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00098-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00128-of-000163.safetensors
+Loading safetensors weights in parallel:  15%|█▍        | 24/163 [00:05<00:11, 12.33it/s][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00101-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00094-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00032-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00102-of-000163.safetensors
+Loading safetensors weights in parallel:  18%|█▊        | 29/163 [00:05<00:08, 15.29it/s][07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00013-of-000163.safetensors
+[07/24/2026-18:55:39] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00151-of-000163.safetensors
+[07/24/2026-18:55:40] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00158-of-000163.safetensors
+[07/24/2026-18:55:41] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00156-of-000163.safetensors
+[07/24/2026-18:55:41] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00069-of-000163.safetensors
+Loading safetensors weights in parallel:  21%|██        | 34/163 [00:07<00:16,  7.95it/s][07/24/2026-18:55:41] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00007-of-000163.safetensors
+[07/24/2026-18:55:42] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00084-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00067-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00124-of-000163.safetensors
+Loading safetensors weights in parallel:  23%|██▎       | 38/163 [00:10<00:35,  3.52it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00138-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00079-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00088-of-000163.safetensors
+Loading safetensors weights in parallel:  25%|██▌       | 41/163 [00:10<00:28,  4.25it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00093-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00137-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00051-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00012-of-000163.safetensors
+Loading safetensors weights in parallel:  28%|██▊       | 45/163 [00:10<00:20,  5.71it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00117-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00083-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00080-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00039-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00145-of-000163.safetensors
+Loading safetensors weights in parallel:  31%|███       | 50/163 [00:10<00:14,  8.04it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00026-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00064-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00127-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00073-of-000163.safetensors
+Loading safetensors weights in parallel:  33%|███▎      | 54/163 [00:10<00:10, 10.35it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00018-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00104-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00024-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00035-of-000163.safetensors
+Loading safetensors weights in parallel:  36%|███▌      | 58/163 [00:11<00:08, 12.25it/s][07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00053-of-000163.safetensors
+[07/24/2026-18:55:44] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00027-of-000163.safetensors
+[07/24/2026-18:55:45] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00157-of-000163.safetensors
+Loading safetensors weights in parallel:  37%|███▋      | 61/163 [00:11<00:08, 12.47it/s][07/24/2026-18:55:45] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00003-of-000163.safetensors
+[07/24/2026-18:55:45] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00118-of-000163.safetensors
+[07/24/2026-18:55:45] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00144-of-000163.safetensors
+Loading safetensors weights in parallel:  39%|███▉      | 64/163 [00:11<00:07, 13.23it/s][07/24/2026-18:55:45] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00056-of-000163.safetensors
+[07/24/2026-18:55:46] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00111-of-000163.safetensors
+[07/24/2026-18:55:46] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00095-of-000163.safetensors
+Loading safetensors weights in parallel:  41%|████      | 67/163 [00:12<00:14,  6.71it/s][07/24/2026-18:55:46] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00160-of-000163.safetensors
+[07/24/2026-18:55:47] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00041-of-000163.safetensors
+Loading safetensors weights in parallel:  42%|████▏     | 69/163 [00:13<00:21,  4.28it/s][07/24/2026-18:55:47] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00114-of-000163.safetensors
+[07/24/2026-18:55:48] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00108-of-000163.safetensors
+Loading safetensors weights in parallel:  44%|████▎     | 71/163 [00:15<00:31,  2.90it/s][07/24/2026-18:55:48] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00106-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00097-of-000163.safetensors
+Loading safetensors weights in parallel:  45%|████▍     | 73/163 [00:15<00:24,  3.62it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00116-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00076-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00008-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00021-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00068-of-000163.safetensors
+Loading safetensors weights in parallel:  48%|████▊     | 78/163 [00:15<00:13,  6.32it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00037-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00133-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00082-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00092-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00071-of-000163.safetensors
+Loading safetensors weights in parallel:  51%|█████     | 83/163 [00:15<00:08,  9.65it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00063-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00112-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00089-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00047-of-000163.safetensors
+Loading safetensors weights in parallel:  53%|█████▎    | 87/163 [00:15<00:06, 12.64it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00090-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00023-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00011-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00078-of-000163.safetensors
+Loading safetensors weights in parallel:  56%|█████▌    | 91/163 [00:15<00:05, 13.68it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00050-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00113-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00130-of-000163.safetensors
+Loading safetensors weights in parallel:  58%|█████▊    | 94/163 [00:15<00:04, 15.24it/s][07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00020-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00154-of-000163.safetensors
+[07/24/2026-18:55:49] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00163-of-000163.safetensors
+Loading safetensors weights in parallel:  60%|█████▉    | 97/163 [00:16<00:04, 15.30it/s][07/24/2026-18:55:50] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00131-of-000163.safetensors
+[07/24/2026-18:55:50] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00077-of-000163.safetensors
+[07/24/2026-18:55:50] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00019-of-000163.safetensors
+Loading safetensors weights in parallel:  61%|██████▏   | 100/163 [00:16<00:07,  8.90it/s][07/24/2026-18:55:50] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00120-of-000163.safetensors
+[07/24/2026-18:55:51] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00055-of-000163.safetensors
+Loading safetensors weights in parallel:  63%|██████▎   | 102/163 [00:17<00:08,  6.79it/s][07/24/2026-18:55:51] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00016-of-000163.safetensors
+[07/24/2026-18:55:51] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00109-of-000163.safetensors
+Loading safetensors weights in parallel:  64%|██████▍   | 104/163 [00:17<00:10,  5.81it/s][07/24/2026-18:55:52] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00005-of-000163.safetensors
+[07/24/2026-18:55:52] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00040-of-000163.safetensors
+Loading safetensors weights in parallel:  65%|██████▌   | 106/163 [00:19<00:16,  3.54it/s][07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00099-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00153-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00121-of-000163.safetensors
+Loading safetensors weights in parallel:  67%|██████▋   | 109/163 [00:19<00:10,  4.92it/s][07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00010-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00140-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00135-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00122-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00142-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00049-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00062-of-000163.safetensors
+Loading safetensors weights in parallel:  71%|███████   | 115/163 [00:19<00:05,  8.66it/s][07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00107-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00134-of-000163.safetensors
+Loading safetensors weights in parallel:  72%|███████▏  | 118/163 [00:19<00:04, 10.40it/s][07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00105-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00162-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00149-of-000163.safetensors
+Loading safetensors weights in parallel:  74%|███████▍  | 121/163 [00:19<00:03, 12.38it/s][07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00009-of-000163.safetensors
+[07/24/2026-18:55:53] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00161-of-000163.safetensors
+[07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00143-of-000163.safetensors
+Loading safetensors weights in parallel:  76%|███████▌  | 124/163 [00:20<00:04,  8.32it/s][07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00030-of-000163.safetensors
+[07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00075-of-000163.safetensors
+Loading safetensors weights in parallel:  77%|███████▋  | 126/163 [00:20<00:04,  8.45it/s][07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00115-of-000163.safetensors
+[07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00058-of-000163.safetensors
+[07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00139-of-000163.safetensors
+Loading safetensors weights in parallel:  79%|███████▉  | 129/163 [00:20<00:03, 10.56it/s][07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00072-of-000163.safetensors
+[07/24/2026-18:55:54] [TRT-LLM] [RANK 0] [I] Start to load safetensor file /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4/model-00129-of-000163.safetensors
+Loading safetensors weights in parallel:  80%|████████  | 131/163 [00:21<00:03,  8.69it/s]Loading safetensors weights in parallel:  82%|████████▏ | 133/163 [00:21<00:03,  8.74it/s]Loading safetensors weights in parallel:  83%|████████▎ | 136/163 [00:21<00:02,  9.93it/s]Loading safetensors weights in parallel:  85%|████████▍ | 138/163 [00:22<00:04,  5.84it/s]Loading safetensors weights in parallel:  86%|████████▌ | 140/163 [00:22<00:05,  4.60it/s]Loading safetensors weights in parallel:  87%|████████▋ | 141/163 [00:23<00:04,  4.53it/s]Loading safetensors weights in parallel:  90%|█████████ | 147/163 [00:23<00:01,  9.61it/s]Loading safetensors weights in parallel:  96%|█████████▋| 157/163 [00:23<00:00, 19.82it/s]Loading safetensors weights in parallel: 100%|██████████| 163/163 [00:23<00:00,  6.94it/s]
+Loading weights:   0%|          | 0/1458 [00:00<?, ?it/s]Loading weights:   0%|          | 3/1458 [00:02<16:16,  1.49it/s]Loading weights:   1%|          | 11/1458 [00:02<03:43,  6.47it/s]Loading weights:   1%|          | 16/1458 [00:02<02:29,  9.66it/s]Loading weights:   1%|▏         | 20/1458 [00:02<02:11, 10.93it/s]Loading weights:   2%|▏         | 29/1458 [00:02<01:12, 19.65it/s]Loading weights:   2%|▏         | 34/1458 [00:02<00:59, 23.75it/s]Loading weights:   3%|▎         | 39/1458 [00:03<01:10, 20.26it/s]Loading weights:   3%|▎         | 48/1458 [00:03<00:47, 29.74it/s]Loading weights:   4%|▎         | 54/1458 [00:03<00:49, 28.62it/s]Loading weights:   4%|▍         | 59/1458 [00:03<00:54, 25.82it/s]Loading weights:   5%|▍         | 67/1458 [00:03<00:41, 33.88it/s]Loading weights:   5%|▍         | 72/1458 [00:03<00:38, 36.42it/s]Loading weights:   5%|▌         | 77/1458 [00:04<00:36, 37.32it/s]Loading weights:   6%|▌         | 82/1458 [00:05<01:49, 12.57it/s]Loading weights:   6%|▌         | 91/1458 [00:05<01:11, 19.20it/s]Loading weights:   7%|▋         | 97/1458 [00:05<01:01, 22.06it/s]Loading weights:   7%|▋         | 102/1458 [00:06<01:46, 12.69it/s]Loading weights:   7%|▋         | 106/1458 [00:06<01:32, 14.65it/s]Loading weights:   8%|▊         | 116/1458 [00:06<00:57, 23.20it/s]Loading weights:   8%|▊         | 123/1458 [00:06<00:46, 28.43it/s]Loading weights:   9%|▉         | 129/1458 [00:07<01:36, 13.76it/s]Loading weights:  10%|▉         | 139/1458 [00:07<01:03, 20.78it/s]Loading weights:  10%|▉         | 145/1458 [00:07<00:54, 24.21it/s]Loading weights:  10%|█         | 151/1458 [00:09<01:42, 12.80it/s]Loading weights:  11%|█         | 155/1458 [00:09<01:28, 14.70it/s]Loading weights:  11%|█▏        | 166/1458 [00:09<00:56, 22.76it/s]Loading weights:  12%|█▏        | 171/1458 [00:09<00:50, 25.74it/s]Loading weights:  12%|█▏        | 176/1458 [00:10<01:58, 10.85it/s]Loading weights:  12%|█▏        | 182/1458 [00:10<01:32, 13.86it/s]Loading weights:  13%|█▎        | 188/1458 [00:10<01:12, 17.55it/s]Loading weights:  13%|█▎        | 193/1458 [00:11<01:03, 19.89it/s]Loading weights:  14%|█▎        | 198/1458 [00:12<01:58, 10.59it/s]Loading weights:  14%|█▍        | 202/1458 [00:12<01:38, 12.74it/s]Loading weights:  15%|█▍        | 212/1458 [00:12<00:59, 20.87it/s]Loading weights:  15%|█▌        | 219/1458 [00:12<00:47, 26.17it/s]Loading weights:  15%|█▌        | 225/1458 [00:13<01:37, 12.68it/s]Loading weights:  16%|█▌        | 235/1458 [00:13<01:03, 19.25it/s]Loading weights:  17%|█▋        | 241/1458 [00:13<00:53, 22.61it/s]Loading weights:  17%|█▋        | 247/1458 [00:14<00:56, 21.31it/s]Loading weights:  17%|█▋        | 252/1458 [00:14<00:49, 24.20it/s]Loading weights:  18%|█▊        | 262/1458 [00:14<00:36, 32.50it/s]Loading weights:  19%|█▊        | 270/1458 [00:14<00:38, 30.79it/s]Loading weights:  19%|█▉        | 277/1458 [00:14<00:33, 35.00it/s]Loading weights:  20%|█▉        | 286/1458 [00:15<00:27, 42.33it/s]Loading weights:  20%|██        | 294/1458 [00:16<01:10, 16.55it/s]Loading weights:  20%|██        | 298/1458 [00:16<01:04, 17.92it/s]Loading weights:  21%|██        | 307/1458 [00:16<00:48, 23.78it/s]Loading weights:  21%|██▏       | 312/1458 [00:16<00:43, 26.24it/s]Loading weights:  22%|██▏       | 318/1458 [00:17<01:32, 12.36it/s]Loading weights:  22%|██▏       | 325/1458 [00:17<01:08, 16.57it/s]Loading weights:  23%|██▎       | 332/1458 [00:18<00:53, 21.04it/s]Loading weights:  23%|██▎       | 339/1458 [00:18<00:42, 26.39it/s]Loading weights:  24%|██▎       | 344/1458 [00:19<01:35, 11.66it/s]Loading weights:  24%|██▍       | 350/1458 [00:19<01:14, 14.83it/s]Loading weights:  25%|██▍       | 358/1458 [00:19<00:53, 20.41it/s]Loading weights:  25%|██▌       | 366/1458 [00:20<01:32, 11.85it/s]Loading weights:  26%|██▌       | 373/1458 [00:20<01:09, 15.60it/s]Loading weights:  26%|██▌       | 380/1458 [00:21<00:53, 20.24it/s]Loading weights:  27%|██▋       | 387/1458 [00:21<00:44, 24.29it/s]Loading weights:  27%|██▋       | 392/1458 [00:22<01:37, 10.91it/s]Loading weights:  28%|██▊       | 404/1458 [00:22<00:59, 17.67it/s]Loading weights:  28%|██▊       | 411/1458 [00:22<00:48, 21.79it/s]Loading weights:  29%|██▊       | 417/1458 [00:23<01:19, 13.05it/s]Loading weights:  29%|██▉       | 421/1458 [00:23<01:09, 14.86it/s]Loading weights:  29%|██▉       | 430/1458 [00:24<00:48, 21.23it/s]Loading weights:  30%|███       | 438/1458 [00:24<00:46, 21.93it/s]Loading weights:  30%|███       | 443/1458 [00:24<00:43, 23.50it/s]Loading weights:  31%|███       | 451/1458 [00:24<00:32, 30.54it/s]Loading weights:  31%|███▏      | 457/1458 [00:24<00:30, 33.27it/s]Loading weights:  32%|███▏      | 462/1458 [00:25<00:35, 27.67it/s]Loading weights:  32%|███▏      | 466/1458 [00:25<00:33, 29.58it/s]Loading weights:  33%|███▎      | 476/1458 [00:25<00:23, 41.94it/s]Loading weights:  33%|███▎      | 483/1458 [00:25<00:20, 46.67it/s]Loading weights:  34%|███▎      | 489/1458 [00:26<01:06, 14.49it/s]Loading weights:  34%|███▍      | 494/1458 [00:26<00:59, 16.16it/s]Loading weights:  34%|███▍      | 500/1458 [00:26<00:48, 19.60it/s]Loading weights:  35%|███▍      | 505/1458 [00:27<00:42, 22.42it/s]Loading weights:  35%|███▍      | 510/1458 [00:28<01:32, 10.24it/s]Loading weights:  35%|███▌      | 513/1458 [00:28<01:21, 11.57it/s]Loading weights:  36%|███▌      | 518/1458 [00:28<01:02, 15.08it/s]Loading weights:  36%|███▋      | 529/1458 [00:28<00:36, 25.44it/s]Loading weights:  37%|███▋      | 534/1458 [00:29<01:08, 13.42it/s]Loading weights:  37%|███▋      | 538/1458 [00:29<01:02, 14.66it/s]Loading weights:  38%|███▊      | 548/1458 [00:29<00:40, 22.73it/s]Loading weights:  38%|███▊      | 553/1458 [00:29<00:36, 24.84it/s]Loading weights:  38%|███▊      | 558/1458 [00:30<01:12, 12.46it/s]Loading weights:  39%|███▊      | 562/1458 [00:31<01:00, 14.72it/s]Loading weights:  39%|███▉      | 572/1458 [00:31<00:38, 23.17it/s]Loading weights:  40%|███▉      | 577/1458 [00:31<00:35, 25.08it/s]Loading weights:  40%|███▉      | 582/1458 [00:32<01:05, 13.33it/s]Loading weights:  40%|████      | 586/1458 [00:32<00:56, 15.47it/s]Loading weights:  40%|████      | 590/1458 [00:32<00:48, 18.00it/s]Loading weights:  41%|████      | 598/1458 [00:32<00:33, 25.58it/s]Loading weights:  42%|████▏     | 606/1458 [00:33<00:47, 18.12it/s]Loading weights:  42%|████▏     | 610/1458 [00:33<00:42, 20.13it/s]Loading weights:  42%|████▏     | 619/1458 [00:33<00:29, 28.39it/s]Loading weights:  43%|████▎     | 625/1458 [00:33<00:25, 32.33it/s]Loading weights:  43%|████▎     | 630/1458 [00:33<00:30, 26.87it/s]Loading weights:  43%|████▎     | 634/1458 [00:33<00:29, 28.19it/s]Loading weights:  44%|████▍     | 644/1458 [00:34<00:19, 40.85it/s]Loading weights:  45%|████▍     | 650/1458 [00:34<00:18, 44.50it/s]Loading weights:  45%|████▍     | 656/1458 [00:34<00:28, 27.83it/s]Loading weights:  46%|████▌     | 667/1458 [00:34<00:20, 39.18it/s]Loading weights:  46%|████▌     | 673/1458 [00:34<00:19, 40.47it/s]Loading weights:  47%|████▋     | 679/1458 [00:35<00:23, 32.88it/s]Loading weights:  47%|████▋     | 684/1458 [00:35<00:21, 35.70it/s]Loading weights:  47%|████▋     | 691/1458 [00:35<00:18, 41.94it/s]Loading weights:  48%|████▊     | 697/1458 [00:35<00:17, 43.11it/s]Loading weights:  48%|████▊     | 703/1458 [00:35<00:21, 35.49it/s]Loading weights:  49%|████▊     | 709/1458 [00:35<00:19, 39.25it/s]Loading weights:  49%|████▉     | 718/1458 [00:35<00:15, 47.66it/s]Loading weights:  50%|████▉     | 726/1458 [00:36<00:18, 39.19it/s]Loading weights:  50%|█████     | 731/1458 [00:36<00:17, 40.75it/s]Loading weights:  51%|█████     | 740/1458 [00:36<00:14, 48.01it/s]Loading weights:  51%|█████     | 747/1458 [00:36<00:14, 50.70it/s]Loading weights:  52%|█████▏    | 753/1458 [00:36<00:19, 36.18it/s]Loading weights:  52%|█████▏    | 758/1458 [00:36<00:19, 36.79it/s]Loading weights:  52%|█████▏    | 764/1458 [00:37<00:16, 41.22it/s]Loading weights:  53%|█████▎    | 774/1458 [00:37<00:19, 34.77it/s]Loading weights:  53%|█████▎    | 779/1458 [00:37<00:19, 35.14it/s]Loading weights:  54%|█████▍    | 788/1458 [00:37<00:15, 43.55it/s]Loading weights:  54%|█████▍    | 794/1458 [00:37<00:14, 46.46it/s]Loading weights:  55%|█████▍    | 800/1458 [00:38<00:20, 32.70it/s]Loading weights:  56%|█████▌    | 811/1458 [00:38<00:14, 44.39it/s]Loading weights:  56%|█████▌    | 817/1458 [00:38<00:14, 43.50it/s]Loading weights:  56%|█████▋    | 823/1458 [00:38<00:20, 30.90it/s]Loading weights:  57%|█████▋    | 829/1458 [00:38<00:18, 34.80it/s]Loading weights:  57%|█████▋    | 836/1458 [00:39<00:16, 37.67it/s]Loading weights:  58%|█████▊    | 843/1458 [00:39<00:14, 42.22it/s]Loading weights:  58%|█████▊    | 848/1458 [00:39<00:20, 30.17it/s]Loading weights:  59%|█████▊    | 854/1458 [00:39<00:18, 32.52it/s]Loading weights:  59%|█████▉    | 862/1458 [00:39<00:15, 38.77it/s]Loading weights:  59%|█████▉    | 867/1458 [00:39<00:14, 40.95it/s]Loading weights:  60%|█████▉    | 872/1458 [00:40<00:19, 30.19it/s]Loading weights:  61%|██████    | 884/1458 [00:40<00:13, 43.93it/s]Loading weights:  61%|██████    | 891/1458 [00:40<00:12, 46.82it/s]Loading weights:  62%|██████▏   | 897/1458 [00:40<00:15, 35.96it/s]Loading weights:  62%|██████▏   | 907/1458 [00:40<00:11, 47.03it/s]Loading weights:  63%|██████▎   | 913/1458 [00:40<00:12, 44.88it/s]Loading weights:  63%|██████▎   | 919/1458 [00:41<00:16, 32.01it/s]Loading weights:  63%|██████▎   | 924/1458 [00:41<00:15, 34.73it/s]Loading weights:  64%|██████▍   | 931/1458 [00:41<00:13, 39.19it/s]Loading weights:  64%|██████▍   | 936/1458 [00:41<00:12, 40.82it/s]Loading weights:  65%|██████▍   | 941/1458 [00:41<00:13, 39.39it/s]Loading weights:  65%|██████▍   | 946/1458 [00:42<00:21, 24.31it/s]Loading weights:  65%|██████▌   | 950/1458 [00:42<00:19, 26.59it/s]Loading weights:  66%|██████▌   | 958/1458 [00:42<00:14, 34.73it/s]Loading weights:  66%|██████▋   | 966/1458 [00:43<00:27, 17.67it/s]Loading weights:  67%|██████▋   | 970/1458 [00:43<00:25, 18.99it/s]Loading weights:  67%|██████▋   | 980/1458 [00:43<00:16, 28.38it/s]Loading weights:  68%|██████▊   | 987/1458 [00:43<00:14, 33.46it/s]Loading weights:  68%|██████▊   | 993/1458 [00:43<00:16, 28.86it/s]Loading weights:  69%|██████▉   | 1003/1458 [00:44<00:11, 39.75it/s]Loading weights:  69%|██████▉   | 1009/1458 [00:44<00:11, 40.54it/s]Loading weights:  70%|██████▉   | 1015/1458 [00:44<00:13, 33.77it/s]Loading weights:  70%|██████▉   | 1020/1458 [00:44<00:12, 35.14it/s]Loading weights:  70%|███████   | 1027/1458 [00:44<00:10, 41.02it/s]Loading weights:  71%|███████   | 1032/1458 [00:44<00:09, 42.68it/s]Loading weights:  71%|███████   | 1037/1458 [00:44<00:10, 40.94it/s]Loading weights:  71%|███████▏  | 1042/1458 [00:45<00:15, 26.40it/s]Loading weights:  72%|███████▏  | 1046/1458 [00:45<00:15, 27.01it/s]Loading weights:  72%|███████▏  | 1052/1458 [00:45<00:12, 31.72it/s]Loading weights:  72%|███████▏  | 1057/1458 [00:45<00:11, 34.82it/s]Loading weights:  73%|███████▎  | 1062/1458 [00:45<00:14, 28.28it/s]Loading weights:  73%|███████▎  | 1069/1458 [00:46<00:11, 34.39it/s]Loading weights:  74%|███████▍  | 1076/1458 [00:46<00:10, 37.99it/s]Loading weights:  74%|███████▍  | 1081/1458 [00:46<00:09, 38.66it/s]Loading weights:  74%|███████▍  | 1086/1458 [00:46<00:11, 31.94it/s]Loading weights:  75%|███████▍  | 1090/1458 [00:46<00:11, 31.39it/s]Loading weights:  75%|███████▌  | 1094/1458 [00:46<00:11, 32.48it/s]Loading weights:  76%|███████▌  | 1102/1458 [00:46<00:08, 41.38it/s]Loading weights:  76%|███████▌  | 1110/1458 [00:47<00:11, 31.61it/s]Loading weights:  76%|███████▋  | 1114/1458 [00:47<00:10, 31.55it/s]Loading weights:  77%|███████▋  | 1124/1458 [00:47<00:07, 42.09it/s]Loading weights:  78%|███████▊  | 1131/1458 [00:47<00:07, 43.20it/s]Loading weights:  78%|███████▊  | 1136/1458 [00:48<00:20, 15.97it/s]Loading weights:  79%|███████▊  | 1147/1458 [00:48<00:12, 24.30it/s]Loading weights:  79%|███████▉  | 1152/1458 [00:48<00:11, 27.15it/s]Loading weights:  79%|███████▉  | 1158/1458 [00:49<00:21, 14.20it/s]Loading weights:  80%|███████▉  | 1162/1458 [00:49<00:18, 15.67it/s]Loading weights:  80%|████████  | 1172/1458 [00:50<00:12, 23.56it/s]Loading weights:  81%|████████  | 1182/1458 [00:50<00:10, 25.42it/s]Loading weights:  82%|████████▏ | 1189/1458 [00:50<00:09, 29.49it/s]Loading weights:  82%|████████▏ | 1198/1458 [00:50<00:06, 37.41it/s]Loading weights:  83%|████████▎ | 1206/1458 [00:51<00:07, 32.93it/s]Loading weights:  83%|████████▎ | 1213/1458 [00:51<00:06, 37.90it/s]Loading weights:  84%|████████▍ | 1222/1458 [00:51<00:05, 45.77it/s]Loading weights:  84%|████████▍ | 1228/1458 [00:51<00:05, 44.45it/s]Loading weights:  85%|████████▍ | 1234/1458 [00:51<00:07, 31.74it/s]Loading weights:  85%|████████▍ | 1239/1458 [00:51<00:06, 33.28it/s]Loading weights:  85%|████████▌ | 1244/1458 [00:51<00:06, 34.38it/s]Loading weights:  86%|████████▌ | 1251/1458 [00:52<00:05, 39.10it/s]Loading weights:  86%|████████▌ | 1256/1458 [00:52<00:06, 31.24it/s]Loading weights:  87%|████████▋ | 1267/1458 [00:52<00:04, 45.51it/s]Loading weights:  87%|████████▋ | 1273/1458 [00:52<00:04, 38.64it/s]Loading weights:  88%|████████▊ | 1278/1458 [00:52<00:05, 31.06it/s]Loading weights:  88%|████████▊ | 1286/1458 [00:53<00:04, 36.18it/s]Loading weights:  89%|████████▉ | 1294/1458 [00:53<00:03, 43.47it/s]Loading weights:  89%|████████▉ | 1302/1458 [00:53<00:04, 35.44it/s]Loading weights:  90%|████████▉ | 1310/1458 [00:53<00:03, 42.61it/s]Loading weights:  90%|█████████ | 1318/1458 [00:53<00:02, 48.81it/s]Loading weights:  91%|█████████ | 1324/1458 [00:53<00:02, 50.55it/s]Loading weights:  91%|█████████ | 1330/1458 [00:54<00:03, 37.16it/s]Loading weights:  92%|█████████▏| 1342/1458 [00:54<00:02, 47.92it/s]Loading weights:  92%|█████████▏| 1348/1458 [00:54<00:02, 45.69it/s]Loading weights:  93%|█████████▎| 1354/1458 [00:55<00:05, 18.85it/s]Loading weights:  93%|█████████▎| 1363/1458 [00:55<00:03, 25.88it/s]Loading weights:  94%|█████████▍| 1369/1458 [00:55<00:03, 28.77it/s]Loading weights:  94%|█████████▍| 1374/1458 [00:55<00:03, 25.89it/s]Loading weights:  95%|█████████▍| 1381/1458 [00:55<00:02, 30.93it/s]Loading weights:  95%|█████████▌| 1388/1458 [00:56<00:01, 36.25it/s]Loading weights:  96%|█████████▌| 1395/1458 [00:56<00:01, 40.50it/s]Loading weights:  96%|█████████▌| 1401/1458 [00:56<00:03, 18.85it/s]Loading weights:  97%|█████████▋| 1412/1458 [00:57<00:01, 28.22it/s]Loading weights:  98%|█████████▊| 1422/1458 [00:58<00:02, 17.76it/s]Loading weights:  98%|█████████▊| 1427/1458 [00:58<00:01, 20.29it/s]Loading weights:  98%|█████████▊| 1436/1458 [00:58<00:00, 26.37it/s]Loading weights:  99%|█████████▉| 1446/1458 [00:58<00:00, 28.98it/s]Loading weights: 100%|█████████▉| 1454/1458 [00:58<00:00, 34.95it/s]Loading weights: 100%|██████████| 1458/1458 [00:59<00:00, 24.71it/s]
+Model init total -- 195.45s
+[07/24/2026-18:56:56] [TRT-LLM] [RANK 0] [I] Using Sampler: TorchSampler
+[07/24/2026-18:56:56] [TRT-LLM] [RANK 0] [I] [create_py_executor] Created execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0xf9cd39fc00a0>
+[07/24/2026-18:56:56] [TRT-LLM] [RANK 0] [I] [kv cache manager] Primary/secondary blocks for window sizes set to {23141: (1234, 0)} for estimation dry run
+[07/24/2026-18:56:56] [TRT-LLM] [RANK 0] [I] Adjusted attention window size to 23141 in blocks_per_window
+[07/24/2026-18:56:56] [TRT-LLM] [RANK 0] [I] [KVCacheManager] execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0xf9cd39fc00a0>
+[TensorRT-LLM][INFO] Max KV cache blocks per sequence: 724 [window size=23141], tokens per block=32, primary blocks=1234, secondary blocks=0, max sequence length=23141
+[TensorRT-LLM][INFO] Number of tokens per block: 32.
+[TensorRT-LLM][INFO] [MemUsageChange] Allocated 1.29 GiB for max tokens in paged KV cache (39488).
+[07/24/2026-18:56:57] [TRT-LLM] [RANK 0] [I] max_seq_len=23141, max_num_requests=512, max_num_tokens=3456, max_batch_size=512
+[TensorRT-LLM][INFO] CacheTransBufferManager: mMaxNumTokens:0, mRecvBufferCount:1, mSendBufferCount:1,mTransferBufferSize:536870912, mPreAllocBufferSize:1073741824,mOnlyUseDynamicBuffer:0 mUseFabricMemory:1 mDataType:6
+[TensorRT-LLM][INFO] dlopen: libtensorrt_llm_nixl_wrapper.so
+[TensorRT-LLM][INFO] NixlTransferAgent::NixlTransferAgent using NIXL backend: UCX
+[TensorRT-LLM][INFO] NixlTransferAgent::NixlTransferAgent mAddress: 10.128.0.38:56753
+[TensorRT-LLM][INFO] NIXL Connection Manager created
+[07/24/2026-18:57:09] [TRT-LLM] [RANK 0] [I] [PyExecutor] execution_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0xf9cd39fc00a0>. 
+[07/24/2026-18:57:09] [TRT-LLM] [RANK 0] [I] Running autotuner warmup...
+[07/24/2026-18:57:09] [TRT-LLM] [RANK 0] [I] [Autotuner] Autotuning process starts ...
+[TensorRT-LLM][WARNING] Attention workspace size is not enough, increase the size from 0 bytes to 769755136 bytes
+[07/24/2026-18:58:05] [TRT-LLM] [RANK 0] [I] [Autotuner] Autotuning process ends
+[07/24/2026-18:58:05] [TRT-LLM] [RANK 0] [I] [Autotuner] Cache size after warmup is 131
+[07/24/2026-18:58:05] [TRT-LLM] [RANK 0] [I] Creating CUDA graph instances for 11 batch sizes.
+[07/24/2026-18:58:05] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=512, draft_len=0, max_seq_len=23140
+[TensorRT-LLM][WARNING] Attention workspace size is not enough, increase the size from 0 bytes to 167848960 bytes
+[07/24/2026-18:58:06] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=384, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:07] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=256, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:08] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=128, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:08] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=64, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:09] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=32, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:09] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=16, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:10] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=8, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:10] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=4, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:11] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=2, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:11] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=1, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] global_steady_clock_offset at each rank: [0.0, -1.00000761449337e-06, 0.0, 0.0, -16.24957099999301, -16.249560999916866, -16.249568999977782, -16.249559999909252]
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Setting global_steady_clock_offset: 0.0 seconds for rank 0
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Memory used after loading model weights (inside torch) in memory usage profiling: 62.11 GiB
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Memory used after loading model weights (outside torch) in memory usage profiling: 5.88 GiB
+[TensorRT-LLM][WARNING] [kv cache manager] storeContextBlocks: Can not find sequence for request 512
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Memory dynamically allocated during inference (inside torch) in memory usage profiling: 0.79 GiB
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Memory used outside torch (e.g., NCCL and CUDA graphs) in memory usage profiling: 6.00 GiB
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Peak memory during memory usage profiling (torch + non-torch): 68.89 GiB, available KV cache memory when calculating max tokens: 104.76 GiB, fraction is set 0.9, kv size is 35136. device total memory 184.00 GiB, , tmp kv_mem 1.29 GiB
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Estimated max memory in KV cache : 104.76 GiB
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [W] Both free_gpu_memory_fraction and max_tokens are set (to 0.9 and 3201538 with free memory 117.21270751953125GiB of total memory 184.0GiB, respectively). The smaller value will be used.
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] Adjusted attention window size to 23141 in blocks_per_window
+[07/24/2026-18:58:12] [TRT-LLM] [RANK 0] [I] [KVCacheManager] execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0xf9cd39fc00a0>
+[TensorRT-LLM][INFO] Max KV cache blocks per sequence: 724 [window size=23141], tokens per block=32, primary blocks=100048, secondary blocks=0, max sequence length=23141
+[TensorRT-LLM][INFO] Number of tokens per block: 32.
+[TensorRT-LLM][INFO] [MemUsageChange] Allocated 104.76 GiB for max tokens in paged KV cache (3201536).
+[07/24/2026-18:58:49] [TRT-LLM] [RANK 0] [I] max_seq_len=23141, max_num_requests=512, max_num_tokens=3456, max_batch_size=512
+[TensorRT-LLM][INFO] CacheTransBufferManager: mMaxNumTokens:0, mRecvBufferCount:1, mSendBufferCount:1,mTransferBufferSize:536870912, mPreAllocBufferSize:1073741824,mOnlyUseDynamicBuffer:0 mUseFabricMemory:1 mDataType:6
+[TensorRT-LLM][INFO] NixlTransferAgent::NixlTransferAgent using NIXL backend: UCX
+[TensorRT-LLM][INFO] NixlTransferAgent::NixlTransferAgent mAddress: 10.128.0.38:48373
+[TensorRT-LLM][INFO] NIXL Connection Manager created
+[07/24/2026-18:58:50] [TRT-LLM] [RANK 0] [I] [PyExecutor] execution_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0xf9cd39fc00a0>. 
+[07/24/2026-18:58:50] [TRT-LLM] [RANK 0] [I] Running autotuner warmup...
+[07/24/2026-18:58:50] [TRT-LLM] [RANK 0] [I] [Autotuner] Autotuning process starts ...
+[TensorRT-LLM][WARNING] Attention workspace size is not enough, increase the size from 0 bytes to 769755136 bytes
+[07/24/2026-18:58:51] [TRT-LLM] [RANK 0] [I] [Autotuner] Autotuning process ends
+[07/24/2026-18:58:51] [TRT-LLM] [RANK 0] [I] [Autotuner] Cache size after warmup is 131
+[07/24/2026-18:58:51] [TRT-LLM] [RANK 0] [I] Creating CUDA graph instances for 11 batch sizes.
+[07/24/2026-18:58:51] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=512, draft_len=0, max_seq_len=23140
+[TensorRT-LLM][WARNING] Attention workspace size is not enough, increase the size from 0 bytes to 167848960 bytes
+[07/24/2026-18:58:52] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=384, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:52] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=256, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:53] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=128, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:53] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=64, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:54] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=32, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:54] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=16, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:55] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=8, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:55] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=4, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:56] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=2, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:56] [TRT-LLM] [RANK 0] [I] Run generation-only CUDA graph warmup for batch size=1, draft_len=0, max_seq_len=23140
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] global_steady_clock_offset at each rank: [0.0, 7.00005330145359e-06, -1.00000761449337e-05, 5.00003807246685e-06, -16.24957300000824, -16.24956599995494, -16.24958200007677, -16.24955700011924]
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] Setting global_steady_clock_offset: 0.0 seconds for rank 0
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] Setting PyTorch memory fraction to 0.4104418547257133 (75.52130126953125 GiB)
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] LLM Args:
+model='/home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4' tokenizer=None tokenizer_mode='auto' custom_tokenizer=None skip_tokenizer_init=False trust_remote_code=False tensor_parallel_size=8 dtype='auto' revision=None tokenizer_revision=None pipeline_parallel_size=1 context_parallel_size=1 gpus_per_node=1 moe_cluster_parallel_size=-1 moe_tensor_parallel_size=-1 moe_expert_parallel_size=8 enable_attention_dp=True enable_lm_head_tp_in_adp=False pp_partition=None cp_config={} load_format=<LoadFormat.AUTO: 0> fail_fast_on_attention_window_too_large=False enable_lora=False lora_config=None kv_cache_config=KvCacheConfig(enable_block_reuse=False, max_tokens=3201538, max_attention_window=None, sink_token_length=None, free_gpu_memory_fraction=0.9, host_cache_size=None, onboard_blocks=True, cross_kv_cache_fraction=None, secondary_offload_min_priority=None, event_buffer_max_size=0, attention_dp_events_gather_period_ms=5, enable_partial_reuse=True, copy_on_partial_reuse=True, use_uvm=False, max_gpu_total_bytes=112489239859, dtype='fp8', mamba_ssm_cache_dtype='auto', tokens_per_block=32) enable_chunked_prefill=False guided_decoding_backend=None batched_logits_processor=None iter_stats_max_iterations=None request_stats_max_iterations=None peft_cache_config=None scheduler_config=SchedulerConfig(capacity_scheduler_policy=<CapacitySchedulerPolicy.MAX_UTILIZATION: 'MAX_UTILIZATION'>, context_chunking_policy=<ContextChunkingPolicy.FIRST_COME_FIRST_SERVED: 'FIRST_COME_FIRST_SERVED'>, dynamic_batch_config=None) cache_transceiver_config=CacheTransceiverConfig(backend='NIXL', max_tokens_in_buffer=None, kv_transfer_timeout_ms=None, kv_transfer_sender_future_timeout_ms=1000) sparse_attention_config=None speculative_config=None max_batch_size=512 max_input_len=1024 max_seq_len=23140 max_beam_width=1 max_num_tokens=3456 gather_generation_logits=False num_postprocess_workers=0 postprocess_tokenizer_dir='/home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4' reasoning_parser=None decoding_config=None mpi_session=None otlp_traces_endpoint=None backend='pytorch' return_perf_metrics=False orchestrator_type=None env_overrides=None garbage_collection_gen0_threshold=20000 cuda_graph_config=CudaGraphConfig(batch_sizes=[1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512], max_batch_size=512, enable_padding=True) attention_dp_config=AttentionDpConfig(enable_balance=True, timeout_iters=9, batching_wait_iters=3) disable_overlap_scheduler=False moe_config=MoeConfig(backend='CUTEDSL', max_num_tokens=None, load_balancer=None, disable_finalize_fusion=False, use_low_precision_moe_combine=False) nvfp4_gemm_config=Nvfp4GemmConfig(allowed_backends=['cutlass', 'cublaslt', 'cuda_core']) attn_backend='TRTLLM' sampler_type=<SamplerType.auto: 'auto'> sampler_force_async_worker=False enable_iter_perf_stats=False enable_iter_req_stats=False print_iter_log=False perf_metrics_max_requests=0 batch_wait_timeout_ms=0 batch_wait_timeout_iters=0 batch_wait_max_tokens_ratio=0 torch_compile_config=None enable_autotuner=True enable_layerwise_nvtx_marker=False enable_min_latency=False stream_interval=100 force_dynamic_quantization=False allreduce_strategy='AUTO' checkpoint_loader=None checkpoint_format='HF' kv_connector_config=None mm_encoder_only=False ray_worker_extension_cls=None ray_placement_config=None enable_sleep=False disable_flashinfer_sampling=False max_stats_len=1000
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] RPCServer is bound to ipc:///tmp/rpc_test_9c787f8f-38df-4f7a-b3c1-92095a65aa72
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] RPC Server started and listening on ipc:///tmp/rpc_test_9c787f8f-38df-4f7a-b3c1-92095a65aa72
+[07/24/2026-18:58:57] [TRT-LLM] [RANK 0] [I] RPC Server has started.
+[07/24/2026-18:58:57] [TRT-LLM] [I] get signal from executor worker
+INFO:     Started server process [479281]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     10.128.0.106:34002 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34018 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34026 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34034 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34048 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34060 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34062 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34072 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34086 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34096 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34110 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34112 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34116 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34132 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34152 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34168 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34180 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34182 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34194 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34202 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34210 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34226 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34228 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34240 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34256 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34270 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34280 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34290 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34300 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34314 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34326 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34338 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34346 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34350 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34362 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34374 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34376 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34392 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34406 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34416 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34428 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34442 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34446 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34456 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34468 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34470 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34484 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34490 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34494 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34496 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34500 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34502 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34508 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34514 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34516 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34524 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34538 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34548 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34560 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34574 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34582 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34590 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34612 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34614 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34620 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34622 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34630 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34636 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34650 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:34652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:46956 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:46958 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:46962 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:46970 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:46986 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47002 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47012 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47020 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47022 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47026 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47032 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47048 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47060 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47074 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47088 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47092 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47106 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47122 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47128 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47134 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47146 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47158 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47178 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47194 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47204 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47220 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47230 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47240 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47250 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47266 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47282 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47284 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47300 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47306 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47312 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47314 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47316 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47328 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47330 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47332 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47348 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47350 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47366 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47380 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47384 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47390 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47406 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47416 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47426 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47438 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47444 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47448 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47470 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47474 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47482 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47496 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47504 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47512 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47524 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47540 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47544 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47560 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47570 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47574 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47578 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47590 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47600 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47610 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47612 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47616 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47622 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47630 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47632 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47636 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47638 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47646 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47660 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47666 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47682 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47696 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47702 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47704 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47718 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47734 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47740 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47742 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47754 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47758 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47772 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47788 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47802 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47818 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47824 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47828 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47836 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47840 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47844 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47854 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47862 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47876 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47890 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47900 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47908 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47912 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47924 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47934 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47936 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47948 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47962 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47970 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47978 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:42950 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:42966 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:42982 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:42992 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:42998 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43000 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43012 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43016 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43026 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43034 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43038 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43042 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43046 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43050 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43060 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43066 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43076 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43086 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43096 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43108 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43120 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43136 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43142 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43144 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43160 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43186 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43194 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43196 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43198 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43212 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43214 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43218 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43224 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43226 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43238 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43242 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43254 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43260 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43276 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43286 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43290 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43306 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43314 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43330 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43332 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43356 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43362 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43372 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43388 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43400 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43410 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43414 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43424 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43430 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43446 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43448 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43454 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43468 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43488 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43500 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43510 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43526 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43538 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43554 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43568 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43578 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43582 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43590 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43606 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43620 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43634 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43636 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43650 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43662 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43670 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43700 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43714 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43728 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43734 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43736 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43738 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43746 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43754 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43756 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43758 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43772 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43780 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43790 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43804 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43816 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43820 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43834 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43840 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43854 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43868 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43874 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43876 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43878 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43894 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43898 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43900 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43916 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43932 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43940 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43942 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43950 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43964 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43980 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:43988 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:44002 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:44012 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:44014 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:44028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:44030 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35678 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35690 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35706 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35736 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35742 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35750 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35764 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35776 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35786 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35792 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35796 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35798 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35804 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35818 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35838 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35854 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35868 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35870 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35884 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35900 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35912 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35918 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35926 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35934 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35948 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35952 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35972 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35974 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35978 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35992 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:35996 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36010 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36014 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36026 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36042 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36046 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36056 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36082 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36090 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36098 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36102 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36112 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36114 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36120 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36130 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36146 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36160 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36186 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36190 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36198 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36212 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36224 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36234 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36240 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36248 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36264 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36274 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36286 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36302 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36304 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36308 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36314 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36318 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36320 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36328 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36342 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36356 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36372 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36374 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36380 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36384 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36396 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36400 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36402 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36410 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36424 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36434 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36440 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36450 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36468 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36474 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36498 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36502 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36508 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36524 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36532 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36538 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36548 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36562 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36574 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36578 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36596 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36606 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36610 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36634 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36646 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36656 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36682 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36698 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36702 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36714 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36736 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:36746 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47286 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47290 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47308 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47318 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47326 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47338 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47352 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47360 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47362 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47374 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47376 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47386 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47400 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47412 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47422 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47440 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47450 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47474 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47478 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47482 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47484 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47488 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47502 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47514 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47526 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47528 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47538 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47554 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47562 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47580 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47602 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47606 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47620 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47640 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47642 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47648 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47818 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47650 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47662 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.128.0.106:47674 - "POST /v1/chat/completions HTTP/1.1" 200 OK

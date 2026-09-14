@@ -1,0 +1,7 @@
+{
+  "retraining": "no",
+  "input_data_types": "tokenized",
+  "weight_data_types": "mxfp4",
+  "starting_weights_filename": "gpt-oss-120b",
+  "weight_transformations": "Native MXFP4 checkpoint"
+}

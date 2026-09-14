@@ -1,0 +1,3514 @@
+[
+    {
+        "prompt_en": "a person swimming in ocean",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person swimming in ocean-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person giving a presentation to a room full of colleagues",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person giving a presentation to a room full of colleagues-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person washing the dishes",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person washing the dishes-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person eating a burger",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person eating a burger-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person walking in the snowstorm",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person walking in the snowstorm-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person drinking coffee in a cafe",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person drinking coffee in a cafe-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a person playing guitar",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a person playing guitar-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bicycle leaning against a tree",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bicycle leaning against a tree-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bicycle gliding through a snowy field",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bicycle gliding through a snowy field-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bicycle slowing down to stop",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bicycle slowing down to stop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bicycle accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bicycle accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a car stuck in traffic during rush hour",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a car stuck in traffic during rush hour-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a car turning a corner",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a car turning a corner-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a car slowing down to stop",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a car slowing down to stop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a car accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a car accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a motorcycle cruising along a coastal highway",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a motorcycle cruising along a coastal highway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a motorcycle turning a corner",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a motorcycle turning a corner-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a motorcycle slowing down to stop",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a motorcycle slowing down to stop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a motorcycle gliding through a snowy field",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a motorcycle gliding through a snowy field-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a motorcycle accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a motorcycle accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an airplane soaring through a clear blue sky",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an airplane soaring through a clear blue sky-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an airplane taking off",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an airplane taking off-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an airplane landing smoothly on a runway",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an airplane landing smoothly on a runway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an airplane accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an airplane accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bus turning a corner",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bus turning a corner-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bus stuck in traffic during rush hour",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bus stuck in traffic during rush hour-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bus accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bus accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a train speeding down the tracks",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a train speeding down the tracks-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a train crossing over a tall bridge",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a train crossing over a tall bridge-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a train accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a train accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a truck turning a corner",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a truck turning a corner-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a truck anchored in a tranquil bay",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a truck anchored in a tranquil bay-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a truck stuck in traffic during rush hour",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a truck stuck in traffic during rush hour-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a truck slowing down to stop",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a truck slowing down to stop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a truck accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a truck accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a boat sailing smoothly on a calm lake",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a boat sailing smoothly on a calm lake-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a boat slowing down to stop",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a boat slowing down to stop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a boat accelerating to gain speed",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a boat accelerating to gain speed-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bird soaring gracefully in the sky",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bird soaring gracefully in the sky-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bird building a nest from twigs and leaves",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bird building a nest from twigs and leaves-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bird flying over a snowy forest",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bird flying over a snowy forest-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cat grooming itself meticulously with its tongue",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cat grooming itself meticulously with its tongue-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cat playing in park",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cat playing in park-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cat drinking water",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cat drinking water-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cat running happily",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cat running happily-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a dog enjoying a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a dog enjoying a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a dog playing in park",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a dog playing in park-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a dog drinking water",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a dog drinking water-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a dog running happily",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a dog running happily-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a horse bending down to drink water from a river",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a horse bending down to drink water from a river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a horse galloping across an open field",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a horse galloping across an open field-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a horse taking a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a horse taking a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a horse running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a horse running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a sheep bending down to drink water from a river",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a sheep bending down to drink water from a river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a sheep taking a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a sheep taking a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a sheep running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a sheep running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cow bending down to drink water from a river",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cow bending down to drink water from a river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cow chewing cud while resting in a tranquil barn",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cow chewing cud while resting in a tranquil barn-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a cow running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a cow running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an elephant spraying itself with water using its trunk to cool down",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an elephant spraying itself with water using its trunk to cool down-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an elephant taking a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an elephant taking a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "an elephant running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/an elephant running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bear catching a salmon in its powerful jaws",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bear catching a salmon in its powerful jaws-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bear sniffing the air for scents of food",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bear sniffing the air for scents of food-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bear climbing a tree",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bear climbing a tree-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a bear hunting for prey",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a bear hunting for prey-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a zebra bending down to drink water from a river",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a zebra bending down to drink water from a river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a zebra running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a zebra running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a zebra taking a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a zebra taking a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a giraffe bending down to drink water from a river",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a giraffe bending down to drink water from a river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a giraffe taking a peaceful walk",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a giraffe taking a peaceful walk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a giraffe running to join a herd of its kind",
+        "dimension": [
+            "subject_consistency",
+            "dynamic_degree",
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a giraffe running to join a herd of its kind-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A beautiful coastal beach in spring, waves lapping on sand, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A beautiful coastal beach in spring, waves lapping on sand, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "The bund Shanghai, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/The bund Shanghai, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "a shark is swimming in the ocean, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/a shark is swimming in the ocean, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A panda drinking coffee in a cafe in Paris, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A panda drinking coffee in a cafe in Paris, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A cute happy Corgi playing in park, sunset, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A cute happy Corgi playing in park, sunset, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Gwen Stacy reading a book, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Gwen Stacy reading a book, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A boat sailing leisurely along the Seine River with the Eiffel Tower in background, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A boat sailing leisurely along the Seine River with the Eiffel Tower in background, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/A couple in formal evening wear going home get caught in a heavy downpour with umbrellas, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space by Hokusai, in the style of Ukiyo-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "An astronaut flying in space, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/An astronaut flying in space, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, Van Gogh style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "Van Gogh style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, Van Gogh style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, oil painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "oil painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, oil painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks by Hokusai, in the style of Ukiyo",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "by Hokusai, in the style of Ukiyo"
+            }
+        },
+        "video_list": []
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, black and white",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "black and white"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, black and white-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, pixel art",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "pixel art"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, pixel art-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, in cyberpunk style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "in cyberpunk style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, in cyberpunk style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, animated style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "animated style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, animated style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, watercolor painting",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "watercolor painting"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, watercolor painting-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, surrealism style",
+        "dimension": [
+            "appearance_style"
+        ],
+        "auxiliary_info": {
+            "appearance_style": {
+                "appearance_style": "surrealism style"
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/Snow rocky mountains peaks canyon. snow blanketed rocky mountains surround and shadow deep canyons. the canyons twist and bend through the high elevated mountain peaks, surrealism style-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "alley",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "alley"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/alley-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "amusement park",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "amusement park"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/amusement park-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "aquarium",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "aquarium"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/aquarium-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "arch",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "arch"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/arch-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "art gallery",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "art gallery"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/art gallery-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "bathroom",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "bathroom"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/bathroom-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "bakery shop",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "bakery shop"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/bakery shop-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "ballroom",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "ballroom"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/ballroom-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "bar",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "bar"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/bar-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "barn",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "barn"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/barn-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "basement",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "basement"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/basement-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "beach",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "beach"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/beach-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "bedroom",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "bedroom"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/bedroom-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "bridge",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "bridge"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/bridge-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "botanical garden",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "botanical garden"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/botanical garden-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "cafeteria",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "cafeteria"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/cafeteria-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "campsite",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "campsite"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/campsite-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "campus",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "campus"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/campus-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "carrousel",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "carrousel"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/carrousel-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "castle",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "castle"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/castle-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "cemetery",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "cemetery"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/cemetery-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "classroom",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "classroom"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/classroom-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "cliff",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "cliff"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/cliff-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "crosswalk",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "crosswalk"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/crosswalk-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "construction site",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "construction site"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/construction site-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "corridor",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "corridor"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/corridor-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "courtyard",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "courtyard"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/courtyard-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "desert",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "desert"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/desert-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "downtown",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "downtown"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/downtown-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "driveway",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "driveway"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/driveway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "farm",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "farm"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/farm-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "food court",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "food court"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/food court-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "football field",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "football field"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/football field-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "forest road",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "forest road"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/forest road-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "fountain",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "fountain"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/fountain-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "gas station",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "gas station"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/gas station-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "glacier",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "glacier"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/glacier-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "golf course",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "golf course"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/golf course-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "indoor gymnasium",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "indoor gymnasium"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/indoor gymnasium-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "harbor",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "harbor"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/harbor-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "highway",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "highway"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/highway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "hospital",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "hospital"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/hospital-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "house",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "house"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/house-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "iceberg",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "iceberg"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/iceberg-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "industrial area",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "industrial area"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/industrial area-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "jail cell",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "jail cell"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/jail cell-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "junkyard",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "junkyard"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/junkyard-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "kitchen",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "kitchen"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/kitchen-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "indoor library",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "indoor library"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/indoor library-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "lighthouse",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "lighthouse"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/lighthouse-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "laboratory",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "laboratory"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/laboratory-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "mansion",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "mansion"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/mansion-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "marsh",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "marsh"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/marsh-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "mountain",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "mountain"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/mountain-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "indoor movie theater",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "indoor movie theater"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/indoor movie theater-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "indoor museum",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "indoor museum"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/indoor museum-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "music studio",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "music studio"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/music studio-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "nursery",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "nursery"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/nursery-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "ocean",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "ocean"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/ocean-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "office",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "office"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/office-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "palace",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "palace"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/palace-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "parking lot",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "parking lot"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/parking lot-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "pharmacy",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "pharmacy"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/pharmacy-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "phone booth",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "phone booth"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/phone booth-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "raceway",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "raceway"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/raceway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "restaurant",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "restaurant"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/restaurant-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "river",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "river"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/river-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "science museum",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "science museum"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/science museum-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "shower",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "shower"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/shower-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "ski slope",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "ski slope"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/ski slope-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "sky",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "sky"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/sky-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "skyscraper",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "skyscraper"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/skyscraper-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "baseball stadium",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "baseball stadium"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/baseball stadium-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "staircase",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "staircase"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/staircase-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "street",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "street"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/street-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "supermarket",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "supermarket"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/supermarket-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "indoor swimming pool",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "indoor swimming pool"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/indoor swimming pool-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "tower",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "tower"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/tower-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "outdoor track",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "outdoor track"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/outdoor track-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "train railway",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "train railway"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/train railway-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "train station platform",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "train station platform"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/train station platform-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "underwater coral reef",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "underwater coral reef"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/underwater coral reef-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "valley",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "valley"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/valley-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "volcano",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "volcano"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/volcano-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "waterfall",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "waterfall"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/waterfall-0.mp4"
+        ]
+    },
+    {
+        "prompt_en": "windmill",
+        "dimension": [
+            "scene",
+            "background_consistency"
+        ],
+        "auxiliary_info": {
+            "scene": {
+                "scene": {
+                    "scene": "windmill"
+                }
+            }
+        },
+        "video_list": [
+            "/lfs/mlperf/repos/nv-mlpinf-partner-v6.1.3/closed/NVIDIA/sflow_output/57591-wan22_videogen_accuracy-20260728-072032-e61323/endpoint_benchmark/vbench_videos/windmill-0.mp4"
+        ]
+    }
+]

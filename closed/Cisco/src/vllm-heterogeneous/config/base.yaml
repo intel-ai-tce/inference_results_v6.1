@@ -1,0 +1,88 @@
+benchmark_name: MISSING
+scenario: MISSING
+test_mode: MISSING
+backend: MISSING
+engine_version: async
+
+env_config:
+  HARNESS_DISABLE_VLLM_LOGS: 1
+  HARNESS_GC_LIMIT: 0
+  HIP_FORCE_DEV_KERNARG: 1
+
+vllm_env_config:
+  VLLM_USE_V1: 1
+  VLLM_LOGGING_LEVEL: ERROR
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_ENGINE_ITERATION_TIMEOUT_S: 36000
+
+harness_config:
+  target_qps: -1
+  total_sample_count: -1
+  accuracy_sample_count: -1
+  duration_sec: -1
+  enable_log_trace: false
+  enable_warmup: true
+  schedule_algo: shortest_queue
+  enable_batcher: false
+  batcher_threshold: 0.1
+  gpu_batch_size: 128
+  dataset_path: MISSING
+  accuracy_dataset_path: MISSING
+  mlperf_conf_path: MISSING
+  user_conf_path: MISSING
+  output_log_dir: MISSING
+  load_balance_token_weight: 0.02
+  load_balance_window_size: 10
+  resource_checker_abort_on_failure: false
+  tensor_parallelism: 1
+  pipeline_parallelism: 1
+  data_parallelism: 1
+  max_num_batched_tokens: 0
+  debug_dump_model_output: false
+  debug_record_sample_latencies: false
+  debug_latency_output_path: samples_latency_data.txt
+  debug_model_output_path: model_output.txt
+  debug_print_finished: false
+  debug_dataset_sampling_size: 0
+  debug_dataset_sampling_num_bins: 10
+  debug_dataset_sampling_random_seed: 42
+  sorting:
+    strategy: ignore
+
+vllm_engine_config:
+  model: MISSING
+  dtype: float16
+  kv_cache_dtype: fp8
+  quantization: null
+  pipeline_parallel_size: 1
+  tensor_parallel_size: 1
+  data_parallel_size: 1
+  gpu_memory_utilization: 0.90
+  max_model_len: null
+  swap_space: 4
+  block_size: 16
+  enforce_eager: false
+  max_num_batched_tokens: null
+  max_num_seqs: 256
+  disable_custom_all_reduce: false
+  disable_log_stats: true
+  enable_chunked_prefill: null
+  # MLPerf prohibits KV-cache reuse across queries: every input query must be
+  # computed in its entirety. Automatic prefix caching must remain disabled.
+  # Rule: https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#L894-L904
+  enable_prefix_caching: false
+  use_tqdm_on_load: false
+
+vllm_sampling_config:
+  n: 1
+  presence_penalty: 0.0
+  frequency_penalty: 0.0
+  repetition_penalty: 1.0
+  temperature: 1.0
+  top_p: 1
+  top_k: 1
+  min_p: 0
+  max_tokens: 1024
+  min_tokens: 1
+  ignore_eos: false
+  detokenize: false

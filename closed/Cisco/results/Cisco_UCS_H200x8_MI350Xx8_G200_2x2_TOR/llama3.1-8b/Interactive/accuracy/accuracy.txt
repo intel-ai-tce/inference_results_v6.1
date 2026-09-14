@@ -1,0 +1,8 @@
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+
+Results
+
+{'rouge1': '38.6105', 'rouge2': '16.0699', 'rougeL': '24.5048', 'rougeLsum': '35.5444', 'gen_len': 8148492, 'gen_num': 13368}
+hash=ccf7af343c12ea09b34b1ad23a8470b9b41fb20b417e05ee998592bb6b05b4f9
+
+hash=ccf7af343c12ea09b34b1ad23a8470b9b41fb20b417e05ee998592bb6b05b4f9

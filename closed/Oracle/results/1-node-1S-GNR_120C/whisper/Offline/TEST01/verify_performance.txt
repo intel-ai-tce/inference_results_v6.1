@@ -1,0 +1,6 @@
+[2026-07-27 03:25:31,459 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /logs/results/1-node-1S-GNR_120C/whisper/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-27 03:25:31,460 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /workspace/run_output/mlperf_log_detail.txt.
+Verifying performance.
+Reference score = 14.5667
+Test score = 14.4561
+TEST PASS

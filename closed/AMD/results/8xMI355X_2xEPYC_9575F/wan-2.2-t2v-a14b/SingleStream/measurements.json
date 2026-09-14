@@ -1,0 +1,7 @@
+{
+    "input_data_types": "bf16",
+    "retraining": "No",
+    "starting_weights_filename": "Wan-AI/Wan2.2-T2V-A14B-Diffusers",
+    "weight_data_types": "bf16, fp8, fp4",
+    "weight_transformations": "quantization (MXFP4 GEMMs), quantized dense attention (AITER_MXFP4, AITER_FP8)"
+}

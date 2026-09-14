@@ -1,0 +1,7 @@
+{
+    "starting_weights_filename": "https://huggingface.co/RedHatAI/Meta-Llama-3.1-8B-Instruct-quantized.w8a8.git",
+    "weight_transformations": "No",
+    "weight_data_types": "INT8",
+    "input_data_types": "INT8",
+    "retraining": "No"
+}

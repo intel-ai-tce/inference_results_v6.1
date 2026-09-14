@@ -1,0 +1,272 @@
+version: "0.1"
+
+# Disaggregated (prefill/decode split) workflow with MLPerf loadgen client.
+# Launches NUM_CTX_SERVERS prefill replicas, NUM_GEN_SERVERS decode replicas, and
+# NUM_FRONTEND_SERVERS load-balancing frontends, then runs nv-mlpinf run_harness.
+#
+# Pair this template with a config folder containing:
+#   - <benchmark>_config_sflow.yaml  (workflow variables: server counts, model/yaml paths, harness args)
+#   - slurm_env_sflow.example.yaml  (container, mounts, Slurm backend, operator)
+#   - trtllm-serve-disagg-*.yaml  (per-rank trtllm-serve configs)
+
+variables:
+  CTX_ROUTER_TYPE:
+    description: >-
+      Frontend router for the context pool: 'round_robin' (TRT-LLM default) or
+      'load_balancing' (fewest in-flight requests wins). Round-robin ignores
+      worker occupancy, so one long prompt parks a short one behind it and
+      inflates TTFT p99; load_balancing is the mitigation. 'kv_cache_aware' is
+      not offered — it tokenizes request.prompt, which the harness never sets.
+    value: "round_robin"
+  GEN_ROUTER_TYPE:
+    description: "Frontend router for the decode pool. Same choices as CTX_ROUTER_TYPE."
+    value: "round_robin"
+  CTX_HOSTS:
+    description: "Required comma-separated context endpoint hostnames or IP addresses, one per context replica."
+    value: ""
+  GEN_HOSTS:
+    description: "Required comma-separated generation endpoint hostnames or IP addresses, one per generation replica."
+    value: ""
+  FRONTEND_HOSTS:
+    description: "Required comma-separated frontend hostnames or IP addresses, one per frontend replica."
+    value: ""
+  HTTP_INTERFACE:
+    description: "Optional client interface passed to MLPINF_HTTP_INTERFACE; empty uses normal routing."
+    value: ""
+  BOOTSTRAP_INTERFACE:
+    description: "Optional Gloo/NCCL bootstrap interface; empty lets the runtime auto-select."
+    value: ""
+  # NUM_CTX_SERVERS, NUM_GEN_SERVERS, NUM_FRONTEND_SERVERS, GPUS_PER_CTX_RANK,
+  # GPUS_PER_GEN_RANK, GPUS_PER_NODE, BASE_PORT, FRONTEND_PORT, MODEL_PATH,
+  # TRTLLM_YAML_CTX, TRTLLM_YAML_GEN, TRTLLM_ENV_EXPORTS_CTX,
+  # TRTLLM_ENV_EXPORTS_GEN,
+  # HARNESS_CONFIG_DIR, BENCHMARK, SCENARIO, SYSTEM_NAME, TEST_MODE,
+  # HARNESS_EXTRA_ARGS are supplied by the selected profile and command-line
+  # --set values documented in configs/README.md.
+
+
+
+workflow:
+  name: trtllm_disagg
+  tasks:
+    - name: prefill_server
+      replicas:
+        count: ${{ variables.NUM_CTX_SERVERS }}
+        policy: parallel
+      resources:
+        gpus:
+          count: ${{ variables.GPUS_PER_CTX_RANK }}
+      operator:
+        # GPU placement is delegated to the site's standard container operator.
+        name: test_container
+        ntasks: ${{ variables.GPUS_PER_CTX_RANK }}
+        ntasks_per_node: ${{ [variables.GPUS_PER_CTX_RANK, variables.GPUS_PER_NODE] | min }}
+      script:
+        - |
+          if [ -n "${{ variables.BOOTSTRAP_INTERFACE }}" ]; then
+            export GLOO_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+            export NCCL_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+          else
+            unset GLOO_SOCKET_IFNAME NCCL_SOCKET_IFNAME
+          fi
+          unset NCCL_IB_HCA
+        # The environment is declared directly by the selected profile.
+        - |
+          ${{ variables.TRTLLM_ENV_EXPORTS_CTX }}
+        # Use rank-local writable caches and resolve the local checkpoint offline.
+        - export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}
+        - mkdir -p "${FLASHINFER_WORKSPACE_BASE}"
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - mkdir -p "${HF_HOME}"
+        - |
+          set -o pipefail
+          trtllm-llmapi-launch \
+            trtllm-serve ${{ variables.MODEL_PATH }} \
+            --host 0.0.0.0 \
+            --port $(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} )) \
+            --extra_llm_api_options ${{ variables.TRTLLM_YAML_CTX }} \
+            2>&1 | tee ${SFLOW_TASK_OUTPUT_DIR}/prefill_rank${SLURM_PROCID}.log
+      probes:
+        readiness:
+          log_watch:
+            regex_pattern: "Application startup complete"
+          # DeepSeek DEP2 context workers can spend just under ten minutes in
+          # one-time model/autotuner startup. Leave margin for the 10-second
+          # log-watch interval; this is orchestration readiness only and does
+          # not change the MLPerf LoadGen duration.
+          timeout: 900
+          interval: 10
+
+    - name: decode_server
+      replicas:
+        count: ${{ variables.NUM_GEN_SERVERS }}
+        policy: parallel
+      resources:
+        gpus:
+          count: ${{ variables.GPUS_PER_GEN_RANK }}
+      operator:
+        name: test_container
+        ntasks: ${{ variables.GPUS_PER_GEN_RANK }}
+        ntasks_per_node: ${{ [variables.GPUS_PER_GEN_RANK, variables.GPUS_PER_NODE] | min }}
+      script:
+        - |
+          if [ -n "${{ variables.BOOTSTRAP_INTERFACE }}" ]; then
+            export GLOO_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+            export NCCL_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+          else
+            unset GLOO_SOCKET_IFNAME NCCL_SOCKET_IFNAME
+          fi
+          unset NCCL_IB_HCA
+        # The environment is declared directly by the selected profile.
+        - |
+          ${{ variables.TRTLLM_ENV_EXPORTS_GEN }}
+        # Use rank-local writable caches and resolve the local checkpoint offline.
+        - export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}
+        - mkdir -p "${FLASHINFER_WORKSPACE_BASE}"
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - mkdir -p "${HF_HOME}"
+        - |
+          set -o pipefail
+          trtllm-llmapi-launch \
+            trtllm-serve ${{ variables.MODEL_PATH }} \
+            --host 0.0.0.0 \
+            --port $(( ${{ variables.BASE_PORT }} + ${{ variables.NUM_CTX_SERVERS }} + ${SFLOW_REPLICA_INDEX} )) \
+            --extra_llm_api_options ${{ variables.TRTLLM_YAML_GEN }} \
+            2>&1 | tee ${SFLOW_TASK_OUTPUT_DIR}/decode_rank${SLURM_PROCID}.log
+      probes:
+        readiness:
+          log_watch:
+            regex_pattern: "Application startup complete"
+          # Match the context-worker readiness margin. This affects startup
+          # supervision only, never the benchmark measurement interval.
+          timeout: 900
+          interval: 10
+
+    # Each frontend replica reads all ctx/gen URLs, assembles its own server_config,
+    # then starts a trtllm-serve disaggregated endpoint on FRONTEND_PORT + replica_idx.
+    # All frontends share the same set of ctx/gen workers; the harness load-balances across them.
+    - name: frontend_server
+      replicas:
+        count: ${{ variables.NUM_FRONTEND_SERVERS }}
+        policy: parallel
+      resources:
+        nodes:
+          count: 1
+      operator:
+        name: test_container
+        ntasks: 1
+        ntasks_per_node: 1
+      script:
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - mkdir -p "${HF_HOME}"
+        - FRONTEND_MY_PORT=$(( ${{ variables.FRONTEND_PORT }} + ${SFLOW_REPLICA_INDEX} ))
+        - MY_CONFIG=${SFLOW_TASK_OUTPUT_DIR}/server_config_${SFLOW_REPLICA_INDEX}.yaml
+        - |
+          set -euo pipefail
+          IFS=',' read -r -a CTX_HOST_ARRAY <<< "${{ variables.CTX_HOSTS }}"
+          IFS=',' read -r -a GEN_HOST_ARRAY <<< "${{ variables.GEN_HOSTS }}"
+          IFS=',' read -r -a FRONTEND_HOST_ARRAY <<< "${{ variables.FRONTEND_HOSTS }}"
+          [ "${#CTX_HOST_ARRAY[@]}" -eq ${{ variables.NUM_CTX_SERVERS }} ] ||
+            { echo "ERROR: CTX_HOSTS count does not match NUM_CTX_SERVERS" >&2; exit 1; }
+          [ "${#GEN_HOST_ARRAY[@]}" -eq ${{ variables.NUM_GEN_SERVERS }} ] ||
+            { echo "ERROR: GEN_HOSTS count does not match NUM_GEN_SERVERS" >&2; exit 1; }
+          [ "${#FRONTEND_HOST_ARRAY[@]}" -eq ${{ variables.NUM_FRONTEND_SERVERS }} ] ||
+            { echo "ERROR: FRONTEND_HOSTS count does not match NUM_FRONTEND_SERVERS" >&2; exit 1; }
+          MY_IP="${FRONTEND_HOST_ARRAY[$SFLOW_REPLICA_INDEX]}"
+          [ -n "${MY_IP}" ] || { echo "ERROR: empty frontend host for replica ${SFLOW_REPLICA_INDEX}" >&2; exit 1; }
+          {
+            printf 'hostname: %s\n' "${MY_IP}"
+            printf 'port: %s\n' "${FRONTEND_MY_PORT}"
+            printf 'backend: pytorch\n'
+            printf 'context_servers:\n'
+            printf '  num_instances: %s\n' "${{ variables.NUM_CTX_SERVERS }}"
+            printf '  urls:\n'
+            for INDEX in "${!CTX_HOST_ARRAY[@]}"; do
+              printf '    - "%s:%s"\n' "${CTX_HOST_ARRAY[$INDEX]}" "$(( ${{ variables.BASE_PORT }} + INDEX ))"
+            done
+            printf '  router:\n'
+            printf '    type: %s\n' "${{ variables.CTX_ROUTER_TYPE }}"
+            printf 'generation_servers:\n'
+            printf '  num_instances: %s\n' "${{ variables.NUM_GEN_SERVERS }}"
+            printf '  urls:\n'
+            for INDEX in "${!GEN_HOST_ARRAY[@]}"; do
+              printf '    - "%s:%s"\n' "${GEN_HOST_ARRAY[$INDEX]}" "$(( ${{ variables.BASE_PORT }} + ${{ variables.NUM_CTX_SERVERS }} + INDEX ))"
+            done
+            printf '  router:\n'
+            printf '    type: %s\n' "${{ variables.GEN_ROUTER_TYPE }}"
+          } > "${MY_CONFIG}"
+          cat "${MY_CONFIG}"
+        - trtllm-serve disaggregated -c "${MY_CONFIG}" --request_timeout 7200 --server_start_timeout 7200
+      probes:
+        readiness:
+          log_watch:
+            regex_pattern: "Application startup complete"
+          timeout: 120
+          interval: 10
+      depends_on:
+        - prefill_server
+        - decode_server
+
+    - name: mlperf_harness
+      operator:
+        name: test_container
+        ntasks: 1
+        ntasks_per_node: 1
+      resources:
+        nodes:
+          count: 1
+      script:
+        # PYTHONUNBUFFERED so harness progress streams to sflow.log without buffering.
+        - export PYTHONUNBUFFERED=1
+        - |
+          if [ -n "${{ variables.HTTP_INTERFACE }}" ]; then
+            export MLPINF_HTTP_INTERFACE="${{ variables.HTTP_INTERFACE }}"
+          fi
+        # Use rank-local writable caches and resolve the local checkpoint offline.
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - export MPLCONFIGDIR=/tmp/${SLURM_JOB_USER:-${USER}}/mpl_${SLURM_JOB_ID}_${SLURM_PROCID}
+        - mkdir -p "${HF_HOME}" "${MPLCONFIGDIR}"
+        # Loadgen profile: 'full' (submission-valid) or 'dev' (short capacity probe).
+        # harness.py reads MLPINF_LOADGEN_MODE (+ optional MLPINF_DEV_* passed via env).
+        - export MLPINF_LOADGEN_MODE=${{ variables.LOADGEN_MODE }}
+        # Activate the environment prepared by configs/README.md.
+        - HARNESS_VENV=/work/.venv
+        - |
+          if [ ! -x "${HARNESS_VENV}/bin/nv-mlpinf" ]; then
+            echo "ERROR: harness venv missing at ${HARNESS_VENV}." >&2
+            echo "       Follow the environment setup in configs/README.md." >&2
+            exit 1
+          fi
+        - source "${HARNESS_VENV}/bin/activate"
+        - export PYTHONPATH=/work${PYTHONPATH:+:$PYTHONPATH}
+        - |
+          set -euo pipefail
+          IFS=',' read -r -a FRONTEND_HOST_ARRAY <<< "${{ variables.FRONTEND_HOSTS }}"
+          EXPECTED=${{ variables.NUM_FRONTEND_SERVERS }}
+          [ "${#FRONTEND_HOST_ARRAY[@]}" -eq "${EXPECTED}" ] ||
+            { echo "ERROR: FRONTEND_HOSTS count does not match NUM_FRONTEND_SERVERS" >&2; exit 1; }
+          FRONTEND_URLS=""
+          for INDEX in "${!FRONTEND_HOST_ARRAY[@]}"; do
+            HOST="${FRONTEND_HOST_ARRAY[$INDEX]}"
+            [ -n "${HOST}" ] || { echo "ERROR: empty FRONTEND_HOSTS entry ${INDEX}" >&2; exit 1; }
+            URL="${HOST}:$(( ${{ variables.FRONTEND_PORT }} + INDEX ))"
+            FRONTEND_URLS="${FRONTEND_URLS:+${FRONTEND_URLS},}${URL}"
+          done
+          echo "Frontend URLs (${EXPECTED}/${EXPECTED}) ${FRONTEND_URLS}"
+          set +e
+          set -o pipefail
+          HARNESS_LOG=${SFLOW_TASK_OUTPUT_DIR}/${{ variables.TEST_MODE }}.log
+          LOG_DIR=${SFLOW_TASK_OUTPUT_DIR}/${{ variables.TEST_MODE }} \
+            nv-mlpinf run_harness \
+              --config_dir=${{ variables.HARNESS_CONFIG_DIR }} \
+              --benchmarks=${{ variables.BENCHMARK }} \
+              --scenarios=${{ variables.SCENARIO }} \
+              --system_name=${{ variables.SYSTEM_NAME }} \
+              --trtllm_server_urls=${FRONTEND_URLS} \
+              --test_mode=${{ variables.TEST_MODE }} \
+              ${{ variables.HARNESS_EXTRA_ARGS }} 2>&1 | tee "${HARNESS_LOG}"
+          HARNESS_EXIT=$?
+          echo "=== mlperf_harness run_harness exited with ${HARNESS_EXIT} ==="
+          exit "${HARNESS_EXIT}"
+      depends_on:
+        - frontend_server

@@ -1,0 +1,64 @@
+# inference-endpoint config — G894 B300x8 Q3VL Nsight profiling, OFFLINE mode.
+# max_throughput load (send as fast as possible; saturating), no streaming. Short run
+# with a 5-min HARD STOP (max_duration_ms) — covers the cuda profiler's capture window.
+
+name: "profile-offline-qwen3-vl-235b-a22b-shopify-g894_b300x8"
+version: "1.0"
+type: "offline"
+timeout: 14400
+
+submission_ref:
+  model: "qwen3-vl-235b-a22b"
+  ruleset: "mlperf-inference-v6.1"
+
+model_params:
+  name: "${MODEL_NAME}"
+  top_p: 1
+  max_new_tokens: 150
+
+datasets:
+  - name: shopify_product_catalogue::q3vl
+    type: "performance"
+
+settings:
+  warmup:
+    enabled: true
+    n_requests: 3200
+    drain: true
+
+  runtime:
+    # min = floor, max = HARD STOP at 5 min (loadgen halts regardless of remaining samples).
+    min_duration_ms: 120000
+    max_duration_ms: 300000
+    scheduler_random_seed: 42
+    dataloader_random_seed: 42
+
+  load_pattern:
+    type: "max_throughput"
+
+  client:
+    # Sized for the single vllm serve target (it accepts ~1k concurrent connections):
+    # 5 workers x <=100-conn pools, matching the GB300/GB200 profiles. The non-profiler
+    # B300 client shape (16 workers / 2000 conns) oversubscribes it and stalls worker init.
+    num_workers: 5
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+    max_connections: 1000
+    worker_initialization_timeout: 120
+
+  # Client-side profiler trigger.
+  # engine: vllm => POST /start_profile at perf-phase start, /stop_profile at end.
+  # Optional `urls: [...]` overrides where those triggers point (default: derived from
+  # endpoint_config.endpoints, i.e. the vLLM serve URL).
+  profiling:
+    engine: vllm
+
+endpoint_config:
+  # Bare host, NO /v1 (chat path appends v1/chat/completions; profile URL strips /v1).
+  endpoints:
+    - "${FRONTEND_URL:-http://localhost:8000}"
+  api_key: null
+
+report_dir: results/qwen3_vl_235b_a22b_profile_offline_g894_b300x8/

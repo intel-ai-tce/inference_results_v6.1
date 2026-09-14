@@ -1,0 +1,54 @@
+variables:
+  CONTAINER_IMAGE:
+    description: >-
+      Exact TensorRT-LLM/MLPerf runtime image. The collected local squashfs has
+      SHA256 5112cac5674c92ac1e6e7db69d0fc9e8882bd5211d1d97636229facf153f30dc;
+      its source OCI manifest is
+      nvcr.io/nvidia/mlperf/mlperf-inference@sha256:54c5995ded61b0b5640c641ca79248b14422d0720ef8b293aba8f5fab2e5243d.
+    value: ""
+  WORK_DIR:
+    description: "Host path to the materialized closed/Cisco runtime."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path containing the MLPerf models and datasets."
+    value: ""
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+  SLURM_ACCOUNT:
+    value: ""
+  SLURM_PARTITION:
+    value: ""
+  SLURM_TIME:
+    value: "06:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 8
+  SLURM_NODES:
+    description: "Computed from TOTAL_GPUS; override for a different topology."
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmi2
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--exclusive"

@@ -1,0 +1,14 @@
+{
+    "server_type": "trtllm-disagg",
+    "model_path": "/home/mlperf_inference_storage/models/gpt-oss/gpt-oss-120b",
+    "gpus_per_node": 4,
+    "num_ctx_workers": 24,
+    "num_gen_workers": 12,
+    "num_master_servers": 12,
+    "gpus_per_ctx_worker": 1,
+    "gpus_per_gen_worker": 4,
+    "ctx_trtllm_yml": "configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-1gpu.yaml",
+    "ctx_env_yml": "configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-1gpu-env.yaml",
+    "gen_trtllm_yml": "configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-4gpu.yaml",
+    "gen_env_yml": "configs/gpt_oss_120b/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-4gpu-env.yaml"
+}

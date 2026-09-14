@@ -1,0 +1,32 @@
+--- usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/fused_moe.py
++++ usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/fused_moe.py
+@@ -461,7 +461,8 @@
+                 b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn
+             )
+             b_scale = tl.load(b_scale_ptrs)
+-            # Load per-token scale for activations
++            # Load per-token scale for activations once outside the K-loop
++            # to fuse the access with A and avoid redundant global memory reads
+             a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm
+             a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]
+         # tensor-wise
+@@ -470,6 +471,8 @@
+             b_scale = tl.load(b_scale_ptr + off_experts)
+     if HAS_BIAS:
+         # bias shape: [num_experts, N]
++        # Hoist bias load outside the K-loop to avoid redundant global memory
++        # accesses and improve L2 cache reuse across K iterations.
+         bias_ptrs = b_bias_ptr + off_experts * stride_bbe + offs_bn * stride_bbn
+         bias = tl.load(bias_ptrs, mask=(offs_bn < N), other=0.0)
+     # -----------------------------------------------------------
+@@ -551,10 +554,6 @@
+     c_ptrs = c_ptr + stride_cm * offs_token[:, None] + stride_cn * offs_cn[None, :]
+     c_mask = token_mask[:, None] & (offs_cn[None, :] < N)
+     tl.store(c_ptrs, accumulator, mask=c_mask)
+-
+-
+-# NOTE(zyongye): we can remove all the wna16 kernel
+-# once we drop off sm75 support
+ def invoke_fused_moe_wna16_cuda_kernel(
+     A: torch.Tensor,
+     B: torch.Tensor,

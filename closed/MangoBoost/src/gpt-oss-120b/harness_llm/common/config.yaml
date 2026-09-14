@@ -1,0 +1,105 @@
+benchmark_name: MISSING
+scenario: MISSING
+test_mode: MISSING
+backend: MISSING
+engine_version: MISSING
+
+env_config:
+  HARNESS_DISABLE_VLLM_LOGS: 1
+  HARNESS_GC_LIMIT: 100000
+  HIP_FORCE_DEV_KERNARG: 1
+
+vllm_env_config:
+  VLLM_USE_V1: 1
+  VLLM_LOGGING_LEVEL: ERROR
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_ENGINE_ITERATION_TIMEOUT_S: 36000
+
+sglang_env_config:
+
+harness_config:
+    target_qps: -1
+    total_sample_count: -1
+    accuracy_sample_count: -1
+    duration_sec: -1
+    enable_log_trace: False
+    enable_warmup: False
+    schedule_algo: shortest_queue
+    enable_batcher: False
+    batcher_threshold: 0.1
+    gpu_batch_size: 128
+    dataset_path: MISSING
+    accuracy_dataset_path: MISSING
+    mlperf_conf_path: MISSING
+    user_conf_path: MISSING
+    output_log_dir: MISSING
+    load_balance_token_weight: 0.02
+    load_balance_window_size: 10
+    resource_checker_abort_on_failure: False
+    tensor_parallelism: 1
+    pipeline_parallelism: 1
+    data_parallelism: 1
+    max_num_batched_tokens: 0
+    debug_dump_model_output: False
+    debug_record_sample_latencies: False
+    debug_latency_output_path: samples_latency_data.txt
+    debug_model_output_path: model_output.txt
+    debug_print_finished: False
+    debug_dataset_sampling_size: 0
+    debug_dataset_sampling_num_bins: 10
+    debug_dataset_sampling_random_seed: 42
+    sorting:
+        strategy: ignore
+
+vllm_engine_config:
+    model: MISSING
+    dtype: float16
+    kv_cache_dtype: fp8
+    quantization: None
+    pipeline_parallel_size: 1
+    tensor_parallel_size: 1
+    data_parallel_size: 1
+    gpu_memory_utilization: 0.90
+    max_model_len: None
+    swap_space: 4  # GiB
+    block_size: 16
+    enforce_eager: False
+    max_num_batched_tokens: None
+    max_num_seqs: 256
+    disable_custom_all_reduce: False
+    disable_log_stats: True
+    enable_chunked_prefill: None
+    enable_prefix_caching: False
+    use_tqdm_on_load: False
+
+vllm_sampling_config:
+    n: 1
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    repetition_penalty: 1.0
+    temperature: 1.0
+    top_p: 1
+    top_k: 1
+    min_p: 0
+    # ppl_measurement: False
+    max_tokens: 1024
+    min_tokens: 1
+    ignore_eos: False
+    detokenize: False
+
+sglang_engine_config:
+    model_path: MISSING
+    tp_size: 1
+    dp_size: 1
+    disable_radix_cache: True
+    cpu_offload_gb: 0
+    skip_tokenizer_init: True
+    trust_remote_code: True
+
+sglang_sampling_config:
+    temperature: 0.0
+    #min_new_tokens: int = 1
+    top_k: 1
+    top_p: 1
+    n: 1
+    ignore_eos: False

@@ -1,0 +1,103 @@
+version: "0.1"
+
+# Wan 2.2 T2V (wan22-a14b) VBench ACCURACY recipe (GPU-sharing).
+#
+# Same topology as wan22_videogen_endpoints_no_vbench.yaml. The endpoint_benchmark
+# task declares no resources.gpus, so the VBench scorer time-shares an idle server
+# GPU (works even on x72 where all GPUs are servers). VBench weights: the `-vbench`
+# image ships none; stage them under build/vbench_cache (in-container
+# /work/build/vbench_cache) with scripts/prepare_vbench_cache.sh.
+
+# Shared server task: keep in sync with wan22_videogen_endpoints_no_vbench.yaml.
+x-server-task: &server_task
+  replicas:
+    count: ${{ variables.NUM_SERVERS }}
+    policy: parallel
+  resources:
+    gpus:
+      count: ${{ variables.GPUS_PER_SERVER }}
+  operator:
+    name: test_container
+    # One MPI task per GPU: the VisualGen launcher requires world_size == n_workers
+    # (one rank per GPU) and aborts otherwise.
+    ntasks: ${{ variables.GPUS_PER_SERVER }}
+    ntasks_per_node: ${{ [variables.GPUS_PER_SERVER, variables.GPUS_PER_NODE] | min }}
+  script:
+    - export PYTHONNOUSERSITE=1
+    # Register this replica's URL (plain ip:port, one per line).
+    - if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut -d',' -f1):$(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} ))" >> ${{ artifacts.SERVER_URLS.path }}; fi
+    - eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py ${{ variables.WORKER_ENV_YAML }} | tee /dev/stderr)"
+    # Per-run video dir: append this allocation's SLURM_JOB_ID so runs do not share
+    # one rack-wide videos dir. The client step shares the job id, so vbench_videos
+    # symlinks (which mirror the server's saved path) still resolve.
+    - export TRTLLM_MEDIA_STORAGE_PATH="${TRTLLM_MEDIA_STORAGE_PATH}/${SLURM_JOB_ID}"
+    - mkdir -p "${TRTLLM_MEDIA_STORAGE_PATH}"
+    # Unique MASTER_PORT per replica on a node (torch init_process_group rendezvous).
+    - export MASTER_PORT=$(( ${{ variables.MASTER_PORT_BASE }} + ${SFLOW_REPLICA_INDEX} ))
+    # sflow GPU-isolates each replica (sees only its GPU, renumbered to 0), so index
+    # by SLURM_LOCALID, not replica index (which points at absent devices).
+    - export CUDA_VISIBLE_DEVICES=$(( ${SLURM_LOCALID:-0} % ${{ variables.GPUS_PER_NODE }} ))
+    - echo "GPU-PLACEMENT replica=${SFLOW_REPLICA_INDEX:-0} node=$(hostname) localid=${SLURM_LOCALID:-0} CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
+    - >
+      python -m tensorrt_llm.commands.serve ${{ variables.MODEL_PATH }}
+      --host 0.0.0.0
+      --port $(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} ))
+      --visual_gen_args ${{ variables.VISUAL_GEN_YAML }}
+      2>&1 | tee ${SFLOW_TASK_OUTPUT_DIR}/videogen_rank${SLURM_PROCID}.log
+  probes:
+    readiness:
+      log_watch:
+        regex_pattern: "Application startup complete"
+      timeout: 1800
+      interval: 10
+
+artifacts:
+  - name: SERVER_URLS
+    uri: file://server_urls.txt
+    content: ""
+
+workflow:
+  name: wan22_videogen_accuracy
+  tasks:
+    - name: videogen_server
+      <<: *server_task
+
+    # Generates videos, then scores them with the endpoints `vbench` scorer.
+    - name: endpoint_benchmark
+      operator:
+        name: endpoint_sqsh
+        ntasks: 1
+        ntasks_per_node: 1
+        # No SLURM gres: enroot mounts GPUs only if NVIDIA_VISIBLE_DEVICES is set, and
+        # the device nodes need DRIVER_CAPABILITIES or torch.cuda stays unavailable.
+        # Without this the scorer aborts with CudaUnavailable and writes no accuracy.
+        export: "ALL,NVIDIA_VISIBLE_DEVICES=all,NVIDIA_DRIVER_CAPABILITIES=all"
+      resources:
+        nodes:
+          count: 1
+      script:
+        - set -euo pipefail
+        - export PYTHONNOUSERSITE=1
+        - |
+          _n=$(grep -vc '^[[:space:]]*$' ${{ artifacts.SERVER_URLS.path }})
+          [ "$_n" -eq "${{ variables.NUM_SERVERS }}" ] || { echo "ERROR: only $_n/${{ variables.NUM_SERVERS }} servers registered in SERVER_URLS; aborting"; exit 1; }
+        - SERVER_URLS_LIST=$(grep -v '^[[:space:]]*$' ${{ artifacts.SERVER_URLS.path }} | paste -sd ',')
+        - 'echo "SERVER_URLS_LIST=${SERVER_URLS_LIST}"'
+        - RESOLVED_ENDPOINT_YAML=${SFLOW_TASK_OUTPUT_DIR}/endpoint_resolved.yaml
+        - >
+          python3 /work/scaleout/sflow/tools/generate_endpoint_yaml.py
+          --input "${{ variables.ENDPOINT_CONFIG }}"
+          --frontend-urls "${SERVER_URLS_LIST}"
+          --output "${RESOLVED_ENDPOINT_YAML}"
+        # The endpoint-client container ships PyYAML in /opt/venv, not the default python3.
+        - eval "$(/opt/venv/bin/python /work/scaleout/sflow/tools/run_with_env.py ${{ variables.ENDPOINT_ENV_YAML }} | tee /dev/stderr)"
+        # Per-run video fallback dir (same SLURM_JOB_ID as the server step).
+        - export INFERENCE_ENDPOINT_VIDEOGEN_FALLBACK_DIR="${INFERENCE_ENDPOINT_VIDEOGEN_FALLBACK_DIR}/${SLURM_JOB_ID}"
+        - mkdir -p "${INFERENCE_ENDPOINT_VIDEOGEN_FALLBACK_DIR}"
+        # VBench weights under /work/build/vbench_cache (staged by prepare_vbench_cache.sh;
+        # perf-only / audit runs that skip it are unaffected).
+        - export VBENCH_CACHE_DIR=/work/build/vbench_cache
+        - export TORCH_HOME=/work/build/vbench_cache/torch_home
+        - 'inference-endpoint benchmark from-config -c "${RESOLVED_ENDPOINT_YAML}"'
+      depends_on:
+        - videogen_server

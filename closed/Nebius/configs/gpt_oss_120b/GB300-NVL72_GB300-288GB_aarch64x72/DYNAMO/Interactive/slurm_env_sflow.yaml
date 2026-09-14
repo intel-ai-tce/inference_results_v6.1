@@ -1,0 +1,53 @@
+variables:
+  CONTAINER_IMAGE:
+    description: "Main's pinned Interactive image (b5ddff4-jan28, the one every verified trtllm_disagg Interactive run uses) + Dynamo v0.8.0 installed inside via scripts/slurm_llm/dynamo_disagg/build_dynamo_image_pyxis.sh (Dockerfile.dynamo steps executed verbatim, pyxis --container-save; portable to any cluster). Build it once per cluster before running. Override via CONTAINER_IMAGE on the CI form."
+    value: "/lustre/fsw/coreai_mlperf_inference/mlperf_inference_images/dynamo-latest.sqsh"
+
+  WORK_DIR:
+    description: "REQUIRED. Host path to closed/NVIDIA, mounted at /work. Set via --set WORK_DIR=..."
+    value: ""
+  SCRATCH_DIR:
+    description: "Host path to MLPerf scratch (datasets + models), mounted at /home/mlperf_inference_storage."
+    value: /lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone
+  CONTAINER_MOUNTS:
+    value: "${{ variables.WORK_DIR }}:/work,${{ variables.SCRATCH_DIR }}:/home/mlperf_inference_storage"
+
+  SLURM_ACCOUNT:
+    value: coreai_mlperf_inference
+  SLURM_PARTITION:
+    value: gb300
+  SLURM_TIME:
+    value: "04:00:00"
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+  SLURM_NODES:
+    description: "ceil(TOTAL_GPUS / GPUS_PER_NODE)"
+    type: integer
+    value: ${{ ((variables.TOTAL_GPUS / variables.GPUS_PER_NODE) | round(0, "ceil")) | int }}
+
+operators:
+  - name: test_container
+    type: srun
+    container_image: ${{ variables.CONTAINER_IMAGE }}
+    container_writable: false
+    container_mount_home: true
+    container_remap_root: true
+    mpi: pmix
+    container_mounts:
+      - ${{ variables.CONTAINER_MOUNTS }}
+    container_workdir: /work
+    export: "ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60,FLASHINFER_WORKSPACE_BASE=/tmp,PYTHONNOUSERSITE=1"
+
+backends:
+  - name: slurm_cluster
+    type: slurm
+    default: true
+    account: ${{ variables.SLURM_ACCOUNT }}
+    partition: ${{ variables.SLURM_PARTITION }}
+    gpus_per_node: ${{ variables.GPUS_PER_NODE }}
+    time: ${{ variables.SLURM_TIME }}
+    nodes: ${{ variables.SLURM_NODES }}
+    extra_args:
+      - "--segment=${{ variables.SLURM_NODES }}"
+      - "--exclusive"

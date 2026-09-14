@@ -1,0 +1,23 @@
+============================================================
+VBench Evaluation Results
+============================================================
+
+Dimension Scores:
+------------------------------------------------------------
+  appearance_style              : 0.2048
+  background_consistency        : 0.9348
+  dynamic_degree                : 0.9444
+  motion_smoothness             : 0.9415
+  scene                         : 0.2674
+  subject_consistency           : 0.9275
+'vbench_score': 70.3415
+------------------------------------------------------------
+  Overall Average               : 0.7034 (70.34%)
+
+Threshold: 69.7752%
+Pass: Yes
+============================================================
+Detailed results: /workspace/wan-harness/runs/wan22/latest/SingleStream/accuracy/vbench/results_2026-07-29-02:13:47_eval_results.json
+============================================================
+
+hash=0050987439bd4aa4797ca0cf729dea5b6139ec8f26defdf3c714c33edd8955b9

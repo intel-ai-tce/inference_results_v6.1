@@ -1,0 +1,12 @@
+Plan 14 Phase 14.6 — NVE lookup correctness audit (G3)
+======================================================
+device        : AMD Radeon Graphics
+hip           : 7.2.53211
+base_seed     : 42
+n_keys/cell   : 1024
+cells         : 180
+PASS          : 180
+FAIL          : 0
+elapsed_s     : 11.34
+
+OVERALL: PASS — NVE lookup is bit-exact vs the torch reference on every cell (cache_type × rows × dim × dtype × distribution).

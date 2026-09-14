@@ -1,0 +1,23 @@
+# Wan 2.2 T2V VisualGenArgs — GB200-NVL72 x72 SingleStream (72 GPUs, one replica).
+#
+# Single low-latency replica spanning the full rack:
+#   cfg_size=2 × ulysses_size=4 × attn2d_size=[3,3] (CP degree 9) = 72 GPUs.
+# CFG + Ulysses sequence parallel + 2D context parallel for lowest single-video
+# latency. Mirrors GB300-NVL72 x72 SingleStream parallelism.
+#
+# Attention backend: FA4. Context Parallel / Attention2D requires an LSE-capable
+# backend (FA4 or CUTEDSL) — TE does not support CP.
+#
+# quant_config OMITTED so the pre-quantized ModelOpt FP8 checkpoint's embedded
+# quantization_config (static per-tensor FP8) is used (see Offline visual_gen.yaml).
+#
+# Determinism: fixed_latent_path via TLLM_VISUAL_GEN_FIXED_LATENT_PATH (worker_env.yaml).
+attention_config:
+  backend: FA4
+parallel_config:
+  cfg_size: 2
+  ulysses_size: 4
+  attn2d_size: [3, 3]
+  parallel_vae_size: 4
+cuda_graph_config:
+  enable: false

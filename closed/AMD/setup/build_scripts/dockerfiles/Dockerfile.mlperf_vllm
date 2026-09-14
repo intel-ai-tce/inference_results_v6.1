@@ -1,0 +1,98 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG MLPERF_BUILD_CONFIG
+
+# Note-1: sqlite3 and libfmt-dev dependencies are for RPD
+# Note-2: zip for compressing RPD outputs
+RUN rm -f /etc/apt/sources.list.d/rocm.list \
+ && rm -f /etc/apt/sources.list.d/amdgpu.list \
+ && apt install --fix-broken -y \
+ && apt update \
+ && apt install -y \
+	libfmt-dev \
+	libsqlite3-dev \
+	numactl \
+	sqlite3 \
+	zip \
+	nano \
+    libcurl4-openssl-dev \
+	patchelf \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN pip install \
+	absl-py==2.1.0 \
+	datasets==2.20.0 \
+	nltk==3.8.1 \
+	numpy==2.2.6 \
+	py-libnuma==1.2 \
+	rouge_score==0.1.2 \
+	omegaconf==2.3.0 \
+	evaluate==0.4.3 \
+	matplotlib==3.10.3 \
+	optuna==4.1.0
+
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/mlcommons/inference.git mlperf_inference \
+ && cd mlperf_inference/loadgen \
+ && git checkout d8230cdd2b375f462a7ddca830a4a9b348e5da65 \
+ && git submodule update --init --recursive \
+ && CFLAGS="-std=c++14 -O3" python -m pip install .
+
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/ROCm/rocm_bandwidth_test rocm_bandwidth_test \
+ && cd rocm_bandwidth_test \
+ && git checkout 6bd5c1a208069be5fbe9e2da088bca4be7f9de22 \
+ && mkdir build \
+ && cd build \
+ && cmake -DCMAKE_BUILD_TYPE="Release" .. \
+        -DCMAKE_MODULE_PATH="/lab-mlperf-inference/rocm_bandwidth_test/cmake_modules" \
+        -DCMAKE_PREFIX_PATH="/opt/rocm/" \
+	 	-DAMD_APP_STANDALONE_BUILD_PACKAGE=OFF \
+	 	-DAMD_APP_ROCM_BUILD_PACKAGE=ON && cmake --build . \
+ && cmake --install . --prefix /opt/rocm
+
+# RPD
+WORKDIR /lab-mlperf-inference
+RUN git clone https://github.com/ROCm/rocmprofiledata --depth 10 rocm_profile_data \
+ && cd rocm_profile_data \
+ && git checkout 3373937eda1ec709ad7e5e325c60a7f5b1a2f908 \
+ && sed -i 's/--user//g' /lab-mlperf-inference/rocm_profile_data/rocpd_python/Makefile \
+ && make \
+ && make install
+
+# MIXTRAL eval - start
+# Copied from https://github.com/mlcommons/inference/commits/master/language/mixtral-8x7b/Dockerfile.eval
+# NOTE: there is a bug with 3.12, and no apt_pkg available at the moment, which needed by add-apt-repository
+# We change the python version temporarily to 3.10 while we add the required ppa
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 \
+ && update-alternatives --set python3 /usr/bin/python3.10 \
+ && curl https://bootstrap.pypa.io/get-pip.py | python3 && pip install six && add-apt-repository -y ppa:ondrej/php \
+ && update-alternatives --set python3 /usr/bin/python3.12
+
+# Get language dependencies
+RUN apt update \
+ && apt install -y wget curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev \
+                   php8.0 openjdk-8-jdk npm scala dotnet6 zip unzip python3.10-venv \
+ && rm -rf /var/lib/apt/lists/*
+
+# MXEval
+RUN git clone https://github.com/amazon-science/mxeval.git
+SHELL ["/bin/bash", "-c"]
+WORKDIR "/lab-mlperf-inference/mxeval"
+RUN sed -i 's/sudo//g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+RUN sed -i 's/source/PS1=1 source/g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh # Need this to make sure that the "source ~/.bashrc" lines work correctly
+RUN sed -i 's/npx tsc/tsc/g' /lab-mlperf-inference/mxeval/mxeval/execution.py # npx tsc runs into permission issues
+RUN sed -i 's/apt-get install /apt-get install -y /g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+RUN sed -i 's/apt install /apt install -y /g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+RUN sed -i 's/add-apt-repository /add-apt-repository -y /g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+RUN sed -i 's/perl /yes | perl /g' /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+
+RUN DEBIAN_FRONTEND=noninteractive PATH="$HOME/.rbenv/bin:$PATH" bash /lab-mlperf-inference/mxeval/language_setup/ubuntu.sh
+# MIXTRAL eval - done
+
+COPY code /lab-mlperf-inference/code
+COPY submission /lab-mlperf-inference/submission
+COPY ${MLPERF_BUILD_CONFIG} /lab-mlperf-inference
+WORKDIR /lab-mlperf-inference/code/

@@ -1,0 +1,7 @@
+{
+  "starting_weights_filename": "nvidia/Qwen3.6-27B-NVFP4 (snapshot 0893e1606ff3d5f97a441f405d5fc541a6bdf404)",
+  "weight_data_types": "nvfp4 (E2M1 4-bit + FP8 block scales)",
+  "input_data_types": "int32 (token ids)",
+  "retraining": "no",
+  "weight_transformations": "quantization (NVFP4, NVIDIA ModelOpt)"
+}

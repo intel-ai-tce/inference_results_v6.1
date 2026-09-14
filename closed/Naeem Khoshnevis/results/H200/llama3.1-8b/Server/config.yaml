@@ -1,0 +1,85 @@
+name: server-llama3.1-8b-cnn-submission
+version: '1.0'
+type: online
+model_params:
+  name: l31-8b-fp8-engine
+  temperature: 0.0
+  top_k: 1
+  top_p: 1.0
+  max_new_tokens: 128
+  min_new_tokens: 1
+  skip_special_tokens: true
+  streaming: 'on'
+  tokenizer_name: /n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-8B-Instruct
+datasets:
+- name: cnn_dailymail::llama3_8b
+  type: accuracy
+  samples: 13368
+  parser:
+    input: prompt
+  accuracy_config:
+    eval_method: rouge
+    ground_truth: highlights
+    extractor: identity_extractor
+    num_repeats: 1
+- name: cnn_dailymail::llama3_8b
+  type: performance
+  samples: 13368
+  parser:
+    input: prompt
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 3600000
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: poisson
+    target_qps: 58.0
+    use_legacy_loadgen_qps_metrics: true
+  client:
+    num_workers: 16
+    log_level: INFO
+    warmup_connections: 256
+    auto_warmup_budget_fraction: 0.25
+    max_concurrent_warmup_connects: 128
+    max_connections: 2048
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+      io_threads: 4
+      worker_io_threads: 1
+      high_water_mark: 0
+      linger: -1
+      immediate: 1
+    stream_all_chunks: false
+    worker_initialization_timeout: 60.0
+    worker_graceful_shutdown_wait: 0.5
+    worker_force_kill_timeout: 0.5
+    insecure: false
+    max_idle_time: 4.0
+    min_required_connections: -1
+    worker_gc_mode: relaxed
+  drain:
+    warmup_timeout_s: 240.0
+    performance_timeout_s: 240.0
+    metrics_drain_timeout_s: 0.0
+    metrics_tokenizer_workers: 2
+  warmup:
+    enabled: false
+    salt: true
+    drain: false
+    warmup_random_seed: 42
+  profiling: {}
+  early_stopping:
+    enabled: true
+  service_ready_timeout_s: 30.0
+endpoint_config:
+  endpoints:
+  - http://localhost:31746
+  api_type: openai
+report_dir: /n/holylfs06/LABS/kempner_dev/Lab/nkhoshnevis/ai_projects/mlcommon/inference/attempted/audit_fixes/l31_server_acc_36599746
+timeout: 3600.0
+verbose: false
+enable_cpu_affinity: true

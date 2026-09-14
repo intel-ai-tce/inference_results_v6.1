@@ -1,0 +1,15 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG ARCH
+ARG FA_BRANCH
+
+# Re-install flash attention
+WORKDIR /lab-mlperf-inference
+RUN python3 -m pip uninstall -y flash_attn \
+    && git clone https://github.com/ROCm/flash-attention.git \
+    && cd flash-attention \
+    && git checkout ${FA_BRANCH} \
+    && git submodule update --init \
+    && MAX_JOBS=$(( $(nproc) / 2 )) GPU_ARCHS=${ARCH} python3 -m pip install -e .

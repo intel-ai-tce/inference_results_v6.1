@@ -1,0 +1,51 @@
+--- a/vllm/v1/attention/ops/vit_attn_wrappers.py
++++ b/vllm/v1/attention/ops/vit_attn_wrappers.py
+@@ -53,6 +53,35 @@
+     _Q3_BIN_CU = cu_seqlens.clone()
+     _Q3_BIN_PLAN = (huge_plan, rest_plan)
+     return _Q3_BIN_PLAN
++def _q3vl_fp8_asm_seg(qseg, kseg, vseg, cs, L, scale, _h):
++    """MLPerf Q3VL: fp8 (e4m3) hd128 ASM FMHA for ONE huge ViT segment (pad 72->128).
++    Per-tensor DYNAMIC descale from THIS segment's amax (per-batch, NOT a cross-call history:
++    vLLM feeds zero-filled dummy inputs during profiling/cudagraph warmup, and a history collapses
++    to ~0 -> real/scale overflows fp8 -> HSA memory fault; see 0012-q3vl-rocm-fp8-vit-attention).
++    softmax_scale stays 1/sqrt(72); padded dims are zero so they do not affect amax or Q.K.
++    Returns bf16 [n, h, 72]."""
++    from aiter.ops.mha import flash_attn_varlen_fp8_pertensor_func
++    from aiter.utility import dtypes
++    n = qseg.shape[0]
++    fp8_max = float(torch.finfo(dtypes.fp8).max)
++    eps = torch.finfo(torch.float32).tiny
++    def _p(x):
++        p = torch.zeros(n, _h, 128, dtype=x.dtype, device=x.device)
++        p[:, :, :72] = x
++        return p
++    qp, kp, vp = _p(qseg), _p(kseg), _p(vseg)
++    qd = (qp.abs().amax().float() / fp8_max).clamp_min(eps).reshape(1)
++    kd = (kp.abs().amax().float() / fp8_max).clamp_min(eps).reshape(1)
++    vd = (vp.abs().amax().float() / fp8_max).clamp_min(eps).reshape(1)
++    qf = (qp.float() / qd).to(dtypes.fp8).contiguous()
++    kf = (kp.float() / kd).to(dtypes.fp8).contiguous()
++    vf = (vp.float() / vd).to(dtypes.fp8).contiguous()
++    o = flash_attn_varlen_fp8_pertensor_func(qf, kf, vf, qd, kd, vd, cs, cs, L, L,
++                                             causal=False, softmax_scale=scale)
++    o = o[0] if isinstance(o, (tuple, list)) else o
++    return o[:, :, :72].contiguous()
++
++
+ def _q3vl_binned_fmha(q, k, v, cu_seqlens, max_seqlen, scale, varlen_fn, kwargs):
+     huge_plan, rest_plan = _q3vl_bin_plan(cu_seqlens)
+     if not huge_plan:  # guard: no huge seg -> plain ck_tile (no-op)
+@@ -66,7 +95,12 @@
+         p[:, :, :72] = x
+         return p
+     out = torch.empty_like(q)
++    _fp8_on = _q3os.environ.get("VLLM_Q3VL_VIT_FMHA_FP8", "0") == "1"
++    _fp8_min = int(_q3os.environ.get("VLLM_Q3VL_VIT_FMHA_FP8_MIN", "12288"))
+     for (s, e, cs, L) in huge_plan:
++        if _fp8_on and L >= _fp8_min:
++            out[s:e] = _q3vl_fp8_asm_seg(q[s:e], k[s:e], v[s:e], cs, L, scale, _h)
++            continue
+         o = varlen_fn(_pad128(q[s:e], e - s), _pad128(k[s:e], e - s), _pad128(v[s:e], e - s),
+                       cu_seqlens_q=cs, cu_seqlens_k=cs, max_seqlen_q=L, max_seqlen_k=L,
+                       dropout_p=0.0, causal=False, softmax_scale=scale, **kwargs)

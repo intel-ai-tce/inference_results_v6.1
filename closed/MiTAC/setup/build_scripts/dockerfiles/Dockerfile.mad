@@ -1,0 +1,12 @@
+ARG BASE_IMAGE=rocm/mlperf-inference:place_holder
+FROM $BASE_IMAGE
+
+ARG SCRIPTS_DIR=scripts
+ARG DATASET_DIR=
+
+COPY code /lab-mlperf-inference/code
+COPY ${SCRIPTS_DIR} /lab-mlperf-inference/mad
+COPY setup /lab-mlperf-inference/setup
+COPY ${DATASET_DIR} /mad/data
+RUN rm -rf /lab-mlperf-inference/code/results
+WORKDIR /lab-mlperf-inference/mad

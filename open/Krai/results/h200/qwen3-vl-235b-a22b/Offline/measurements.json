@@ -1,0 +1,7 @@
+{
+    "input_data_types": "bf16 (images), int32 (tokens)",
+    "weight_data_types": "bf16",
+    "starting_weights_filename": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct",
+    "retraining": "none",
+    "weight_transformations": "none"
+}

@@ -1,0 +1,229 @@
+[2026-07-30 09:46:13,040 loader.py:208 INFO] Loading System log from build/submission/closed/ASUSTeK/systems/XA_NB3I-E12_B300x8_TRT.json
+[2026-07-30 09:46:13,040 loader.py:228 INFO] Could not load Nameplate log from build/submission/closed/ASUSTeK/systems/XA_NB3I-E12_B300x8_TRT_power.yaml, path does not exist
+[2026-07-30 09:46:13,040 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,041 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,041 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,041 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,041 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/accuracy.txt
+[2026-07-30 09:46:13,041 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,041 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-30 09:46:13,041 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,041 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST06/verify_accuracy.txt
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,042 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,042 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,042 performance_check.py:305 INFO] Target latency: None, Latency: 5384827386122, Scenario: Offline
+[2026-07-30 09:46:13,042 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,042 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,042 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,044 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,044 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,044 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,044 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,044 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-30 09:46:13,044 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-30 09:46:13,044 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-30 09:46:13,044 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-30 09:46:13,044 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/
+[2026-07-30 09:46:13,044 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/
+[2026-07-30 09:46:13,044 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,045 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,045 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,046 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,046 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/accuracy.txt
+[2026-07-30 09:46:13,046 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,046 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST06/verify_accuracy.txt
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,046 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,046 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,046 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-30 09:46:13,046 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 851748371, TPOT target: 80000000, TPOT: 64131776, Scenario: Server
+[2026-07-30 09:46:13,046 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,046 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,046 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,048 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,048 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,048 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,048 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,048 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-30 09:46:13,048 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-30 09:46:13,048 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/power
+[2026-07-30 09:46:13,048 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/power
+[2026-07-30 09:46:13,048 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/
+[2026-07-30 09:46:13,048 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/
+[2026-07-30 09:46:13,048 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,049 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,049 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,050 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/accuracy.txt
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-30 09:46:13,050 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-30 09:46:13,050 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,050 performance_check.py:305 INFO] Target latency: None, Latency: 827836739560, Scenario: Offline
+[2026-07-30 09:46:13,050 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,050 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,050 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,050 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,050 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 09:46:13,050 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-30 09:46:13,050 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-30 09:46:13,050 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/
+[2026-07-30 09:46:13,051 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-30 09:46:13,051 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-30 09:46:13,051 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-30 09:46:13,051 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-30 09:46:13,051 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/
+[2026-07-30 09:46:13,051 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,051 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,051 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,052 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/accuracy.txt
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-30 09:46:13,052 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-30 09:46:13,052 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-30 09:46:13,052 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,052 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-30 09:46:13,052 performance_check.py:475 INFO] TTFT target: 3000000000, TTFT: 1896922597, TPOT target: 80000000, TPOT: 64059671, Scenario: Server
+[2026-07-30 09:46:13,052 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,052 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,053 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,053 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,053 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,053 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,053 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,053 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 09:46:13,053 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 09:46:13,053 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-30 09:46:13,053 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-30 09:46:13,053 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/
+[2026-07-30 09:46:13,053 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-30 09:46:13,053 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-30 09:46:13,053 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-30 09:46:13,053 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-30 09:46:13,053 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/
+[2026-07-30 09:46:13,053 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,055 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,055 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,057 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,057 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/accuracy.txt
+[2026-07-30 09:46:13,057 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,057 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST06/verify_accuracy.txt
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,057 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,057 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,057 performance_check.py:305 INFO] Target latency: None, Latency: 1493884399968, Scenario: Offline
+[2026-07-30 09:46:13,057 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,057 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,057 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,058 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,058 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,058 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,058 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,058 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-30 09:46:13,058 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-30 09:46:13,058 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-30 09:46:13,058 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-30 09:46:13,058 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/
+[2026-07-30 09:46:13,058 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/
+[2026-07-30 09:46:13,058 loader.py:208 INFO] Loading Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,060 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,060 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,062 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,062 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/accuracy.txt
+[2026-07-30 09:46:13,062 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-30 09:46:13,062 loader.py:208 INFO] Loading Measurements log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load Performance log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST06/verify_accuracy.txt
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-30 09:46:13,062 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting performance checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,062 performance_check.py:279 INFO] Target latency: 20000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-30 09:46:13,062 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 1852293440, TPOT target: 200000000, TPOT: 174909812, Scenario: Server
+[2026-07-30 09:46:13,062 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,062 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,062 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 09:46:13,062 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting system checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,062 base.py:56 INFO] All system checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting measurement checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-30 09:46:13,062 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting base checks for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-30 09:46:13,062 base.py:56 INFO] All base checks checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-30 09:46:13,062 base.py:53 INFO] Starting compliance check for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/
+[2026-07-30 09:46:13,062 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/
+[2026-07-30 09:46:13,062 main.py:227 INFO] ---
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt 69846.9
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt 54568.6
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt 109368.0
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt 109949.0
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt 113007.0
+[2026-07-30 09:46:13,062 main.py:231 INFO] Results build/submission/closed/ASUSTeK/results/XA_NB3I-E12_B300x8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt 113455.0
+[2026-07-30 09:46:13,062 main.py:233 INFO] ---
+[2026-07-30 09:46:13,063 main.py:314 INFO] ---
+[2026-07-30 09:46:13,063 main.py:315 INFO] Results=6, NoResults=0, Power Results=0
+[2026-07-30 09:46:13,063 main.py:322 INFO] ---
+[2026-07-30 09:46:13,063 main.py:323 INFO] Closed Results=6, Closed Power Results=0
+
+[2026-07-30 09:46:13,063 main.py:328 INFO] Open Results=0, Open Power Results=0
+
+[2026-07-30 09:46:13,063 main.py:333 INFO] Network Results=0, Network Power Results=0
+
+[2026-07-30 09:46:13,063 main.py:338 INFO] ---
+[2026-07-30 09:46:13,063 main.py:340 INFO] Systems=1, Power Systems=0
+[2026-07-30 09:46:13,063 main.py:344 INFO] Closed Systems=1, Closed Power Systems=0
+[2026-07-30 09:46:13,063 main.py:349 INFO] Open Systems=0, Open Power Systems=0
+[2026-07-30 09:46:13,063 main.py:354 INFO] Network Systems=0, Network Power Systems=0
+[2026-07-30 09:46:13,063 main.py:359 INFO] ---
+[2026-07-30 09:46:13,063 main.py:364 INFO] SUMMARY: submission looks OK

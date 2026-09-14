@@ -1,0 +1,75 @@
+# Qwen3-VL — GB200-NVL4 Nsight PROFILING, INTERACTIVE mode.
+# One `vllm serve` (TP=4) under nsys; endpoints client drives the cuda profiler via
+# endpoint.yaml (settings.profiling.engine: vllm). Interactive mode = online/poisson load,
+# latency-shaped at low QPS on the 8k dataset. Same vllm serve flags as the non-profiler
+# Interactive config (max-num-batched-tokens 4864); dict flags JSON.
+
+variables:
+  TOTAL_GPUS:
+    description: "vllm serve spans all 4 GPUs (= --tensor-parallel-size 4)."
+    type: integer
+    value: 4
+  GPUS_PER_NODE:
+    type: integer
+    value: 4
+
+  # Backstop only (normal teardown is the endpoint_benchmark EXIT trap).
+  WORKFLOW_TIMEOUT:
+    value: "40m"
+
+  MODEL_REPO_ID:
+    value: "nvidia/Qwen3-VL-235B-A22B-Instruct-NVFP4-MLPerf-Inference-Closed-V6.1-FP8-KV"
+
+  ENDPOINT_CONFIG:
+    value: "/work/configs/qwen3_vl_235b_a22b/GB200-NVL72_GB200-186GB_aarch64x4/VLLM_profiler/Interactive/endpoint.yaml"
+
+  WORKER_ENV_YAML:
+    value: "/work/configs/qwen3_vl_235b_a22b/GB200-NVL72_GB200-186GB_aarch64x4/VLLM_profiler/Interactive/worker_env.yaml"
+
+  # --- profiling knobs, hoisted so they drive BOTH the flags and the nsys filename ---
+  MODE:
+    description: "Load mode being profiled — labels the nsys output; matches endpoint.yaml (interactive = online/poisson, low QPS)."
+    value: "interactive"
+  DELAY_ITERATIONS:
+    # Lower than Server/Offline (500): interactive runs at low QPS (~1), so fewer
+    # engine iterations accrue per second — 100 reaches the capture window in time.
+    description: "vLLM cuda profiler: engine iterations to skip before capture begins."
+    type: integer
+    value: 100
+  MAX_ITERATIONS:
+    description: "vLLM cuda profiler: engine iterations to capture."
+    type: integer
+    value: 100
+
+  # nsys .nsys-rep basename: q3vl_gb200x4_<mode>_delay<D>_max<M>.
+  NSYS_OUTPUT:
+    value: "q3vl_gb200x4_${{ variables.MODE }}_delay${{ variables.DELAY_ITERATIONS }}_max${{ variables.MAX_ITERATIONS }}"
+
+  # vllm serve flags. vs dynamo VLLM_FLAGS: dict flags as single JSON values (no dotted
+  # forms), dropped dynamo-only flags --enable-multimodal and --numa-bind* (the profile
+  # template NUMA-pins via numactl/get_gpu_numa.py instead; frontend --router-mode also
+  # gone), added cuda profiler + NVTX tracing. All perf-affecting vLLM flags match the
+  # non-profiler Interactive config: TP=4, max-num-batched-tokens 4864,
+  # mm-encoder-attn-dtype fp8 + vit scale path, priority scheduling.
+  VLLM_FLAGS:
+    value: >-
+      --tensor-parallel-size 4
+      --pipeline-parallel-size 1
+      --data-parallel-size 1
+      --async-scheduling
+      --max-model-len 32768
+      --max-num-seqs 1024
+      --max-num-batched-tokens 4864
+      --mm-encoder-attn-backend FLASHINFER
+      --override-generation-config '{"max_new_tokens": 150}'
+      --limit-mm-per-prompt '{"video": 0}'
+      --no-enable-prefix-caching
+      --kv-events-config '{"publisher":"null"}'
+      --mm-processor-cache-gb 0
+      --mm-encoder-attn-dtype=fp8
+      --mm-encoder-fp8-scale-path=/work/configs/qwen3_vl_235b_a22b/_shared/vit_fp8_scales_all1.json
+      --scheduling-policy priority
+      --enable-layerwise-nvtx-tracing
+      --enable-logging-iteration-details
+      --profiler-config '{"profiler":"cuda","delay_iterations":${{ variables.DELAY_ITERATIONS }},"max_iterations":${{ variables.MAX_ITERATIONS }}}'
+      --compilation-config '{"cudagraph_mm_encoder":"true","encoder_cudagraph_token_budgets":[1024,2048,3072,4096,5120,6144,7168,8192],"encoder_cudagraph_max_vision_items_per_batch":16,"encoder_cudagraph_max_frames_per_batch":16,"max_cudagraph_capture_size":4864,"cudagraph_capture_sizes":[1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128,136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248,256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480,496,512, 544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 960, 992, 1024, 1056, 1088, 1120, 1152, 1184, 1216, 1248, 1280, 1312, 1344, 1376, 1408, 1440, 1472, 1504, 1536, 1568, 1600, 1632, 1664, 1696, 1728, 1760, 1792, 1824, 1856, 1888, 1920, 1952, 1984, 2016, 2048, 2080, 2112, 2144, 2176, 2208, 2240, 2272, 2304, 2336, 2368, 2400, 2432, 2464, 2496, 2528, 2560, 2592, 2624, 2656, 2688, 2720, 2752, 2784, 2816, 2848, 2880, 2912, 2944, 2976, 3008, 3040, 3072, 3104, 3136, 3168, 3200, 3232, 3264, 3296, 3328, 3360, 3392, 3424, 3456, 3488, 3520, 3552, 3584, 3616, 3648, 3680, 3712, 3744, 3776, 3808, 3840, 3872, 3904, 3936, 3968, 4000, 4032, 4064, 4096, 4128, 4160, 4192, 4224, 4256, 4288, 4320, 4352, 4384, 4416,4448, 4480, 4512, 4544, 4576, 4608, 4640, 4672, 4704, 4736, 4768, 4800, 4832,4864]}'

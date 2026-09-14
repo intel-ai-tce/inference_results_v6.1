@@ -1,0 +1,236 @@
+Subject: [PATCH] vLLM 0.25: native W4A8 (mxfp4-weight + FP8-act) via AITER FlyDSL afp8_wfp4
+
+Before this patch, the quark OCP-MX scheme w_mxfp4_a_fp8 (W4A8) had only one native
+vLLM backend: AITER_MXFP4_FP8 -> AiterW4A8ExpertsMonolithic, which calls the gpt-oss
+triton kernel moe_gemm_a8w4 and rejects any activation other than SWIGLUOAI
+(aiter_mxfp4_w4a8_moe.py:227). Qwen3-VL uses SILU, so the oracle fell through to NONE
+-> EMULATION (OCP_MXQuantizationEmulationTritonExperts), which dequantizes weights on
+the fly and is very slow (~3.7 QPS), even though W4A8 is the only quant that passes the
+MLPerf Category-F1 gate (>= 0.7824; W4A4 ~0.77 fails).
+
+AITER main (>= 0.1.17.dev, d7c40514) adds a native FlyDSL MoE kernel family
+"afp8_wfp4" (FP8 activation x MXFP4 weight) reachable through aiter.fused_moe on gfx950.
+It is SILU-native and uses the same gate/up-interleaved a16w4 weight layout as the
+existing W4A16 path (aiter fused_moe.py use_mxfp4_flydsl gate). aiter's own a8w4
+correctness test on Qwen shapes agrees with the bf16 reference to logits_diff ~1e-3.
+
+This patch re-points the AITER_MXFP4_FP8 backend at the general AiterExperts
+(rocm_aiter_moe.rocm_aiter_fused_experts -> aiter.fused_moe) instead of the SILU-rejecting
+monolithic, and teaches that path the W4A8 combo:
+  * oracle/mxfp4.py backend_to_kernel_cls: AITER_MXFP4_FP8 -> AiterExperts.
+  * oracle/mxfp4.py weight prep: replace the triton_kernels swizzle with the W4A16-style
+    gate/up-interleaved shuffle_weight_a16w4 / shuffle_scale_a16w4. Qwen quark w13 is
+    stored CONTIGUOUS [gate; up] (unlike the gpt-oss W4A16 checkpoint which is already
+    interleaved), so we do NOT de-interleave first. Static FP8 input scales are reduced
+    to a per-tensor scalar and written back to the layer so they become a1_scale/a2_scale.
+  * rocm_aiter_moe.py AiterExperts._supports_quant_scheme: allow (kMxfp4Static,
+    kFp8StaticTensorSym); rocm_aiter_fused_experts: use_mxfp4_w4a8 -> quant_method
+    BLOCK_1X32 + gate_mode INTERLEAVE.
+  * quark_moe.py: treat AITER_MXFP4_FP8 as a standard-param (not triton_kernels) backend
+    in _setup_kernel + get_fused_moe_quant_config, and set is_shuffled=True (FlyDSL gate).
+
+The FusedMoEQuantConfig plumbing (use_mxfp4_w4a8, mxfp4_w4a8_moe_quant_config,
+make_mxfp4_moe_quant_config -> AITER_MXFP4_FP8) already existed in vLLM 0.25 and is unchanged.
+
+REQUIRED runtime env: AITER_BF16_FP8_MOE_BOUND=0. aiter fused_moe.py:609 uses bf16
+activation (the a16w4 CK kernel, which does NOT exist on gfx950 -> "Unsupported kernel
+config for moe heuristic dispatch") for token counts below this bound, and FP8 (FlyDSL
+afp8_wfp4) at/above it. Setting the bound to 0 forces FP8 for all M, which is exactly the
+W4A8 scheme and keeps every shape on the native FlyDSL kernel (avoids a decode-time crash
+during cudagraph capture). Set via configs/benchmark.yaml env: block or
+`+env.AITER_BF16_FP8_MOE_BOUND=0`.
+
+Result on Qwen3-VL-235B W4A8 (w4a8-base + FP8-last-16), 0.25 + AITER main:
+accuracy_verification_8k Category-F1 = 0.7837 (PASSES the 0.7824 gate), served natively.
+
+See docs/fp8-last-n-runbook.md.
+
+--- a/vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
++++ b/vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
+@@ -226,11 +226,14 @@
+         return [AiterExperts]
+ 
+     elif backend == Mxfp4MoeBackend.AITER_MXFP4_FP8:
+-        from vllm.model_executor.layers.fused_moe.experts.aiter_mxfp4_w4a8_moe import (
+-            AiterW4A8ExpertsMonolithic,
++        # F-patch: route W4A8 through the general AiterExperts (aiter.fused_moe
++        # FlyDSL afp8_wfp4 path), which is SILU-native and uses the gate/up
++        # interleaved layout, instead of the SILU-rejecting gpt-oss monolithic.
++        from vllm.model_executor.layers.fused_moe.experts.rocm_aiter_moe import (
++            AiterExperts,
+         )
+ 
+-        return [AiterW4A8ExpertsMonolithic]
++        return [AiterExperts]
+ 
+     elif backend == Mxfp4MoeBackend.AITER_MXFP4_MXFP4:
+         from vllm.model_executor.layers.fused_moe.experts.rocm_aiter_moe import (
+@@ -1067,18 +1070,21 @@
+         )
+ 
+     elif mxfp4_backend == Mxfp4MoeBackend.AITER_MXFP4_FP8:
+-        # W4A8: MXFP4 weights + static FP8 activations (triton kernel)
+-        from triton_kernels.matmul_ogs import FlexCtx, PrecisionConfig
+-        from triton_kernels.numerics import InFlexData
++        # F-patch: W4A8 via AiterExperts -> aiter.fused_moe FlyDSL afp8_wfp4.
++        # The weight/scale layout is identical to AITER_MXFP4_BF16 (gate/up
++        # interleaved a16w4 shuffle); the ONLY difference is a static FP8
++        # activation scale. NOTE: Qwen's quark w13 is stored CONTIGUOUS
++        # [gate; up] (unlike the gpt-oss W4A16 checkpoint which is interleaved),
++        # so we do NOT de-interleave before shuffle_weight_a16w4(gate_up=True).
++        from vllm._aiter_ops import rocm_aiter_ops
+ 
+         if w13_bias is not None:
+-            w13_bias = w13_bias.to(torch.float32)
++            w13_bias = w13_bias.data.to(torch.float32)
+         if w2_bias is not None:
+-            w2_bias = w2_bias.to(torch.float32)
++            w2_bias = w2_bias.data.to(torch.float32)
+ 
+-        # Process static FP8 input scales (reduce to scalar, warn if not uniform)
+-        w13_input_scale = layer.w13_input_scale
+-        w2_input_scale = layer.w2_input_scale
++        # Static FP8 input scales -> per-tensor scalar; write back to the layer
++        # so get_fused_moe_quant_config picks them up as a1_scale/a2_scale.
+         if w13_input_scale is None or w2_input_scale is None:
+             raise ValueError(
+                 "W4A8 (AITER_MXFP4_FP8) requires static input scales, but found "
+@@ -1086,39 +1092,38 @@
+             )
+         if not all_close_1d(w13_input_scale) or not all_close_1d(w2_input_scale):
+             logger.warning_once(
+-                "Found input_scales that are not equal for "
+-                "fp8 MoE layer. Using the maximum across experts "
+-                "for each layer."
++                "Found input_scales that are not equal for fp8 MoE layer. "
++                "Using the maximum across experts for each layer."
+             )
+-        w13_input_scale = w13_input_scale.max().to(torch.float32)
+-        w2_input_scale = w2_input_scale.max().to(torch.float32)
+-
+-        # Swizzle weights for GFX950
+-        w13_weight, w13_flex, w13_scale = _swizzle_mxfp4(w13_weight, w13_weight_scale)
+-        w2_weight, w2_flex, w2_scale = _swizzle_mxfp4(w2_weight, w2_weight_scale)
++        layer.w13_input_scale = torch.nn.Parameter(
++            w13_input_scale.max().to(torch.float32), requires_grad=False
++        )
++        layer.w2_input_scale = torch.nn.Parameter(
++            w2_input_scale.max().to(torch.float32), requires_grad=False
++        )
+ 
+-        # Create InFlexData for activation scales
+-        lhs_data13 = InFlexData(scale=w13_input_scale)
+-        lhs_data2 = InFlexData(scale=w2_input_scale)
++        # View as native FP4 and apply the gate/up-interleaved a16w4 shuffle.
++        w13_weight.data = w13_weight.data.view(torch.float4_e2m1fn_x2)
++        w2_weight.data = w2_weight.data.view(torch.float4_e2m1fn_x2)
+ 
+-        # Create PrecisionConfig with both weight and activation info
+-        w13_precision_config = PrecisionConfig(
+-            weight_scale=w13_scale,
+-            flex_ctx=FlexCtx(rhs_data=w13_flex, lhs_data=lhs_data13),
++        w13_weight.data = rocm_aiter_ops.shuffle_weight_a16w4(w13_weight, 16, True)
++        shuffled_w13_scale = rocm_aiter_ops.shuffle_scale_a16w4(
++            w13_weight_scale.view(-1, w13_weight_scale.shape[-1]),
++            num_experts,
++            True,
+         )
+-        w2_precision_config = PrecisionConfig(
+-            weight_scale=w2_scale,
+-            flex_ctx=FlexCtx(rhs_data=w2_flex, lhs_data=lhs_data2),
++        w2_weight.data = rocm_aiter_ops.shuffle_weight_a16w4(w2_weight, 16, False)
++        shuffled_w2_scale = rocm_aiter_ops.shuffle_scale_a16w4(
++            w2_weight_scale.view(-1, w2_weight_scale.shape[-1]),
++            num_experts,
++            False,
+         )
+ 
+-        del layer.w13_weight
+-        del layer.w2_weight
+-
+         return (
+             w13_weight,
+             w2_weight,
+-            w13_precision_config,
+-            w2_precision_config,
++            shuffled_w13_scale,
++            shuffled_w2_scale,
+             w13_bias,
+             w2_bias,
+         )
+--- a/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
++++ b/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
+@@ -310,7 +310,11 @@
+         quant_method = QuantMethod.NO.value
+         # mxfp4 i.e. w4a4, w4a16 uses BLOCK_1X32
+         # mxfp6 and mxfp8 are unsupported in AITER currently and use emulation instead
+-        if quant_config.use_mxfp4_w4a4 or quant_config.use_mxfp4_w4a16:
++        if (
++            quant_config.use_mxfp4_w4a4
++            or quant_config.use_mxfp4_w4a16
++            or quant_config.use_mxfp4_w4a8
++        ):
+             quant_method = QuantMethod.BLOCK_1X32.value
+         # w8a8 block-scaled
+         if quant_config.block_shape is not None and quant_config.use_fp8_w8a8:
+@@ -370,7 +374,8 @@
+         from aiter.ops.flydsl.moe_common import GateMode
+ 
+         gate_mode = ""
+-        if quant_config.use_mxfp4_w4a16:
++        if quant_config.use_mxfp4_w4a16 or quant_config.use_mxfp4_w4a8:
++            # F-patch: W4A8 uses the gate/up-interleaved FlyDSL afp8_wfp4 path.
+             gate_mode = GateMode.INTERLEAVE.value
+         elif activation_interleave is not None:
+             gate_mode = (
+@@ -454,6 +459,9 @@
+             (kFp8StaticChannelSym, kFp8DynamicTokenSym),
+             (kMxfp4Static, None),
+             (kMxfp4Static, kMxfp4Dynamic),
++            # F-patch: W4A8 = mxfp4 weights + static per-tensor FP8 activations
++            # (aiter fused_moe FlyDSL afp8_wfp4, gfx950 only).
++            (kMxfp4Static, kFp8StaticTensorSym),
+         ]
+         if (weight_key, activation_key) not in SUPPORTED_W_A:
+             return False
+--- a/vllm/model_executor/layers/quantization/quark/quark_moe.py
++++ b/vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1217,9 +1217,9 @@
+         )
+ 
+         # Handle weight/scale assignment based on backend type
+-        if self.mxfp4_backend in TRITON_BACKENDS or self.mxfp4_backend in (
+-            Mxfp4MoeBackend.AITER_MXFP4_FP8,
+-        ):
++        # F-patch: AITER_MXFP4_FP8 is now an AiterExperts (standard-param)
++        # backend, no longer triton_kernels — drop it from this special-case.
++        if self.mxfp4_backend in TRITON_BACKENDS:
+             # Triton-based backends: w13/w2 are triton_kernels.tensor.Tensor
+             # Store on layer for apply(), scales are PrecisionConfig
+             layer.w13_weight = w13
+@@ -1237,7 +1237,12 @@
+             replace_parameter(layer, "w13_bias", w13_bias)
+             replace_parameter(layer, "w2_bias", w2_bias)
+ 
+-        if self.mxfp4_backend == Mxfp4MoeBackend.AITER_MXFP4_MXFP4:
++        if self.mxfp4_backend in (
++            Mxfp4MoeBackend.AITER_MXFP4_MXFP4,
++            Mxfp4MoeBackend.AITER_MXFP4_FP8,
++        ):
++            # F-patch: FlyDSL afp8_wfp4 (W4A8) requires is_shuffled=True to take
++            # the native path (aiter fused_moe.py use_mxfp4_flydsl gate).
+             layer.w13_weight.is_shuffled = True
+             layer.w2_weight.is_shuffled = True
+ 
+@@ -1260,9 +1265,8 @@
+         # For oracle-based backends (W4A16, W4A8), use make_mxfp4_moe_quant_config
+         if self.mxfp4_backend not in (Mxfp4MoeBackend.NONE, Mxfp4MoeBackend.EMULATION):
+             # Determine scale source based on backend type
+-            if self.mxfp4_backend in TRITON_BACKENDS or self.mxfp4_backend in (
+-                Mxfp4MoeBackend.AITER_MXFP4_FP8,
+-            ):
++            # F-patch: AITER_MXFP4_FP8 now uses standard weight-scale params.
++            if self.mxfp4_backend in TRITON_BACKENDS:
+                 w1_scale = self.w13_precision_config
+                 w2_scale = self.w2_precision_config
+             else:

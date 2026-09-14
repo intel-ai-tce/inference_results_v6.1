@@ -1,0 +1,90 @@
+# benchmark details
+benchmark_name: llama3_1-405b-interactive
+scenario: server
+test_mode: performance
+engine_version: async
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO" #"ERROR"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_V1: 1
+  VLLM_TRITON_FP4_GEMM_USE_ASM: 0
+  VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: 0 
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_PAGED_ATTN: 0
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_USE_AITER_TRITON_ROPE: 1
+  VLLM_USE_AITER_TRITON_SILU_MUL: 0 
+  VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: 1
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+  VLLM_V1_USE_PREFILL_DECODE_ATTENTION: 0
+  VLLM_ROCM_USE_AITER_MHA: 1
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1
+  # VLLM_ROCM_USE_AITER_CUSTOM_ALL_REDUCE: 1
+  VLLM_ROCM_QUICK_REDUCE_QUANTIZATION: "INT4"
+  VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 2560
+  # VLLM_RINGBUFFER_WARNING_INTERVAL: 300
+  VLLM_MIN_REQUEST_DECODE_STEP: 6 #0
+  VLLM_SUBSEQUENT_DECODE_STEPS: 2 #1
+
+# configuration related to the LLM model.
+vllm_engine_config:
+  model: /model/pruned_59_84/
+  #model: /model/llama3.1-405b/fp4_quantized
+  dtype: bfloat16
+  tensor_parallel_size: 8
+  quantization: quark
+  max_model_len: 21988
+  swap_space: 0
+  gpu_memory_utilization: 0.92
+  enforce_eager: False
+  disable_custom_all_reduce: False
+  max_num_batched_tokens: 6144
+  max_num_seqs: 512 #192
+  enable_chunked_prefill: True
+  enable_prefix_caching: False
+  kv_cache_dtype: fp8
+  async_scheduling: True
+  #compilation_config:
+    #cudagraph_mode: FULL_AND_PIECEWISE
+    #cudagraph_capture_sizes: [1, 2, 4, 8, 16, 32, 48, 64, 80, 96, 112, 128, 160, 192]
+    #cudagraph_num_of_warmups: 3
+    #max_cudagraph_capture_size: 192
+
+# configuration related to the sampling params
+vllm_sampling_config:
+  temperature: 1
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 2000
+  min_tokens: 2
+  ignore_eos: False
+  detokenize: False
+
+# configuration related to the harness tests.
+harness_config:
+  dataset_path: /data/mlperf_llama3.1_405b_dataset_8313_processed_fp16_eval.pkl
+  #dataset_path: /data/llama3.1-405b/mlperf_llama3.1_405b_dataset_8313_processed_fp16_eval.pkl
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama3.1-405b/user_mi355x.conf
+  target_qps: 1.04 # -1, 80
+  total_sample_count: 8313
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  warmup_duration: 0
+  enable_warmup: True
+  warm_up_sample_count_per_server: 10
+  device_count: 8

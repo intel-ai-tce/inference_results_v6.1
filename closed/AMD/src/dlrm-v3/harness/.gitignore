@@ -1,0 +1,16 @@
+# Build / run artifacts — keep the certified harness source clean
+__pycache__/
+*.py[cod]
+*.so
+*.log
+*.orig
+*.rej
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+# LoadGen / harness run outputs
+mlperf_log_*.txt
+mlperf_log_*.json
+results/
+artifacts/

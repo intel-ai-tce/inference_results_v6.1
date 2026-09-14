@@ -1,0 +1,57 @@
+diff --git a/vllm/model_executor/layers/fused_moe/runner/moe_runner.py b/vllm/model_executor/layers/fused_moe/runner/moe_runner.py
+index cf00fa4..e50c57a 100644
+--- a/vllm/model_executor/layers/fused_moe/runner/moe_runner.py
++++ b/vllm/model_executor/layers/fused_moe/runner/moe_runner.py
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import os as _os  # Fusion #3 env gate (VLLM_Q3VL_FUSE_ROUTER_SORT)
+ from collections.abc import Callable, Iterable
+ from contextlib import nullcontext
+ from typing import TYPE_CHECKING
+@@ -577,13 +578,38 @@ class MoERunner(MoERunnerInterface):
+                 input_ids=input_ids,
+             )
+ 
+-            fused_out = self.routed_experts.forward_modular(
+-                x=hidden_states,
+-                topk_weights=topk_weights,
+-                topk_ids=topk_ids,
+-                shared_experts=self._shared_experts,
+-                shared_experts_input=shared_experts_input,
+-            )
++            # Fusion campaign 2 - #3 (Alt C): stash the router context so the AITER
++            # fused sort (deep inside fused_moe_) can fuse router-softmax + opus sort.
++            # Env-gated (default off) and restricted to plain softmax FusedTopKRouter
++            # with no shared experts (num_expert_group == 1). Set right before the
++            # synchronous MoE call; cleared in finally so it never leaks across layers.
++            _q3vl_fuse_set = False
++            if (
++                _os.environ.get("VLLM_Q3VL_FUSE_ROUTER_SORT", "0") == "1"
++                and type(self.router).__name__ == "FusedTopKRouter"
++                and getattr(self.router, "scoring_func", None) == "softmax"
++                and self._shared_experts is None
++            ):
++                try:
++                    from aiter.fused_moe import q3vl_set_router_ctx
++
++                    q3vl_set_router_ctx(router_logits, self.router.renormalize)
++                    _q3vl_fuse_set = True
++                except Exception:
++                    _q3vl_fuse_set = False
++            try:
++                fused_out = self.routed_experts.forward_modular(
++                    x=hidden_states,
++                    topk_weights=topk_weights,
++                    topk_ids=topk_ids,
++                    shared_experts=self._shared_experts,
++                    shared_experts_input=shared_experts_input,
++                )
++            finally:
++                if _q3vl_fuse_set:
++                    from aiter.fused_moe import q3vl_clear_router_ctx
++
++                    q3vl_clear_router_ctx()
+ 
+         self._maybe_apply_shared_experts(
+             shared_experts_input,

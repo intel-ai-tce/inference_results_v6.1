@@ -1,0 +1,151 @@
+name: wan22-a14b-gb300x72-offline-accuracy-vbench
+version: '1.0'
+type: offline
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  min_new_tokens: 1
+  skip_special_tokens: true
+  streaming: 'off'
+datasets:
+- name: wan22_perf
+  type: performance
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 144
+- name: wan22_vbench
+  type: accuracy
+  path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+  samples: 248
+  accuracy_config:
+    eval_method: vbench
+    ground_truth: prompt
+    num_repeats: 1
+    extras:
+      vbench_project_path: /opt/vbench_accuracy
+      subprocess_timeout_s: 3600
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 0
+    n_samples_to_issue: 144
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern:
+    type: max_throughput
+  client:
+    num_workers: 72
+    log_level: INFO
+    warmup_connections: 0
+    auto_warmup_budget_fraction: 0.25
+    max_concurrent_warmup_connects: 128
+    max_connections: -1
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+      io_threads: 4
+      worker_io_threads: 1
+      high_water_mark: 0
+      linger: -1
+      immediate: 1
+    stream_all_chunks: false
+    worker_initialization_timeout: 300.0
+    worker_graceful_shutdown_wait: 0.5
+    worker_force_kill_timeout: 0.5
+    insecure: false
+    max_idle_time: 4.0
+    min_required_connections: -1
+    worker_gc_mode: relaxed
+  drain:
+    warmup_timeout_s: 3600.0
+    performance_timeout_s: 3600.0
+    metrics_drain_timeout_s: 0.0
+    metrics_tokenizer_workers: 2
+  warmup:
+    enabled: true
+    n_requests: 10
+    salt: true
+    drain: true
+    warmup_random_seed: 42
+  profiling: {}
+  early_stopping:
+    enabled: true
+  service_ready_timeout_s: 30.0
+endpoint_config:
+  endpoints:
+  - http://10.141.0.1:8003
+  - http://10.141.0.1:8002
+  - http://10.141.0.1:8000
+  - http://10.141.0.9:8032
+  - http://10.141.0.8:8028
+  - http://10.141.0.8:8030
+  - http://10.141.0.1:8001
+  - http://10.141.0.9:8033
+  - http://10.141.0.8:8031
+  - http://10.141.0.17:8067
+  - http://10.141.0.17:8065
+  - http://10.141.0.15:8056
+  - http://10.141.0.15:8058
+  - http://10.141.0.15:8059
+  - http://10.141.0.12:8046
+  - http://10.141.0.12:8044
+  - http://10.141.0.13:8050
+  - http://10.141.0.15:8057
+  - http://10.141.0.12:8047
+  - http://10.141.0.13:8051
+  - http://10.141.0.6:8023
+  - http://10.141.0.6:8022
+  - http://10.141.0.13:8049
+  - http://10.141.0.8:8029
+  - http://10.141.0.9:8035
+  - http://10.141.0.5:8019
+  - http://10.141.0.5:8017
+  - http://10.141.0.16:8060
+  - http://10.141.0.16:8063
+  - http://10.141.0.9:8034
+  - http://10.141.0.4:8014
+  - http://10.141.0.4:8015
+  - http://10.141.0.4:8013
+  - http://10.141.0.16:8062
+  - http://10.141.0.4:8012
+  - http://10.141.0.2:8004
+  - http://10.141.0.2:8006
+  - http://10.141.0.12:8045
+  - http://10.141.0.6:8020
+  - http://10.141.0.13:8048
+  - http://10.141.0.5:8016
+  - http://10.141.0.6:8021
+  - http://10.141.0.5:8018
+  - http://10.141.0.16:8061
+  - http://10.141.0.3:8011
+  - http://10.141.0.3:8009
+  - http://10.141.0.3:8010
+  - http://10.141.0.3:8008
+  - http://10.141.0.2:8005
+  - http://10.141.0.10:8039
+  - http://10.141.0.2:8007
+  - http://10.141.0.14:8052
+  - http://10.141.0.7:8024
+  - http://10.141.0.7:8026
+  - http://10.141.0.7:8025
+  - http://10.141.0.17:8064
+  - http://10.141.0.17:8066
+  - http://10.141.0.7:8027
+  - http://10.141.0.10:8037
+  - http://10.141.0.10:8036
+  - http://10.141.0.18:8071
+  - http://10.141.0.18:8068
+  - http://10.141.0.10:8038
+  - http://10.141.0.14:8053
+  - http://10.141.0.14:8054
+  - http://10.141.0.14:8055
+  - http://10.141.0.11:8041
+  - http://10.141.0.11:8043
+  - http://10.141.0.11:8042
+  - http://10.141.0.11:8040
+  - http://10.141.0.18:8069
+  - http://10.141.0.18:8070
+  api_type: videogen
+report_dir: /home/frank/mlperf_inference_v6.1/6.1.3/nv-mlpinf-partner/closed/NVIDIA/sflow_output/451-wan22_videogen_accuracy-20260731-115050-b68f6f/endpoint_benchmark
+verbose: false
+enable_cpu_affinity: true

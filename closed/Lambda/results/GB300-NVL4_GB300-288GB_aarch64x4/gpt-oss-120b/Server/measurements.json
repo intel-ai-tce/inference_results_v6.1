@@ -1,0 +1,7 @@
+{
+    "input_data_types": "int32",
+    "retraining": "no",
+    "starting_weights_filename": "gpt-oss-120b (MXFP4, MLPerf v6.1 reference checkpoint)",
+    "weight_data_types": "mxfp4",
+    "weight_transformations": "MXFP4 quantization (MLPerf v6.1 reference)."
+}

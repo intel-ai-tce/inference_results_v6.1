@@ -1,0 +1,61 @@
+{
+  "average_accuracy": 0.8683417085427135,
+  "accuracy_scores": [
+    {
+      "dataset_name": "bfcl_v4::function_calling",
+      "extractor": "FunctionCallExtractor",
+      "ground_truth_column": "ground_truth",
+      "score": 0.8683417085427135,
+      "unit_samples": 995,
+      "num_repeats": 1,
+      "total_samples": 995,
+      "duration_s": 159.75,
+      "complete": true,
+      "dataset_type": "accuracy",
+      "breakdown": {
+        "overall_accuracy": 86.83,
+        "normalized_single_turn_score": 87.27,
+        "category_scores": {
+          "non_live": 82.09,
+          "live": 88.24,
+          "hallucination": 91.48
+        },
+        "subset_scores": {
+          "irrelevance": 87.5,
+          "live_irrelevance": 95.45,
+          "live_multiple": 88.57,
+          "live_parallel": 87.5,
+          "live_parallel_multiple": 75.0,
+          "live_simple": 100.0,
+          "multiple": 93.55,
+          "parallel": 88.71,
+          "parallel_multiple": 87.1,
+          "simple_java": 46.77,
+          "simple_javascript": 35.48,
+          "simple_python": 94.76
+        },
+        "unscored_subsets": {},
+        "total_samples": 995,
+        "issued_samples": 995
+      },
+      "response_counts": {
+        "issued": 995,
+        "scored": 995,
+        "empty": 0,
+        "missing": 0
+      }
+    },
+    {
+      "dataset_name": "performance",
+      "extractor": null,
+      "ground_truth_column": null,
+      "score": 0.6158,
+      "unit_samples": 1007,
+      "num_repeats": 1,
+      "total_samples": 1007,
+      "duration_s": 776.332,
+      "complete": true,
+      "dataset_type": "performance"
+    }
+  ]
+}

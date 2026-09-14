@@ -1,0 +1,72 @@
+diff --git a/cmake/modules/CppLibrary.cmake b/cmake/modules/CppLibrary.cmake
+index 92a93a60..388d3ac7 100644
+--- a/cmake/modules/CppLibrary.cmake
++++ b/cmake/modules/CppLibrary.cmake
+@@ -168,6 +168,18 @@ function(cpp_library)
+         target_link_libraries(${lib_name} PUBLIC OpenMP::OpenMP_CXX)
+     endif()
+ 
++    if(NOT TARGET TBB::tbb)
++        find_package(TBB QUIET)
++    endif()
++    if(TBB_FOUND)
++        target_link_libraries(${lib_name} PUBLIC TBB::tbb)
++    else()
++        find_library(TBB_LIB NAMES tbb tbb12 HINTS $ENV{CONDA_PREFIX}/lib /usr/lib/x86_64-linux-gnu /usr/local/lib /lib/x86_64-linux-gnu)
++        if(TBB_LIB)
++            target_link_libraries(${lib_name} PUBLIC ${TBB_LIB})
++        endif()
++    endif()
++
+     # Add sanitizer options if needed
+     if(args_SANITIZER_OPTIONS)
+         target_link_options(${lib_name} PUBLIC
+diff --git a/cmake/modules/GpuCppLibrary.cmake b/cmake/modules/GpuCppLibrary.cmake
+index 51c30df7..e6628483 100644
+--- a/cmake/modules/GpuCppLibrary.cmake
++++ b/cmake/modules/GpuCppLibrary.cmake
+@@ -302,6 +302,18 @@ function(gpu_cpp_library)
+         list(APPEND library_dependencies ${NVML_LIB_PATH})
+     endif()
+ 
++    if(NOT TARGET TBB::tbb)
++        find_package(TBB QUIET)
++    endif()
++    if(TBB_FOUND)
++        list(APPEND library_dependencies TBB::tbb)
++    else()
++        find_library(TBB_LIB NAMES tbb tbb12 HINTS $ENV{CONDA_PREFIX}/lib /usr/lib/x86_64-linux-gnu /usr/local/lib /lib/x86_64-linux-gnu)
++        if(TBB_LIB)
++            list(APPEND library_dependencies ${TBB_LIB})
++        endif()
++    endif()
++
+     # Link against the external libraries as needed
+     target_link_libraries(${lib_name} PRIVATE ${library_dependencies})
+ 
+diff --git a/fbgemm_gpu/fbgemm_gpu/tbe/bench/tbe_data_config_bench_helper.py b/fbgemm_gpu/fbgemm_gpu/tbe/bench/tbe_data_config_bench_helper.py
+index d554e4a2..e7944c51 100644
+--- a/fbgemm_gpu/fbgemm_gpu/tbe/bench/tbe_data_config_bench_helper.py
++++ b/fbgemm_gpu/fbgemm_gpu/tbe/bench/tbe_data_config_bench_helper.py
+@@ -191,6 +191,7 @@ def generate_requests(
+ 
+     # Generate indices
+     all_indices = _generate_indices(tbe_data_config, iters, Bs, L_offsets)
++    all_indices = all_indices.to(get_device())
+ 
+     # Build TBE requests
+     if tbe_data_config.variable_B() or tbe_data_config.variable_L():
+diff --git a/fbgemm_gpu/include/fbgemm_gpu/utils/kernel_launcher.cuh b/fbgemm_gpu/include/fbgemm_gpu/utils/kernel_launcher.cuh
+index 5bb8fa63..859c96d8 100644
+--- a/fbgemm_gpu/include/fbgemm_gpu/utils/kernel_launcher.cuh
++++ b/fbgemm_gpu/include/fbgemm_gpu/utils/kernel_launcher.cuh
+@@ -270,8 +270,7 @@ struct KernelLauncher {
+         // version of PyTorch
+         // c10::cuda::get_cuda_error_help(cuda_error),
+         c10::cuda::get_cuda_check_suffix(),
+-        "\n",
+-        c10::cuda::c10_retrieve_device_side_assertion_info());
++        "\n");
+   }
+ 
+   template <typename KernelFunc, typename... Args>

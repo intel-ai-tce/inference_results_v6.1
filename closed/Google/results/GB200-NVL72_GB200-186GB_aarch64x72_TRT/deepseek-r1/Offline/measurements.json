@@ -1,0 +1,7 @@
+{
+    "input_data_types": "int32",
+    "retraining": "No",
+    "starting_weights_filename": "centml/DeepSeek-R1-NVFP4-v2-mlpinf@93947a0d7bd04f73ff98636f6b18ff5839e7aaf9",
+    "weight_data_types": "fp4",
+    "weight_transformations": "quantization, affine fusion"
+}

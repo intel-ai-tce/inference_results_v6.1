@@ -1,0 +1,6 @@
+[submodule "third_party/vllm-cpu"]
+	path = third_party/vllm-cpu
+	url = https://github.com/vllm-project/vllm
+[submodule "third_party/inference"]
+	path = third_party/inference
+	url = https://github.com/mlcommons/inference

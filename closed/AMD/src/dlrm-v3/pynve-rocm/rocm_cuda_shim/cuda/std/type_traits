@@ -1,0 +1,5 @@
+// Plan 14.3 cuEmbed hipify shim — libcu++ <cuda/std/type_traits> -> std <type_traits>.
+// cuEmbed includes <cuda/std/type_traits> but only uses std::is_same_v etc. (the
+// std:: namespace), so the host <type_traits> satisfies every use on HIP.
+#pragma once
+#include <type_traits>

@@ -1,0 +1,12 @@
+{"op": "nocache_fp32.forward", "passed": true, "max_abs_err": 0.0}
+{"op": "nocache_fp32.backward", "passed": true, "n_unique": 3462, "grad_max_abs_err": 0.0, "untouched_leak": 0.0}
+{"op": "nocache_fp32.step+coherence", "passed": true, "updated_rows": 3462, "max_abs_err": 0.0}
+{"op": "nocache_fp32.loss_decrease", "passed": true, "loss_first": 0.11715, "loss_last": 0.11715, "steps": 15}
+{"op": "linearuvm_fp32.forward", "passed": true, "max_abs_err": 0.0}
+{"op": "linearuvm_fp32.backward", "passed": true, "n_unique": 3462, "grad_max_abs_err": 0.0, "untouched_leak": 0.0}
+{"op": "linearuvm_fp32.step+coherence", "passed": true, "updated_rows": 3462, "max_abs_err": 0.0}
+{"op": "linearuvm_fp32.loss_decrease", "passed": true, "loss_first": 0.11715, "loss_last": 0.11715, "steps": 15}
+{"op": "nocache_fp16.forward", "passed": true, "max_abs_err": 0.0}
+{"op": "nocache_fp16.backward", "passed": true, "n_unique": 3462, "grad_max_abs_err": 0.00462, "untouched_leak": 0.0}
+{"op": "nocache_fp16.step+coherence", "passed": true, "updated_rows": 3462, "max_abs_err": 0.00028}
+{"op": "nocache_fp16.loss_decrease", "passed": true, "loss_first": 0.11715, "loss_last": 0.11715, "steps": 10}

@@ -1,0 +1,84 @@
+variables:
+  # Disagg (prefill/decode split) topology — B300 x16 Server:
+  # 6 CTX (TP1), 10 GEN (TP1), and two CPU-only frontends.
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 6
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 1
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 10
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 1
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 2
+  TOTAL_GPUS:
+    description: "Worker GPU count: ctx + gen (= 6 + 10 = 16)"
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  BASE_PORT:
+    value: 8336
+  FRONTEND_PORT:
+    value: 8000
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4
+  TRTLLM_YAML_CTX:
+    value: /work/configs/llama2_70b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-disagg-ctx-1gpu.yaml
+  TRTLLM_ENV_EXPORTS_CTX:
+    value: |
+      export NCCL_IB_GID_INDEX='3'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export TRTLLM_ENABLE_PDL='1'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+  TRTLLM_YAML_GEN:
+    value: /work/configs/llama2_70b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server/trtllm-serve-disagg-gen-1gpu.yaml
+  TRTLLM_ENV_EXPORTS_GEN:
+    value: |
+      export NCCL_IB_GID_INDEX='3'
+      export UCX_NET_DEVICES=''
+      export TRTLLM_UCX_INTERFACE=''
+      export UCX_TLS='rc,sm,cuda,self'
+      export UCX_RNDV_SCHEME='put_zcopy'
+      export UCX_CUDA_IPC_ENABLE_MNNVL='n'
+      export UCX_LOG_LEVEL='warn'
+      export TRTLLM_SERVER_DISABLE_GC='1'
+      export TRTLLM_WORKER_DISABLE_GC='1'
+      export TRTLLM_ENABLE_PDL='1'
+      export MLPINF_WORKER_INITIALIZATION_TIMEOUT='120'
+      export SERVER_READY_TIMEOUT='1800'
+  HTTP_INTERFACE:
+    value: ""
+  HARNESS_CONFIG_DIR:
+    value: /work/configs/llama2_70b/Cisco_UCS_B300x16_G200_4x2_RO/TRTLLM/Server
+
+  BENCHMARK:
+    value: llama2-70b
+  SCENARIO:
+    value: Server
+  SYSTEM_NAME:
+    value: B300-SXM-270GBx16
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  LOADGEN_MODE:
+    description: >-
+      'full' = submission-valid loadgen settings from harness.py. 'dev' = short
+      capacity-probe run (exports MLPINF_LOADGEN_MODE=dev; harness.py swaps in
+      short min_duration + reduced sample count + MLPINF_DEV_QPS, default 400).
+    value: full
+  HARNESS_EXTRA_ARGS:
+    value: ""

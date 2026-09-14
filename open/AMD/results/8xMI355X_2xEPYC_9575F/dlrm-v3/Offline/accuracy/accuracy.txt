@@ -1,0 +1,19 @@
+[score] parsing /mnt/vast/jiaweic/experiment/dlrm-v3-rocm-runner/artifacts/gold_mi355x8_C1on_v61seed_b64_OFFLINE_accuracy_20260731T164941/mlperf_log_accuracy.json
+[score] processed 50000 entries
+[score] processed 100000 entries
+[score] processed 150000 entries
+[score] processed 200000 entries
+[score] processed 250000 entries
+[score] processed 300000 entries
+[score] total entries: 349823
+==== ACCURACY METRICS ====
+metric/lifetime_ne/rating: 0.8678795984098008
+metric/window_ne/rating: 0.725606413702001
+metric/lifetime_accuracy/rating: 0.6962884623080815
+metric/window_accuracy/rating: 0.7536962365591398
+metric/lifetime_gauc/rating: 0.7861666437936649
+metric/window_gauc/rating: 0.8239927593028217
+metric/lifetime_gauc_num_samples/rating: 349821.0
+metric/window_gauc_num_samples/rating: 93.0
+
+hash=855ece479a78ffda8bbee194acd686e5fd543515a8810fd3801bae0056fb5164

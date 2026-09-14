@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: nv-mlpinf
+Version: 6.1.0
+Summary: NVIDIA MLPerf Inference Harness
+License: Apache-2.0
+Requires-Python: >=3.10
+Requires-Dist: nvmitten @ git+https://github.com/NVIDIA/mitten.git@main
+Requires-Dist: mlcommons-loadgen==6.0.16
+Requires-Dist: typeguard>=4.3.0
+Requires-Dist: onnx_graphsurgeon>=0.5.6
+Requires-Dist: setuptools_git_versioning
+Requires-Dist: scikit-build
+Requires-Dist: sentencepiece>=0.2.0
+Requires-Dist: datasets
+Requires-Dist: nvtx==0.2.14
+Requires-Dist: scipy==1.16.2
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: cupy-cuda12x==13.3.0
+Provides-Extra: llm
+Requires-Dist: nltk==3.9.1; extra == "llm"
+Requires-Dist: evaluate==0.4.3; extra == "llm"
+Requires-Dist: rouge_score==0.1.2; extra == "llm"
+Requires-Dist: grpcio>=1.67.1; extra == "llm"
+Requires-Dist: tritonclient==2.52.0; extra == "llm"
+Requires-Dist: gevent==24.11.1; extra == "llm"
+Requires-Dist: geventhttpclient==2.3.3; extra == "llm"
+Requires-Dist: httpx[http2]==0.28.1; extra == "llm"
+Requires-Dist: uvloop==0.21.0; extra == "llm"
+Requires-Dist: setproctitle==1.3.6; extra == "llm"
+Requires-Dist: pylatexenc==2.10; extra == "llm"
+Requires-Dist: huggingface_hub[cli]==0.34.0; extra == "llm"
+Requires-Dist: tiktoken==0.9.0; extra == "llm"
+Requires-Dist: safetensors==0.5.2; extra == "llm"
+Requires-Dist: num2words==0.5.14; extra == "llm"
+Requires-Dist: orjson==3.11.3; extra == "llm"
+Provides-Extra: whisper
+Requires-Dist: openai-whisper==20250625; extra == "whisper"
+Requires-Dist: librosa==0.10.1; extra == "whisper"
+Requires-Dist: soundfile==0.13.0; extra == "whisper"
+Requires-Dist: sox==1.5.0; extra == "whisper"
+Requires-Dist: tiktoken==0.9.0; extra == "whisper"
+Requires-Dist: num2words==0.5.14; extra == "whisper"
+Requires-Dist: safetensors==0.5.2; extra == "whisper"
+Provides-Extra: q3vl
+Requires-Dist: onnx==1.16.2; extra == "q3vl"
+Requires-Dist: tensorrt; extra == "q3vl"

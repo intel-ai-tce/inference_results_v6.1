@@ -1,0 +1,115 @@
+--- a/aiter/ops/triton/gluon/pa_decode_gluon.py
++++ b/aiter/ops/triton/gluon/pa_decode_gluon.py
+@@ -40,13 +40,28 @@
+     return 2
+ 
+ 
+-def get_recommended_splits(num_sequences, num_kv_heads):
++def get_recommended_splits(num_sequences, num_kv_heads, max_seq_len=None):
+     props = torch.cuda.get_device_properties()
+     num_sm = props.multi_processor_count * get_occupancy()
+-    max_context_partition_num = min(
+-        16, triton.cdiv(num_sm, num_sequences * num_kv_heads)
+-    )
+-    return max_context_partition_num
++    base_ctas = num_sequences * num_kv_heads
++    ideal_splits = triton.cdiv(num_sm, base_ctas)
++
++    # ONE_SHOT (splits == 1) skips the reduction kernel entirely and writes
++    # attention outputs directly to the final output tensor.  Benchmarking
++    # shows this consistently wins over multi-split for:
++    #   - All batch sizes at ctx <= 2K  (reduction overhead > parallelism gain)
++    #   - ideal_splits <= 2            (splitting adds a reduce for only 2x work)
++    # The max_seq_len argument is the running maximum context length from the
++    # current forward batch, which the caller already has at dispatch time.
++    if ideal_splits <= 2:
++        return 1
++    if max_seq_len is not None and max_seq_len <= 2048:
++        return 1
++
++    # For very small batches the base CTA count is tiny; allow up to 32 splits
++    # so those batches can spread work across more of the GPU.
++    max_cap = 32 if base_ctas <= num_sm // 16 else 16
++    return min(max_cap, ideal_splits)
+ 
+ 
+ # Pre-compute version check as constexpr for use in JIT kernels
+@@ -2972,10 +2987,10 @@
+         ONE_QUERY_GROUP_SIZE_POW2 = 16 // QUERY_SEQ_LEN_POW2
+     else:
+         ONE_QUERY_GROUP_SIZE_POW2 = triton.next_power_of_2(query_group_size)
+-    waves_per_eu = 1
+     KV_COMPUTE_BLOCK_SIZE = CONTEXT_PARTITION_SIZE
+     # Select kernel implementation based on block size
+ 
++    waves_per_eu = 1
+     if KV_BLOCK_SIZE > CONTEXT_PARTITION_SIZE:
+         # Use big block kernel for large block sizes
+         paged_attention_kernel = paged_attention_decode_v2_gluon_large_block_dot_kernel
+--- a/vllm/v1/attention/backends/rocm_aiter_fa.py
++++ b/vllm/v1/attention/backends/rocm_aiter_fa.py
+@@ -1205,7 +1205,8 @@
+                     context_partition_size = 128
+                 else:
+                     max_context_partition_num = get_recommended_splits(
+-                        num_decodes, num_kv_heads_dec
++                        num_decodes, num_kv_heads_dec,
++                        max_seq_len=max_seq_len,
+                     )
+ 
+                 intermediate_shape = (
+@@ -1308,12 +1309,12 @@
+             )
+ 
+     def fused_rope_kvcache_supported(self):
+-        # Only support fusion when shuffle KV cache layout is not used;
+-        # shuffle layout uses a different cache update path.
+-        return (
+-            rocm_aiter_ops.is_enabled()
+-            and not rocm_aiter_ops.is_shuffle_kv_cache_enabled()
+-        )
++        # Supported for both standard flash layout and shuffle/ASM layout.
++        # do_rope_and_kv_cache_update() reinterprets the cache storage into
++        # shuffle views when is_shuffle_kv_cache_enabled() is True so the
++        # fused Triton kernel's FLASH_LAYOUT=False + VALUE_SHUFFLE_LAYOUT=True
++        # path is used.
++        return rocm_aiter_ops.is_enabled()
+ 
+     def do_rope_and_kv_cache_update(
+         self,
+@@ -1328,13 +1329,34 @@
+         layer_slot_mapping: torch.Tensor,
+     ):
+         key_cache, value_cache = kv_cache.unbind(0)
+-        flash_layout = True
+ 
+         is_fp8_kv_cache = is_quantized_kv_cache(self.kv_cache_dtype)
+         if is_fp8_kv_cache:
+             key_cache = key_cache.view(current_platform.fp8_dtype())
+             value_cache = value_cache.view(current_platform.fp8_dtype())
+ 
++        if rocm_aiter_ops.is_shuffle_kv_cache_enabled():
++            # The underlying storage is flash-layout [num_blocks, block_size,
++            # num_kv_heads, head_size].  Reinterpret it as the ASM shuffle
++            # views so the fused Triton kernel's FLASH_LAYOUT=False +
++            # VALUE_SHUFFLE_LAYOUT=True path produces the same bit pattern
++            # that reshape_and_cache_shuffle_triton would have written.
++            #
++            # Shuffle key:  [num_blocks, num_kv_heads, head_size//x, block_size, x]
++            # Shuffle value: [num_blocks, num_kv_heads, block_size//x, head_size, x]
++            # where x = 16 // element_size (8 for fp8, 4 for bf16/fp16).
++            num_blocks, block_size, num_kv_heads, head_size = key_cache.shape
++            x = 16 // key_cache.element_size()
++            key_cache = key_cache.view(
++                num_blocks, num_kv_heads, head_size // x, block_size, x
++            )
++            value_cache = value_cache.view(
++                num_blocks, num_kv_heads, block_size // x, head_size, x
++            )
++            flash_layout = False
++        else:
++            flash_layout = True
++
+         rocm_aiter_ops.triton_rope_and_cache(
+             query,
+             key,

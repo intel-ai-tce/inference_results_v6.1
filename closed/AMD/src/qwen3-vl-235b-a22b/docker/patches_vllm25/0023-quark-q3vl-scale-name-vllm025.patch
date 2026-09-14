@@ -1,0 +1,32 @@
+Subject: [PATCH] quark Q3VL: rename MXFP4/FP8 quantizer scale names for vLLM 0.25
+
+vLLM 0.25 restructured weight loading into AutoWeightsLoader; the per-model load_weights loops that
+patches 0003 (weight_quantizer.scale -> weight_scale) and 0007 (input_quantizer.scale ->
+input_scale) targeted in qwen3_vl_moe.py are gone, so 0003/0007 no longer apply. quark checkpoints
+still export scales as "<...>.weight_quantizer.scale" / "<...>.input_quantizer.scale", but vLLM
+registers them as "<...>.weight_scale" / "<...>_input_scale". Without the rename, loading any quark
+checkpoint on 0.25 fails: RoutedExperts.load_weights -> AttributeError
+'w2_weight_quantizer.scale', and QKVParallelLinear -> "has no attribute weight_quantizer".
+
+This is the 0.25 equivalent of patches 0003 + 0007 combined, applied once in
+AutoWeightsLoader.load_weights (after mapper.apply, before the _groupby_prefix recursion) so it
+covers attention, dense, MoE experts, and lm_head in one place. The endswith() guards make it a
+no-op for non-quark checkpoints. See docs/fp8-last-n-runbook.md (Stack support: vLLM 0.25).
+
+--- a/vllm/model_executor/models/utils.py
++++ b/vllm/model_executor/models/utils.py
+@@ -413,6 +413,14 @@ class AutoWeightsLoader:
+             self.ignore_unexpected_suffixes.extend(ignore_unexpected_suffixes)
+         if mapper is not None:
+             weights = mapper.apply(weights)
++        def _quark_scale_rename(ws):  # MLPerf Q3VL quark scale-name compat (vLLM 0.25)
++            for _n, _w in ws:
++                if _n.endswith("weight_quantizer.scale"):
++                    _n = _n[: -len("weight_quantizer.scale")] + "weight_scale"
++                elif _n.endswith("input_quantizer.scale"):
++                    _n = _n[: -len("input_quantizer.scale")] + "input_scale"
++                yield _n, _w
++        weights = _quark_scale_rename(weights)
+         # filter out weights with first-prefix/substr to skip in name
+         weights = (
+             (name, weight) for name, weight in weights if not self._can_skip(name)

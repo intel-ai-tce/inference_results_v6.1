@@ -1,0 +1,147 @@
+Q3VL Path B (HIP shuffle-write variant): serve the MXFP4 Qwen3-VL-235B model
+with a contiguous shuffle-layout paged KV cache end-to-end.
+
+Depends on 0009 (q3vl fused attn prologue) being applied first. This patch does
+NOT swap to FlyDSL -- it keeps the precompiled HIP op
+``fused_qk_norm_mrope_3d_cache_pts_quant_shuffle`` and merely flips its
+``use_shuffle_layout`` arg False->True, plus the matching allocation + read
+changes so write and read agree on the shuffle byte arrangement. The change is
+value-preserving (same quantized values, different in-block byte order), so it
+isolates the layout effect from any kernel/rounding change.
+
+Change set (all verified against image mlperf6.1-q3vl-imgR-r723-vllm251-20260724
+and /opt/aiter):
+
+1. get_kv_cache_shape -> kv-first, per-half-contiguous
+   (2, num_blocks, num_kv_heads, head_size, block_size). unbind(0) then yields
+   two genuinely contiguous halves (num_blocks, num_kv_heads, head_size,
+   block_size), each an exact contiguous reshape into the aiter fp8 shuffle
+   layouts K [nb,H,D/x,bs,x] / V [nb,H,bs/x,D,x] (x=16). Byte count and
+   page_size_bytes are unchanged (page_size_bytes is computed independently from
+   block_size*num_kv_heads*head_size*dtype in kv_cache_interface.py), so memory
+   profiling / available-KV / block allocation are unaffected.
+
+   get_kv_cache_block_dim is NOT overridden: the base class derives it as
+   shape.index(num_blocks) == 1 for the new shape, which is correct. For a pure
+   decoder on a single backend (Qwen3-VL), _has_mixed_attention_kv_layout is
+   False and there is no mamba, so _update_hybrid_attention_mamba_layout never
+   runs and the kv-first layout is NOT renormalized to blocks-first.
+
+2. _split_kv_cache -> unbind(0), view fp8, reshape each half to the 5-D shuffle
+   layout. The write kernel reads k_cache.stride(0) (== num_kv_heads*head_size*
+   block_size for the contiguous 5-D half) as its per-block stride; the read
+   (unified_attention shuffled_kv_cache=True, fp8 branch) parses shapes as
+   num_blocks, num_kv_heads, _, block_size, K_WIDTH = k.shape.
+
+3. forward -> pass shuffled_kv_cache=True to the aiter unified_attention call
+   (keyword arg, default False, threaded into the 2D/3D kernels per patch 0026).
+
+4. 0009 writer (qwen3_moe.py) -> use_shuffle_layout True; derive block_size from
+   the raw kv-first allocation (kv_cache.shape[-1]) instead of key_cache.shape[1]
+   (which is now num_kv_heads under the 5-D split view).
+
+--- a/vllm/v1/attention/backends/rocm_aiter_unified_attn.py
++++ b/vllm/v1/attention/backends/rocm_aiter_unified_attn.py
+@@ -85,7 +85,21 @@
+     ) -> tuple[int, ...]:
+         if block_size % 16 != 0:
+             raise ValueError("Block size must be a multiple of 16.")
+-        return (num_blocks, 2, block_size, num_kv_heads, head_size)
++        # Path B (shuffle-layout KV): kv-first, per-half-contiguous. unbind(0)
++        # on this shape yields two genuinely contiguous halves, each
++        # (num_blocks, num_kv_heads, head_size, block_size), whose block stride
++        # == num_kv_heads*head_size*block_size -- the packed value the aiter
++        # shuffle write/read kernels assume. Each half is an exact contiguous
++        # reshape into the aiter fp8 shuffle layouts K [nb, H, D//x, bs, x] /
++        # V [nb, H, bs//x, D, x] (x=16 for fp8). Element count and
++        # page_size_bytes are unchanged (the latter is computed independently
++        # in kv_cache_interface.py), so memory accounting and block allocation
++        # are unaffected. get_kv_cache_block_dim is auto-derived by the base
++        # class as shape.index(num_blocks) == 1; a pure-decoder single-backend
++        # model (Qwen3-VL) has _has_mixed_attention_kv_layout False and no
++        # mamba, so _update_hybrid_attention_mamba_layout never renormalizes
++        # this kv-first layout to blocks-first.
++        return (2, num_blocks, num_kv_heads, head_size, block_size)
+ 
+     @staticmethod
+     def use_cascade_attention(*args, **kwargs) -> bool:
+@@ -148,10 +162,35 @@
+     def _split_kv_cache(
+         self, kv_cache: torch.Tensor
+     ) -> tuple[torch.Tensor, torch.Tensor]:
+-        # Blocks-first ``(num_blocks, 2, ...)``. The model runner normalizes any
+-        # shared decoder/cross-attention allocation to this layout, so no
+-        # per-backend restriding is needed here.
+-        return kv_cache.unbind(1)
++        # Path B shuffle-layout KV. Allocation is kv-first
++        # ``(2, num_blocks, num_kv_heads, head_size, block_size)`` (see
++        # get_kv_cache_shape). unbind(0) yields two genuinely *contiguous*
++        # per-half buffers whose block stride == num_kv_heads*head_size*
++        # block_size -- the packed value the aiter shuffle write kernel
++        # (k_cache.stride(0)) and the shuffle read (unified_attention
++        # shuffled_kv_cache=True) both assume.
++        key_cache, value_cache = kv_cache.unbind(0)
++        if is_quantized_kv_cache(self.kv_cache_dtype):
++            key_cache = key_cache.view(self.fp8_dtype)
++            value_cache = value_cache.view(self.fp8_dtype)
++            # Reshape each contiguous half into the aiter fp8 shuffle layout
++            # (x=16). Both are exact contiguous reshapes of the same
++            # num_blocks*num_kv_heads*head_size*block_size-element buffer:
++            #   K -> [num_blocks, num_kv_heads, head_size//x, block_size, x]
++            #   V -> [num_blocks, num_kv_heads, block_size//x, head_size, x]
++            nb, num_kv_heads, head_size, block_size = key_cache.shape
++            x = 16
++            key_cache = key_cache.view(
++                nb, num_kv_heads, head_size // x, block_size, x
++            )
++            value_cache = value_cache.view(
++                nb, num_kv_heads, block_size // x, head_size, x
++            )
++        # NOTE: do_kv_cache_update / do_rope_and_kv_cache_update also call this
++        # and then expect the flash layout; they are unreachable under the
++        # fused shuffle writer (VLLM_Q3VL_FUSE_ATTN_PROLOGUE=1, sole writer via
++        # torch.ops.vllm.q3vl_norm_mrope_kv), which Path B requires.
++        return key_cache, value_cache
+ 
+     def forward(
+         self,
+@@ -172,7 +211,7 @@
+             key: shape = [num_tokens, num_kv_heads, head_size]
+             value: shape = [num_tokens, num_kv_heads, head_size]
+             kv_cache: shape =
+-                [num_blocks, 2, block_size, num_kv_heads, head_size]
++                [2, num_blocks, num_kv_heads, head_size, block_size]
+             attn_metadata: Metadata for attention.
+         Returns:
+             shape = [num_tokens, num_heads * head_size]
+@@ -238,6 +277,7 @@
+                 max_seqlen_k=max_seqlen_k,
+                 softmax_scale=softmax_scale,
+                 causal=True,
++                shuffled_kv_cache=True,
+                 alibi_slopes=self.alibi_slopes,
+                 window_size=self.sliding_window,
+                 block_table=block_table,
+--- a/vllm/model_executor/models/qwen3_moe.py
++++ b/vllm/model_executor/models/qwen3_moe.py
+@@ -150,14 +150,18 @@
+         if cs is None or cs.device != qkv.device or cs.dtype != qkv.dtype:
+             cs = cos_sin_cache.to(qkv.dtype).contiguous()
+             _Q3VL_CS_BF16[layer_name] = cs
+-        block_size = int(key_cache.shape[1])
++        # Path B: block_size no longer lives at key_cache.shape[1] (the split
++        # half is now the 5-D fp8 shuffle view [nb, H, D//x, bs, x]). Read it
++        # from the raw kv-first allocation instead -- the last dim of
++        # (2, num_blocks, num_kv_heads, head_size, block_size) is block_size.
++        block_size = int(kv_cache.shape[-1])
+         _q3vl_aiter_mrope(
+             qkv.contiguous(), qw, kw, cs, positions, qkv.shape[0],
+             num_heads_q, num_heads_k, num_heads_k, head_size, is_neox,
+             list(mrope_section), is_interleaved, eps,
+             q_out, key_cache, value_cache, slot_mapping,
+             attn_layer._k_scale, attn_layer._v_scale, None, None,
+-            False, False, block_size, 16, 0,
++            False, True, block_size, 16, 0,  # use_shuffle_layout=True (Path B)
+         )
+ 
+     def _q3vl_norm_mrope_kv_fake(

@@ -1,0 +1,49 @@
+variables:
+  # Disagg - full GB300x72 scale: 4 CTX x 2GPU + 4 GEN x 16GPU + 5 master = 8 + 64 = 72 GPUs / 18 nodes.
+  NUM_CTX_SERVERS:
+    type: integer
+    value: 4
+  GPUS_PER_CTX_RANK:
+    type: integer
+    value: 2
+  NUM_GEN_SERVERS:
+    type: integer
+    value: 4
+  GPUS_PER_GEN_RANK:
+    type: integer
+    value: 16
+  NUM_FRONTEND_SERVERS:
+    type: integer
+    value: 5
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_CTX_SERVERS * variables.GPUS_PER_CTX_RANK + variables.NUM_GEN_SERVERS * variables.GPUS_PER_GEN_RANK }}
+
+  BASE_PORT:
+    value: 8336
+  FRONTEND_PORT:
+    value: 8000
+
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4
+  TRTLLM_YAML_CTX:
+    value: /work/configs/deepseek_r1/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-dep2.yaml
+  TRTLLM_ENV_YAML_CTX:
+    value: /work/configs/deepseek_r1/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-ctx-dep2-env.yaml
+  TRTLLM_YAML_GEN:
+    value: /work/configs/deepseek_r1/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-dep16.yaml
+  TRTLLM_ENV_YAML_GEN:
+    value: /work/configs/deepseek_r1/GB300-NVL72_GB300-288GB_aarch64x72/TRTLLM/Interactive/trtllm-serve-disagg-gen-dep16-env.yaml
+
+  BENCHMARK:
+    value: deepseek-r1
+  SCENARIO:
+    value: Interactive
+  SYSTEM_NAME:
+    value: GB300-NVL72_GB300-288GB_aarch64x72
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    description: "Additional harness flags; TEST_MODE is passed separately."
+    value: ""

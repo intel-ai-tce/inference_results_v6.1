@@ -1,0 +1,82 @@
+# Qwen3-VL — B300x8 (8×B300 SXM6) Nsight PROFILING, OFFLINE mode.
+# One `vllm serve` (TP=1) under nsys; endpoints client drives the cuda profiler via
+# endpoint.yaml (settings.profiling.engine: vllm). Offline mode = max_throughput load
+# (saturating). max-num-batched-tokens 13824 with cudagraph capture to 13824.
+# amd64 system: overrides the arm64 CONTAINER_IMAGE / ENDPOINT_CONTAINER_IMAGE defaults
+# from _shared/slurm_env.yaml.
+
+variables:
+  TOTAL_GPUS:
+    description: "GPUs allocated to the vllm serve task (TP itself is set in VLLM_FLAGS)."
+    type: integer
+    value: 8
+  GPUS_PER_NODE:
+    type: integer
+    value: 8
+
+  # Backstop only (normal teardown is the endpoint_benchmark EXIT trap).
+  WORKFLOW_TIMEOUT:
+    value: "40m"
+
+  MODEL_REPO_ID:
+    value: "nvidia/Qwen3-VL-235B-A22B-Instruct-NVFP4-MLPerf-Inference-Closed-V6.1-FP8-KV"
+
+  ENDPOINT_CONFIG:
+    value: "/work/configs/qwen3_vl_235b_a22b/B300-SXM-270GBx8/VLLM_profiler/Offline/endpoint.yaml"
+
+  WORKER_ENV_YAML:
+    value: "/work/configs/qwen3_vl_235b_a22b/B300-SXM-270GBx8/VLLM_profiler/Offline/worker_env.yaml"
+
+  CONTAINER_IMAGE:
+    value: "gitlab-master.nvidia.com:5005/mlpinf/mlperf-inference/mlperf-inf-mm-q3vl-nv:amd64_cuda13.0.1_CentML_dynamo-04a6e12_CentML_vllm-a65093c-gb300deps-nsys"
+
+  ENDPOINT_CONTAINER_IMAGE:
+    description: "amd64 build of the profiling-capable endpoint image (settings.profiling
+      support) — same 01c8a37e as the arm64 default in _shared/slurm_env.yaml."
+    value: "gitlab-master.nvidia.com:5005/mlpinf/mlperf-inference/inference-endpoint-dev-amd64:01c8a37e"
+
+  # --- profiling knobs, hoisted so they drive BOTH the flags and the nsys filename ---
+  MODE:
+    description: "Load mode being profiled — labels the nsys output; matches endpoint.yaml (offline = max_throughput)."
+    value: "offline"
+  DELAY_ITERATIONS:
+    description: "vLLM cuda profiler: engine iterations to skip before capture begins."
+    type: integer
+    value: 500
+  MAX_ITERATIONS:
+    description: "vLLM cuda profiler: engine iterations to capture."
+    type: integer
+    value: 100
+
+  # nsys .nsys-rep basename: q3vl_b300x8_<mode>_delay<D>_max<M>.
+  NSYS_OUTPUT:
+    value: "q3vl_b300x8_${{ variables.MODE }}_delay${{ variables.DELAY_ITERATIONS }}_max${{ variables.MAX_ITERATIONS }}"
+
+  # vllm serve flags. vs dynamo VLLM_FLAGS: dict flags as single JSON values (no dotted
+  # forms), dropped dynamo-only flag --enable-multimodal (and frontend --router-mode),
+  # added cuda profiler + NVTX tracing. All vLLM flags match the non-profiler Offline
+  # config, including tensor-parallel-size 1 (this profiles a single TP=1 worker, the
+  # same engine shape dynamo replicates), max-num-batched-tokens 13824, and
+  # mm-encoder-tp-mode data (offline-only on B300).
+  VLLM_FLAGS:
+    value: >-
+      --tensor-parallel-size 1
+      --pipeline-parallel-size 1
+      --data-parallel-size 1
+      --async-scheduling
+      --max-model-len 32768
+      --max-num-seqs 1024
+      --max-num-batched-tokens 13824
+      --mm-encoder-attn-backend FLASHINFER
+      --override-generation-config '{"max_new_tokens": 150}'
+      --limit-mm-per-prompt '{"video": 0}'
+      --no-enable-prefix-caching
+      --kv-events-config '{"publisher":"null"}'
+      --mm-processor-cache-gb 0
+      --mm-encoder-tp-mode data
+      --mm-encoder-attn-dtype=fp8
+      --mm-encoder-fp8-scale-path=/work/configs/qwen3_vl_235b_a22b/_shared/vit_fp8_scales_all1.json
+      --enable-layerwise-nvtx-tracing
+      --enable-logging-iteration-details
+      --profiler-config '{"profiler":"cuda","delay_iterations":${{ variables.DELAY_ITERATIONS }},"max_iterations":${{ variables.MAX_ITERATIONS }}}'
+      --compilation-config '{"cudagraph_mm_encoder":"true","encoder_cudagraph_token_budgets":[1024,2048,3072,4096,5120,6144,7168,8192],"encoder_cudagraph_max_vision_items_per_batch":16,"encoder_cudagraph_max_frames_per_batch":16,"max_cudagraph_capture_size":13824,"cudagraph_capture_sizes":[1,2,4,8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200,208,216,224,232,240,248,256,272,288,304,320,336,352,368,384,400,416,432,448,464,480,496,512,576,640,704,768,832,896,960,1024,1088,1152,1216,1280,1344,1408,1472,1536,1600,1664,1728,1792,1856,1920,1984,2048,2112,2176,2240,2304,2368,2432,2496,2560,2624,2688,2752,2816,2880,2944,3008,3072,3136,3200,3264,3328,3392,3456,3520,3584,3648,3712,3776,3840,3904,3968,4032,4096,4160,4224,4288,4352,4416,4480,4544,4608,4672,4736,4800,4864,4928,4992,5056,5120,5184,5248,5312,5376,5440,5504,5568,5632,5696,5760,5824,5888,5952,6016,6080,6144,6208,6272,6336,6400,6464,6528,6592,6656,6720,6784,6848,6912,6976,7040,7104,7168,7232,7296,7360,7424,7488,7552,7616,7680,7744,7808,7872,7936,8000,8064,8128,8192,8256,8320,8384,8448,8512,8576,8640,8704,8768,8832,8896,8960,9024,9088,9152,9216,9280,9344,9408,9472,9536,9600,9664,9728,9792,9856,9920,9984,10048,10112,10176,10240,10304,10368,10432,10496,10560,10624,10688,10752,10816,10880,10944,11008,11072,11136,11200,11264,11328,11392,11456,11520,11584,11648,11712,11776,11840,11904,11968,12032,12096,12160,12224,12288,12352,12416,12480,12544,12608,12672,12736,12800,12864,12928,12992,13056,13120,13184,13248,13312,13376,13440,13504,13568,13632,13696,13760,13824]}'

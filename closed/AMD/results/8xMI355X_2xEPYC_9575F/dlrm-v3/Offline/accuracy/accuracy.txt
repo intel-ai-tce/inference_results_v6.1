@@ -1,0 +1,19 @@
+[score] parsing /mnt/vast/jiaweic/experiment/dlrm-v3-rocm-runner/artifacts/gold_offline_q14000_accuracy_20260728T202440/mlperf_log_accuracy.json
+[score] processed 50000 entries
+[score] processed 100000 entries
+[score] processed 150000 entries
+[score] processed 200000 entries
+[score] processed 250000 entries
+[score] processed 300000 entries
+[score] total entries: 349823
+==== ACCURACY METRICS ====
+metric/lifetime_ne/rating: 0.8681176645656181
+metric/window_ne/rating: 0.730147632388048
+metric/lifetime_accuracy/rating: 0.6963383089448092
+metric/window_accuracy/rating: 0.7459677419354839
+metric/lifetime_gauc/rating: 0.7862169525257562
+metric/window_gauc/rating: 0.8235240072262828
+metric/lifetime_gauc_num_samples/rating: 349821.0
+metric/window_gauc_num_samples/rating: 93.0
+
+hash=9fdb25eb39151339063ef6350426625a6fd2e850f6d60a6d349909b9acfd92be

@@ -1,0 +1,84 @@
+diff --git a/csrc/kernels/fused_qk_norm_mrope_cache_quant.cu b/csrc/kernels/fused_qk_norm_mrope_cache_quant.cu
+index c8015ce17..8d37ad73f 100644
+--- a/csrc/kernels/fused_qk_norm_mrope_cache_quant.cu
++++ b/csrc/kernels/fused_qk_norm_mrope_cache_quant.cu
+@@ -35,7 +35,7 @@ void fused_qk_norm_mrope_3d_cache_pts_quant_shuffle(aiter_tensor_t& qkv,
+     AITER_CHECK(mrope_section_.size() == 3);
+     AITER_CHECK(qkv.is_contiguous() && qw.is_contiguous() && kw.is_contiguous() &&
+                 cos_sin.is_contiguous());
+-    AITER_CHECK(k_cache.is_contiguous() && v_cache.is_contiguous() && slot_mapping.is_contiguous());
++    AITER_CHECK(slot_mapping.is_contiguous());  // Q3VL: k/v_cache may be a strided flash view [:,0]
+     std::array<int64_t, 3> mrope_section;
+     mrope_section[0] = mrope_section_[0];
+     mrope_section[1] = mrope_section_[1];
+@@ -49,6 +49,8 @@ void fused_qk_norm_mrope_3d_cache_pts_quant_shuffle(aiter_tensor_t& qkv,
+     int64_t positions_stride_1 = positions.stride(1);
+     float per_tensor_k_scale_  = *reinterpret_cast<float*>(per_tensor_k_scale.data_ptr());
+     float per_tensor_v_scale_  = *reinterpret_cast<float*>(per_tensor_v_scale.data_ptr());
++    int64_t k_block_stride_ = k_cache.stride(0);  // Q3VL: real per-block stride (flash view)
++    int64_t v_block_stride_ = v_cache.stride(0);
+     AITER_DISPATCH_FLOATING16_TYPES_rmTorch(
+         qkv_dtype, "fused_qk_norm_mrope_3d_cache_pts_quant_shuffle", [&] {
+             using T = scalar_t;
+@@ -91,6 +93,8 @@ void fused_qk_norm_mrope_3d_cache_pts_quant_shuffle(aiter_tensor_t& qkv,
+                     block_size,
+                     x,
+                     rotary_dim,
++                    k_block_stride_,
++                    v_block_stride_,
+                     gemma_norm);
+             }
+             else
+@@ -137,6 +141,8 @@ void fused_qk_norm_mrope_3d_cache_pts_quant_shuffle(aiter_tensor_t& qkv,
+                             block_size,
+                             x,
+                             rotary_dim,
++                            k_block_stride_,
++                            v_block_stride_,
+                             gemma_norm);
+                     }
+                     else
+@@ -181,6 +187,8 @@ void fused_qk_norm_mrope_3d_cache_pts_quant_shuffle(aiter_tensor_t& qkv,
+                             block_size,
+                             x,
+                             rotary_dim,
++                            k_block_stride_,
++                            v_block_stride_,
+                             gemma_norm);
+                     }
+                 }
+diff --git a/csrc/kernels/rope/rope_common.h b/csrc/kernels/rope/rope_common.h
+index 62ead401e..1d6a1c0fc 100644
+--- a/csrc/kernels/rope/rope_common.h
++++ b/csrc/kernels/rope/rope_common.h
+@@ -8123,6 +8123,8 @@ void fused_mrope_rms_set_kv(const T* qkv,
+                             int64_t block_size       = 0,
+                             int64_t x                = 0,
+                             int64_t rotary_dim       = 0,
++                            int64_t k_block_stride   = 0,
++                            int64_t v_block_stride   = 0,
+                             bool gemma_norm          = false)
+ {
+     TORCH_CHECK(head_size == 64 || head_size == 128 || head_size == 256);
+@@ -8170,8 +8172,8 @@ void fused_mrope_rms_set_kv(const T* qkv,
+                                                         block_size,                  \
+                                                         x,                           \
+                                                         (int)rotary_dim,             \
+-                                                        (int64_t)0,                  \
+-                                                        (int64_t)0,                  \
++                                                        k_block_stride,                  \
++                                                        v_block_stride,                  \
+                                                         gemma_norm);                 \
+     }                                                                                \
+     else                                                                             \
+@@ -8203,8 +8205,8 @@ void fused_mrope_rms_set_kv(const T* qkv,
+                                                         block_size,                  \
+                                                         x,                           \
+                                                         (int)rotary_dim,             \
+-                                                        (int64_t)0,                  \
+-                                                        (int64_t)0,                  \
++                                                        k_block_stride,                  \
++                                                        v_block_stride,                  \
+                                                         gemma_norm);                 \
+     }
+ 

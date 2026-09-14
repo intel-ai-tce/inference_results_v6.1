@@ -1,0 +1,163 @@
+diff --git a/python/sglang/kernels/ops/moe/fused_moe_triton_kernels.py b/python/sglang/kernels/ops/moe/fused_moe_triton_kernels.py
+index 54b38f5303e3..da675f012dca 100644
+--- a/python/sglang/kernels/ops/moe/fused_moe_triton_kernels.py
++++ b/python/sglang/kernels/ops/moe/fused_moe_triton_kernels.py
+@@ -1252,8 +1252,11 @@ def _fused_append_remap_shared_experts_deepep_kernel(
+     shared_id_base,  # runtime scalar: ep_rank * num_local_experts + num_local_routed
+     num_local_routed,  # runtime scalar: routed experts per rank (for gap-insertion)
+     scale_factor,  # runtime scalar: shared-expert weight
++    num_token_non_padded_ptr,  # 1-elem int tensor; only read when HAS_PADDING
++    pad_fill_id,  # runtime scalar: routed-id fill for padded rows
+     K: tl.constexpr,
+     S: tl.constexpr,
++    HAS_PADDING: tl.constexpr,
+ ):
+     """Append shared experts AND apply the DeepEP interleaved remap in one pass.
+ 
+@@ -1279,6 +1282,14 @@ def _fused_append_remap_shared_experts_deepep_kernel(
+     # precede it. Matches `routed + routed // num_local_routed` exactly.
+     ids = ids + ids // num_local_routed
+ 
++    if HAS_PADDING:
++        # Fold the padded-topk_ids fill (previously a separate _fill_padded_rows
++        # launch): rows >= num_token_non_padded get pad_fill_id in every routed
++        # slot. Matches the old fill(topk_ids=0) -> remap(0)=0 when pad_fill_id==0.
++        n_valid = tl.load(num_token_non_padded_ptr)
++        if pid >= n_valid:
++            ids = tl.full((K,), pad_fill_id, dtype=ids.dtype)
++
+     tl.store(out_ids_ptr + out_ids_row_ptr + offs_k, ids)
+     tl.store(out_weights_ptr + out_ids_row_ptr + offs_k, ws)
+ 
+@@ -1297,6 +1308,8 @@ def fused_append_remap_shared_experts_deepep(
+     scale_factor,
+     shared_id_base,
+     num_local_routed,
++    num_token_non_padded=None,
++    pad_fill_id=0,
+ ):
+     """Fused append + DeepEP remap (see kernel docstring).
+ 
+@@ -1314,6 +1327,9 @@ def fused_append_remap_shared_experts_deepep(
+         (m, k + s), dtype=topk_weights.dtype, device=topk_weights.device
+     )
+ 
++    has_padding = num_token_non_padded is not None
++    # Placeholder pointer when no padding (never dereferenced: HAS_PADDING False).
++    ntnp_ptr = num_token_non_padded if has_padding else topk_ids
+     _fused_append_remap_shared_experts_deepep_kernel[(m,)](
+         topk_ids,
+         topk_weights,
+@@ -1322,8 +1338,11 @@ def fused_append_remap_shared_experts_deepep(
+         shared_id_base,
+         num_local_routed,
+         scale_factor,
++        ntnp_ptr,
++        pad_fill_id,
+         K=k,
+         S=s,
++        HAS_PADDING=has_padding,
+         num_warps=1,
+     )
+     return out_ids, out_weights
+diff --git a/python/sglang/srt/layers/moe/topk.py b/python/sglang/srt/layers/moe/topk.py
+index 129df1da751e..c9223e85528d 100644
+--- a/python/sglang/srt/layers/moe/topk.py
++++ b/python/sglang/srt/layers/moe/topk.py
+@@ -1720,6 +1720,7 @@ def _post_process_topk_ids(
+     )
+     capture_routed_experts_if_allowed(topk_config, layer_id, topk_ids)
+     recorder_topk_ids = None
++    _fold_pad_into_append = False
+     if _is_cuda:
+         # LP path: solve LP outside torch.compile (the solver contains an
+         # EP all-reduce that can't run inside compiled regions).
+@@ -1766,7 +1767,19 @@ def _post_process_topk_ids(
+         # contribution to the hidden state is still zero regardless of the id.
+         # Regression: skipping this mask when EPLB is disabled caused garbage
+         # MoE routing for models like DeepSeek-R1-MXFP4 (accuracy ~0.09 vs 0.94+).
+-        _mask_topk_ids_padded_region(topk_ids, num_token_non_padded, fill_value=0)
++        #
++        # Fold: when the fused append+remap kernel runs below (aiter per-rank
++        # shared-slot path, EPLB off) it folds this padded fill itself
++        # (pad_fill_id=0 -> remap(0)=0, bit-identical), so skip the separate
++        # _fill_padded_rows launch here.
++        _fold_pad_into_append = (
++            num_fused_shared_experts > 0
++            and _use_aiter
++            and use_per_rank_shared_slots
++            and not _eplb_remap_enabled()
++        )
++        if not _fold_pad_into_append:
++            _mask_topk_ids_padded_region(topk_ids, num_token_non_padded, fill_value=0)
+         # The logical->physical remap is only meaningful when a real
+         # expert-location mapping exists. With a trivial placement and EPLB off
+         # the map is identity so the remap can be skipped safely.
+@@ -1821,6 +1834,9 @@ def _post_process_topk_ids(
+             1.0,  # shared-expert weight on the aiter path
+             shared_id_base,
+             num_local_routed,
++            num_token_non_padded=(
++                num_token_non_padded if _fold_pad_into_append else None
++            ),
+         )
+     elif _aiter_append:
+         M, N = router_logits.shape
+diff --git a/test/registered/moe/test_fused_append_remap_per_rank_shared_slots.py b/test/registered/moe/test_fused_append_remap_per_rank_shared_slots.py
+index b419cccbd306..2bf85a904308 100644
+--- a/test/registered/moe/test_fused_append_remap_per_rank_shared_slots.py
++++ b/test/registered/moe/test_fused_append_remap_per_rank_shared_slots.py
+@@ -173,6 +173,53 @@ def test_shared_weight_is_one_on_aiter_path(self):
+         )
+         self.assertTrue(torch.all(got_w[:, -s:] == 1.0))
+ 
++    def test_pad_fold_matches_separate_fill(self):
++        """HAS_PADDING fold == separate padded-fill(0) then append+remap.
++
++        The fusion folds the padded-topk_ids fill into this kernel: rows
++        >= num_token_non_padded get pad_fill_id in every routed slot. With
++        pad_fill_id=0 this is bit-identical to the previous path that filled the
++        padded region with 0 (topk_ids=0 -> remap 0 + 0//nlr = 0) via a separate
++        _fill_padded_rows launch before append+remap ran.
++        """
++        for m, k, npr, ep_size, ep_rank, s in self.CASES:
++            for n_valid in (0, max(m // 2, 1), m):
++                with self.subTest(m=m, k=k, ep_rank=ep_rank, s=s, n_valid=n_valid):
++                    shared_id_base, num_local_routed = self._shared_id_base(
++                        npr, ep_size, ep_rank, s
++                    )
++                    topk_ids, topk_weights = self._make_inputs(m, k, npr)
++
++                    # Baseline: pre-fill padded rows to 0, no fold.
++                    base_ids = topk_ids.clone()
++                    base_ids[n_valid:] = 0
++                    exp_ids, exp_w = fused_append_remap_shared_experts_deepep(
++                        base_ids,
++                        topk_weights.clone(),
++                        s,
++                        1.0,
++                        shared_id_base,
++                        num_local_routed,
++                    )
++
++                    # Fused: fold the fill (no pre-fill), pad_fill_id=0.
++                    ntnp = torch.tensor(
++                        [n_valid], dtype=torch.int32, device=topk_ids.device
++                    )
++                    got_ids, got_w = fused_append_remap_shared_experts_deepep(
++                        topk_ids.clone(),
++                        topk_weights.clone(),
++                        s,
++                        1.0,
++                        shared_id_base,
++                        num_local_routed,
++                        num_token_non_padded=ntnp,
++                        pad_fill_id=0,
++                    )
++
++                    self.assertTrue(torch.equal(got_ids, exp_ids))
++                    self.assertTrue(torch.allclose(got_w, exp_w))
++
+     def test_no_shared_experts_is_noop(self):
+         """s == 0 returns the inputs untouched (no kernel launch)."""
+         topk_ids, topk_weights = self._make_inputs(4, 8, 256)

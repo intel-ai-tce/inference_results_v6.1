@@ -1,0 +1,6 @@
+
+Results
+
+{'rouge1': '38.7974', 'rouge2': '16.0868', 'rougeL': '24.5879', 'rougeLsum': '35.7199', 'gen_len': 8172782, 'gen_num': 13368}
+
+hash=56094899adfc6ee69f95c80455995c0b6f1ba271b2881894de32b85f23ceb989

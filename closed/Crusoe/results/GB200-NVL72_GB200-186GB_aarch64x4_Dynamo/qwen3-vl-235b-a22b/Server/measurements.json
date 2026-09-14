@@ -1,0 +1,7 @@
+{
+    "input_data_types": "bf16",
+    "retraining": "No",
+    "starting_weights_filename": "Original Huggingface model weights (nvidia/Qwen3-VL-235B-A22B-Instruct-NVFP4-MLPerf-Inference-Closed-V6.1-FP8-KV)",
+    "weight_data_types": "NVFP4, FP8 (KV cache)",
+    "weight_transformations": "quantization"
+}

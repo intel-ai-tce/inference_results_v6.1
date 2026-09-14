@@ -1,0 +1,102 @@
+diff --git a/vllm/envs.py b/vllm/envs.py
+index b2c5f2256..e3d66e7f6 100755
+--- a/vllm/envs.py
++++ b/vllm/envs.py
+@@ -46,6 +46,7 @@ if TYPE_CHECKING:
+     VLLM_LOGGING_COLOR: str = "auto"
+     NO_COLOR: bool = False
+     VLLM_LOG_STATS_INTERVAL: float = 10.0
++    VLLM_PREFILL_MAX_QUEUE_DELAY_S: float = 1.0
+     VLLM_TRACE_FUNCTION: int = 0
+     VLLM_USE_FLASHINFER_SAMPLER: bool = True
+     VLLM_PP_LAYER_PARTITION: str | None = None
+@@ -808,6 +809,14 @@ environment_variables: dict[str, Callable[[], Any]] = {
+         if (val := float(os.getenv("VLLM_LOG_STATS_INTERVAL", "10."))) > 0.0
+         else 10.0
+     ),
++    # Max time (seconds) a waiting request may sit in the queue before the
++    # scheduler force-admits its prefill while decodes are running. Larger
++    # values accumulate bigger prefill batches (better TPOT/throughput headroom)
++    # at the cost of higher TTFT; 0.0 admits prefills as eagerly as possible.
++    # Negative values are clamped to 0.0.
++    "VLLM_PREFILL_MAX_QUEUE_DELAY_S": lambda: max(
++        0.0, float(os.getenv("VLLM_PREFILL_MAX_QUEUE_DELAY_S", "1.0"))
++    ),
+     # Trace function calls
+     # If set to 1, vllm will trace function calls
+     # Useful for debugging
+diff --git a/vllm/v1/core/sched/scheduler.py b/vllm/v1/core/sched/scheduler.py
+index c69c9a811..ed9383f8b 100644
+--- a/vllm/v1/core/sched/scheduler.py
++++ b/vllm/v1/core/sched/scheduler.py
+@@ -7,6 +7,7 @@ from collections.abc import Iterable
+ from dataclasses import replace
+ from typing import Any
+ 
++import vllm.envs as envs
+ from vllm.compilation.cuda_graph import CUDAGraphStat
+ from vllm.config import VllmConfig
+ from vllm.distributed.ec_transfer.ec_connector.base import (
+@@ -99,6 +100,17 @@ class Scheduler(SchedulerInterface):
+         )
+         self.prev_step_scheduled_req_ids: set[str] = set()
+ 
++        # --- prefill-accumulation knobs (trade TTFT for TPOT/throughput) ---
++        # TODO: add a `prefill_batch_min_reqs` knob to force-admit a waiting
++        # batch once enough requests have accumulated (e.g. 8), instead of
++        # waiting the full `prefill_max_queue_delay_s`. This should convert the
++        # spare TPOT headroom observed at the QPS ceiling into higher throughput.
++        # See _should_admit_waiting() for where the batch-size check would hook in.
++        # Hard cap on how long a request may wait before we force-admit it,
++        # leaving margin under the TTFT SLO (which also includes prefill compute).
++        # Configurable via the VLLM_PREFILL_MAX_QUEUE_DELAY_S env var (default 1.0).
++        self.prefill_max_queue_delay_s = envs.VLLM_PREFILL_MAX_QUEUE_DELAY_S
++
+         # Scheduling constraints.
+         self.max_num_running_reqs = self.scheduler_config.max_num_seqs
+         self.max_num_scheduled_tokens = (
+@@ -326,6 +338,35 @@ class Scheduler(SchedulerInterface):
+                 pass
+         return num_new_tokens
+ 
++    def _should_admit_waiting(self) -> bool:
++        # Only makes sense to *delay* prefills if we have decode work to keep
++        # the GPU busy in the meantime. With an empty running set, admit
++        # immediately (delaying would just idle the GPU and hurt everything).
++        if not self.running:
++            return True
++
++        num_waiting = len(self.waiting) + len(self.skipped_waiting)
++        if num_waiting == 0:
++            return False
++
++        # TODO: force-admit once we have accumulated a full-enough prefill
++        # batch, before the delay budget elapses (see `prefill_batch_min_reqs`
++        # TODO in __init__):
++        #     if num_waiting >= self.prefill_batch_min_reqs:
++        #         return True
++
++        # Otherwise, admit once the oldest waiting request nears the TTFT budget.
++        # NOTE: `Request.arrival_time` is wall-clock (`time.time()`), so the
++        # comparison must use the same clock. Using `time.monotonic()` here
++        # would make `max_wait` a large negative value and never admit while
++        # any request is running.
++        now = time.time()
++        oldest = self.waiting.peek_request() if self.waiting else None
++        skipped = self.skipped_waiting.peek_request() if self.skipped_waiting else None
++        candidates = [r for r in (oldest, skipped) if r is not None]
++        max_wait = max(now - r.arrival_time for r in candidates)
++        return max_wait >= self.prefill_max_queue_delay_s
++
+     def schedule(self) -> SchedulerOutput:
+         # NOTE(woosuk) on the scheduling algorithm:
+         # There's no "decoding phase" nor "prefill phase" in the scheduler.
+@@ -542,7 +583,7 @@ class Scheduler(SchedulerInterface):
+             assert len(scheduled_loras) <= self.lora_config.max_loras
+ 
+         # Next, schedule the WAITING requests.
+-        if not preempted_reqs and self._pause_state == PauseState.UNPAUSED:
++        if not preempted_reqs and self._pause_state == PauseState.UNPAUSED and self._should_admit_waiting():
+             step_skipped_waiting = create_request_queue(self.policy)
+ 
+             while (self.waiting or self.skipped_waiting) and token_budget > 0:

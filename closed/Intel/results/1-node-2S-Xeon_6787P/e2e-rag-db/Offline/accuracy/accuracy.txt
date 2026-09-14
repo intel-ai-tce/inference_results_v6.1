@@ -1,0 +1,53 @@
+Accuracy: 98.1952
+================================================================================
+RAG-DB Accuracy Report
+================================================================================
+Timestamp: 2026-07-29T18:21:56.839430
+Database: /data/datasets/e2e-rag/vector_html_hnsw_len768_ov32_word_pipelined_vllm_0728.db
+
+File Processing Results:
+--------------------------------------------------------------------------------
+Total files: 2515
+Successful: 2515
+Failed: 0
+Success rate: 100.00%
+Required rate: 99.00%
+Status: PASS
+
+MD5 Verification:
+--------------------------------------------------------------------------------
+MD5 returned by SUT: 797fe60a0690232f827145797ecec782
+MD5 actual (computed): 797fe60a0690232f827145797ecec782
+MD5 match: PASS
+
+Database Validation:
+--------------------------------------------------------------------------------
+  vector_count: PASS
+    - Database contains vectors
+    - Value: 108711
+  docstore_consistency: PASS
+    - Vector count matches docstore count
+  index_dimension: PASS
+    - Index dimension matches expected (768)
+    - Value: 768
+  sample_retrieval: PASS
+    - Database can perform retrieval
+Validation status: PASS
+
+DB Manifest Verification (cross-system):
+--------------------------------------------------------------------------------
+Manifest: assets/db_manifest_intel_xpu.json.gz
+  index_params: {'class': 'IndexHNSWFlat', 'dim': 768, 'metric_type': 1, 'efConstruction': 200, 'efSearch': 100, 'M': 32}
+  manifest_corpus_set_sha256: 22396fcb40159ad2500f804f4ccb96d2f8f38c452ceaf0a3197b9d9ea1449482
+  probe_queries_total: 50
+  probe_queries_full_match: 44
+  retrieval_accuracy: 0.9819523809523809
+  retrieval_top1_rate: 1.0
+  retrieval_threshold: 0.95
+Manifest status: PASS
+
+================================================================================
+Overall Result: PASS
+================================================================================
+
+hash=c529a3971afece52d64389405e2a3ae4e8d6562afd80af425fd57972bdabdadd

@@ -1,0 +1,9 @@
+{
+    "server_type": "trtllm-ifb",
+    "model_path": "/home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4",
+    "gpus_per_node": 8,
+    "dp_multiplicity": 1,
+    "gpus_per_dp_rank": 8,
+    "trtllm_yml": "configs/deepseek_r1/G894-ZD3-AAX7_B300-SXM-270GBx8/TRTLLM/Server/trtllm-serve-ifb-dep8.yaml",
+    "env_yml": "configs/deepseek_r1/G894-ZD3-AAX7_B300-SXM-270GBx8/TRTLLM/Server/trtllm-serve-ifb-dep8-env.yaml"
+}

@@ -1,0 +1,7 @@
+{
+  "input_data_types": "text (int32 token ids)",
+  "retraining": "No",
+  "starting_weights_filename": "moonshotai/Kimi-K2.6",
+  "weight_data_types": "fp8",
+  "weight_transformations": "none (served as released)"
+}

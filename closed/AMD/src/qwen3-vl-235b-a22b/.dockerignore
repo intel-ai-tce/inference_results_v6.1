@@ -1,0 +1,10 @@
+# Build context excludes. The Dockerfile only COPYs from docker/patches_vllm25/, so none of
+# these are needed in the image; shipping outputs/ (tens of GB) to the daemon is pure waste.
+outputs/
+outputs_*.nohup
+*.nohup
+datasets/
+results/
+.git/
+**/__pycache__/
+*.pyc

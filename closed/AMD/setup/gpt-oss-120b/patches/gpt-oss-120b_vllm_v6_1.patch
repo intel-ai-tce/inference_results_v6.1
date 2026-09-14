@@ -1,0 +1,1074 @@
+diff --git a/vllm/_aiter_ops.py b/vllm/_aiter_ops.py
+index ce4fc3cfb..cf9bf4d70 100644
+--- a/vllm/_aiter_ops.py
++++ b/vllm/_aiter_ops.py
+@@ -2377,6 +2377,7 @@ class rocm_aiter_ops:
+         alibi_slopes: torch.Tensor | None = None,
+         return_lse: bool = False,
+         out: torch.Tensor | None = None,
++        sink_ptr: torch.Tensor | None = None,
+     ):
+         """
+         Flash attention with variable length sequences.
+@@ -2405,6 +2406,7 @@ class rocm_aiter_ops:
+             alibi_slopes=alibi_slopes,
+             return_lse=return_lse,
+             out=out,
++            sink_ptr=sink_ptr,
+         )
+ 
+     @staticmethod
+@@ -2493,6 +2495,233 @@ class rocm_aiter_ops:
+             kv_cache_dtype=kv_cache_dtype,
+         )
+ 
++
++    PA_V2_SUPPORTED_HEAD_SIZES = (64, 128)
++    PA_V2_BLOCK_SIZE = 16
++    PA_V2_DEFAULT_PARTITION = 256
++    _pa_v2_dummy_tmp: dict[
++        tuple[int, torch.dtype, torch.device], torch.Tensor
++    ] = {}
++    _pa_v2_dummy_ms: dict[
++        tuple[int, int, torch.device], tuple[torch.Tensor, torch.Tensor]
++    ] = {}
++
++    @staticmethod
++    def pa_v2_compute_par_tokens(
++        num_seqs: int, num_kv_heads: int, max_seq_len: int
++    ) -> int:
++        """Heuristic for choosing pa_v2's per-partition token count.
++        Fix this later with more sophisticated heuristic.
++        """
++        TARGET_GRID = 1024
++        BLK = rocm_aiter_ops.PA_V2_BLOCK_SIZE
++        grid_per_part = num_kv_heads * max(num_seqs, 1)
++        if grid_per_part <= 0:
++            return rocm_aiter_ops.PA_V2_DEFAULT_PARTITION
++        min_parts = max(1, TARGET_GRID // grid_per_part)
++        opt = max_seq_len // min_parts
++        opt = ((opt + BLK - 1) // BLK) * BLK
++        return max(rocm_aiter_ops.PA_V2_DEFAULT_PARTITION,
++                   min(opt, max(max_seq_len, BLK)))
++
++    PA_V2_SUPPORTED_QUERY_DTYPES = (torch.float16, torch.bfloat16)
++
++    @staticmethod
++    def _pa_v2_scale_is_compatible(
++        s,
++        num_blocks: int,
++        num_kv_heads: int,
++    ) -> bool:
++        """A scale is OK if it is a Python ``float``/``int`` (taken as a
++        scalar), a single-element tensor (numel == 1), or a per-token tensor
++        of shape ``[num_blocks, num_kv_heads, 16]`` in float32."""
++        if s is None:
++            return False
++        if isinstance(s, (float, int)):
++            return True
++        if s.numel() == 1:
++            return True
++        expected = num_blocks * num_kv_heads * rocm_aiter_ops.PA_V2_BLOCK_SIZE
++        return s.dtype == torch.float32 and s.numel() == expected
++
++    @staticmethod
++    def pa_v2_is_supported(
++        query: torch.Tensor,
++        key_cache: torch.Tensor,
++        block_size: int,
++        alibi_slopes: torch.Tensor | None,
++        k_scale: torch.Tensor | None,
++        v_scale: torch.Tensor | None,
++        is_fp8: bool,
++    ) -> bool:
++        if not is_fp8:
++            return False
++        if query.dtype not in rocm_aiter_ops.PA_V2_SUPPORTED_QUERY_DTYPES:
++            return False
++        if key_cache.element_size() != 1:
++            return False
++        if query.shape[-1] not in rocm_aiter_ops.PA_V2_SUPPORTED_HEAD_SIZES:
++            return False
++        if block_size != rocm_aiter_ops.PA_V2_BLOCK_SIZE:
++            return False
++        if alibi_slopes is not None:
++            return False
++        # pa_v2 supports scalar or per-token (num_blocks, num_kv_heads, 16) scales.
++        num_blocks = int(key_cache.shape[0])
++        num_kv_heads = int(key_cache.shape[1])
++        for s in (k_scale, v_scale):
++            if not rocm_aiter_ops._pa_v2_scale_is_compatible(
++                s, num_blocks, num_kv_heads
++            ):
++                return False
++        return True
++
++    @staticmethod
++    def _pa_v2_split_scale(
++        s,
++        num_blocks: int,
++        num_kv_heads: int,
++    ) -> tuple[float, torch.Tensor | None]:
++        """Return ``(scalar, per_token_or_None)``.
++
++        Accepts a Python ``float``/``int``, a single-element tensor, or a
++        per-token tensor of shape ``[num_blocks, num_kv_heads, BLOCK_SIZE]``.
++        For per-token tensors we reshape to the canonical view and make sure
++        it is contiguous & float32 so the kernel can index it directly. The
++        Python-float fast path avoids a ``tensor.item()`` GPU sync per call.
++        """
++        if isinstance(s, (float, int)):
++            return float(s), None
++        if s.numel() == 1:
++            return float(s.item()), None
++        BLK = rocm_aiter_ops.PA_V2_BLOCK_SIZE
++        s = s.view(num_blocks, num_kv_heads, BLK)
++        if s.dtype != torch.float32:
++            s = s.to(torch.float32)
++        if not s.is_contiguous():
++            s = s.contiguous()
++        # The scalar value is ignored when per-token is provided; pass 1.0
++        # so any accidental fallback would not silently rescale.
++        return 1.0, s
++
++    @staticmethod
++    def paged_attention_v2(
++        output: torch.Tensor,
++        query: torch.Tensor,
++        key_cache: torch.Tensor,
++        value_cache: torch.Tensor,
++        context_lengths: torch.Tensor,
++        block_tables: torch.Tensor,
++        softmax_scale: float,
++        k_scale,
++        v_scale,
++        max_seq_len: int,
++        sinks: torch.Tensor | None = None,
++        sliding_window: int = 0,
++        par_tokens: int | None = None,
++    ):
++        """
++        HIP MFMA FP8 paged-attention decode (aiter pa_v2).
++
++        Allocates scratch (exp_sums / max_logits / tmp_out) internally to
++        match the call shape of pa_decode_gluon. Reshapes the VLLM-shuffled
++        value_cache from (B, H, blk//x, D, x) to (B, H, D, blk) which is a
++        no-op view when block_size == x == 16.
++
++        Accepts either scalar (numel == 1) or per-token
++        ``[num_blocks, num_kv_heads, 16]`` FP8 dequant scales — the latter
++        is what vLLM populates for gpt-oss-style FP8 KV cache. Per-token V
++        scales are folded into the FP8 probability quantization step so
++        the FP8 PV MFMA stays on the fast path.
++
++        Supports both fp16 and bf16 queries, optional GPT-OSS-style
++        attention sinks, and decode-time sliding-window attention
++        (sliding_window > 0 keeps only the most recent W tokens per
++        sequence).
++        """
++        import aiter  # noqa: F401 (register torch.ops.aiter.paged_attention_v2)
++
++        num_seqs, num_heads, head_size = query.shape
++        num_kv_heads = key_cache.shape[1]
++
++        if par_tokens is None:
++            num_blocks = int(key_cache.shape[0])
++            par_tokens = rocm_aiter_ops.pa_v2_compute_par_tokens(
++                num_seqs, num_kv_heads, max_seq_len
++            )
++        num_partitions = (max_seq_len + par_tokens - 1) // par_tokens
++        if num_partitions < 1:
++            num_partitions = 1
++
++        if value_cache.dim() == 5:
++            v_pa = value_cache.squeeze(2)
++        else:
++            v_pa = value_cache
++
++        if num_partitions == 1:
++
++            ms_key = (num_seqs, num_heads, query.device)
++            ms_pair = rocm_aiter_ops._pa_v2_dummy_ms.get(ms_key)
++            if ms_pair is None:
++                es = torch.empty(
++                    (num_seqs, num_heads, 1),
++                    dtype=torch.float32, device=query.device,
++                )
++                ml = torch.empty_like(es)
++                rocm_aiter_ops._pa_v2_dummy_ms[ms_key] = (es, ml)
++                exp_sums, max_logits = es, ml
++            else:
++                exp_sums, max_logits = ms_pair
++            tmp_key = (head_size, query.dtype, query.device)
++            tmp_out = rocm_aiter_ops._pa_v2_dummy_tmp.get(tmp_key)
++            if tmp_out is None:
++                tmp_out = torch.empty(
++                    (1, 1, 1, head_size),
++                    dtype=query.dtype, device=query.device,
++                )
++                rocm_aiter_ops._pa_v2_dummy_tmp[tmp_key] = tmp_out
++        else:
++            exp_sums = torch.empty(
++                (num_seqs, num_heads, num_partitions),
++                dtype=torch.float32,
++                device=query.device,
++            )
++            max_logits = torch.empty_like(exp_sums)
++            tmp_out = torch.empty(
++                (num_seqs, num_heads, num_partitions, head_size),
++                dtype=query.dtype,
++                device=query.device,
++            )
++
++        num_blocks = int(key_cache.shape[0])
++        k_scalar, k_per_token = rocm_aiter_ops._pa_v2_split_scale(
++            k_scale, num_blocks, num_kv_heads
++        )
++        v_scalar, v_per_token = rocm_aiter_ops._pa_v2_split_scale(
++            v_scale, num_blocks, num_kv_heads
++        )
++
++        torch.ops.aiter.paged_attention_v2(
++            output,
++            exp_sums,
++            max_logits,
++            tmp_out,
++            query,
++            key_cache,
++            v_pa,
++            float(softmax_scale),
++            k_scalar,
++            v_scalar,
++            block_tables,
++            context_lengths,
++            int(max_seq_len),
++            int(par_tokens),
++            sinks,
++            int(sliding_window),
++            k_per_token,
++            v_per_token,
++        )
++
+     @staticmethod
+     def mhc_pre(
+         residual: torch.Tensor,
+diff --git a/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py b/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
+index 2b8abbfc5..c0cb72632 100644
+--- a/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
++++ b/vllm/model_executor/layers/fused_moe/experts/rocm_aiter_moe.py
+@@ -357,8 +357,8 @@ def rocm_aiter_fused_experts(
+             doweight_stage1=apply_router_weight_on_input,
+             num_local_tokens=num_local_tokens,
+             output_dtype=output_dtype,
+-            hidden_pad=hidden_pad // 128 * 128,
+-            intermediate_pad=intermediate_pad // 64 * 64 * 2,
++            hidden_pad=hidden_pad,
++            intermediate_pad=intermediate_pad,
+             bias1=quant_config.w1_bias if quant_config.use_mxfp4_w4a16 else None,
+             bias2=quant_config.w2_bias if quant_config.use_mxfp4_w4a16 else None,
+         )
+diff --git a/vllm/v1/attention/backends/rocm_aiter_fa.py b/vllm/v1/attention/backends/rocm_aiter_fa.py
+index 5dbedc86b..ef8b1367c 100644
+--- a/vllm/v1/attention/backends/rocm_aiter_fa.py
++++ b/vllm/v1/attention/backends/rocm_aiter_fa.py
+@@ -35,6 +35,22 @@ from vllm.v1.kv_cache_interface import AttentionSpec
+ 
+ _PARTITION_SIZE_ROCM = 256
+ _CP_TOKENS_PER_ITER_ROCM = 32 * 1024
++_NO_PS_FIXED_SPLITS = 64
++
++# A/B switch: PA_V2_FORCE_UNIFIED=1 forces the unified_attention path
++# (requires shuffle layout off). Hoisted to module load time so the
++# per-call hot path does a single constant read instead of an env-var
++# syscall per layer.
++import os as _os_module_init
++_PA_V2_FORCE_UNIFIED_MODULE = bool(
++    _os_module_init.environ.get("PA_V2_FORCE_UNIFIED")
++)
++del _os_module_init
++
++# NOTE: the gluon FP8 paged-attention decode kernel has been retired in
++# favor of aiter pa_v2 (HIP MFMA FP8). The shuffled-KV branch now
++# unconditionally dispatches to torch.ops.aiter.paged_attention_v2.
++
+ if current_platform.is_rocm():
+     from vllm.triton_utils import tl, triton
+ 
+@@ -143,10 +159,24 @@ if current_platform.is_rocm():
+             k_reg = tl.load(key_cache_ptr_offset + k_reg_offset)
+             v_reg = tl.load(value_cache_ptr_offset + v_reg_offset)
+             if DEQUANT:
+-                k_scale = 1.0
+-                v_scale = 1.0
+-                k_reg = k_reg.to(tl.float32) * k_scale
+-                v_reg = v_reg.to(tl.float32) * v_scale
++                # Match the NHD branch above: cache stores
++                # ``(bf16 / k_scale).to(fp8)`` (matching the unified
++                # backend's ``reshape_and_cache_flash``), so the
++                # gather has to multiply by ``k_scale`` on read to
++                # recover the original bf16 value. Hardcoding 1.0
++                # here was correct only when ``layer._k_scale ==
++                # 1.0``; for any other calibration the prefill
++                # path's ``flash_attn_varlen_func`` would silently
++                # see KV values divided by ``k_scale``, producing
++                # a small but systematic accuracy drop.
++                k_scale = tl.load(k_scale_ptr)
++                v_scale = tl.load(v_scale_ptr)
++                k_reg = (k_reg.to(tl.float32) * k_scale).to(
++                    key_ptr_offset.dtype.element_ty
++                )
++                v_reg = (v_reg.to(tl.float32) * v_scale).to(
++                    value_ptr_offset.dtype.element_ty
++                )
+             tl.store(key_ptr_offset + col_offsets, k_reg)
+             tl.store(value_ptr_offset + col_offsets, v_reg)
+ 
+@@ -220,17 +250,22 @@ if current_platform.is_rocm():
+         key_cache_ptr,  # [num_blocks, num_kv_heads, head_size // x, block_size, x]
+         value_cache_ptr,  # [num_blocks, num_kv_heads, block_size // x, head_size, x]
+         slot_mapping_ptr,  # [num_tokens]
+-        k_scale_ptr,  # [num_blocks, num_kv_heads, block_size]
+-        v_scale_ptr,  # [num_blocks, num_kv_heads, block_size]
++        k_scale_ptr,  # scalar fp32 tensor or pointer (used iff HAS_K_SCALE)
++        v_scale_ptr,  # scalar fp32 tensor or pointer (used iff HAS_V_SCALE)
+         x,
+         k_stride0,
+         v_stride0,
+         block_size,
+         head_size,
+         num_kv_heads,
+-        BLOCK_SIZE: tl.constexpr,
++        BLOCK_SIZE: tl.constexpr,  # = head_size (kept for ABI compat)
+         QUANT: tl.constexpr,
++        HAS_K_SCALE: tl.constexpr,
++        HAS_V_SCALE: tl.constexpr,
+     ):
++        # Legacy single-(token, head) kernel kept as a fallback for
++        # shapes where the wide kernel isn't applicable. New code
++        # should call the wide kernel below.
+         tid = tl.program_id(0)
+         head_id = tl.program_id(1)
+         offset = tl.arange(0, BLOCK_SIZE)
+@@ -257,15 +292,169 @@ if current_platform.is_rocm():
+         k_val = tl.load(key_ptr + src_offset_k + offset)
+         v_val = tl.load(value_ptr + src_offset_v + offset)
+         if QUANT:
+-            k_scale = 1.0
+-            v_scale = 1.0
+             k_dtype = key_cache_ptr.type.element_ty
+             v_dtype = value_cache_ptr.type.element_ty
+-            k_val = (k_val.to(tl.float32) / k_scale).to(k_dtype)
+-            v_val = (v_val.to(tl.float32) / v_scale).to(v_dtype)
++            # Match the unified backend's reshape_and_cache_flash:
++            # divide by the per-tensor calibration scale before the
++            # FP8 cast (only active when the model actually has a
++            # non-1.0 scale -- HAS_K_SCALE/HAS_V_SCALE are constexpr
++            # so the multiply is compiled out for the trivial case).
++            if HAS_K_SCALE:
++                k_inv = 1.0 / tl.load(k_scale_ptr)
++                k_val = (k_val.to(tl.float32) * k_inv).to(k_dtype)
++            else:
++                k_val = k_val.to(k_dtype)
++            if HAS_V_SCALE:
++                v_inv = 1.0 / tl.load(v_scale_ptr)
++                v_val = (v_val.to(tl.float32) * v_inv).to(v_dtype)
++            else:
++                v_val = v_val.to(v_dtype)
+         tl.store(key_cache_ptr + dst_k_shuffle_offset, k_val)
+         tl.store(value_cache_ptr + dst_v_shuffle_offset, v_val)
+ 
++    # Wide kernel: one program processes BLOCK_TOKENS tokens for ALL
++    # kv_heads at once. Cuts program count by ~8x for typical decode
++    # (gpt-oss: num_kv_heads=8, BLOCK_TOKENS=16) and dramatically
++    # reduces Triton kernel launch overhead, which dominates the
++    # ~17us we saw in the old kernel on small decode batches.
++    @triton.jit
++    def reshape_and_cache_shuffle_wide_kernel(
++        key_ptr,    # [num_tokens, num_kv_heads, head_size]
++        value_ptr,  # [num_tokens, num_kv_heads, head_size]
++        key_cache_ptr,    # [num_blocks, num_kv_heads, head_size//x, block_size, x]
++        value_cache_ptr,  # [num_blocks, num_kv_heads, block_size//x, head_size, x]
++        slot_mapping_ptr,  # [num_tokens]
++        k_scale_ptr,       # scalar fp32 tensor (numel == 1) or None
++        v_scale_ptr,       # scalar fp32 tensor (numel == 1) or None
++        num_tokens,
++        k_stride0,
++        v_stride0,
++        block_size,
++        BLOCK_TOKENS: tl.constexpr,
++        HEAD_SIZE: tl.constexpr,
++        NUM_KV_HEADS: tl.constexpr,
++        X: tl.constexpr,
++        QUANT: tl.constexpr,
++        HAS_K_SCALE: tl.constexpr,
++        HAS_V_SCALE: tl.constexpr,
++    ):
++        tok_block = tl.program_id(0)
++        tok_id = tok_block * BLOCK_TOKENS + tl.arange(0, BLOCK_TOKENS)
++        tok_mask = tok_id < num_tokens
++
++        slot_id = tl.load(slot_mapping_ptr + tok_id, mask=tok_mask, other=-1)
++        valid = (slot_id >= 0) & tok_mask  # [BLOCK_TOKENS]
++
++        # Clamp negatives to 0 for arithmetic; final store is masked.
++        slot_id_safe = tl.where(valid, slot_id, 0)
++        block_id = slot_id_safe // block_size       # [BLOCK_TOKENS]
++        block_off = slot_id_safe % block_size       # [BLOCK_TOKENS]
++
++        head = tl.arange(0, NUM_KV_HEADS)           # [NUM_KV_HEADS]
++        elem = tl.arange(0, HEAD_SIZE)              # [HEAD_SIZE]
++
++        # Source offsets [BLOCK_TOKENS, NUM_KV_HEADS, HEAD_SIZE]
++        src_k_off = (tok_id[:, None, None] * k_stride0
++                     + head[None, :, None] * HEAD_SIZE
++                     + elem[None, None, :])
++        src_v_off = (tok_id[:, None, None] * v_stride0
++                     + head[None, :, None] * HEAD_SIZE
++                     + elem[None, None, :])
++        mask_3d = valid[:, None, None]
++        k_val = tl.load(key_ptr + src_k_off, mask=mask_3d, other=0.0)
++        v_val = tl.load(value_ptr + src_v_off, mask=mask_3d, other=0.0)
++
++        if QUANT:
++            k_dtype = key_cache_ptr.type.element_ty
++            v_dtype = value_cache_ptr.type.element_ty
++            # Match the unified backend's reshape_and_cache_flash: divide
++            # by the per-tensor calibration scale before the FP8 cast so
++            # the decode kernel's k_scale multiplication on read recovers
++            # the original bf16. When the model uses ``layer._k_scale ==
++            # 1.0`` this is a no-op; when it's not 1.0, skipping it
++            # silently scales every stored value by ``k_scale``.
++            if HAS_K_SCALE:
++                k_inv = 1.0 / tl.load(k_scale_ptr)
++                k_val = (k_val.to(tl.float32) * k_inv).to(k_dtype)
++            else:
++                k_val = k_val.to(k_dtype)
++            if HAS_V_SCALE:
++                v_inv = 1.0 / tl.load(v_scale_ptr)
++                v_val = (v_val.to(tl.float32) * v_inv).to(v_dtype)
++            else:
++                v_val = v_val.to(v_dtype)
++
++        # Common per-(token, head) base into the cache:
++        #   block_id * NUM_KV_HEADS * HEAD_SIZE * block_size
++        # + head * HEAD_SIZE * block_size
++        dst_base = (block_id[:, None, None] * (NUM_KV_HEADS * HEAD_SIZE) * block_size
++                    + head[None, :, None] * HEAD_SIZE * block_size)
++
++        # K shuffle layout offset within a (block_id, head) tile:
++        #   (elem // X) * block_size * X + block_off * X + (elem % X)
++        dst_k = (dst_base
++                 + (elem[None, None, :] // X) * (block_size * X)
++                 + block_off[:, None, None] * X
++                 + (elem[None, None, :] % X))
++
++        # V shuffle layout offset within a (block_id, head) tile:
++        #   (block_off // X) * HEAD_SIZE * X + elem * X + (block_off % X)
++        dst_v = (dst_base
++                 + (block_off[:, None, None] // X) * (HEAD_SIZE * X)
++                 + elem[None, None, :] * X
++                 + (block_off[:, None, None] % X))
++
++        tl.store(key_cache_ptr + dst_k, k_val, mask=mask_3d)
++        tl.store(value_cache_ptr + dst_v, v_val, mask=mask_3d)
++
++    # Per-cache-tensor cache of the shuffled views. vLLM allocates KV
++    # cache tensors once at startup, so the (key_cache, value_cache)
++    # identity is stable across decode calls. Caching the view_as
++    # result avoids ~3-4us of Python overhead per layer per token
++    # (torch.empty(device="meta") + view_as) which adds up to ~130us
++    # per token across 36 layers.
++    _shuffle_view_cache: dict[
++        int, tuple[torch.Tensor, torch.Tensor, int, int, int]
++    ] = {}
++
++    def _get_shuffle_views(key_cache: torch.Tensor,
++                           value_cache: torch.Tensor):
++        cache_id = (id(key_cache), id(value_cache))
++        hit = reshape_and_cache_shuffle_triton._cached.get(cache_id)
++        if hit is not None:
++            return hit
++        num_blocks, block_size, num_kv_heads, head_size = key_cache.shape
++        x = 16 // key_cache.element_size()
++        new_key_cache = key_cache.view(
++            num_blocks, num_kv_heads, head_size // x, block_size, x,
++        )
++        new_value_cache = value_cache.view(
++            num_blocks, num_kv_heads, block_size // x, head_size, x,
++        )
++        entry = (
++            new_key_cache, new_value_cache,
++            block_size, head_size, num_kv_heads,
++        )
++        reshape_and_cache_shuffle_triton._cached[cache_id] = entry
++        return entry
++
++    # BLOCK_TOKENS tuning for the Triton fallback (see wide kernel
++    # docstring). Used only if the C++ aiter kernel isn't available.
++    _SHUFFLE_BLOCK_TOKENS = 16
++
++    # Try to import the aiter C++ shuffle-cache writer at module
++    # load time. This is the fastest path and runs ~1.7-2.0x faster
++    # than the Triton wide kernel (7.3us vs 12.9us microbench;
++    # ~6us/layer saved = ~216us/token across 36 layers). The Triton
++    # kernels are kept as a fallback for environments where aiter is
++    # missing or the precondition (kv_cache_dtype, shape) doesn't fit.
++    try:
++        from aiter import reshape_and_cache as _aiter_reshape_and_cache_cpp
++        _HAVE_AITER_CPP_SHUFFLE_CACHE = True
++    except ImportError:  # pragma: no cover
++        _aiter_reshape_and_cache_cpp = None
++        _HAVE_AITER_CPP_SHUFFLE_CACHE = False
++
+     def reshape_and_cache_shuffle_triton(
+         key: torch.Tensor,
+         value: torch.Tensor,
+@@ -277,45 +466,99 @@ if current_platform.is_rocm():
+         v_scales: torch.Tensor,
+     ):
+         num_tokens = slot_mapping.shape[0]
+-        _, num_kv_heads, head_size = key.shape
+-        num_blocks, block_size, _, _ = key_cache.shape
++        (
++            new_key_cache, new_value_cache,
++            block_size, head_size, num_kv_heads,
++        ) = _get_shuffle_views(key_cache, value_cache)
+         x = 16 // key_cache.element_size()
+-        k_cache_template = torch.empty(
+-            [num_blocks, num_kv_heads, head_size // x, block_size, x],
+-            dtype=key_cache.dtype,
+-            device="meta",
+-        )
+-        v_cache_template = torch.empty(
+-            [num_blocks, num_kv_heads, block_size // x, head_size, x],
+-            dtype=value_cache.dtype,
+-            device="meta",
+-        )
+-        new_key_cache = key_cache.view_as(k_cache_template)
+-        new_value_cache = value_cache.view_as(v_cache_template)
+-        QUANT = False
+-        if is_quantized_kv_cache(kv_cache_dtype):
+-            QUANT = True
+-        grid = (
+-            num_tokens,
+-            num_kv_heads,
+-        )
+-        reshape_and_cache_shuffle_kernel[grid](
+-            key,
+-            value,
+-            new_key_cache,
+-            new_value_cache,
+-            slot_mapping,
+-            k_scales,
+-            v_scales,
+-            x,
+-            key.stride(0),
+-            value.stride(0),
+-            block_size,
+-            head_size,
+-            num_kv_heads,
+-            BLOCK_SIZE=head_size,
+-            QUANT=QUANT,
++        QUANT = is_quantized_kv_cache(kv_cache_dtype)
++
++        # Match the unified backend's KV cache layout exactly: divide
++        # by ``layer._k_scale`` / ``layer._v_scale`` during the FP8
++        # cast on write so the pa_v2 decode kernel's per-tensor
++        # ``k_scale`` / ``v_scale`` multiplication on read recovers
++        # the original bf16 (modulo FP8 rounding). Earlier we passed
++        # ``None`` here "to match the Triton kernel"; that worked only
++        # when ``layer._k_scale == 1.0`` (which it is for some FP8 KV
++        # configurations) and silently scaled all stored values by
++        # ``k_scale`` for any other model -- visible as a small but
++        # systematic accuracy drop vs unified_attention on gpt-oss-
++        # style FP8 KV calibrations.
++        if _HAVE_AITER_CPP_SHUFFLE_CACHE:
++            _aiter_reshape_and_cache_cpp(
++                key,
++                value,
++                new_key_cache,
++                new_value_cache,
++                slot_mapping,
++                kv_cache_dtype,
++                k_scales,
++                v_scales,
++                True,  # asm_layout -> shuffle layout
++            )
++            return
++
++        # Triangulated dispatch: prefer the wide kernel for the common
++        # path (NUM_KV_HEADS and HEAD_SIZE both small powers of two, X
++        # divides head_size / block_size). Fall back to the legacy
++        # per-head kernel for unsupported shapes -- preserves
++        # correctness for any odd config without changing behavior.
++        _use_wide = (
++            num_kv_heads in (1, 2, 4, 8, 16, 32)
++            and head_size in (32, 64, 128, 256)
++            and (head_size % x) == 0
++            and (block_size % x) == 0
+         )
++        if _use_wide:
++            block_tokens = _SHUFFLE_BLOCK_TOKENS
++            grid = ((num_tokens + block_tokens - 1) // block_tokens,)
++            _has_k = QUANT and (k_scales is not None)
++            _has_v = QUANT and (v_scales is not None)
++            reshape_and_cache_shuffle_wide_kernel[grid](
++                key,
++                value,
++                new_key_cache,
++                new_value_cache,
++                slot_mapping,
++                k_scales if _has_k else key,  # unused arg when HAS_K_SCALE=False
++                v_scales if _has_v else value,
++                num_tokens,
++                key.stride(0),
++                value.stride(0),
++                block_size,
++                BLOCK_TOKENS=block_tokens,
++                HEAD_SIZE=head_size,
++                NUM_KV_HEADS=num_kv_heads,
++                X=x,
++                QUANT=QUANT,
++                HAS_K_SCALE=_has_k,
++                HAS_V_SCALE=_has_v,
++            )
++        else:
++            grid = (num_tokens, num_kv_heads)
++            _has_k = QUANT and (k_scales is not None)
++            _has_v = QUANT and (v_scales is not None)
++            reshape_and_cache_shuffle_kernel[grid](
++                key,
++                value,
++                new_key_cache,
++                new_value_cache,
++                slot_mapping,
++                k_scales if _has_k else key,
++                v_scales if _has_v else value,
++                x,
++                key.stride(0),
++                value.stride(0),
++                block_size,
++                head_size,
++                num_kv_heads,
++                BLOCK_SIZE=head_size,
++                QUANT=QUANT,
++                HAS_K_SCALE=_has_k,
++                HAS_V_SCALE=_has_v,
++            )
++
++    reshape_and_cache_shuffle_triton._cached = {}
+ 
+ 
+ logger = init_logger(__name__)
+@@ -400,6 +643,17 @@ class AiterFlashAttentionMetadata:
+     k_scale: dict[str, torch.Tensor] | None
+     v_scale: dict[str, torch.Tensor] | None
+ 
++    # Hoisted hot-path values for the pa_v2 decode dispatch. Computed
++    # once per forward in build(); shared across all attention layers
++    # to skip ~3-4us/layer (~140us/token across 36 layers) of repeated
++    # Python work.
++    #   seq_lens_decode = seq_lens[:num_decodes]   (None if no decodes)
++    #   block_table_decode = block_table[:num_decodes]
++    #   pa_v2_par_tokens = pa_v2_compute_par_tokens(...) (None if unused)
++    seq_lens_decode: torch.Tensor | None = None
++    block_table_decode: torch.Tensor | None = None
++    pa_v2_par_tokens: int | None = None
++
+ 
+ class AiterFlashAttentionMetadataBuilder(
+     AttentionMetadataBuilder[AiterFlashAttentionMetadata]
+@@ -647,6 +901,22 @@ class AiterFlashAttentionMetadataBuilder(
+ 
+         use_cascade = common_prefix_len > 0
+ 
++        # Hoisted per-forward state for the pa_v2 decode dispatch.
++        # Precomputing here avoids ~140us/token of per-layer Python.
++        if num_decodes > 0:
++            seq_lens_decode = common_attn_metadata.seq_lens[:num_decodes]
++            block_table_decode = (
++                common_attn_metadata.block_table_tensor[:num_decodes]
++            )
++            pa_v2_par_tokens = rocm_aiter_ops.pa_v2_compute_par_tokens(
++                num_decode_tokens, self.num_heads_kv,
++                int(common_attn_metadata.max_seq_len),
++            )
++        else:
++            seq_lens_decode = None
++            block_table_decode = None
++            pa_v2_par_tokens = None
++
+         attn_metadata = AiterFlashAttentionMetadata(
+             num_actual_tokens=common_attn_metadata.num_actual_tokens,
+             query_start_loc=common_attn_metadata.query_start_loc,
+@@ -666,6 +936,9 @@ class AiterFlashAttentionMetadataBuilder(
+             use_cascade=use_cascade,
+             k_scale=self.scale,
+             v_scale=self.scale,
++            seq_lens_decode=seq_lens_decode,
++            block_table_decode=block_table_decode,
++            pa_v2_par_tokens=pa_v2_par_tokens,
+         )
+         return attn_metadata
+ 
+@@ -707,6 +980,14 @@ class AiterFlashAttentionMetadataBuilder(
+             use_cascade=False,
+             k_scale=self.scale,
+             v_scale=self.scale,
++            seq_lens_decode=common_attn_metadata.seq_lens[:num_reqs],
++            block_table_decode=(
++                common_attn_metadata.block_table_tensor[:num_reqs]
++            ),
++            pa_v2_par_tokens=rocm_aiter_ops.pa_v2_compute_par_tokens(
++                num_tokens, self.num_heads_kv,
++                int(common_attn_metadata.max_seq_len),
++            ),
+         )
+ 
+     def use_cascade_attention(self, *args, **kwargs) -> bool:
+@@ -735,6 +1016,9 @@ class AiterFlashAttentionBackend(AttentionBackend):
+ 
+     @staticmethod
+     def get_supported_kernel_block_sizes() -> list[int | MultipleOf]:
++        # pa_v2 (used for the shuffled-KV decode path) requires block=16.
++        if rocm_aiter_ops.is_shuffle_kv_cache_enabled():
++            return [16]
+         return [16, 32]
+ 
+     @classmethod
+@@ -780,6 +1064,10 @@ class AiterFlashAttentionBackend(AttentionBackend):
+     def supports_non_causal(cls) -> bool:
+         return True
+ 
++    @classmethod
++    def supports_sink(cls) -> bool:
++        return True
++
+ 
+ class AiterFlashAttentionImpl(AttentionImpl):
+     def __init__(
+@@ -794,6 +1082,7 @@ class AiterFlashAttentionImpl(AttentionImpl):
+         logits_soft_cap: float | None = None,
+         attn_type: AttentionType = AttentionType.DECODER,
+         kv_sharing_target_layer_name: int | None = None,
++        sinks: torch.Tensor | None = None,
+     ) -> None:
+         self.num_heads = num_heads
+         self.head_size = head_size
+@@ -812,10 +1101,27 @@ class AiterFlashAttentionImpl(AttentionImpl):
+             logits_soft_cap = 0.0
+         self.logits_soft_cap = logits_soft_cap
+         self.kv_sharing_target_layer_name = kv_sharing_target_layer_name
++        self.sinks = sinks
+ 
+         assert self.num_heads % self.num_kv_heads == 0
+         self.num_queries_per_kv = self.num_heads // self.num_kv_heads
+ 
++        # Hoist per-call constants used in the pa_v2 decode hot path so
++        # the per-layer dispatch avoids ~3-4us of pure-Python work that
++        # would otherwise repeat 36+ times per token. In v1, attention
++        # calls are CUDA-graph splitting ops -- the surrounding Python
++        # runs every iteration, not just during capture, so these tiny
++        # savings translate directly into throughput.
++        self._is_fp8_kv = is_quantized_kv_cache(kv_cache_dtype)
++        _sw = sliding_window if (sliding_window is not None) else 0
++        self._pa_v2_sliding_window = int(_sw) if _sw and _sw > 0 else 0
++        # Validation state for pa_v2 preconditions. We run the full
++        # check once on the first dispatch (when we actually have the
++        # KV cache tensors); after that we trust the validation since
++        # dtype/shape/scale-shape are static for the lifetime of an
++        # AttentionImpl instance.
++        self._pa_v2_supported_checked = False
++
+         if attn_type != AttentionType.DECODER:
+             raise NotImplementedError(
+                 "Only decoder self-attention is supported for "
+@@ -884,6 +1190,7 @@ class AiterFlashAttentionImpl(AttentionImpl):
+             alibi_slopes=self.alibi_slopes,
+             return_lse=False,
+             out=output,
++            sink_ptr=self.sinks,
+         )
+ 
+     def extend_forward(
+@@ -933,6 +1240,7 @@ class AiterFlashAttentionImpl(AttentionImpl):
+             window_size=self.sliding_window,
+             alibi_slopes=self.alibi_slopes,
+             return_lse=True,
++            sink_ptr=self.sinks,
+         )
+         assert attn_metadata.extend_metadata is not None
+         chunk_context_metadata = attn_metadata.extend_metadata.chunk_context_metadata
+@@ -980,6 +1288,7 @@ class AiterFlashAttentionImpl(AttentionImpl):
+                 window_size=self.sliding_window,
+                 alibi_slopes=self.alibi_slopes,
+                 return_lse=True,
++                sink_ptr=self.sinks,
+             )
+             if chunked_output is None:
+                 chunked_output = suf_out
+@@ -1098,6 +1407,7 @@ class AiterFlashAttentionImpl(AttentionImpl):
+                     window_size=self.sliding_window,
+                     alibi_slopes=self.alibi_slopes,
+                     out=output_actual_tokens[num_decode_tokens + num_extend_tokens :],
++                    sink_ptr=self.sinks,
+                 )
+ 
+             # calculate for extends
+@@ -1224,6 +1534,19 @@ class AiterFlashAttentionImpl(AttentionImpl):
+                 _MIN_HEAD_SIZE_FOR_LL4MI = 64
+                 use_unified_attention = self.head_size < _MIN_HEAD_SIZE_FOR_LL4MI
+ 
++                # A/B testing override: PA_V2_FORCE_UNIFIED=1 forces the
++                # unified_attention path. Requires shuffle layout to be
++                # OFF. Hoisted to module-level constant
++                # (_PA_V2_FORCE_UNIFIED_MODULE) so this is a single
++                # constant-time check per call instead of an env-var
++                # syscall.
++                if _PA_V2_FORCE_UNIFIED_MODULE:
++                    assert not rocm_aiter_ops.is_shuffle_kv_cache_enabled(), (
++                        "PA_V2_FORCE_UNIFIED=1 requires "
++                        "VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=0"
++                    )
++                    use_unified_attention = True
++
+                 if use_unified_attention:
+                     assert not rocm_aiter_ops.is_shuffle_kv_cache_enabled(), (
+                         "unified_attention fallback with shuffle layout "
+@@ -1260,66 +1583,88 @@ class AiterFlashAttentionImpl(AttentionImpl):
+                         v_descale=layer._v_scale.expand(descale_shape),
+                     )
+                 elif rocm_aiter_ops.is_shuffle_kv_cache_enabled():
++                    # ---------------------------------------------------
++                    # pa_v2 ONLY decode path (no gluon, no asm fallback).
++                    # Reshuffle KV cache into the layout pa_v2 expects:
++                    #   K: (B, H, D//x, block, x)
++                    #   V: (B, H, block//x, D, x)  (x = 16 / fp8_itemsize)
++                    # ---------------------------------------------------
+                     _, num_heads, head_size = query.shape
+-                    num_seqs = attn_metadata.seq_lens.shape[0]
+-                    max_num_partitions = (
+-                        attn_metadata.max_seq_len + _PARTITION_SIZE_ROCM - 1
+-                    ) // _PARTITION_SIZE_ROCM
+-                    tmp_out = torch.empty(
+-                        (num_seqs, num_heads, max_num_partitions, head_size),
+-                        dtype=query.dtype,
+-                        device=query.device,
+-                    )
+-                    exp_sums = torch.empty(
+-                        (num_seqs, num_heads, max_num_partitions),
+-                        dtype=torch.float32,
+-                        device=query.device,
+-                    )
+-                    max_logits = torch.empty_like(exp_sums)
+-                    num_blocks, block_size, num_kv_heads, _ = key_cache.shape
+-                    x = 16 // key_cache.element_size()
+-                    k_cache_template = torch.empty(
+-                        [num_blocks, num_kv_heads, head_size // x, block_size, x],
+-                        dtype=key_cache.dtype,
+-                        device="meta",
+-                    )
+-                    v_cache_template = torch.empty(
+-                        [num_blocks, num_kv_heads, block_size // x, head_size, x],
+-                        dtype=value_cache.dtype,
+-                        device="meta",
+-                    )
+-                    new_key_cache = key_cache.view_as(k_cache_template)
+-                    new_value_cache = value_cache.view_as(v_cache_template)
+-                    k_qscale = (
+-                        layer._k_scale
+-                        if attn_metadata.k_scale is None
+-                        else attn_metadata.k_scale
+-                    )
+-                    v_qscale = (
+-                        layer._v_scale
+-                        if attn_metadata.v_scale is None
+-                        else attn_metadata.v_scale
+-                    )
+-                    rocm_aiter_ops.paged_attention_common(
+-                        Q=query[:num_decode_tokens],
+-                        K=new_key_cache,
+-                        V=new_value_cache,
+-                        tmp_out=tmp_out,
+-                        max_logits=max_logits,
+-                        exp_sums=exp_sums,
++                    # Reuse the cached shuffled views built by the
++                    # reshape_and_cache_shuffle path. vLLM allocates KV
++                    # cache tensors once at startup so id(key_cache) is
++                    # stable across decode calls. This skips
++                    # torch.empty(device="meta")+view_as per layer.
++                    (new_key_cache, new_value_cache,
++                     block_size, _, num_kv_heads) = _get_shuffle_views(
++                         key_cache, value_cache)
++
++                    # pa_v2 is ~2x slower on its per-token K/V scale path
++                    # than on its scalar fast path. ``attn_metadata.k_scale``
++                    # is a per-token-shape tensor that, for models without
++                    # real per-token calibration (e.g. gpt-oss FP8 KV), is
++                    # just filled with ``layer._k_scale``-equivalent values.
++                    # Prefer ``layer._k_scale_float`` (cached Python float)
++                    # so the kernel takes the scalar fast path AND we avoid
++                    # the per-call ``tensor.item()`` sync.
++                    k_qscale = layer._k_scale_float
++                    v_qscale = layer._v_scale_float
++
++                    # One-shot precondition validation. dtype, head_size,
++                    # block_size, alibi, kv_cache_dtype and the scale
++                    # *shapes* are all static for the lifetime of an
++                    # AttentionImpl instance, so once they pass we never
++                    # need to re-check. This saves ~2us/layer/token.
++                    if not self._pa_v2_supported_checked:
++                        is_fp8 = self._is_fp8_kv
++                        if not rocm_aiter_ops.pa_v2_is_supported(
++                            query=query,
++                            key_cache=new_key_cache,
++                            block_size=block_size,
++                            alibi_slopes=self.alibi_slopes,
++                            k_scale=k_qscale,
++                            v_scale=v_qscale,
++                            is_fp8=is_fp8,
++                        ):
++                            n_blk = int(new_key_cache.shape[0])
++                            n_kvh = int(new_key_cache.shape[1])
++                            expected_per_tok = n_blk * n_kvh * block_size
++                            raise RuntimeError(
++                                "pa_v2 is configured as the only shuffled-KV "
++                                "decode kernel but its preconditions are not "
++                                f"met for this layer: query.dtype={query.dtype}, "
++                                f"key_cache.element_size={key_cache.element_size()},"
++                                f" head_size={head_size}, block_size={block_size},"
++                                f" alibi={self.alibi_slopes is not None}, "
++                                f"is_fp8={is_fp8}, "
++                                f"k_scale={k_qscale!r},"
++                                f" v_scale={v_qscale!r}. "
++                                f"Expected scalar (numel==1) or per-token "
++                                f"fp32 [num_blocks={n_blk}, num_kv_heads={n_kvh}, "
++                                f"block_size={block_size}] (numel=={expected_per_tok}) "
++                                "with FP8 KV + head{64,128} + block=16 + no alibi. "
++                                "If the precondition does not hold, disable "
++                                "VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT."
++                            )
++                        self._pa_v2_supported_checked = True
++
++                    # Use the precomputed metadata views: skip 4 per-
++                    # layer tensor slices and 1 par_tokens computation
++                    # (~3-4us/layer = ~140us/token saved over 36 layers).
++                    rocm_aiter_ops.paged_attention_v2(
++                        output=output[:num_decode_tokens],
++                        query=query[:num_decode_tokens],
++                        key_cache=new_key_cache,
++                        value_cache=new_value_cache,
++                        context_lengths=attn_metadata.seq_lens_decode,
++                        block_tables=attn_metadata.block_table_decode,
++                        softmax_scale=self.scale,
++                        k_scale=k_qscale,
++                        v_scale=v_qscale,
+                         max_seq_len=attn_metadata.max_seq_len,
+-                        block_tables=attn_metadata.block_table[:num_decodes],
+-                        context_lens=attn_metadata.seq_lens[:num_decodes],
+-                        block_tables_stride0=attn_metadata.block_table[
+-                            :num_decodes
+-                        ].stride(0),
+-                        scale=self.scale,
+-                        K_QScale_hip=k_qscale,
+-                        V_QScale_hip=v_qscale,
+-                        K_QScale_asm=k_qscale,
+-                        V_QScale_asm=v_qscale,
+-                        out_=output[:num_decode_tokens],
+-                        kv_cache_dtype=self.kv_cache_dtype,
++                        sinks=self.sinks,
++                        sliding_window=self._pa_v2_sliding_window,
++                        par_tokens=attn_metadata.pa_v2_par_tokens,
+                     )
+                 else:
+                     _, num_heads, head_size = query.shape
+@@ -1427,12 +1772,15 @@ class AiterFlashAttentionImpl(AttentionImpl):
+             )
+ 
+     def fused_rope_kvcache_supported(self):
+-        # Only support fusion when shuffle KV cache layout is not used;
+-        # shuffle layout uses a different cache update path.
+-        return (
+-            rocm_aiter_ops.is_enabled()
+-            and not rocm_aiter_ops.is_shuffle_kv_cache_enabled()
+-        )
++        # The fused RoPE + KV cache update kernel
++        # (fused_qk_rope_reshape_and_cache) handles BOTH the default flash
++        # layout AND the shuffle layout (pa_v2's 5D K/V layout) natively
++        # via flash_layout=False. Enabling it for the shuffle path
++        # collapses two kernel launches per layer (RoPE +
++        # reshape_and_cache_shuffle) into one, removing ~12us per layer
++        # of Triton launch overhead on top of the kernel time savings —
++        # ~400us per token across 36 layers.
++        return rocm_aiter_ops.is_enabled()
+ 
+     def do_rope_and_kv_cache_update(
+         self,
+@@ -1447,25 +1795,50 @@ class AiterFlashAttentionImpl(AttentionImpl):
+         layer_slot_mapping: torch.Tensor,
+     ):
+         key_cache, value_cache = kv_cache.unbind(0)
+-        flash_layout = True
+-
+         is_fp8_kv_cache = is_quantized_kv_cache(self.kv_cache_dtype)
+         if is_fp8_kv_cache:
+             key_cache = key_cache.view(current_platform.fp8_dtype())
+             value_cache = value_cache.view(current_platform.fp8_dtype())
+ 
+-        rocm_aiter_ops.triton_rope_and_cache(
+-            query,
+-            key,
+-            value,
+-            positions,
+-            cos_sin_cache,
+-            is_neox,
+-            key_cache,
+-            value_cache,
+-            layer_slot_mapping,
+-            layer._k_scale,
+-            layer._v_scale,
+-            flash_layout,
+-            is_fp8_kv_cache,
+-        )
++        shuffle_on = rocm_aiter_ops.is_shuffle_kv_cache_enabled()
++
++        if shuffle_on:
++            # Reshape the cache tensors in-place to the 5D shuffle
++            # layout that pa_v2 expects (the underlying storage is
++            # identical, only the strides change). Reuse the cached
++            # views from reshape_and_cache_shuffle_triton so we pay no
++            # per-call cost.
++            new_key_cache, new_value_cache, _, _, _ = _get_shuffle_views(
++                key_cache, value_cache,
++            )
++            rocm_aiter_ops.triton_rope_and_cache(
++                query,
++                key,
++                value,
++                positions,
++                cos_sin_cache,
++                is_neox,
++                new_key_cache,
++                new_value_cache,
++                layer_slot_mapping,
++                layer._k_scale,
++                layer._v_scale,
++                False,  # flash_layout=False -> shuffle path
++                is_fp8_kv_cache,
++            )
++        else:
++            rocm_aiter_ops.triton_rope_and_cache(
++                query,
++                key,
++                value,
++                positions,
++                cos_sin_cache,
++                is_neox,
++                key_cache,
++                value_cache,
++                layer_slot_mapping,
++                layer._k_scale,
++                layer._v_scale,
++                True,  # flash_layout=True
++                is_fp8_kv_cache,
++            )

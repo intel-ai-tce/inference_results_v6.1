@@ -1,0 +1,35 @@
+diff --git a/vllm/model_executor/models/qwen3_vl.py b/vllm/model_executor/models/qwen3_vl.py
+index d44da23..cfdc462 100644
+--- a/vllm/model_executor/models/qwen3_vl.py
++++ b/vllm/model_executor/models/qwen3_vl.py
+@@ -103,6 +103,8 @@ from vllm.triton_utils import HAS_TRITON, tl, triton
+ # fused bf16 add+LayerNorm kernel (mirrors the LLM's add_rmsnorm). Opt-in via env so the
+ # baseline path stays byte-identical unless enabled; disabled automatically if AITER lacks it.
+ _Q3VL_FUSE_VIT_ADD_LN = os.environ.get("VLLM_Q3VL_FUSE_VIT_ADD_LN", "0") == "1"
++_Q3VL_FUSE_VIT_GELU_FC1 = os.environ.get("VLLM_Q3VL_FUSE_VIT_GELU_FC1", "0") == "1"  # fusion #6
++_Q3VL_FUSE_VIT_GELU_FC1_LOGGED = False
+ try:
+     from aiter.ops.norm import layernorm2d_fwd_with_add as _aiter_ln_add
+ except Exception:
+@@ -419,6 +421,21 @@ class Qwen3_VisionMLP(nn.Module):
+         self.act_fn = act_fn
+ 
+     def forward(self, x: torch.Tensor):
++        # Q3VL fusion #6: fold ViT MLP GELU into the fc1 GEMM epilogue via hipBLASLt
++        # (torch._addmm_activation) -- one kernel instead of matmul + separate gelu.
++        # use_gelu=True is the tanh approximation = the model intended gelu_pytorch_tanh.
++        if _Q3VL_FUSE_VIT_GELU_FC1 and getattr(self.linear_fc1, "bias", None) is not None:
++            global _Q3VL_FUSE_VIT_GELU_FC1_LOGGED
++            if not _Q3VL_FUSE_VIT_GELU_FC1_LOGGED:
++                logger.warning("[Q3VL] ViT GELU->fc1 epilogue fusion active (fusion #6)")
++                _Q3VL_FUSE_VIT_GELU_FC1_LOGGED = True
++            _w = self.linear_fc1.weight
++            _shp = x.shape
++            _x2d = x.reshape(-1, _shp[-1]) if x.dim() != 2 else x
++            _h = torch._addmm_activation(self.linear_fc1.bias, _x2d, _w.t(), use_gelu=True)
++            if x.dim() != 2:
++                _h = _h.reshape(*_shp[:-1], _h.shape[-1])
++            return self.linear_fc2(_h)
+         mlp_output = self.linear_fc2(self.act_fn(self.linear_fc1(x)))
+         return mlp_output
+ 

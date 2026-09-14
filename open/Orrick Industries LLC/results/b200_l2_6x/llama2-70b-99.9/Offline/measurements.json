@@ -1,0 +1,7 @@
+{
+ "starting_weights_filename": "Llama-2-70B-Chat",
+ "retraining": "no",
+ "input_data_types": "int32",
+ "weight_data_types": "nvfp4",
+ "weight_transformations": "quantization (NVFP4, FP8 KV cache)"
+}

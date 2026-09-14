@@ -1,0 +1,61 @@
+name: wan22-a14b-gb300x72-offline-accuracy-vbench
+version: '1.0'
+type: offline
+
+# Accuracy variant: drives the same prompts, then scores the produced videos with
+# the endpoints `vbench` scorer (runs vbench_runner.py via `uv run --project`),
+# emitting per-dimension + mean VBench scores into report_dir.
+#
+# Use with the accuracy template (wan22_videogen_endpoints_submission.yaml) so the
+# client step gets a GPU. The vbench project (.venv) must be aarch64-prebuilt and
+# reachable in the client container (tokenizers 0.13.3 has no aarch64 wheel, so a
+# fresh `uv sync` needs Rust) -- endpoint_env_vbench.yaml sets UV_NO_SYNC=1.
+
+model_params:
+  name: wan22
+  max_new_tokens: 1
+  streaming: 'off'
+
+datasets:
+  - name: wan22_perf
+    type: performance
+    path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+    samples: 144
+  - name: wan22_vbench
+    type: accuracy
+    path: /work/configs/wan22_a14b/_shared/data/wan22_prompts.jsonl
+    samples: 248
+    accuracy_config:
+      eval_method: vbench
+      ground_truth: prompt
+      num_repeats: 1
+      extras:
+        # Path (in the client container) to a prebuilt aarch64 vbench uv project.
+        vbench_project_path: /opt/vbench_accuracy
+        subprocess_timeout_s: 3600
+
+settings:
+  drain:
+    warmup_timeout_s: 3600
+    performance_timeout_s: 3600
+  runtime:
+    n_samples_to_issue: 144
+    scheduler_random_seed: 16159082839903944936  # v6.1 ruleset schedule_rng_seed
+    dataloader_random_seed: 2747215439041700203   # v6.1 ruleset sample_index_rng_seed
+  load_pattern:
+    type: max_throughput
+  client:
+    num_workers: 72
+    warmup_connections: 0
+    worker_initialization_timeout: 300.0
+  warmup:
+    enabled: true
+    n_requests: 10
+    drain: true
+
+endpoint_config:
+  endpoints: []
+  api_type: videogen
+  api_key: null
+
+report_dir: ${SFLOW_TASK_OUTPUT_DIR}

@@ -1,0 +1,7 @@
+{
+ "starting_weights_filename": "meta-llama/Llama-3.1-8B-Instruct (bf16 safetensors)",
+ "weight_data_types": "fp8 (static per-tensor PTQ, NVIDIA ModelOpt)",
+ "input_data_types": "int32",
+ "retraining": "no",
+ "weight_transformations": "TensorRT-LLM 1.0.0 FP8 (W8A8) engine via trtllm-build; NVIDIA ModelOpt post-training quantization calibrated on the MLPerf-official CNN/DailyMail calibration set (calibration/CNNDailyMail/calibration-list.txt); FP8 KV cache"
+}

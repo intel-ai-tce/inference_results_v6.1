@@ -1,0 +1,36 @@
+pynve-rocm
+==========
+
+AMD ROCm/gfx950 port of the NVIDIA Embedding Cache (nv-embedding-cache).
+
+This product is a derivative work and is distributed under the Apache License,
+Version 2.0 (see the LICENSE file). It includes and/or is derived from the
+following upstream software:
+
+1. NVIDIA nv-embedding-cache
+   Source: https://github.com/NVIDIA/nv-embedding-cache
+   Copyright (c) NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+   Licensed under the Apache License, Version 2.0.
+   (Source files retain their NVIDIA Apache-2.0 SPDX headers.)
+
+2. NVIDIA cuEmbed (bundled in-tree under third_party/cuembed/)
+   Copyright (c) NVIDIA CORPORATION & AFFILIATES.
+   Licensed under the Apache License, Version 2.0 (third_party/cuembed/LICENSE).
+
+Other third_party/* entries are git submodules and are NOT vendored in this
+snapshot (fetched at build time): googletest (BSD-3-Clause), json (MIT), argparse
+(MIT), pybind11 (BSD-3-Clause), dlpack (Apache-2.0), abseil-cpp (Apache-2.0),
+parallel-hashmap (Apache-2.0), rocksdb (dual GPLv2/Apache-2.0; use Apache-2.0),
+hiredis (BSD-3-Clause), redis++ (Apache-2.0).
+
+Modifications
+-------------
+ROCm/gfx950 port modifications:
+   Copyright (c) 2026 Advanced Micro Devices, Inc.
+   Licensed under the Apache License, Version 2.0.
+
+Note: AMD-modified and AMD-new files in this tree currently carry NVIDIA
+"Copyright (c) 2026 NVIDIA" SPDX headers rather than an AMD copyright or an
+Apache-2.0 section 4(b) "modified by AMD" notice. Correcting per-file attribution
+is a tracked remediation item (see NOTICE_INTERNAL.md); this repository-level
+NOTICE records AMD's modifications in the interim.

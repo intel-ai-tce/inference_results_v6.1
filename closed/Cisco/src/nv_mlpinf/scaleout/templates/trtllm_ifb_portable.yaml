@@ -1,0 +1,200 @@
+version: "0.1"
+
+# Portable IFB (In-Flight Batching) workflow with MLPerf loadgen client.
+# Launches DP_MULTIPLICITY trtllm-serve replicas (one per data-parallel rank),
+# then runs nv-mlpinf run_harness against the configured endpoint hosts.
+#
+# Pair this template with a config folder containing:
+#   - <benchmark>_config_sflow.yaml  (workflow variables: DP_MULTIPLICITY, model/yaml paths, harness args)
+#   - slurm_env_sflow.example.yaml  (container, mounts, Slurm backend, operator)
+#   - trtllm-serve-ifb-*.yaml  (per-DP-rank trtllm-serve config)
+
+variables:
+  BASE_PORT:
+    description: "Base port; each replica gets BASE_PORT + SFLOW_REPLICA_INDEX"
+    value: 8336
+  SERVER_HOSTS:
+    description: "Required comma-separated endpoint hostnames or IP addresses, one per server replica, in replica order."
+    value: ""
+  HTTP_INTERFACE:
+    description: "Optional client interface passed to MLPINF_HTTP_INTERFACE; empty uses normal routing."
+    value: ""
+  BOOTSTRAP_INTERFACE:
+    description: "Optional Gloo/NCCL bootstrap interface; empty lets the runtime auto-select."
+    value: ""
+  # DP_MULTIPLICITY, GPUS_PER_DP_RANK, GPUS_PER_NODE, MODEL_PATH, TRTLLM_YAML,
+  # TRTLLM_ENV_EXPORTS, HARNESS_CONFIG_DIR, BENCHMARK, SCENARIO, SYSTEM_NAME, TEST_MODE,
+  # HARNESS_EXTRA_ARGS are supplied by the selected profile and command-line
+  # --set values documented in configs/README.md.
+
+artifacts:
+  # SFlow resolves this path inside the job workspace, which is shared by the
+  # service and harness tasks. The .stop sibling is created only when the
+  # harness exits, including validation and error exits.
+  - name: IFB_LIFECYCLE
+    uri: file://ifb_lifecycle
+    content: ""
+
+workflow:
+  name: trtllm_ifb
+  tasks:
+    - name: server
+      replicas:
+        count: ${{ variables.DP_MULTIPLICITY }}
+        policy: parallel
+      resources:
+        gpus:
+          count: ${{ variables.GPUS_PER_DP_RANK }}
+      operator:
+        # trtllm-llmapi-launch is rank-aware: launch one task per model rank.
+        # GPU placement is delegated to the site's standard container operator.
+        name: test_container
+        ntasks: ${{ variables.GPUS_PER_DP_RANK }}
+        ntasks_per_node: ${{ [variables.GPUS_PER_DP_RANK, variables.GPUS_PER_NODE] | min }}
+      script:
+        - |
+          if [ -n "${{ variables.BOOTSTRAP_INTERFACE }}" ]; then
+            export GLOO_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+            export NCCL_SOCKET_IFNAME="${{ variables.BOOTSTRAP_INTERFACE }}"
+          else
+            unset GLOO_SOCKET_IFNAME NCCL_SOCKET_IFNAME
+          fi
+          unset NCCL_IB_HCA
+        # The environment is declared directly by the selected profile.
+        - |
+          ${{ variables.TRTLLM_ENV_EXPORTS }}
+        - export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}
+        - mkdir -p "${FLASHINFER_WORKSPACE_BASE}"
+        # Use a rank-local writable cache and resolve the local checkpoint offline.
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - mkdir -p "${HF_HOME}"
+        - |
+          set -o pipefail
+          STOP_FILE="${{ artifacts.IFB_LIFECYCLE.path }}.stop"
+          rm -f "${STOP_FILE}"
+
+          # Keep teardown scoped to this task's process group. This avoids
+          # cluster-wide process scans and cannot terminate another job.
+          _terminate_local_server() {
+            if [ -n "${LAUNCH_PID:-}" ] && kill -0 "${LAUNCH_PID}" 2>/dev/null; then
+              kill -TERM -- "-${LAUNCH_PID}" 2>/dev/null || true
+              for _wait_second in $(seq 1 30); do
+                kill -0 "${LAUNCH_PID}" 2>/dev/null || return 0
+                sleep 1
+              done
+              kill -KILL -- "-${LAUNCH_PID}" 2>/dev/null || true
+            fi
+          }
+          _handle_signal() {
+            trap - TERM INT
+            _terminate_local_server
+            exit 143
+          }
+          trap _handle_signal TERM INT
+
+          setsid trtllm-llmapi-launch \
+            trtllm-serve ${{ variables.MODEL_PATH }} \
+            --host 0.0.0.0 \
+            --port $(( ${{ variables.BASE_PORT }} + ${SFLOW_REPLICA_INDEX} )) \
+            --extra_llm_api_options ${{ variables.TRTLLM_YAML }} \
+            > >(tee ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log) 2>&1 &
+          LAUNCH_PID=$!
+
+          (
+            trap - TERM INT
+            while [ ! -e "${STOP_FILE}" ]; do
+              kill -0 "${LAUNCH_PID}" 2>/dev/null || exit 0
+              sleep 1
+            done
+            echo "Harness completion marker detected; terminating this server process group"
+            kill -TERM -- "-${LAUNCH_PID}" 2>/dev/null || true
+          ) &
+          STOP_WATCH_PID=$!
+
+          set +e
+          wait "${LAUNCH_PID}"
+          SERVER_EXIT=$?
+          set -e
+          kill "${STOP_WATCH_PID}" 2>/dev/null || true
+          wait "${STOP_WATCH_PID}" 2>/dev/null || true
+          if [ -e "${STOP_FILE}" ]; then
+            exit 0
+          fi
+          exit "${SERVER_EXIT}"
+      probes:
+        readiness:
+          log_watch:
+            regex_pattern: "Application startup complete"
+          timeout: 600
+          interval: 10
+
+    - name: mlperf_harness
+      operator:
+        name: test_container
+        ntasks: 1
+        ntasks_per_node: 1
+      resources:
+        nodes:
+          count: 1
+      script:
+        # PYTHONUNBUFFERED so harness progress streams to sflow.log without buffering.
+        - export PYTHONUNBUFFERED=1
+        - |
+          if [ -n "${{ variables.HTTP_INTERFACE }}" ]; then
+            export MLPINF_HTTP_INTERFACE="${{ variables.HTTP_INTERFACE }}"
+          fi
+        # Use rank-local writable caches and resolve the local checkpoint offline.
+        - export HF_HOME=/tmp/${SLURM_JOB_USER:-${USER}}/hf_${SLURM_JOB_ID}_${SLURM_PROCID} HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+        - export MPLCONFIGDIR=/tmp/${SLURM_JOB_USER:-${USER}}/mpl_${SLURM_JOB_ID}_${SLURM_PROCID}
+        - mkdir -p "${HF_HOME}" "${MPLCONFIGDIR}"
+        # Loadgen profile: 'full' (submission-valid) or 'dev' (short probe).
+        # harness.py reads MLPINF_LOADGEN_MODE (+ optional MLPINF_DEV_* passed via env).
+        - export MLPINF_LOADGEN_MODE=${{ variables.LOADGEN_MODE }}
+        # Activate the environment prepared by configs/README.md.
+        - HARNESS_VENV=/work/.venv
+        - |
+          if [ ! -x "${HARNESS_VENV}/bin/nv-mlpinf" ]; then
+            echo "ERROR: harness venv missing at ${HARNESS_VENV}." >&2
+            echo "       Follow the environment setup in configs/README.md." >&2
+            exit 1
+          fi
+        - source "${HARNESS_VENV}/bin/activate"
+        - export PYTHONPATH=/work${PYTHONPATH:+:$PYTHONPATH}
+        - |
+          set -euo pipefail
+          STOP_FILE="${{ artifacts.IFB_LIFECYCLE.path }}.stop"
+          _signal_server_shutdown() {
+            : > "${STOP_FILE}"
+          }
+          trap _signal_server_shutdown EXIT
+          IFS=',' read -r -a SERVER_HOST_ARRAY <<< "${{ variables.SERVER_HOSTS }}"
+          EXPECTED=${{ variables.DP_MULTIPLICITY }}
+          if [ "${#SERVER_HOST_ARRAY[@]}" -ne "${EXPECTED}" ]; then
+            echo "ERROR: SERVER_HOSTS contains ${#SERVER_HOST_ARRAY[@]} entries; expected ${EXPECTED}" >&2
+            exit 1
+          fi
+          SERVER_URLS=""
+          for INDEX in "${!SERVER_HOST_ARRAY[@]}"; do
+            HOST="${SERVER_HOST_ARRAY[$INDEX]}"
+            [ -n "${HOST}" ] || { echo "ERROR: empty SERVER_HOSTS entry ${INDEX}" >&2; exit 1; }
+            URL="${HOST}:$(( ${{ variables.BASE_PORT }} + INDEX ))"
+            SERVER_URLS="${SERVER_URLS:+${SERVER_URLS},}${URL}"
+          done
+          echo "Server URLs (${EXPECTED}/${EXPECTED}) ${SERVER_URLS}"
+          set +e
+          set -o pipefail
+          HARNESS_LOG=${SFLOW_TASK_OUTPUT_DIR}/${{ variables.TEST_MODE }}.log
+          LOG_DIR=${SFLOW_TASK_OUTPUT_DIR}/${{ variables.TEST_MODE }} \
+            nv-mlpinf run_harness \
+              --config_dir=${{ variables.HARNESS_CONFIG_DIR }} \
+              --benchmarks=${{ variables.BENCHMARK }} \
+              --scenarios=${{ variables.SCENARIO }} \
+              --system_name=${{ variables.SYSTEM_NAME }} \
+              --trtllm_server_urls=${SERVER_URLS} \
+              --test_mode=${{ variables.TEST_MODE }} \
+              ${{ variables.HARNESS_EXTRA_ARGS }} 2>&1 | tee "${HARNESS_LOG}"
+          HARNESS_EXIT=$?
+          echo "=== mlperf_harness run_harness exited with ${HARNESS_EXIT} ==="
+          exit "${HARNESS_EXIT}"
+      depends_on:
+        - server

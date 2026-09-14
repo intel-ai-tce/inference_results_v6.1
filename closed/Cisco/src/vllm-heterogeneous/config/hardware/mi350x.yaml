@@ -1,0 +1,82 @@
+# AMD MI350X hardware profile. Cluster/vendor-invariant settings only; all
+# model-tunable kernel/numeric/weight-format knobs live in config/model/*.yaml.
+
+platform: amd
+
+nccl:
+  NCCL_IB_HCA: ${oc.env:NCCL_IB_HCA}
+  NCCL_IB_GID_INDEX: 1
+
+nccl_extra:
+  NCCL_MIN_NCHANNELS: 8
+  TOKENIZERS_PARALLELISM: "false"
+  HARNESS_GC_LIMIT: 100000
+
+uccl:
+  UCCL_RCMODE: 1
+  UCCL_P2P_RDMA_GID_INDEX: 1
+  UCCL_P2P_RDMA_SL: 0
+  UCCL_P2P_RDMA_TC: 106
+  UCCL_P2P_RDMA_DEVICE_FILTER: ${oc.env:UCCL_P2P_RDMA_DEVICE_FILTER}
+  UCCL_P2P_NUM_QPS: 4
+  UCCL_P2P_MAX_CONCURRENT: 128
+  UCCL_P2P_MTU: 4096
+  UCCL_P2P_MAX_RD_ATOMIC: 16
+  UCCL_P2P_MAX_DEST_RD_ATOMIC: 16
+  UCCL_P2P_MAX_INFLIGHT_OPS: 32
+
+ucx:
+  # ib (not rc/dc): the rebuilt ROCm UCX only exposes IB/UD verbs; rc_x/dc make
+  # NIXL UCX backend creation fail. Do not "fix" this to rc.
+  UCX_TLS: ib,rocm_copy,self,sm
+  UCX_NET_DEVICES: ${oc.env:UCX_NET_DEVICES}
+  UCX_IB_GID_INDEX: 1
+  UCX_LOG_LEVEL: warn
+  UCX_WARN_UNUSED_ENV_VARS: "n"
+
+network:
+  nixl_side_channel_port: 5600
+
+rocm:
+  GCN_ARCH_NAME: gfx950
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  GPU_MAX_HW_QUEUES: 2
+  HSA_KERNARG_POOL_SIZE: 4000000
+  AITER_LOG_LEVEL: ERROR
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  HIP_FORCE_DEV_KERNARG: 1
+
+triton:
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+
+pytorch:
+  PYTORCH_TUNABLEOP_ENABLED: 0
+  PYTORCH_TUNABLEOP_TUNING: 0
+  TORCH_BLAS_PREFER_HIPBLASLT: 1
+
+vllm:
+  VLLM_ENABLE_INDUCTOR_MAX_AUTOTUNE: 0
+  VLLM_USE_V1: 1
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  NIXL_GPU_SYNC: 0
+
+gpu:
+  visible_devices: "0,1,2,3,4,5,6,7"
+  device_env: HIP_VISIBLE_DEVICES
+
+server:
+  port: 8200
+  kv_role: kv_consumer
+
+# Applied only when --role decode AND --remote-hardware is a different vendor.
+cross_platform_decode_patches:
+  - engine_core_env
+  - shuffle_kv
+  - kv_scale_override

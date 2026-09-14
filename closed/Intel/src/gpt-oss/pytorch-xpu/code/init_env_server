@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Validate and set Tensor parallel and Instances
+export TP=1
+export NUM_INSTS=1
+
+if (( XPU_COUNT > 0 )); then
+    # XPU
+    export TP=$XPU_COUNT
+    export MAX_NUM_BATCHED_TOKENS=3072
+    export BATCH_SIZE=128
+    export GPU_MEMORY_UTILIZATION=0.85
+
+    # Server: enable XPU graph capture (decode-only). Removes per-step host
+    # Offline is prefill/compute-bound and graph mode HURTS it, so it stays eager.
+    export VLLM_XPU_ENABLE_XPU_GRAPH=1
+    export ENFORCE_EAGER=0
+    export CUDAGRAPH_MODE=FULL_DECODE_ONLY
+    export MAX_CUDAGRAPH_CAPTURE_SIZE=$BATCH_SIZE
+
+    if (( XPU_DEVICE_ID == 57891 )); then
+        # B70
+	export QPS_PER_XPU=0.2375 # 0.95 total on 4 XPUs
+    elif (( XPU_DEVICE_ID == 57873 )); then
+        # B60
+        if (( XPU_COUNT > 4 )); then
+            export QPS_PER_XPU=0.1125 # 0.90
+        else
+            # needs an update to match TP=8's 0.90
+	    export QPS_PER_XPU=0.0825 # 0.33
+        fi
+    else
+        echo "Error: XPU device ID $XPU_DEVICE_ID is not in allowed set (${XPU_SUPPORTED_DEVICE_IDS[*]})."
+        return 1
+    fi
+
+    export NUM_INSTS=$((XPU_COUNT / (TP*PP)))
+    export VLLM_USE_TRITON_XPU_ATTN=1
+else
+    # CPU
+    echo "Error: No XPU found. CPU is not enabled for this scenario"
+fi

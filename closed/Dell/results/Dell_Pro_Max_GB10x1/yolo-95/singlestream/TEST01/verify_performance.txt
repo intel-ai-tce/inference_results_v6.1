@@ -1,0 +1,6 @@
+[2026-07-29 12:34:54,236 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from /home/manpreet/mlp61/dellemc-mlperf-inference-v6.1/closed/Dell/results/Dell_Pro_Max_GB10x1/yolo-95/singlestream/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 12:34:54,236 log_parser.py:72 INFO] Sucessfully loaded MLPerf log from out_test01_singlestream_final/mlperf_log_detail.txt.
+Verifying performance.
+Reference score = 13865536.0
+Test score = 13881049.0
+TEST PASS

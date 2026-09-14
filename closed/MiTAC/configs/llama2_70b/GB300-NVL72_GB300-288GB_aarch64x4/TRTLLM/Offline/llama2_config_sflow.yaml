@@ -1,0 +1,35 @@
+variables:
+  # IFB topology - gb300x4 scale.
+  DP_MULTIPLICITY:
+    type: integer
+    value: 4
+  GPUS_PER_DP_RANK:
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.DP_MULTIPLICITY * variables.GPUS_PER_DP_RANK }}
+
+  BASE_PORT:
+    value: 8336
+
+  # WAR lyris llama2 70B model has tokenizer "truncation" setting not correct, producing wrong OSL that is not passing accuracy, redownload a new model.
+  MODEL_PATH:
+    value: /home/mlperf_inference_storage/models/Llama2/fp4-quantized-modelopt/llama2-70b-chat-hf-torch-fp4-6.1-submission
+  TRTLLM_YAML:
+    value: /work/configs/llama2_70b/GB300-NVL72_GB300-288GB_aarch64x4/TRTLLM/Offline/trtllm-serve-ifb-1gpu.yaml
+  TRTLLM_ENV_YAML:
+    value: /work/configs/llama2_70b/GB300-NVL72_GB300-288GB_aarch64x4/TRTLLM/Offline/trtllm-serve-ifb-1gpu-env.yaml
+
+  BENCHMARK:
+    value: llama2-70b
+  SCENARIO:
+    value: Offline
+  SYSTEM_NAME:
+    value: GB300-NVL72_GB300-288GB_aarch64x4
+  TEST_MODE:
+    description: "default performance only mode"
+    value: PerformanceOnly
+  HARNESS_EXTRA_ARGS:
+    description: "Additional harness flags; TEST_MODE is passed separately."
+    value: ""

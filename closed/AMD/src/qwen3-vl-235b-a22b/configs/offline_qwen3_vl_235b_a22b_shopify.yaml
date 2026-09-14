@@ -1,0 +1,49 @@
+# Offline Benchmark - Qwen3-VL-235B-A22B on Shopify Product Catalogue
+# MLPerf Inference Q3VL benchmark: multimodal product taxonomy classification
+name: "offline-qwen3-vl-235b-a22b-shopify-benchmark"
+version: "1.0"
+type: "offline"
+timeout: 14400 
+model_params:
+  name: amd/Qwen3-VL-235B-A22B-Instruct-MXFP4-mlperf6.1-closed
+
+datasets:
+  - name: shopify_product_catalogue::q3vl
+    type: "performance"
+  - name: shopify_product_catalogue::q3vl
+    type: "accuracy"
+    accuracy_config:
+      eval_method: "shopify_category_f1"
+      ground_truth: "ground_truth_category"
+      extractor: "identity_extractor"
+      num_repeats: 1
+
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 0 # 0 = no wall-clock guillotine (guard vs submission_template.yaml's 1800000)
+    scheduler_random_seed: 16159082839903944936 # MLPerf v6.1 mandated schedule_rng_seed
+    dataloader_random_seed: 2747215439041700203 # MLPerf v6.1 mandated sample_index_rng_seed
+
+  load_pattern:
+    type: "max_throughput"
+
+  drain:
+    performance_timeout_s: 1200
+
+  client:
+    num_workers: 16
+    transport:
+      type: zmq
+      recv_buffer_size: 16777216
+      send_buffer_size: 16777216
+    max_connections: 4096
+    # Increase timeout for slow worker startup (spawn, imports). Default 40s may be too short.
+    worker_initialization_timeout: 120
+
+endpoint_config:
+  endpoints:
+    - "http://localhost:8000"
+  api_key: null
+
+report_dir: results/qwen3_vl_235b_a22b_shopify_benchmark_offline/

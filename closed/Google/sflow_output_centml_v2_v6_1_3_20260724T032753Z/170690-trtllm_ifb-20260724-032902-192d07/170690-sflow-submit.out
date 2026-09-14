@@ -1,0 +1,436 @@
+Collecting uv
+  Downloading uv-0.11.32-py3-none-manylinux_2_28_aarch64.whl.metadata (11 kB)
+Downloading uv-0.11.32-py3-none-manylinux_2_28_aarch64.whl (25.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 25.6/25.6 MB 167.7 MB/s eta 0:00:00
+Installing collected packages: uv
+Successfully installed uv-0.11.32
+                                                                                
+ Usage: sflow [OPTIONS] COMMAND [ARGS]...                                       
+                                                                                
+ SFLOW - Workflow Orchestrator with Pluggable Backends                          
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --help          Show this message and exit.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ run        Run a workflow from one or more sflow YAML files.                 │
+│ batch      Generate an sbatch script for running sflow in Slurm batch mode.  │
+│ visualize  Visualize a workflow DAG from a sflow.yaml file.                  │
+│ sample     List available sample workflows or copy a sample to your project. │
+│ compose    Compose multiple sflow YAML files into a single valid workflow    │
+│            config.                                                           │
+│ skill      Copy AI agent skills into your project for Cursor/IDE agent       │
+│            integration.                                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+                                                                                
+ Documentation: https://nvidia.github.io/nv-sflow/                              
+                                                                                
+
+[07/24/26 03:29:02] INFO     Starting workflow execution...                                                                                                                                   run.py:311
+                    WARNING  Multi-file merge overrides detected:                                                                                                                          loader.py:439
+                    WARNING    ⚠ variables.BASE_PORT: redefined by                                                                                                                         loader.py:441
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/scaleout/sflow/templates/trtllm_ifb_loadgen.yaml (same value as                                    
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/deepseek_config              
+                             _sflow.yaml)                                                                                                                                                               
+                    INFO     Artifact 'SERVER_URLS' (file://) with inline content will be written to:                                                                                        local.py:58
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07            
+                             /server_urls.txt                                                                                                                                                           
+                    INFO     Allocating resources for backend slurm_cluster                                                                                                                backend.py:59
+                    INFO     Detected existing Slurm allocation in env; skipping salloc (SLURM_JOB_ID='170690', SLURM_JOB_NODELIST='a4xlustref-a4xnodeset3-[0-17]')                         slurm.py:221
+                    INFO     ========== Command ==========                                                                                                                               launcher.py:117
+                    INFO     scontrol getaddrs 'a4xlustref-a4xnodeset3-[0-17]'                                                                                                           launcher.py:118
+                    INFO     =============================                                                                                                                               launcher.py:119
+                    INFO     Artifact 'SERVER_URLS' (file://) with inline content will be written to:                                                                                        local.py:58
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07            
+                             /server_urls.txt                                                                                                                                                           
+                    INFO     Starting workflow: trtllm_ifb                                                                                                                            orchestrator.py:52
+[07/24/26 03:29:03] INFO     Submitting task: repo_preflight                                                                                                                          orchestrator.py:84
+                    INFO     [repo_preflight] ========== Command ==========                                                                                                              launcher.py:117
+                    INFO     [repo_preflight] srun --jobid 170690 --nodes 1 --nodelist a4xlustref-a4xnodeset3-0 --ntasks 1 --ntasks-per-node 1 --job-name repo_preflight --unbuffered    launcher.py:118
+                             --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                                                            
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/repo_preflight:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/1                
+                             70690-trtllm_ifb-20260724-032902-192d07/repo_preflight:rw bash -c 'MLC_SUBMISSION_CHECKER=/work/3rdparty/mlc-inference/tools/submission/submission_checker                 
+                             if [ ! -f "${MLC_SUBMISSION_CHECKER}/constants.py" ]; then                                                                                                                 
+                               echo "ERROR: missing ${MLC_SUBMISSION_CHECKER}/constants.py"                                                                                                             
+                               echo "Run from the repository root: git submodule update --init closed/NVIDIA/3rdparty/mlc-inference"                                                                    
+                               exit 2                                                                                                                                                                   
+                             fi                                                                                                                                                                         
+                             PYTHONPATH="${MLC_SUBMISSION_CHECKER}${PYTHONPATH:+:${PYTHONPATH}}" \                                                                                                      
+                               python3 -c '"'"'import constants; assert constants.MODEL_CONFIG; print("PASS: MLCommons submission checker is available")'"'"'                                           
+                             if [ "deepseek-r1" = "deepseek-r1" ]; then                                                                                                                                 
+                               DEEPSEEK_ROOT=/work/3rdparty/mlc-inference/language/deepseek-r1                                                                                                          
+                               for REQUIRED_PATH in \                                                                                                                                                   
+                                 "${DEEPSEEK_ROOT}/submodules/LiveCodeBench/pyproject.toml" \                                                                                                           
+                                 "${DEEPSEEK_ROOT}/submodules/prm800k/setup.py" \                                                                                                                       
+                                 /home/mlperf_inference_storage/data/deepseek-r1/mlperf_deepseek_r1_dataset_4388_fp8_eval.pkl \                                                                         
+                                 /home/mlperf_inference_storage/preprocessed_data/deepseek-r1/input_ids_padded.npy \                                                                                    
+                                 /home/mlperf_inference_storage/preprocessed_data/deepseek-r1/input_lens.npy; do                                                                                        
+                                 if [ ! -e "${REQUIRED_PATH}" ]; then                                                                                                                                   
+                                   echo "ERROR: missing DeepSeek-R1 prerequisite ${REQUIRED_PATH}"                                                                                                      
+                                   echo "Initialize the DeepSeek evaluation submodules and verify the data mounts before submission."                                                                   
+                                   exit 2                                                                                                                                                               
+                                 fi                                                                                                                                                                     
+                               done                                                                                                                                                                     
+                               echo "PASS: DeepSeek-R1 evaluation submodules and data are available"                                                                                                    
+                             fi'                                                                                                                                                                        
+                    INFO     [repo_preflight] =============================                                                                                                              launcher.py:119
+[07/24/26 03:29:30] INFO     Submitting task: server_0                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_1                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_2                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_3                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_4                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_5                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_6                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_7                                                                                                                                orchestrator.py:84
+                    INFO     Submitting task: server_8                                                                                                                                orchestrator.py:84
+                    INFO     [server_0] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_0] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-0,a4xlustref-a4xnodeset3-1 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1      launcher.py:118
+                             --job-name server_0 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_0:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_0:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_0] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_1] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_1] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-2,a4xlustref-a4xnodeset3-3 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1      launcher.py:118
+                             --job-name server_1 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_1:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_1:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_1] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_2] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_2] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-4,a4xlustref-a4xnodeset3-5 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1      launcher.py:118
+                             --job-name server_2 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_2:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_2:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_2] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_3] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_3] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-6,a4xlustref-a4xnodeset3-7 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1      launcher.py:118
+                             --job-name server_3 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_3:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_3:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_3] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_4] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_4] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-8,a4xlustref-a4xnodeset3-9 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1      launcher.py:118
+                             --job-name server_4 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_4:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_4:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_4] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_5] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_5] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-10,a4xlustref-a4xnodeset3-11 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1    launcher.py:118
+                             --job-name server_5 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_5:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_5:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_5] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_6] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_6] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-12,a4xlustref-a4xnodeset3-13 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1    launcher.py:118
+                             --job-name server_6 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_6:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_6:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_6] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_7] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_7] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-14,a4xlustref-a4xnodeset3-15 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1    launcher.py:118
+                             --job-name server_7 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_7:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_7:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_7] =============================                                                                                                                    launcher.py:119
+                    INFO     [server_8] ========== Command ==========                                                                                                                    launcher.py:117
+                    INFO     [server_8] srun --jobid 170690 --nodes 2 --nodelist a4xlustref-a4xnodeset3-16,a4xlustref-a4xnodeset3-17 --ntasks 8 --ntasks-per-node 4 --gpus-per-task 1    launcher.py:118
+                             --job-name server_8 --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                           
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/server_8:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-                
+                             trtllm_ifb-20260724-032902-192d07/server_8:rw bash -c 'if [ "${SLURM_PROCID:-0}" = "0" ]; then echo "$(echo ${SFLOW_TASK_ASSIGNED_NODE_IPS} | cut                          
+                             -d'"'"','"'"' -f1):$(( 8336 + ${SFLOW_REPLICA_INDEX} ))" >>                                                                                                                
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt; fi                                                                                                                                                   
+                             eval "$(python3 /work/scaleout/sflow/tools/run_with_env.py                                                                                                                 
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8-env.yaml | tee /dev/stderr)"                                             
+                             python3 /work/scaleout/sflow/tools/apply_trtllm_pr15790_disable_tinygemm2.py                                                                                               
+                             export FLASHINFER_WORKSPACE_BASE=/tmp/${SLURM_JOB_USER:-${USER}}/flashinfer_${SLURM_JOB_ID}_${SLURM_PROCID}                                                                
+                             mkdir -p "${FLASHINFER_WORKSPACE_BASE}"                                                                                                                                    
+                             set -o pipefail                                                                                                                                                            
+                             NSYS_CMD=""; if [ "0" = "1" ]; then                                                                                                                                        
+                               NSYS_CMD="/usr/local/bin/nsys profile --force-overwrite=true -t cuda,nvtx,python-gil -c cudaProfilerApi --cuda-graph-trace=node --capture-range-end=stop                 
+                             --gpu-metrics-devices=${SLURM_LOCALID} --wait=all --output ${SFLOW_TASK_OUTPUT_DIR}/nsys_profile-dp${SFLOW_REPLICA_INDEX}-rank${SLURM_PROCID}";                            
+                             fi; ${NSYS_CMD} trtllm-llmapi-launch trtllm-serve /home/mlperf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4 --host                    
+                             0.0.0.0 --port $(( 8336 + ${SFLOW_REPLICA_INDEX} )) --extra_llm_api_options                                                                                                
+                             /work/configs/deepseek_r1/GB200-NVL72_GB200-186GB_aarch64x72/TRTLLM/Offline/trtllm-serve-ifb-dep8.yaml 2>&1 | tee                                                          
+                             ${SFLOW_TASK_OUTPUT_DIR}/rank${SLURM_PROCID}.log'                                                                                                                          
+                    INFO     [server_8] =============================                                                                                                                    launcher.py:119
+[07/24/26 03:36:22] INFO     Submitting task: mlperf_harness                                                                                                                          orchestrator.py:84
+                    INFO     [mlperf_harness] ========== Command ==========                                                                                                              launcher.py:117
+                    INFO     [mlperf_harness] srun --jobid 170690 --nodes 1 --nodelist a4xlustref-a4xnodeset3-0 --ntasks 1 --ntasks-per-node 1 --gpus-per-task 1 --job-name              launcher.py:118
+                             mlperf_harness --unbuffered --export ALL,ENROOT_TRANSFER_RETRIES=3,ENROOT_CONNECT_TIMEOUT=60 --label --overlap --mpi pmi2 --container-image                                
+                             /lustre/alisachen/containers/mlperf-inference_tensorrt_llm_release-feat-1.2-mlpinf-b5ddff4_mlperf-main-f538816_jan28_aarch64.sqsh --container-mount-home                   
+                             --container-workdir /work --container-remap-root --container-mounts                                                                                                        
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:/work,/lustre/share/coreai_mlperf_inference/mlperf_inference_storage_clone:/home/ml                
+                             perf_inference_storage,/lustre/alisachen/mlperf_inference_storage/preprocessed_data:/home/mlperf_inference_storage/preprocessed_data,/lustre/alisachen/mlpe                
+                             rf_inference_storage/models/deepseek-r1/fp4-quantized-modelopt/centml-deepseek-r1-nvfp4-v2-mlpinf-93947a0d7bd04f73ff98636f6b18ff5839e7aaf9:/home/mlperf_inf                
+                             erence_storage/models/deepseek-r1/fp4-quantized-modelopt/deepseek_r1-torch-fp4,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflo                
+                             w_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/close                
+                             d/NVIDIA:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA                
+                             /sflow_output_centml_v2_v6_1_3_20260724T032753Z:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260                
+                             724T032753Z:rw,/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-202                
+                             60724-032902-192d07/mlperf_harness:/home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/1                
+                             70690-trtllm_ifb-20260724-032902-192d07/mlperf_harness:rw bash -c 'export PYTHONUNBUFFERED=1                                                                               
+                             pip install -e ".[llm]" -q --no-build-isolation                                                                                                                            
+                             SERVER_URLS=$(grep -v '"'"'^[[:space:]]*$'"'"'                                                                                                                             
+                             /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-19                
+                             2d07/server_urls.txt | paste -sd '"'"','"'"')                                                                                                                              
+                             echo "Server URLs ${SERVER_URLS}"                                                                                                                                          
+                             set +e                                                                                                                                                                     
+                             set -o pipefail                                                                                                                                                            
+                             HARNESS_LOG=${SFLOW_TASK_OUTPUT_DIR}/PerformanceOnly.log                                                                                                                   
+                             LOG_DIR=${SFLOW_TASK_OUTPUT_DIR}/PerformanceOnly \                                                                                                                         
+                               nv-mlpinf run_harness \                                                                                                                                                  
+                                 --benchmarks=deepseek-r1 \                                                                                                                                             
+                                 --scenarios=Offline \                                                                                                                                                  
+                                 --system_name=GB200-NVL72_GB200-186GB_aarch64x72 \                                                                                                                     
+                                 --trtllm_server_urls=${SERVER_URLS} \                                                                                                                                  
+                                 --test_mode=PerformanceOnly \                                                                                                                                          
+                                  2>&1 | tee "${HARNESS_LOG}"                                                                                                                                           
+                             HARNESS_EXIT=$?                                                                                                                                                            
+                             echo "=== mlperf_harness run_harness exited with ${HARNESS_EXIT}; outside validation will decide job status ==="                                                           
+                             exit "${HARNESS_EXIT}"'                                                                                                                                                    
+                    INFO     [mlperf_harness] =============================                                                                                                              launcher.py:119
+[07/24/26 04:56:03] INFO     Workflow execution finished in 1:27:00.353528                                                                                                           orchestrator.py:218
+                    INFO     Releasing resources for backend slurm_cluster                                                                                                                 backend.py:66
+                    INFO     Skipping release for backend slurm_cluster (allocation not owned by sflow)                                                                                    backend.py:70
+[07/24/26 04:56:48] INFO     Workflow completed successfully                                                                                                                                  run.py:337
+✓ Workflow completed
+  Output folder: /home/alisachen_google_com/nv-mlpinf-partner-v6.1.3-rerun/closed/NVIDIA/sflow_output_centml_v2_v6_1_3_20260724T032753Z/170690-trtllm_ifb-20260724-032902-192d07

@@ -1,0 +1,95 @@
+[2026-07-30 20:14:28,232 loader.py:208 INFO] Loading System log from build/submission/closed/Wiwynn/systems/GB300-NVL72_GB300-288GB_aarch64x4_TRT.json
+[2026-07-30 20:14:28,232 loader.py:228 INFO] Could not load Nameplate log from build/submission/closed/Wiwynn/systems/GB300-NVL72_GB300-288GB_aarch64x4_TRT_power.yaml, path does not exist
+[2026-07-30 20:14:28,232 loader.py:208 INFO] Loading Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,233 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,233 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,233 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/accuracy.txt
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-30 20:14:28,234 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-30 20:14:28,234 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-30 20:14:28,234 base.py:53 INFO] Starting performance checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,234 performance_check.py:305 INFO] Target latency: None, Latency: 2196487955218, Scenario: Offline
+[2026-07-30 20:14:28,234 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,234 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,234 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,234 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,234 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,234 base.py:53 INFO] Starting system checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT
+[2026-07-30 20:14:28,234 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT
+[2026-07-30 20:14:28,234 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 20:14:28,235 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-30 20:14:28,235 base.py:53 INFO] Starting base checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-30 20:14:28,235 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-30 20:14:28,235 base.py:53 INFO] Starting compliance check for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/
+[2026-07-30 20:14:28,235 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-30 20:14:28,235 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-30 20:14:28,235 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-30 20:14:28,235 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-30 20:14:28,235 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/
+[2026-07-30 20:14:28,235 loader.py:208 INFO] Loading Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,236 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,236 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/accuracy.txt
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 20:14:28,236 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 20:14:28,236 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,236 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-30 20:14:28,236 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,236 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-30 20:14:28,236 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-30 20:14:28,237 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-30 20:14:28,237 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-30 20:14:28,237 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting performance checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,237 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-30 20:14:28,237 performance_check.py:475 INFO] TTFT target: 3000000000, TTFT: 336384078, TPOT target: 80000000, TPOT: 65867325, Scenario: Server
+[2026-07-30 20:14:28,237 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,237 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,237 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-30 20:14:28,237 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting system checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT
+[2026-07-30 20:14:28,237 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 20:14:28,237 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting base checks for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-30 20:14:28,237 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-30 20:14:28,237 base.py:53 INFO] Starting compliance check for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/
+[2026-07-30 20:14:28,237 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-30 20:14:28,237 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-30 20:14:28,237 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-30 20:14:28,237 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-30 20:14:28,237 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/
+[2026-07-30 20:14:28,238 main.py:227 INFO] ---
+[2026-07-30 20:14:28,238 main.py:231 INFO] Results build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt 63990.5
+[2026-07-30 20:14:28,238 main.py:231 INFO] Results build/submission/closed/Wiwynn/results/GB300-NVL72_GB300-288GB_aarch64x4_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt 60466.2
+[2026-07-30 20:14:28,238 main.py:233 INFO] ---
+[2026-07-30 20:14:28,238 main.py:314 INFO] ---
+[2026-07-30 20:14:28,238 main.py:315 INFO] Results=2, NoResults=0, Power Results=0
+[2026-07-30 20:14:28,238 main.py:322 INFO] ---
+[2026-07-30 20:14:28,238 main.py:323 INFO] Closed Results=2, Closed Power Results=0
+
+[2026-07-30 20:14:28,238 main.py:328 INFO] Open Results=0, Open Power Results=0
+
+[2026-07-30 20:14:28,238 main.py:333 INFO] Network Results=0, Network Power Results=0
+
+[2026-07-30 20:14:28,238 main.py:338 INFO] ---
+[2026-07-30 20:14:28,238 main.py:340 INFO] Systems=1, Power Systems=0
+[2026-07-30 20:14:28,238 main.py:344 INFO] Closed Systems=1, Closed Power Systems=0
+[2026-07-30 20:14:28,238 main.py:349 INFO] Open Systems=0, Open Power Systems=0
+[2026-07-30 20:14:28,238 main.py:354 INFO] Network Systems=0, Network Power Systems=0
+[2026-07-30 20:14:28,238 main.py:359 INFO] ---
+[2026-07-30 20:14:28,238 main.py:364 INFO] SUMMARY: submission looks OK

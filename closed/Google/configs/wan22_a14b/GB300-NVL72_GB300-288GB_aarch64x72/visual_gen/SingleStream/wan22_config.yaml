@@ -1,0 +1,41 @@
+# Wan 2.2 A14B — GB300-NVL72 SingleStream (low-latency).
+# 1 replica spanning the full rack: 72 GPUs
+# (cfg_size=2 × ulysses_size=4 × attn2d_size=[3,3] in visual_gen.yaml).
+
+variables:
+  NUM_SERVERS:
+    type: integer
+    value: 1
+  GPUS_PER_SERVER:
+    description: "GPUs per replica = cfg_size * ulysses_size * (attn2d N*M) in visual_gen.yaml (72 for SingleStream: 2*4*9)."
+    type: integer
+    value: 72
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_SERVERS * variables.GPUS_PER_SERVER }}
+  BASE_PORT:
+    type: integer
+    value: 8000
+  SEGMENT:
+    description: "All 18 nodes must land in one NVL domain: this single replica is sharded across the full rack (CFG × Ulysses × 2D context-parallel), so the GPUs need same-segment NVLink. Overrides the default SEGMENT=1 in _shared/slurm_env.yaml."
+    type: integer
+    value: 18
+
+  MODEL_PATH:
+    description: "Local pre-quantized ModelOpt FP8 diffusers checkpoint (under the scratch mount)."
+    value: /home/mlperf_inference_storage/models/wan22-a14b/Wan2.2-T2V-A14B-Diffusers-FP8
+  VISUAL_GEN_YAML:
+    value: /work/configs/wan22_a14b/GB300-NVL72_GB300-288GB_aarch64x72/visual_gen/SingleStream/visual_gen.yaml
+  WORKER_ENV_YAML:
+    value: /work/configs/wan22_a14b/_shared/worker_env.yaml
+  ENDPOINT_CONFIG:
+    value: /work/configs/wan22_a14b/GB300-NVL72_GB300-288GB_aarch64x72/visual_gen/SingleStream/endpoint_submission.yaml
+  ENDPOINT_ENV_YAML:
+    value: /work/configs/wan22_a14b/GB300-NVL72_GB300-288GB_aarch64x72/visual_gen/SingleStream/endpoint_env_vbench.yaml
+
+  BENCHMARK:
+    value: wan22-a14b
+  SCENARIO:
+    value: SingleStream
+  SYSTEM_NAME:
+    value: GB300-NVL72_GB300-288GB_aarch64x72

@@ -1,0 +1,33 @@
+# Direct Python requirements for the exact MLPerf v6.1 B300 runtime image.
+# The immutable container digest pins the inherited transitive environment;
+# these constraints prevent the editable harness install from resolving newer
+# direct packages or a different nvmitten source revision.
+nvmitten @ git+https://github.com/NVIDIA/mitten.git@4b6d18d76a530cfad4c70302d93d9afd68e7d99d
+mlcommons-loadgen==6.0.16
+typeguard==4.3.0
+onnx_graphsurgeon==0.5.6
+setuptools_git_versioning==3.1.0
+scikit-build==0.19.1
+sentencepiece==0.2.1
+datasets==3.6.0
+nvtx==0.2.14
+scipy==1.16.2
+pyyaml==6.0.3
+tabulate==0.9.0
+cupy-cuda12x==13.3.0
+nltk==3.9.1
+evaluate==0.4.3
+rouge_score==0.1.2
+grpcio==1.76.0
+tritonclient==2.52.0
+gevent==24.11.1
+geventhttpclient==2.3.3
+httpx[http2]==0.28.1
+uvloop==0.21.0
+setproctitle==1.3.6
+pylatexenc==2.10
+huggingface_hub[cli]==0.34.0
+tiktoken==0.9.0
+safetensors==0.5.2
+num2words==0.5.14
+orjson==3.11.3

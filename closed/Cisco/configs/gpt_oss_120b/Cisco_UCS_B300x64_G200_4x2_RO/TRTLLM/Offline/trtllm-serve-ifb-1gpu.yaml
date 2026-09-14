@@ -1,0 +1,43 @@
+# Cisco B300 qualification port of NVIDIA partner/v6.1.2 GB300 VSWA/batch settings.
+# This is not an NVIDIA-supported B300 result and must be requalified on Cisco x86 B300.
+backend: pytorch
+tensor_parallel_size: 1
+pipeline_parallel_size: 1
+moe_expert_parallel_size: 1
+max_batch_size: 1792
+max_num_tokens: 65536
+max_seq_len: 32768
+print_iter_log: false
+enable_iter_perf_stats: false
+return_perf_metrics: false
+enable_layerwise_nvtx_marker: false
+stream_interval: 20
+enable_chunked_prefill: true
+scheduler_config:
+  capacity_scheduler_policy: MAX_UTILIZATION
+  context_chunking_policy: FIRST_COME_FIRST_SERVED
+kv_cache_config:
+  dtype: fp8
+  # NVIDIA v6.1.2 uses 0.97 with batch 1792 because CUDA graph private
+  # pools are captured after KV sizing; 0.98 OOMed in their GB300 validation.
+  free_gpu_memory_fraction: 0.97
+  enable_block_reuse: false
+  # GPT-OSS alternates sliding-window and full-attention layers. This VSWA
+  # setting roughly halves KV bytes per sequence and is what lets the endpoint
+  # safely raise max_batch_size from 896 to 1792.
+  max_attention_window: [128, 32768]
+enable_attention_dp: false
+num_postprocess_workers: 8
+torch_compile_config:
+  enable_fullgraph: true
+  enable_piecewise_cuda_graph: true
+  enable_userbuffers: false
+  capture_num_tokens: [512, 768, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4352, 4608, 4864, 5120, 5376, 5632, 5888, 6144, 6400, 6656, 6912, 7168, 7424, 7680, 7936, 8192, 8704, 9216, 9728, 10240, 11264, 12288, 13312, 13914]
+moe_config:
+  backend: TRTLLM
+cuda_graph_config:
+  enable_padding: true
+  # Keep sparse high-batch captures from NVIDIA v6.1.2: padding covers mid
+  # batches while avoiding the memory cost of every intermediate graph.
+  batch_sizes: [1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512, 640, 768, 896, 1024, 1152, 1280, 1408, 1792]
+sampler_type: TRTLLMSampler

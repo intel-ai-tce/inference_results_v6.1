@@ -1,0 +1,260 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Unit tests for EventRecord and related types (serialization / deserialization)."""
+
+import time
+
+import msgspec
+import pytest
+from inference_endpoint.core.record import (
+    TOPIC_FRAME_SIZE,
+    ErrorEventType,
+    EventRecord,
+    EventRecordCodec,
+    EventType,
+    SampleEventType,
+    SessionEventType,
+)
+from inference_endpoint.core.types import ErrorData, PromptData, TextModelOutput
+
+_codec = EventRecordCodec()
+
+
+class TestEventType:
+    def test_category_base_raises_subclasses_return_expected(self):
+        with pytest.raises(AttributeError):
+            EventType.category()
+        assert SessionEventType.category() == "session"
+        assert ErrorEventType.category() == "error"
+        assert SampleEventType.category() == "sample"
+
+    def test_topic_returns_category_dot_value(self):
+        assert SessionEventType.STARTED.topic == "session.started"
+        assert SessionEventType.STARTED.value == "started"
+
+        assert SampleEventType.COMPLETE.topic == "sample.complete"
+        assert SampleEventType.COMPLETE.value == "complete"
+
+        assert ErrorEventType.GENERIC.topic == "error.generic"
+        assert ErrorEventType.GENERIC.value == "generic"
+
+    def test_members_are_instance_of_event_type_and_behave_as_strings(self):
+        assert isinstance(SessionEventType.STARTED, EventType)
+        assert isinstance(ErrorEventType.GENERIC, EventType)
+        assert isinstance(SampleEventType.COMPLETE, EventType)
+        assert SessionEventType.STARTED.value == "started"
+        assert SampleEventType.ISSUED.value == "issued"
+
+
+class TestEventRecordConstruction:
+    def test_construction_with_only_event_type_uses_defaults(self):
+        before = time.monotonic_ns()
+        record = EventRecord(event_type=SessionEventType.STARTED)
+        after = time.monotonic_ns()
+        assert before <= record.timestamp_ns <= after
+        assert record.sample_uuid == ""
+        assert record.conversation_id == ""
+        assert record.turn is None
+        assert record.data is None
+
+
+class TestEncodeEventRecord:
+    def test_returns_tuple_of_topic_bytes_padded_and_payload_bytes_with_valid_msgpack(
+        self,
+    ):
+        """EventRecordCodec.encode returns (topic_bytes_padded, payload) for single-frame ZMQ."""
+        data = TextModelOutput(output="test-output")
+        record = EventRecord(
+            event_type=SampleEventType.ISSUED,
+            sample_uuid="test-uuid",
+            data=data,
+        )
+        topic_bytes, payload = _codec.encode(record)
+        assert isinstance(topic_bytes, bytes)
+        assert len(topic_bytes) == TOPIC_FRAME_SIZE
+        assert topic_bytes.rstrip(b"\x00") == b"sample.issued"
+        assert isinstance(payload, bytes)
+        decoded = _codec.decode(payload)
+        assert decoded.sample_uuid == "test-uuid"
+        assert decoded.data == data
+
+    def test_topic_bytes_padded_matches_event_type_for_session_sample_error(self):
+        """Topic is null-padded to TOPIC_FRAME_SIZE for single-frame ZMQ sends."""
+        for ev, expected_prefix in [
+            (SessionEventType.STARTED, "session.started"),
+            (SessionEventType.ENDED, "session.ended"),
+            (SampleEventType.COMPLETE, "sample.complete"),
+            (ErrorEventType.GENERIC, "error.generic"),
+        ]:
+            topic_bytes, _ = _codec.encode(EventRecord(event_type=ev))
+            assert len(topic_bytes) == TOPIC_FRAME_SIZE
+            assert topic_bytes.rstrip(b"\x00") == expected_prefix.encode("utf-8")
+
+
+class TestEventRecordRoundTrip:
+    def test_session_event_round_trips_with_all_fields(self):
+        record = EventRecord(
+            event_type=SessionEventType.STARTED,
+            sample_uuid="sess-1",
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SessionEventType.STARTED.topic
+        assert decoded.sample_uuid == "sess-1"
+        assert decoded.data is None
+        assert isinstance(decoded.timestamp_ns, int)
+        assert decoded.timestamp_ns == record.timestamp_ns
+
+    def test_sample_event_round_trips_with_output(self):
+        data = TextModelOutput(output="output text")
+        record = EventRecord(
+            event_type=SampleEventType.COMPLETE,
+            sample_uuid="sample-42",
+            data=data,
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SampleEventType.COMPLETE.topic
+        assert decoded.sample_uuid == "sample-42"
+        assert decoded.data == data
+
+    def test_sample_event_round_trips_with_text_model_output(self):
+        record = EventRecord(
+            event_type=SampleEventType.COMPLETE,
+            sample_uuid="sample-42",
+            data=TextModelOutput(output="out", reasoning="reason"),
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SampleEventType.COMPLETE.topic
+        assert decoded.sample_uuid == "sample-42"
+        assert isinstance(decoded.data, TextModelOutput)
+        assert decoded.data.output == "out"
+        assert decoded.data.reasoning == "reason"
+
+    def test_sample_event_round_trips_with_prompt_data_text(self):
+        record = EventRecord(
+            event_type=SampleEventType.ISSUED,
+            sample_uuid="sample-99",
+            data=PromptData(text="What is AI?"),
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SampleEventType.ISSUED.topic
+        assert decoded.sample_uuid == "sample-99"
+        assert isinstance(decoded.data, PromptData)
+        assert decoded.data.text == "What is AI?"
+        assert decoded.data.token_ids is None
+
+    def test_sample_event_round_trips_with_prompt_data_token_ids(self):
+        record = EventRecord(
+            event_type=SampleEventType.ISSUED,
+            sample_uuid="sample-100",
+            data=PromptData(token_ids=(101, 202, 303)),
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SampleEventType.ISSUED.topic
+        assert isinstance(decoded.data, PromptData)
+        assert decoded.data.token_ids == (101, 202, 303)
+        assert decoded.data.text is None
+
+    def test_error_event_round_trips_with_error_data(self):
+        record = EventRecord(
+            event_type=ErrorEventType.LOADGEN,
+            data=ErrorData(
+                error_type="LoadgenError",
+                error_message="error details",
+            ),
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == ErrorEventType.LOADGEN.topic
+        assert isinstance(decoded.data, ErrorData)
+        assert decoded.data.error_type == "LoadgenError"
+        assert decoded.data.error_message == "error details"
+        assert decoded.sample_uuid == ""
+
+    def test_record_with_only_event_type_round_trips_with_defaults(self):
+        record = EventRecord(event_type=SessionEventType.ENDED)
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.event_type.topic == SessionEventType.ENDED.topic
+        assert decoded.sample_uuid == ""
+        assert decoded.conversation_id == ""
+        assert decoded.turn is None
+        assert decoded.data is None
+        assert decoded.timestamp_ns > 0
+
+    def test_explicit_timestamp_ns_preserved_round_trip(self):
+        ts = 1234567890
+        record = EventRecord(
+            event_type=SampleEventType.ISSUED,
+            timestamp_ns=ts,
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.timestamp_ns == ts
+
+    def test_conversation_id_and_turn_round_trip(self):
+        record = EventRecord(
+            event_type=SampleEventType.ISSUED,
+            sample_uuid="q-mt",
+            conversation_id="conv-7",
+            turn=4,
+            data=PromptData(text="hi"),
+        )
+        _, payload = _codec.encode(record)
+        decoded = _codec.decode(payload)
+        assert decoded.conversation_id == "conv-7"
+        assert decoded.turn == 4
+        assert decoded.sample_uuid == "q-mt"
+
+
+class TestEventRecordCodecOnDecodeError:
+    """Tests for the two branches of EventRecordCodec.on_decode_error.
+
+    The wrap branch is what consumers see for malformed payloads. The
+    re-raise branch is the behavior MessageSubscriber._on_readable relies
+    on to surface decode-path bugs (otherwise a non-DecodeError would
+    propagate out of the asyncio reader callback and silently de-register
+    the subscriber).
+    """
+
+    def test_wraps_msgspec_decode_error_into_generic_error_record(self):
+        # Force a real DecodeError via the codec's own decoder so the test
+        # exercises the realistic flow, not a hand-constructed exception.
+        payload = b"\xc1\xc1\xc1\xc1"  # invalid msgpack
+        try:
+            _codec.decode(payload)
+        except msgspec.DecodeError as exc:
+            captured = exc
+        else:
+            pytest.fail("Expected msgspec.DecodeError on garbage payload")
+
+        rec = _codec.on_decode_error(payload, captured)
+        assert isinstance(rec, EventRecord)
+        assert rec.event_type == ErrorEventType.GENERIC
+        assert isinstance(rec.data, ErrorData)
+        assert rec.data.error_type == type(captured).__name__
+        assert rec.data.error_message == str(captured)
+
+    def test_reraises_non_decode_error(self):
+        # ValueError is the canonical "not a DecodeError" exception type:
+        # it must propagate so MessageSubscriber._on_readable does not
+        # silently swallow decode-path bugs.
+        with pytest.raises(ValueError, match="not a decode error"):
+            _codec.on_decode_error(b"", ValueError("not a decode error"))

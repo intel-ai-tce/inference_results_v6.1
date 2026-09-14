@@ -1,0 +1,24 @@
+default_stage:
+  default_modifiers:
+    GPTQModifier:
+      targets: [Linear]
+      ignore: [lm_head]
+      scheme: W8A8
+      kv_cache_scheme:
+        num_bits: 8
+        type: float
+        symmetric: true
+        group_size: null
+        strategy: tensor
+        block_structure: null
+        dynamic: false
+        actorder: null
+        scale_dtype: null
+        zp_dtype: null
+        observer: memoryless_minmax
+        observer_kwargs: {}
+      bypass_divisibility_checks: false
+      block_size: 128
+      dampening_frac: 0.01
+      actorder: static
+      offload_hessians: false

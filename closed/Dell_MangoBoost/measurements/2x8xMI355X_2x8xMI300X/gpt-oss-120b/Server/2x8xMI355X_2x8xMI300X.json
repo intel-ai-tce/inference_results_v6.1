@@ -1,0 +1,7 @@
+{
+    "input_data_types": "int32",
+    "retraining": "No",
+    "starting_weights_filename": "Original Huggingface model weights",
+    "weight_data_types": "fp8 for MI300X, fp4 for MI355X",
+    "weight_transformations": "quantization"
+}

@@ -1,0 +1,33 @@
+--- a/aiter/ops/triton/_triton_kernels/attention/unified_attention.py	2026-07-27 15:58:42.275184336 -0500
++++ b/aiter/ops/triton/_triton_kernels/attention/unified_attention.py	2026-07-27 15:58:42.287184248 -0500
+@@ -297,6 +297,7 @@
+             )
+             fast_k_mask = None
+             fast_v_mask = None
++            fast_other = None
+         else:
+             physical_block_idx = tl.load(
+                 block_tables_ptr + block_table_offset + seq_offset // BLOCK_SIZE
+@@ -318,11 +319,12 @@
+             # factor, since this tile is already proven in-bounds.
+             fast_k_mask = dim_mask[:, None]
+             fast_v_mask = dim_mask[None, :]
++            fast_other = 0.0
+ 
+         K_load = tl.load(
+             key_cache_ptr + k_offset,
+             mask=fast_k_mask,
+-            other=0.0,
++            other=fast_other,
+             cache_modifier=KV_cache_modifier,
+         )
+         K = K_load.to(Q.dtype)
+@@ -337,7 +339,7 @@
+         V_load = tl.load(
+             value_cache_ptr + v_offset,
+             mask=fast_v_mask,
+-            other=0.0,
++            other=fast_other,
+             cache_modifier=KV_cache_modifier,
+         )
+         V = V_load.to(Q.dtype)

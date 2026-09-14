@@ -1,0 +1,45 @@
+# Wan 2.2 A14B — B200-SXM-180GBx8 Offline (aggregated data-parallel).
+# 8 single-GPU VisualGen replicas (cfg=1, ulysses=1) = 8 GPUs = 1 node.
+# Mirrors the v6.0 reference B200 Offline (dp_size=8).
+#
+# Note: B200 is x86_64. Pass the appropriate x86_64 TRT-LLM VisualGen image via
+#   --set CONTAINER_IMAGE=<path>
+
+variables:
+  NUM_SERVERS:
+    description: "Number of data-parallel Wan 2.2 server replicas."
+    type: integer
+    value: 8
+  GPUS_PER_SERVER:
+    description: "GPUs per replica = cfg_size * ulysses_size in visual_gen.yaml (1 for Offline)."
+    type: integer
+    value: 1
+  TOTAL_GPUS:
+    type: integer
+    value: ${{ variables.NUM_SERVERS * variables.GPUS_PER_SERVER }}
+  BASE_PORT:
+    type: integer
+    value: 8000
+  GPUS_PER_NODE:
+    description: "B200-SXM nodes have 8 GPUs. Overrides slurm_env.yaml default of 4."
+    type: integer
+    value: 8
+
+  MODEL_PATH:
+    description: "Local pre-quantized ModelOpt FP8 diffusers checkpoint (under the scratch mount)."
+    value: /home/mlperf_inference_storage/models/wan22-a14b/Wan2.2-T2V-A14B-Diffusers-FP8
+  VISUAL_GEN_YAML:
+    value: /work/configs/wan22_a14b/B200-SXM-180GBx8/visual_gen/Offline/visual_gen.yaml
+  WORKER_ENV_YAML:
+    value: /work/configs/wan22_a14b/_shared/worker_env.yaml
+  ENDPOINT_CONFIG:
+    value: /work/configs/wan22_a14b/B200-SXM-180GBx8/visual_gen/Offline/endpoint_submission.yaml
+  ENDPOINT_ENV_YAML:
+    value: /work/configs/wan22_a14b/B200-SXM-180GBx8/visual_gen/Offline/endpoint_env_vbench.yaml
+
+  BENCHMARK:
+    value: wan22-a14b
+  SCENARIO:
+    value: Offline
+  SYSTEM_NAME:
+    value: B200-SXM-180GBx8

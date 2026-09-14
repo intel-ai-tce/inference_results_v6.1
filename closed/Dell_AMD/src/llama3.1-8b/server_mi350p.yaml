@@ -1,0 +1,91 @@
+benchmark_name: llama3_1-8b
+scenario: server
+test_mode: performance
+engine_version: async
+
+vllm_env_config:
+  VLLM_LOGGING_LEVEL: "INFO"
+  HARNESS_GC_LIMIT: 100000
+  NCCL_MIN_NCHANNELS: 112
+  RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES: 1
+  TOKENIZERS_PARALLELISM: False
+  VLLM_INSTALL_PUNICA_KERNELS: 1
+  VLLM_USE_V1: 1
+  VLLM_ROCM_QUICK_REDUCE_QUANTIZATION: INT4
+  VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB: 2560
+  VLLM_ROCM_USE_AITER_CUSTOM_ALL_REDUCE: 1
+  VLLM_TRITON_FP4_GEMM_USE_ASM: 0
+  VLLM_TRITON_FP4_GEMM_SPLITK_USE_BF16: 0
+  TRITON_HIP_ASYNC_COPY_BYPASS_PERMUTE: 1
+  AMDGCN_USE_BUFFER_OPS: 1
+  TRITON_HIP_USE_ASYNC_COPY: 1
+  TRITON_HIP_USE_BLOCK_PINGPONG: 1
+  TRITON_HIP_ASYNC_FAST_SWIZZLE: 1
+  TRITON_HIP_PRESHUFFLE_SCALES: 1
+  VLLM_ROCM_USE_AITER: 1
+  VLLM_ROCM_USE_AITER_PAGED_ATTN: 0
+  USE_FASTSAFETENSOR: 1
+  SAFETENSORS_FAST_GPU: 1
+  VLLM_ROCM_USE_AITER_RMSNORM: 1
+  VLLM_USE_TRITON_FLASH_ATTN: 0
+  VLLM_USE_AITER_TRITON_ROPE: 1
+  VLLM_TRITON_FP4_GEMM_BPRESHUFFLE: 1
+  VLLM_V1_USE_PREFILL_DECODE_ATTENTION: 0
+  VLLM_USE_AITER_UNIFIED_ATTENTION: 0
+  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM: 1
+  VLLM_MIN_REQUEST_DECODE_STEP: 32
+  VLLM_SUBSEQUENT_DECODE_STEPS: 0
+  VLLM_MAX_PREFILL_TOKENS_PER_STEP: 16384
+  HARNESS_PRELOAD_AITER_KERNELS: 1
+  ENGINE: vllm-rocm
+  VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT: 1
+  HIP_ONLINE_TUNING: 0
+  HSA_NO_SCRATCH_RECLAIM: 1
+
+vllm_engine_config:
+  model: /model/llama3.1-8b/fp4_quantized
+  tokenizer: /lab-mlperf-inference/code/tokenizer_patch
+  dtype: bfloat16
+  tensor_parallel_size: 1
+  quantization: quark
+  trust_remote_code: True
+  max_model_len: 2668
+  gpu_memory_utilization: 0.96
+  enforce_eager: False
+  disable_custom_all_reduce: False
+  max_num_batched_tokens: 8192
+  max_num_seqs: 1024
+  enable_chunked_prefill: True
+  attention_backend: ROCM_AITER_FA
+  enable_prefix_caching: False
+  async_scheduling: True
+  num_gpu_blocks_override: 131072
+  compilation_config:
+    cudagraph_mode: FULL_AND_PIECEWISE
+    compile_sizes: [1,2,4,8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200,208,216,224,232,240,248,256,320,384,448,512,576,640,704,768,832,896,960,1024,1088,1152,1216,1280,1344,1408,1472,1536,1600,1664,1728,1792,1856,1920,1984,2048,2112,2176,2240,2304,2368,2432,2496,2560,2624,2688,2752,2816,2880,2944,3008,3072,3136,3200,3264,3328,3392,3456,3520,3584,3648,3712,3776,3840,3904,3968,4032,4096,4160,4224,4288,4352,4416,4480]
+    cudagraph_capture_sizes: [4480,4416,4352,4288,4224,4160,4096,4032,3968,3904,3840,3776,3712,3648,3584,3520,3456,3392,3328,3264,3200,3136,3072,3008,2944,2880,2816,2752,2688,2624,2560,2496,2432,2368,2304,2240,2176,2112,2048,1984,1920,1856,1792,1728,1664,1600,1536,1472,1408,1344,1280,1216,1152,1088,1024,960,896,832,768,704,640,576,512,448,384,320,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1]
+vllm_sampling_config:
+  temperature: 0
+  seed: 42
+  top_p: 1
+  top_k: 1
+  max_tokens: 128
+  min_tokens: 1
+  ignore_eos: False
+  detokenize: False
+
+harness_config:
+  dataset_path: /data/cnn_eval.json
+  mlperf_conf_path: /lab-mlperf-inference/mlperf_inference/mlperf.conf
+  user_conf_path: /lab-mlperf-inference/code/llama3.1-8b/user_mi350p.conf
+  schedule_algo: shortest_queue_prefill
+  prefill_backlog_weight: 8
+  target_qps: -1
+  total_sample_count: 13368
+  output_log_dir: /lab-mlperf-inference/logs
+  enable_log_trace: False
+  warmup_duration: 0
+  enable_warmup: True
+  warm_up_sample_count_per_server: 8800
+  device_count: 8
+  debug_dump_model_output: False

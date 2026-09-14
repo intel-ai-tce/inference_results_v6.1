@@ -1,0 +1,29 @@
+diff --git a/aiter/fused_moe.py b/aiter/fused_moe.py
+--- a/aiter/fused_moe.py
++++ b/aiter/fused_moe.py
+@@ -1416,6 +1416,25 @@ def get_2stage_cfgs(
+             except Exception as _q3vl_e:
+                 logger.warning("[fused_moe] Q3VL #5 fuse_quant upgrade skipped: %s", _q3vl_e)
+         _s1_fp4q = is_flydsl1 and "_fp4" in kernelName1.split("_t")[-1]
++        # Q3VL fusion #4: fold the MoE stage2 top-8 reduce into the GEMM2 atomic epilogue.
++        # The tuned CSV picks the separate-reduction _reduce stage2 for the large-M prefill shape;
++        # the _atomic variant accumulates expert partials in-kernel, removing the standalone
++        # moe_reduction kernel. Opt-in via VLLM_Q3VL_FUSE_MOE_REDUCE_EPILOGUE=1; swaps only when
++        # the _atomic variant exists (else no-op).
++        if (
++            is_flydsl2
++            and os.environ.get("VLLM_Q3VL_FUSE_MOE_REDUCE_EPILOGUE", "0") == "1"
++            and "_reduce" in kernelName2
++        ):
++            try:
++                from aiter.ops.flydsl.moe_kernels import get_flydsl_kernel_params as _q3vl_gfkp2
++                _q3vl_kn2_atomic = kernelName2.replace("_reduce", "_atomic")
++                if _q3vl_gfkp2(_q3vl_kn2_atomic) is not None:
++                    logger.warning("[fused_moe] Q3VL #4 reduce->atomic epilogue: %s -> %s", kernelName2, _q3vl_kn2_atomic)
++                    kernelName2 = _q3vl_kn2_atomic
++            except Exception as _q3vl_e2:
++                logger.warning("[fused_moe] Q3VL #4 reduce->atomic skipped: %s", _q3vl_e2)
++
+         if is_flydsl1:
+             stage1_func = functools.partial(
+                 _flydsl_stage1_wrapper,

@@ -1,0 +1,440 @@
+[2026-07-29 16:43:33,686 loader.py:208 INFO] Loading System log from build/submission/closed/Inventec/systems/P5800G7-B300-SXM-270GBx8_TRT.json
+[2026-07-29 16:43:33,688 loader.py:228 INFO] Could not load Nameplate log from build/submission/closed/Inventec/systems/P5800G7-B300-SXM-270GBx8_TRT_power.yaml, path does not exist
+[2026-07-29 16:43:33,691 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,694 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,694 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,696 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,696 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,697 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,698 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,699 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,699 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,699 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,699 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,700 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,701 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,702 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,702 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,702 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,702 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,702 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,703 performance_check.py:305 INFO] Target latency: None, Latency: 5337180429765, Scenario: Offline
+[2026-07-29 16:43:33,703 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,703 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,703 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,708 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,708 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,708 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,708 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,708 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,710 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,711 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-29 16:43:33,711 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-29 16:43:33,711 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/
+[2026-07-29 16:43:33,711 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/
+[2026-07-29 16:43:33,712 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,716 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,716 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,718 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,718 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,719 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,719 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,721 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,721 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,721 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,721 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,722 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,723 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,723 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,724 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,724 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,724 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,724 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,724 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,724 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 1071499918, TPOT target: 80000000, TPOT: 65374064, Scenario: Server
+[2026-07-29 16:43:33,724 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,724 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,724 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,729 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,729 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,729 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,729 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,729 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,731 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,731 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/power
+[2026-07-29 16:43:33,731 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/power
+[2026-07-29 16:43:33,731 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/
+[2026-07-29 16:43:33,731 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/
+[2026-07-29 16:43:33,734 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,737 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,737 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,739 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,739 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,740 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,740 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,741 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,741 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,741 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,741 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,742 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,742 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,743 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,744 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,745 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,745 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,746 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,746 performance_check.py:305 INFO] Target latency: None, Latency: 699117717959, Scenario: Offline
+[2026-07-29 16:43:33,746 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,746 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,746 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,746 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,747 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,747 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,747 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,747 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,747 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,747 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-29 16:43:33,747 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-29 16:43:33,747 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/
+[2026-07-29 16:43:33,747 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-29 16:43:33,748 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-29 16:43:33,748 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-29 16:43:33,748 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-29 16:43:33,748 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/
+[2026-07-29 16:43:33,749 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,752 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,752 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,755 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,755 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,755 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,755 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,756 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,756 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,757 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,757 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,757 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,757 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,758 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,760 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,760 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,761 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,761 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,761 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,762 performance_check.py:475 INFO] TTFT target: 3000000000, TTFT: 347633237, TPOT target: 80000000, TPOT: 49894668, Scenario: Server
+[2026-07-29 16:43:33,762 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,762 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,762 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,762 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,762 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,762 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,762 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,762 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,763 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,763 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-29 16:43:33,763 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-29 16:43:33,763 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/
+[2026-07-29 16:43:33,763 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-29 16:43:33,763 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-29 16:43:33,763 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-29 16:43:33,763 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-29 16:43:33,763 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/
+[2026-07-29 16:43:33,766 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,770 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,770 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,774 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,774 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,774 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,774 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,775 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,775 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,776 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,776 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,776 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,778 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,778 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,778 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,778 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,778 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,779 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,779 performance_check.py:305 INFO] Target latency: None, Latency: 1297388742995, Scenario: Offline
+[2026-07-29 16:43:33,779 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,779 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,779 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,779 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,779 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,779 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,779 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,779 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,780 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,780 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-29 16:43:33,780 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-29 16:43:33,780 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/
+[2026-07-29 16:43:33,781 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/
+[2026-07-29 16:43:33,782 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,786 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,786 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,790 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,790 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,791 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,791 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,792 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,792 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,792 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,792 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,793 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,794 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,794 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,795 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,795 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,795 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,795 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,795 performance_check.py:279 INFO] Target latency: 20000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,795 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 508743206, TPOT target: 200000000, TPOT: 166508499, Scenario: Server
+[2026-07-29 16:43:33,795 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,795 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,795 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,795 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,795 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,795 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,795 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,795 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,797 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,797 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-29 16:43:33,797 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-29 16:43:33,797 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/
+[2026-07-29 16:43:33,797 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/
+[2026-07-29 16:43:33,797 loader.py:208 INFO] Loading System log from build/submission/closed/Inventec/systems/P9000G7-B300-SXM-270GBx8_TRT.json
+[2026-07-29 16:43:33,799 loader.py:228 INFO] Could not load Nameplate log from build/submission/closed/Inventec/systems/P9000G7-B300-SXM-270GBx8_TRT_power.yaml, path does not exist
+[2026-07-29 16:43:33,802 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,804 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,804 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,806 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,806 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,807 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,807 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,808 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,808 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,808 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,808 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,809 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,810 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,811 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,811 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,811 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,811 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,812 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,812 performance_check.py:305 INFO] Target latency: None, Latency: 5456313854029, Scenario: Offline
+[2026-07-29 16:43:33,812 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,812 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,812 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,814 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,814 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,814 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,814 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,814 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,816 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/measurements.json
+[2026-07-29 16:43:33,816 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-29 16:43:33,816 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/power
+[2026-07-29 16:43:33,816 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/
+[2026-07-29 16:43:33,816 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/
+[2026-07-29 16:43:33,817 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,820 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,820 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,822 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,822 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,822 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,823 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,824 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,824 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,824 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,824 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,825 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,826 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,826 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,827 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,827 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,827 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,827 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,827 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,827 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 1009237500, TPOT target: 80000000, TPOT: 64180604, Scenario: Server
+[2026-07-29 16:43:33,827 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,827 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,827 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,830 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,830 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,830 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,830 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,830 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,831 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/measurements.json
+[2026-07-29 16:43:33,831 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/power
+[2026-07-29 16:43:33,831 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/power
+[2026-07-29 16:43:33,831 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/
+[2026-07-29 16:43:33,832 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/
+[2026-07-29 16:43:33,834 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,837 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,837 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,838 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,838 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,839 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,839 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,841 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,841 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,841 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,841 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,841 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,841 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,843 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,844 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,844 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,845 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,845 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,845 performance_check.py:305 INFO] Target latency: None, Latency: 702856008003, Scenario: Offline
+[2026-07-29 16:43:33,845 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,845 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,845 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,846 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,846 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,846 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,846 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,846 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,847 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/measurements.json
+[2026-07-29 16:43:33,847 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-29 16:43:33,847 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/power
+[2026-07-29 16:43:33,847 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/
+[2026-07-29 16:43:33,847 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-29 16:43:33,847 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-29 16:43:33,847 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST07 passed
+[2026-07-29 16:43:33,847 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/TEST09 passed
+[2026-07-29 16:43:33,847 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/
+[2026-07-29 16:43:33,848 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,851 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,851 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,852 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,853 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,853 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,853 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,855 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,855 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,855 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,855 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,855 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST06/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,855 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,857 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,858 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,858 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07/verify_accuracy.txt
+[2026-07-29 16:43:33,859 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09/verify_output_len.txt
+[2026-07-29 16:43:33,859 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,860 performance_check.py:279 INFO] Target latency: 60000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,860 performance_check.py:475 INFO] TTFT target: 3000000000, TTFT: 365483660, TPOT target: 80000000, TPOT: 53005175, Scenario: Server
+[2026-07-29 16:43:33,860 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,860 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,860 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,860 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,860 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,860 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,860 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,860 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,861 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/measurements.json
+[2026-07-29 16:43:33,861 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-29 16:43:33,861 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/power
+[2026-07-29 16:43:33,861 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/
+[2026-07-29 16:43:33,861 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-29 16:43:33,861 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-29 16:43:33,861 compliance_check.py:347 INFO] TEST07 accuracy check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST07 passed
+[2026-07-29 16:43:33,861 compliance_check.py:366 INFO] TEST09 output length check in build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/TEST09 passed
+[2026-07-29 16:43:33,862 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/
+[2026-07-29 16:43:33,864 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,868 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,868 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,872 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,872 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/accuracy.txt
+[2026-07-29 16:43:33,872 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,873 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,874 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,874 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,874 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,874 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,875 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,876 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,877 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,877 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,877 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,877 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,877 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,877 performance_check.py:305 INFO] Target latency: None, Latency: 1295617443905, Scenario: Offline
+[2026-07-29 16:43:33,877 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,877 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,877 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,877 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,878 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,878 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,878 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,878 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,879 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/measurements.json
+[2026-07-29 16:43:33,879 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-29 16:43:33,879 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/power
+[2026-07-29 16:43:33,879 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/
+[2026-07-29 16:43:33,879 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/
+[2026-07-29 16:43:33,880 loader.py:208 INFO] Loading Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,889 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,890 loader.py:208 INFO] Loading Accuracy log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,893 loadgen_parser.py:66 INFO] Sucessfully loaded MLPerf log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,893 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/accuracy.txt
+[2026-07-29 16:43:33,894 loader.py:208 INFO] Loading AccuracyJSON log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_accuracy.json
+[2026-07-29 16:43:33,894 loader.py:208 INFO] Loading Measurements log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,896 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST01/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,896 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST01/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,896 loader.py:228 INFO] Could not load Performance log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST04/performance/run_1/mlperf_log_detail.txt, path does not exist
+[2026-07-29 16:43:33,896 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST04/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,896 loader.py:208 INFO] Loading AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST06/verify_accuracy.txt
+[2026-07-29 16:43:33,898 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,898 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,898 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST08/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,898 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST07/verify_accuracy.txt, path does not exist
+[2026-07-29 16:43:33,898 loader.py:228 INFO] Could not load AccuracyResult log from build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/TEST09/verify_output_len.txt, path does not exist
+[2026-07-29 16:43:33,899 base.py:53 INFO] Starting performance checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,899 performance_check.py:279 INFO] Target latency: 20000000000, Early Stopping Latency: 0, Scenario: Server
+[2026-07-29 16:43:33,899 performance_check.py:475 INFO] TTFT target: 2000000000, TTFT: 510223211, TPOT target: 200000000, TPOT: 160694995, Scenario: Server
+[2026-07-29 16:43:33,899 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,899 base.py:56 INFO] All performance checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt
+[2026-07-29 16:43:33,899 base.py:53 INFO] Starting accuracy checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,899 base.py:37 WARNING] Execution of check endpoints_model_check skipped for build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt.
+[2026-07-29 16:43:33,899 base.py:56 INFO] All accuracy checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/accuracy/mlperf_log_detail.txt
+[2026-07-29 16:43:33,899 base.py:53 INFO] Starting system checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,899 base.py:56 INFO] All system checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT
+[2026-07-29 16:43:33,899 base.py:53 INFO] Starting measurement checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,900 base.py:56 INFO] All measurement checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/measurements.json
+[2026-07-29 16:43:33,900 base.py:53 INFO] Starting base checks for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-29 16:43:33,900 base.py:56 INFO] All base checks checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/power
+[2026-07-29 16:43:33,900 base.py:53 INFO] Starting compliance check for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/
+[2026-07-29 16:43:33,900 base.py:56 INFO] All compliance check checks passed for: build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/
+[2026-07-29 16:43:33,911 main.py:227 INFO] ---
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt 70269.6
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt 57432.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt 106280.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt 100299.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt 109933.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P5800G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt 106617.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Offline/performance/run_1/mlperf_log_detail.txt 69062.2
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/deepseek-r1/Server/performance/run_1/mlperf_log_detail.txt 57517.4
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Offline/performance/run_1/mlperf_log_detail.txt 105617.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/gpt-oss-120b/Server/performance/run_1/mlperf_log_detail.txt 100300.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Offline/performance/run_1/mlperf_log_detail.txt 109755.0
+[2026-07-29 16:43:33,911 main.py:231 INFO] Results build/submission/closed/Inventec/results/P9000G7-B300-SXM-270GBx8_TRT/llama2-70b-99/Server/performance/run_1/mlperf_log_detail.txt 106645.0
+[2026-07-29 16:43:33,911 main.py:233 INFO] ---
+[2026-07-29 16:43:33,911 main.py:314 INFO] ---
+[2026-07-29 16:43:33,911 main.py:315 INFO] Results=12, NoResults=0, Power Results=0
+[2026-07-29 16:43:33,911 main.py:322 INFO] ---
+[2026-07-29 16:43:33,911 main.py:323 INFO] Closed Results=12, Closed Power Results=0
+
+[2026-07-29 16:43:33,911 main.py:328 INFO] Open Results=0, Open Power Results=0
+
+[2026-07-29 16:43:33,911 main.py:333 INFO] Network Results=0, Network Power Results=0
+
+[2026-07-29 16:43:33,911 main.py:338 INFO] ---
+[2026-07-29 16:43:33,911 main.py:340 INFO] Systems=2, Power Systems=0
+[2026-07-29 16:43:33,911 main.py:344 INFO] Closed Systems=2, Closed Power Systems=0
+[2026-07-29 16:43:33,911 main.py:349 INFO] Open Systems=0, Open Power Systems=0
+[2026-07-29 16:43:33,912 main.py:354 INFO] Network Systems=0, Network Power Systems=0
+[2026-07-29 16:43:33,912 main.py:359 INFO] ---
+[2026-07-29 16:43:33,912 main.py:364 INFO] SUMMARY: submission looks OK

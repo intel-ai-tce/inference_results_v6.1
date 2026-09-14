@@ -1,0 +1,4 @@
+
+{'rouge1': '36.869', 'rouge2': '14.1535', 'rougeL': '23.5033', 'rougeLsum': '33.7502', 'gen_len': np.int64(7116420), 'gen_num': 13368}
+
+hash=495e0807a3e0fe7ff163cf5acdd81a57c8a86bcd35dc01bc283d2c8da95ebe79

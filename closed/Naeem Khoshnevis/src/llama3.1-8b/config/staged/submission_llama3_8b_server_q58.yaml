@@ -1,0 +1,33 @@
+name: "server-llama3.1-8b-cnn-submission-q58"
+version: "1.0"
+type: "online"
+# Server run at target_qps=58, the submitted operating point. Perf + accuracy in one self-consistent
+# pass (endpoints maps responses by request-id, so accuracy is correct under Poisson arrivals).
+model_params:
+  name: "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-8B-Instruct"
+  temperature: 0.0
+  top_p: 1.0
+  top_k: -1
+  max_new_tokens: 128
+datasets:
+  - name: cnn_dailymail::llama3_8b
+    type: accuracy
+    samples: 13368
+    parser: {input: prompt}
+    accuracy_config: {eval_method: rouge, ground_truth: highlights, extractor: identity_extractor, num_repeats: 1}
+  - name: cnn_dailymail::llama3_8b
+    type: performance
+    samples: 13368
+    parser: {input: prompt}
+settings:
+  runtime:
+    min_duration_ms: 600000
+    max_duration_ms: 3600000
+    scheduler_random_seed: 16159082839903944936
+    dataloader_random_seed: 2747215439041700203
+  load_pattern: {type: poisson, target_qps: 58}
+  client: {num_workers: 16}
+endpoint_config:
+  endpoints: ["http://localhost:8000"]
+  api_key: null
+report_dir: logs/l31_8b_server_improved

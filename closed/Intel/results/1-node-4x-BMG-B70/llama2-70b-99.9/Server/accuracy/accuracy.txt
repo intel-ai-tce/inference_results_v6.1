@@ -1,0 +1,11 @@
+Downloading builder script: 0.00B [00:00, ?B/s]Downloading builder script: 6.14kB [00:00, 23.1MB/s]
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Unzipping tokenizers/punkt.zip.
+[nltk_data] Downloading package punkt_tab to /root/nltk_data...
+[nltk_data]   Unzipping tokenizers/punkt_tab.zip.
+
+Results
+
+{'rouge1': '44.5937', 'rouge2': '22.2052', 'rougeL': '28.8276', 'rougeLsum': '42.1572', 'gen_len': 28003271, 'gen_num': 24576, 'gen_tok_len': 7145694, 'tokens_per_sample': 290.8}
+
+hash=6669df716579c7ed5d17917db8f045c15c54276f17aade5f75cc38370bdafd2e

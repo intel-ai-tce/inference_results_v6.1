@@ -1,11 +1,21 @@
+#!/usr/bin/env bash
+
 export VLLM_CPU_KVCACHE_SPACE=300
 export NUM_NUMA_NODES=$(lscpu | grep "NUMA node(s)" | awk '{print $NF}')
 export PORT=8192
-export VLLM_CPU_NUM_OF_RESERVED_CPU=2
+export RESERVED_CPUS_PER_NUMA="${RESERVED_CPUS_PER_NUMA:-2}"
+export VLLM_CPU_NUM_OF_RESERVED_CPU="${VLLM_CPU_NUM_OF_RESERVED_CPU:-$((NUM_NUMA_NODES * RESERVED_CPUS_PER_NUMA))}"
 export MAX_NUM_SEQS=1536
 export MAX_NUM_BATCHED_TOKENS=32768
 export TP_SIZE=1
 export MODEL_PATH="/model/Llama-3.1-8B-Instruct_calibrated-cpu"
+if [ -z "${VLLM_CPU_OMP_THREADS_BIND:-}" ]; then
+    SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+    export VLLM_CPU_OMP_THREADS_BIND
+    VLLM_CPU_OMP_THREADS_BIND="$(
+        "${SCRIPT_DIR}/generate_omp_threads_bind.sh" "${RESERVED_CPUS_PER_NUMA}"
+    )"
+fi
 
 if [ "${NUM_CORES}" == "172" ] || [ "${NUM_CORES}" == "192" ]; then
     export VLLM_CPU_KVCACHE_SPACE=200
@@ -23,6 +33,7 @@ if [ "${SCENARIO}" = "Server" ]; then
 fi
 
 echo "Using vLLM with TP $TP_SIZE and KV $VLLM_CPU_KVCACHE_SPACE"
+echo "VLLM_CPU_OMP_THREADS_BIND=${VLLM_CPU_OMP_THREADS_BIND}"
 
 vllm serve $MODEL_PATH \
     --dtype bfloat16 \

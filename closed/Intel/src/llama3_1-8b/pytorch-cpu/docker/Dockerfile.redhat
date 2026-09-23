@@ -1,0 +1,58 @@
+# Copyright (c) 2025 Intel Corporation
+# Licensed under the Apache License, Version 2.0 (the "License");
+
+ARG BASE_IMAGE=quay.io/intel_on_openshift/rhaii_3.5
+ARG BASE_TAG=3.5.0-1786546771
+FROM ${BASE_IMAGE}:${BASE_TAG} AS dev-base
+
+USER root
+
+# Install cloudflared as root because the RHAI runtime intentionally omits sudo.
+ARG CLOUDFLARED_VERSION=2026.8.2
+ARG CLOUDFLARED_SHA256=fcfb02b575a52ca1af2e3267af4e1517bcdeb30ac48c834c69abaed3c0576ad2
+RUN wget -q \
+        "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" \
+        -O /usr/local/bin/cloudflared && \
+    echo "${CLOUDFLARED_SHA256}  /usr/local/bin/cloudflared" | sha256sum -c - && \
+    chmod 0755 /usr/local/bin/cloudflared && \
+    /usr/local/bin/cloudflared --version
+
+# Preserve the RHAI-certified vLLM stack and install only MLPerf utilities.
+ARG RHAI_PYPI_INDEX=https://packages.redhat.com/api/pypi/public-rhai/rhoai/3.5/cpu-ubi9/simple/
+ARG PYPI_INDEX=https://pypi.org/simple
+RUN PIP_CONFIG_FILE=/dev/null \
+    /opt/app-root/bin/python -m pip install --no-compile \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        more-itertools \
+        py-libnuma \
+        datasets==5.0.0 \
+        llmcompressor==0.12.0
+
+WORKDIR /opt
+RUN git clone https://github.com/mlcommons/inference.git mlperf-inference && \
+    cd mlperf-inference/loadgen && \
+    PIP_CONFIG_FILE=/dev/null \
+    /opt/app-root/bin/python -m pip install --no-compile \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        .
+
+RUN test -f /opt/mlperf-inference/compliance/TEST01/run_verification.py && \
+    test -f /opt/mlperf-inference/compliance/TEST01/whisper/audit.config && \
+    /opt/app-root/bin/python /opt/mlperf-inference/tools/submission/truncate_accuracy_log.py --help >/dev/null && \
+    /opt/app-root/bin/python /opt/mlperf-inference/tools/submission/submission_checker/main.py --help >/dev/null
+
+COPY ./ /workspace/
+WORKDIR /workspace
+RUN mkdir -p /workspace/third_party && \
+    ln -s /opt/mlperf-inference /workspace/third_party/mlperf-inference && \
+    cp /opt/mlperf-inference/loadgen/mlperf.conf /workspace/ && \
+    uv cache clean && \
+    rm -rf /workspace/docker
+
+ENV PYTHONPATH=/workspace/third_party/mlperf-inference/tools/submission \
+    TSAN_OPTIONS=ignore_noninstrumented_modules=1 \
+    KMP_WARNINGS=0
+ENTRYPOINT []
+CMD ["/bin/bash"]

@@ -1,0 +1,71 @@
+# Copyright (c) 2025 Intel Corporation
+# Licensed under the Apache License, Version 2.0 (the "License");
+
+ARG BASE_IMAGE=quay.io/intel_on_openshift/rhaii_3.5
+ARG BASE_TAG=3.5.0-1786546771
+FROM ${BASE_IMAGE}:${BASE_TAG} AS dev-base
+
+USER root
+
+# Preserve the RHAI-provided vLLM, PyTorch, pandas, and Transformers versions.
+ARG RHAI_PYPI_INDEX=https://packages.redhat.com/api/pypi/public-rhai/rhoai/3.5/cpu-ubi9/simple/
+ARG PYPI_INDEX=https://pypi.org/simple
+RUN PIP_CONFIG_FILE=/dev/null \
+    /opt/app-root/bin/python -m pip install --no-compile \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        librosa \
+        sox \
+        more-itertools \
+        py-libnuma \
+        jaraco.context
+
+RUN /opt/app-root/bin/python -m venv --system-site-packages /opt/calibration-venv && \
+    PIP_CONFIG_FILE=/dev/null \
+    /opt/calibration-venv/bin/python -m pip install --no-compile \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        llmcompressor==0.6.0 \
+        huggingface_hub
+ENV CALIBRATION_PYTHON=/opt/calibration-venv/bin/python
+
+WORKDIR /opt
+RUN git clone https://github.com/mlcommons/inference.git mlperf-inference && \
+    cd mlperf-inference/loadgen && \
+    PIP_CONFIG_FILE=/dev/null \
+    /opt/app-root/bin/python -m pip install --no-compile \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        .
+
+RUN PIP_CONFIG_FILE=/dev/null \
+    /opt/app-root/bin/python -m pip install --no-compile --no-deps \
+        --index-url "${RHAI_PYPI_INDEX}" \
+        --extra-index-url "${PYPI_INDEX}" \
+        openai-whisper==20250625
+
+RUN test -f /opt/mlperf-inference/compliance/TEST01/run_verification.py && \
+    test -f /opt/mlperf-inference/compliance/TEST01/whisper/audit.config && \
+    /opt/app-root/bin/python /opt/mlperf-inference/tools/submission/truncate_accuracy_log.py --help >/dev/null && \
+    /opt/app-root/bin/python /opt/mlperf-inference/tools/submission/submission_checker/main.py --help >/dev/null
+
+COPY ./ /workspace/
+WORKDIR /workspace
+RUN mkdir -p /workspace/third_party && \
+    ln -s /opt/mlperf-inference /workspace/third_party/mlperf-inference && \
+    cp /opt/mlperf-inference/loadgen/mlperf.conf /workspace/ && \
+    uv cache clean && \
+    rm -rf /workspace/docker
+
+ENV PYTHONPATH=/workspace/third_party/mlperf-inference/tools/submission \
+    LD_PRELOAD=/usr/lib64/libtcmalloc_minimal.so.4:/usr/lib64/libomp.so \
+    TSAN_OPTIONS=ignore_noninstrumented_modules=1 \
+    KMP_WARNINGS=0
+
+RUN test -r /usr/lib64/libtcmalloc_minimal.so.4 && \
+    test -r /usr/lib64/libomp.so && \
+    command -v ffmpeg >/dev/null && \
+    /opt/app-root/bin/python -c 'import librosa, mlperf_loadgen, torch, whisper; print(torch.__version__)'
+
+ENTRYPOINT []
+CMD ["/bin/bash"]
